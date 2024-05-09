@@ -63,8 +63,8 @@ class MyApp extends StatelessWidget {
   Widget buildPage(String name) {
     switch (name) {
       case '/':
-        // return const ClanChurnSignInPage();
-        return const HomePage();
+        return const ClanChurnSignInPage();
+        // return const HomePage();
       case AppRoutes.home:
         return const HomePage();
       default:

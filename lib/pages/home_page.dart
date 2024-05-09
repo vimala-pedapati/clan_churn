@@ -1,4 +1,6 @@
 import 'package:clan_churn/componnents/clients_card.dart';
+import 'package:clan_churn/componnents/clients_component.dart';
+import 'package:clan_churn/componnents/clients_view_component.dart';
 import 'package:clan_churn/componnents/profile.dart';
 import 'package:clan_churn/utils/spacing.dart';
 import 'package:clan_churn/utils/typography.dart';
@@ -65,6 +67,8 @@ class HomePage extends StatelessWidget {
         ),
         SizedBox(height: h * 0.01),
         Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
               height: h * 0.89,
@@ -115,43 +119,8 @@ class HomePage extends StatelessWidget {
                 ),
               ]),
             ),
-            Container(
-              height: h * 0.8,
-              width: w * 0.8,
-              margin: EdgeInsets.only(left: w * 0.025, right: w * 0.025),
-              padding: const EdgeInsets.only(
-                  left: 20, right: 20, top: 20, bottom: 20),
-              decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.background,
-                  borderRadius: BorderRadius.circular(30)),
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Clients",
-                      style: ClanChurnTypography.font24600,
-                    ),
-                    ClanChurnSpacing.hw30,
-                    Expanded(
-                      child: SingleChildScrollView(
-                        child: GridView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 4,
-                                  childAspectRatio: 2.2,
-                                  crossAxisSpacing: 15,
-                                  mainAxisSpacing: 15),
-                          itemCount: 100,
-                          itemBuilder: (context, index) {
-                            return ClientsCard();
-                          },
-                        ),
-                      ),
-                    )
-                  ]),
-            )
+            // const ClientsComponent()
+            const ClientsViewComponent()
           ],
         )
       ]),

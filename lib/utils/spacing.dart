@@ -30,6 +30,7 @@ class ClanChurnSpacing {
   static const w8 = SizedBox(width: 8);
   static const w9 = SizedBox(width: 9);
   static const w10 = SizedBox(width: 10); 
+  static const w15 = SizedBox(width: 15); 
   static const w20 = SizedBox(width: 20);
   static const w30 = SizedBox(width: 30);
   static const w40 = SizedBox(width: 40);

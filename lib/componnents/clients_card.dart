@@ -7,8 +7,8 @@ class ClientsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 190,
-      width: 160,
+      // height: 190,
+      // width: 160,
       padding: const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 20),
       decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
