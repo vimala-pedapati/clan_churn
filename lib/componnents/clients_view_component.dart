@@ -53,68 +53,71 @@ class _ClientsViewComponentState extends State<ClientsViewComponent> {
             decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.background,
                 borderRadius: BorderRadius.circular(30)),
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.keyboard_backspace,
-                        color: Theme.of(context).colorScheme.secondary,
-                      ),
-                      ClanChurnSpacing.w10,
-                      Text(
-                        "Piramal - Home Loans",
-                        style: ClanChurnTypography.font18600,
-                      ),
-                    ],
-                  ),
-                  ElevatedButton(
-                    onPressed: () {},
-                    child: Row(children: [
-                      const Icon(
-                        Icons.add_box_outlined,
-                        size: 18,
-                      ),
-                      ClanChurnSpacing.w5,
-                      Text(
-                        "Start New Project",
-                        style: ClanChurnTypography.font14600,
-                      )
-                    ]),
-                  )
-                ],
-              ),
-              ClanChurnSpacing.h20,
-              Text(
-                "Project History",
-                style: ClanChurnTypography.font15600,
-              ),
-              ClanChurnSpacing.h10,
-              // Row(
-              //   children: [
-              //     Row(
-              //       children: [
-              //         Icon(
-              //           Icons.filter_alt_outlined,
-              //           color: Theme.of(context).colorScheme.secondary,
-              //           size: 18,
-              //         ),
-              //         Text(
-              //           " Filters:",
-              //           style: ClanChurnTypography.font14500,
-              //         ),
-              //         ClanChurnSpacing.w15,
-              //         const GetFiltersDropDown(),
-              //         // const GetSearchWidget()
-              //       ],
-              //     )
-              //   ],
-              // ),
-              ProjectHistory()
-            ]),
+            child: SingleChildScrollView(
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.keyboard_backspace,
+                              color: Theme.of(context).colorScheme.secondary,
+                            ),
+                            ClanChurnSpacing.w10,
+                            Text(
+                              "Piramal - Home Loans",
+                              style: ClanChurnTypography.font18600,
+                            ),
+                          ],
+                        ),
+                        ElevatedButton(
+                          onPressed: () {},
+                          child: Row(children: [
+                            const Icon(
+                              Icons.add_box_outlined,
+                              size: 18,
+                            ),
+                            ClanChurnSpacing.w5,
+                            Text(
+                              "Start New Project",
+                              style: ClanChurnTypography.font14600,
+                            )
+                          ]),
+                        )
+                      ],
+                    ),
+                    ClanChurnSpacing.h20,
+                    Text(
+                      "Project History",
+                      style: ClanChurnTypography.font15600,
+                    ),
+                    ClanChurnSpacing.h10,
+                    // Row(
+                    //   children: [
+                    //     Row(
+                    //       children: [
+                    //         Icon(
+                    //           Icons.filter_alt_outlined,
+                    //           color: Theme.of(context).colorScheme.secondary,
+                    //           size: 18,
+                    //         ),
+                    //         Text(
+                    //           " Filters:",
+                    //           style: ClanChurnTypography.font14500,
+                    //         ),
+                    //         ClanChurnSpacing.w15,
+                    //         const GetFiltersDropDown(),
+                    //         // const GetSearchWidget()
+                    //       ],
+                    //     )
+                    //   ],
+                    // ),
+                    ProjectHistory()
+                  ]),
+            ),
           ),
         ],
       ),

@@ -6,6 +6,8 @@ import 'package:clan_churn/utils/spacing.dart';
 import 'package:clan_churn/utils/typography.dart';
 import 'package:flutter/material.dart';
 
+import '../componnents/project_history_data_table.dart';
+
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
@@ -121,6 +123,7 @@ class HomePage extends StatelessWidget {
             ),
             // const ClientsComponent()
             const ClientsViewComponent()
+           
           ],
         )
       ]),
