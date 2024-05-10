@@ -1,5 +1,5 @@
 import 'dart:developer';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bloc/bloc.dart';
 import 'package:clan_churn/api_repos/auth_repo.dart';
 import 'package:equatable/equatable.dart';
@@ -30,5 +30,15 @@ class SignInBloc extends Bloc<SignInBlocEvent, SignInBlocState> {
         log(".......false");
       }
     }
+  }
+}
+
+
+class AppBlocObserver extends BlocObserver {
+  @override
+  void onTransition(Bloc bloc, Transition transition) {
+    super.onTransition(bloc, transition);
+    // Print transitions for debugging (optional)
+    // print(transition);
   }
 }

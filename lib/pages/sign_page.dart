@@ -5,6 +5,7 @@ import 'package:clan_churn/utils/spacing.dart';
 import 'package:clan_churn/utils/typography.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 import '../main.dart';
@@ -138,6 +139,8 @@ class ClanChurnSignInPage extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () {
                       context.read<SignInBloc>().add(SignInEvent());
+                      context.go("/home");
+
                       // Navigator.pushReplacementNamed(context, AppRoutes.home);
                     },
                     child: Text(
@@ -177,10 +180,10 @@ class ClanChurnSignInPage extends StatelessWidget {
                 color: background),
             child: sizingInformation.deviceScreenType == DeviceScreenType.mobile
                 ? SingleChildScrollView(
-                  child: Column(
+                    child: Column(
                       children: [a, b],
                     ),
-                )
+                  )
                 : Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [a, b]),

@@ -2,34 +2,64 @@ import 'package:clan_churn/api_repos/auth_repo.dart';
 import 'package:clan_churn/churn_blocs/sign_in_bloc/sign_in_bloc.dart';
 import 'package:clan_churn/pages/home_page.dart';
 import 'package:clan_churn/pages/sign_page.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:clan_churn/utils/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 FlutterSecureStorage storage = const FlutterSecureStorage();
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   AuthRepository authRepository = AuthRepository(storage: storage);
   runApp(ClanChurnApp(
     authRepository: authRepository,
   ));
+  if (kIsWeb) {
+    setUrlStrategy(PathUrlStrategy());
+  }
 }
-
+ 
 class ClanChurnApp extends StatelessWidget {
   const ClanChurnApp({super.key, required this.authRepository});
   final AuthRepository authRepository;
 
   @override
   Widget build(BuildContext context) {
+    final GoRouter _router = GoRouter(
+      routes: <GoRoute>[
+        GoRoute(
+            path: '/',
+            builder: (BuildContext context, GoRouterState state) =>
+                BlocBuilder<SignInBloc, SignInBlocState>(
+                  builder: (context, state) {
+                    if (state.status == AuthenticationStatus.authenticated) {
+                      return const HomePage();
+                    }
+                    return const ClanChurnSignInPage();
+                  },
+                )),
+        GoRoute(
+            path: '/signIn',
+            builder: (BuildContext context, GoRouterState state) =>
+                const ClanChurnSignInPage()),
+        GoRoute(
+            path: '/home',
+            builder: (BuildContext context, GoRouterState state) =>
+                const HomePage()),
+      ],
+    );
     return MultiBlocProvider(
       providers: [
         BlocProvider(
           create: (_) => SignInBloc(authRepository: authRepository),
         ),
       ],
-      child: MaterialApp(
+      child: MaterialApp.router(
         theme: ThemeData(
           textTheme: GoogleFonts.montserratTextTheme().copyWith(),
           colorScheme: ColorScheme.fromSeed(
@@ -63,35 +93,11 @@ class ClanChurnApp extends StatelessWidget {
           ],
           child: child!,
         ),
-        initialRoute: '/',
-        onGenerateRoute: (RouteSettings settings) {
-          return MaterialPageRoute(builder: (context) {
-            return BouncingScrollWrapper.builder(
-                context, buildPage(settings.name ?? ''),
-                dragWithMouse: true);
-          });
-        },
+        routeInformationParser: _router.routeInformationParser,
+        routerDelegate: _router.routerDelegate,
+        routeInformationProvider: _router.routeInformationProvider,
         debugShowCheckedModeBanner: false,
       ),
     );
   }
-
-  Widget buildPage(String name) {
-    switch (name) {
-      case '/':
-        return BlocBuilder<SignInBloc, SignInBlocState>(
-          builder: (context, state) {
-            if (state.status == AuthenticationStatus.authenticated) {
-              return const HomePage();
-            }
-            return const ClanChurnSignInPage();
-          },
-        );
-      // return const HomePage();
-      case AppRoutes.home:
-        return const HomePage();
-      default:
-        return const SizedBox.shrink();
-    }
-  }
-}
+ }
