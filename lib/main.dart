@@ -10,12 +10,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
-FlutterSecureStorage storage = const FlutterSecureStorage();
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  AuthRepository authRepository = AuthRepository(storage: storage);
+  if (kIsWeb) {
+    HydratedBloc.storage = await HydratedStorage.build(
+        storageDirectory: HydratedStorage.webStorageDirectory);
+  }
+  FlutterSecureStorage storage = const FlutterSecureStorage();
+  AuthRepository authRepository = AuthRepository();
   runApp(ClanChurnApp(
     authRepository: authRepository,
   ));
@@ -23,7 +28,7 @@ void main() {
     setUrlStrategy(PathUrlStrategy());
   }
 }
- 
+
 class ClanChurnApp extends StatelessWidget {
   const ClanChurnApp({super.key, required this.authRepository});
   final AuthRepository authRepository;
@@ -100,4 +105,4 @@ class ClanChurnApp extends StatelessWidget {
       ),
     );
   }
- }
+}

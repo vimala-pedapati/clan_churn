@@ -138,10 +138,7 @@ class ClanChurnSignInPage extends StatelessWidget {
                   width: w * 0.3,
                   child: ElevatedButton(
                     onPressed: () {
-                      context.read<SignInBloc>().add(SignInEvent());
-                      context.go("/home");
-
-                      // Navigator.pushReplacementNamed(context, AppRoutes.home);
+                      context.read<SignInBloc>().add(SignInEvent(email: "test2@tminetwork.com", password: "123456", context: context));
                     },
                     child: Text(
                       "Submit",

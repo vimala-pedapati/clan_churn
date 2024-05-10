@@ -5,4 +5,10 @@ class SignInBlocEvent extends Equatable {
   List<Object?> get props => throw UnimplementedError();
 }
 
-class SignInEvent extends SignInBlocEvent {}
+class SignInEvent extends SignInBlocEvent {
+  final String email;
+  final String password;
+  final BuildContext context;
+  SignInEvent(
+      {required this.email, required this.password, required this.context});
+}
