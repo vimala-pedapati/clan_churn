@@ -16,10 +16,13 @@ class SignInBloc extends Bloc<SignInBlocEvent, SignInBlocState> {
     on<SignInEvent>(_onSignInEvent);
   }
   _onSignInEvent(SignInEvent event, Emitter<SignInBlocState> emit) async {
-    final result = await authRepository.signInApiCall( email: event.email, password: event.password);
+    final result = await authRepository.signInApiCall(
+        email: event.email, password: event.password);
+    log("........sign in output $result ${result == AuthenticationStatus.authenticated}");
     if (result == AuthenticationStatus.authenticated) {
       emit(state.copyWith(status: AuthenticationStatus.authenticated));
-      event.context.pushNamed("/home");
+      GoRouter.of(event.context).go('/home');
+      // event.context.pushNamed("/home");
     } else {
       emit(state.copyWith(status: AuthenticationStatus.unauthenticated));
       showAlertDialog(context: event.context);

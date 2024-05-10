@@ -92,6 +92,7 @@
 
 import 'dart:convert';
 import 'dart:developer';
+import 'package:equatable/equatable.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -102,6 +103,16 @@ enum AuthenticationStatus {
   unauthenticated,
   exception,
   sessionExpired
+}
+
+class AuthCredentials extends Equatable {
+  final String accessToken;
+  final String refreshToken;
+  const AuthCredentials(
+      {required this.accessToken, required this.refreshToken});
+
+  @override
+  List<Object?> get props => [accessToken, refreshToken];
 }
 
 class AuthRepository {
@@ -117,11 +128,12 @@ class AuthRepository {
     await prefs.setString('refreshToken', refreshToken);
   }
 
-  Future<Map<String, String>> getTokens() async {
+  Future<AuthCredentials> getTokens() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String accessToken = prefs.getString('accessToken') ?? '';
     String refreshToken = prefs.getString('refreshToken') ?? '';
-    return {'accessToken': accessToken, 'refreshToken': refreshToken};
+    return AuthCredentials(
+        accessToken: accessToken, refreshToken: refreshToken);
   }
 
   Future<AuthenticationStatus> signInApiCall(

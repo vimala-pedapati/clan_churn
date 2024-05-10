@@ -1,5 +1,4 @@
-import 'package:clan_churn/componnents/clients_card.dart';
-import 'package:clan_churn/componnents/clients_component.dart';
+import 'package:clan_churn/api_repos/auth_repo.dart';
 import 'package:clan_churn/componnents/clients_view_component.dart';
 import 'package:clan_churn/componnents/profile.dart';
 import 'package:clan_churn/utils/spacing.dart';
@@ -8,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../churn_blocs/sign_in_bloc/sign_in_bloc.dart';
-import '../componnents/project_history_data_table.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -81,11 +79,6 @@ class HomePage extends StatelessWidget {
                 color: Theme.of(context).colorScheme.background,
               ),
               child: Column(children: [
-                BlocBuilder<SignInBloc, SignInBlocState>(
-                  builder: (context, state) {
-                    return Text("${state.status}");
-                  },
-                ),
                 ClanChurnSpacing.h10,
                 Padding(
                   padding: const EdgeInsets.only(left: 20, top: 10, bottom: 10),

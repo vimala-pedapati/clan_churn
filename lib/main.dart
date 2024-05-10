@@ -4,7 +4,6 @@ import 'package:clan_churn/pages/home_page.dart';
 import 'package:clan_churn/pages/sign_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
-import 'package:clan_churn/utils/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -42,9 +41,9 @@ class ClanChurnApp extends StatelessWidget {
             builder: (BuildContext context, GoRouterState state) =>
                 BlocBuilder<SignInBloc, SignInBlocState>(
                   builder: (context, state) {
-                    if (state.status == AuthenticationStatus.authenticated) {
-                      return const HomePage();
-                    }
+                    // if (state.status == AuthenticationStatus.authenticated) {
+                    //   return const HomePage();
+                    // }
                     return const ClanChurnSignInPage();
                   },
                 )),
