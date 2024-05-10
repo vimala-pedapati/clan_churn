@@ -92,6 +92,7 @@
 
 import 'dart:convert';
 import 'dart:developer';
+import 'package:clan_churn/utils/api_endpoins.dart';
 import 'package:equatable/equatable.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -115,10 +116,7 @@ class AuthCredentials extends Equatable {
 }
 
 class AuthRepository {
-  final String apiUrl = 'http://churnapi.clanonline.in/sign_in';
-  final Map<String, String> headers = {
-    'Content-Type': 'application/json',
-  };
+  final String apiUrl = BaseUrl.baseUrl + ApiEndpoints.signIn;
 
   Future<void> storeTokens(
       {required String accessToken, required String refreshToken}) async {
@@ -150,7 +148,7 @@ class AuthRepository {
     try {
       final http.Response response = await http.post(
         Uri.parse(apiUrl),
-        headers: headers,
+        headers: BaseUrl.headers,
         body: json.encode(requestBody),
       );
 
