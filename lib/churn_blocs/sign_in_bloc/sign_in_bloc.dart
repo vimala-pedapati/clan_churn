@@ -2,6 +2,7 @@
 
 import 'dart:developer';
 import 'package:clan_churn/api_repos/auth_repo.dart';
+import 'package:clan_churn/utils/routes.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -21,7 +22,7 @@ class SignInBloc extends Bloc<SignInBlocEvent, SignInBlocState> {
     log("........sign in output $result ${result == AuthenticationStatus.authenticated}");
     if (result == AuthenticationStatus.authenticated) {
       emit(state.copyWith(status: AuthenticationStatus.authenticated));
-      GoRouter.of(event.context).go('/home');
+      GoRouter.of(event.context).go(AppRoutes.home);
       // event.context.pushNamed("/home");
     } else {
       emit(state.copyWith(status: AuthenticationStatus.unauthenticated));

@@ -2,6 +2,7 @@ import 'package:clan_churn/api_repos/auth_repo.dart';
 import 'package:clan_churn/churn_blocs/sign_in_bloc/sign_in_bloc.dart';
 import 'package:clan_churn/pages/home_page.dart';
 import 'package:clan_churn/pages/sign_page.dart';
+import 'package:clan_churn/utils/routes.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +38,7 @@ class ClanChurnApp extends StatelessWidget {
     final GoRouter _router = GoRouter(
       routes: <GoRoute>[
         GoRoute(
-            path: '/',
+            path: AppRoutes.intial,
             builder: (BuildContext context, GoRouterState state) =>
                 BlocBuilder<SignInBloc, SignInBlocState>(
                   builder: (context, state) {
@@ -48,11 +49,11 @@ class ClanChurnApp extends StatelessWidget {
                   },
                 )),
         GoRoute(
-            path: '/signIn',
+            path: AppRoutes.signIn,
             builder: (BuildContext context, GoRouterState state) =>
                 const ClanChurnSignInPage()),
         GoRoute(
-            path: '/home',
+            path: AppRoutes.home,
             builder: (BuildContext context, GoRouterState state) =>
                 const HomePage()),
       ],

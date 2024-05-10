@@ -1,3 +1,5 @@
 class AppRoutes {
-  static const home = "home";
+  static const intial = "/";
+  static const home = "/home";
+  static const signIn = "/signIn";
 }

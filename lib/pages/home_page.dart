@@ -1,12 +1,8 @@
-import 'package:clan_churn/api_repos/auth_repo.dart';
-import 'package:clan_churn/componnents/clients_view_component.dart';
+import 'package:clan_churn/componnents/clients_component.dart';
 import 'package:clan_churn/componnents/profile.dart';
 import 'package:clan_churn/utils/spacing.dart';
 import 'package:clan_churn/utils/typography.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../churn_blocs/sign_in_bloc/sign_in_bloc.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -121,8 +117,8 @@ class HomePage extends StatelessWidget {
                 ),
               ]),
             ),
-            // const ClientsComponent()
-            const ClientsViewComponent()
+            const ClientsComponent()
+            // const ClientsViewComponent()
           ],
         )
       ]),
