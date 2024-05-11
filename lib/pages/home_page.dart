@@ -88,7 +88,7 @@ class _HomePageState extends State<HomePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
+              duration: const Duration(seconds: 1),
               height: h * 0.89,
               width: isExpanded ? w * 0.05 : w * 0.15,
               decoration: BoxDecoration(
@@ -116,9 +116,12 @@ class _HomePageState extends State<HomePage> {
                                 ClanChurnSpacing.w10,
                                 isExpanded
                                     ? Container()
-                                    : Text(
-                                        "Menu",
-                                        style: ClanChurnTypography.font16700,
+                                    : AnimatedContainer(
+                                        duration: const Duration(seconds: 1),
+                                        child: Text(
+                                          "Menu",
+                                          style: ClanChurnTypography.font16700,
+                                        ),
                                       )
                               ],
                             ),
@@ -134,9 +137,12 @@ class _HomePageState extends State<HomePage> {
                               ClanChurnSpacing.w10,
                               isExpanded
                                   ? Container()
-                                  : Text(
-                                      "Home",
-                                      style: ClanChurnTypography.font16700,
+                                  : AnimatedContainer(
+                                      duration: const Duration(seconds: 1),
+                                      child: Text(
+                                        "Home",
+                                        style: ClanChurnTypography.font16700,
+                                      ),
                                     )
                             ],
                           ),
@@ -151,9 +157,12 @@ class _HomePageState extends State<HomePage> {
                               ClanChurnSpacing.w10,
                               isExpanded
                                   ? Container()
-                                  : Text(
-                                      "Saved Reports",
-                                      style: ClanChurnTypography.font16700,
+                                  : AnimatedContainer(
+                                      duration: const Duration(seconds: 1),
+                                      child: Text(
+                                        "Saved Reports",
+                                        style: ClanChurnTypography.font16700,
+                                      ),
                                     )
                             ],
                           ),
@@ -177,10 +186,13 @@ class _HomePageState extends State<HomePage> {
                             ClanChurnSpacing.w10,
                             isExpanded
                                 ? Container()
-                                : Text(
-                                    "Log Out",
-                                    style: ClanChurnTypography.font16700
-                                        .copyWith(color: Colors.red),
+                                : AnimatedContainer(
+                                    duration: const Duration(seconds: 1),
+                                    child: Text(
+                                      "Log Out",
+                                      style: ClanChurnTypography.font16700
+                                          .copyWith(color: Colors.red),
+                                    ),
                                   )
                           ],
                         ),
@@ -188,7 +200,9 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ]),
             ),
-            const ClientsComponent()
+            ClientsComponent(
+              width: isExpanded ? w * 0.9 : w * 0.8,
+            )
             // const ClientsViewComponent()
           ],
         )

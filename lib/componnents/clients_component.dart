@@ -4,7 +4,8 @@ import 'package:clan_churn/utils/typography.dart';
 import 'package:flutter/material.dart';
 
 class ClientsComponent extends StatefulWidget {
-  const ClientsComponent({super.key});
+  final double width;
+  const ClientsComponent({super.key, required this.width});
 
   @override
   State<ClientsComponent> createState() => _ClientsComponentState();
@@ -15,10 +16,12 @@ class _ClientsComponentState extends State<ClientsComponent> {
   Widget build(BuildContext context) {
     final h = MediaQuery.of(context).size.height;
     final w = MediaQuery.of(context).size.width;
-    return Container(
+    return AnimatedContainer(
+       duration: const Duration(seconds: 1),
       height: h * 0.82,
-      width: w * 0.8,
-      margin: EdgeInsets.only(left: w * 0.025, right: w * 0.025, top: 20, bottom: 20),
+      width: widget.width,
+      margin: EdgeInsets.only(
+          left: w * 0.025, right: w * 0.025, top: 20, bottom: 20),
       padding: const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 10),
       decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.background,
