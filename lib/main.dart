@@ -1,5 +1,7 @@
+import 'package:clan_churn/api_repos/api_repo.dart';
 import 'package:clan_churn/api_repos/auth_repo.dart';
 import 'package:clan_churn/churn_blocs/sign_in_bloc/sign_in_bloc.dart';
+import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
 import 'package:clan_churn/pages/home_page.dart';
 import 'package:clan_churn/pages/sign_page.dart';
 import 'package:clan_churn/utils/routes.dart';
@@ -7,22 +9,23 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:google_fonts/google_fonts.dart'; 
 import 'package:responsive_framework/responsive_framework.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  if (kIsWeb) {
-    HydratedBloc.storage = await HydratedStorage.build(
-        storageDirectory: HydratedStorage.webStorageDirectory);
-  }
-  FlutterSecureStorage storage = const FlutterSecureStorage();
+  // if (kIsWeb) {
+  //   HydratedBloc.storage = await HydratedStorage.build(
+  //       storageDirectory: HydratedStorage.webStorageDirectory);
+  // }
+  // FlutterSecureStorage storage = const FlutterSecureStorage();
   AuthRepository authRepository = AuthRepository();
+  ApiRepository apiRepository =
+      ApiRepository(authCredentials: await authRepository.getTokens());
   runApp(ClanChurnApp(
     authRepository: authRepository,
+    apiRepository: apiRepository,
   ));
   if (kIsWeb) {
     setUrlStrategy(PathUrlStrategy());
@@ -30,12 +33,14 @@ void main() async {
 }
 
 class ClanChurnApp extends StatelessWidget {
-  const ClanChurnApp({super.key, required this.authRepository});
+  const ClanChurnApp(
+      {super.key, required this.authRepository, required this.apiRepository});
   final AuthRepository authRepository;
+  final ApiRepository apiRepository;
 
   @override
   Widget build(BuildContext context) {
-    final GoRouter _router = GoRouter(
+    final GoRouter router = GoRouter(
       routes: <GoRoute>[
         GoRoute(
             path: AppRoutes.intial,
@@ -62,6 +67,9 @@ class ClanChurnApp extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (_) => SignInBloc(authRepository: authRepository),
+        ),
+        BlocProvider(
+          create: (_) => UserBloc(apiRepository: apiRepository),
         ),
       ],
       child: MaterialApp.router(
@@ -98,9 +106,9 @@ class ClanChurnApp extends StatelessWidget {
           ],
           child: child!,
         ),
-        routeInformationParser: _router.routeInformationParser,
-        routerDelegate: _router.routerDelegate,
-        routeInformationProvider: _router.routeInformationProvider,
+        routeInformationParser: router.routeInformationParser,
+        routerDelegate: router.routerDelegate,
+        routeInformationProvider: router.routeInformationProvider,
         debugShowCheckedModeBanner: false,
       ),
     );

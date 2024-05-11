@@ -1,12 +1,12 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:developer';
+import 'package:bloc/bloc.dart';
 import 'package:clan_churn/api_repos/auth_repo.dart';
 import 'package:clan_churn/utils/routes.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:go_router/go_router.dart'; 
 part 'sign_in_event.dart';
 part 'sign_in_state.dart';
 
@@ -15,6 +15,7 @@ class SignInBloc extends Bloc<SignInBlocEvent, SignInBlocState> {
   SignInBloc({required this.authRepository})
       : super(const SignInBlocState.initial()) {
     on<SignInEvent>(_onSignInEvent);
+    on<SignOutEvent>(_onSignOutEvent);
   }
   _onSignInEvent(SignInEvent event, Emitter<SignInBlocState> emit) async {
     final result = await authRepository.signInApiCall(
@@ -23,7 +24,6 @@ class SignInBloc extends Bloc<SignInBlocEvent, SignInBlocState> {
     if (result == AuthenticationStatus.authenticated) {
       emit(state.copyWith(status: AuthenticationStatus.authenticated));
       GoRouter.of(event.context).go(AppRoutes.home);
-      // event.context.pushNamed("/home");
     } else {
       emit(state.copyWith(status: AuthenticationStatus.unauthenticated));
       showAlertDialog(context: event.context);
@@ -33,6 +33,17 @@ class SignInBloc extends Bloc<SignInBlocEvent, SignInBlocState> {
       // } else {
       // }
     }
+  }
+
+  _onSignOutEvent(SignOutEvent event, Emitter<SignInBlocState> emit) {
+    authRepository.clearTokens().then(
+      (value) {
+         log("removed both access token and refresh token $value");
+        if (value) {
+          GoRouter.of(event.context).go(AppRoutes.intial);
+        }
+      },
+    );
   }
 }
 

@@ -12,3 +12,8 @@ class SignInEvent extends SignInBlocEvent {
   SignInEvent(
       {required this.email, required this.password, required this.context});
 }
+
+class SignOutEvent extends SignInBlocEvent {
+  final BuildContext context;
+  SignOutEvent({required this.context});
+}

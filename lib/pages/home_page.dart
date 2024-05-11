@@ -1,11 +1,35 @@
+import 'dart:developer';
+
+import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
 import 'package:clan_churn/componnents/clients_component.dart';
 import 'package:clan_churn/componnents/profile.dart';
 import 'package:clan_churn/utils/spacing.dart';
 import 'package:clan_churn/utils/typography.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    context.read<UserBloc>().add(GetUserDetailsEvent());
+    // context.read<UserBloc>().add(GetUserDetailsEvent());
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    // Future.delayed(const Duration(seconds: 2), () {
+    //   context.read<UserBloc>().add(GetUserDetailsEvent());
+    // });
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
