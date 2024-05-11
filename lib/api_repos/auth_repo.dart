@@ -10,7 +10,8 @@ enum AuthenticationStatus {
   authenticated,
   unauthenticated,
   exception,
-  sessionExpired
+  sessionExpired,
+  pageNotFound
 }
 
 class AuthCredentials extends Equatable {
@@ -26,7 +27,8 @@ class AuthCredentials extends Equatable {
 class AuthRepository {
   final String apiUrl = BaseUrl.baseUrl + ApiEndpoints.signIn;
 
-  Future<void> storeTokens({required String accessToken, required String refreshToken}) async {
+  Future<void> storeTokens(
+      {required String accessToken, required String refreshToken}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('accessToken', accessToken);
     await prefs.setString('refreshToken', refreshToken);
@@ -37,10 +39,11 @@ class AuthRepository {
     String accessToken = prefs.getString('accessToken') ?? '';
     String refreshToken = prefs.getString('refreshToken') ?? '';
     log(accessToken);
-    return AuthCredentials(  accessToken: accessToken, refreshToken: refreshToken);
+    return AuthCredentials(
+        accessToken: accessToken, refreshToken: refreshToken);
   }
 
-   Future<bool> clearTokens() async {
+  Future<bool> clearTokens() async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       bool accessTokenRemoved = await prefs.remove('accessToken');
@@ -85,13 +88,16 @@ class AuthRepository {
         log('Status Code: ${response.statusCode}');
         if (response.statusCode == 401) {
           log('Unauthorized - Please check your credentials');
+          return AuthenticationStatus.unauthenticated;
         } else if (response.statusCode == 404) {
           log('API endpoint not found');
+          return AuthenticationStatus.pageNotFound;
         } else {
           log('Unexpected Error');
+          return AuthenticationStatus.unknown;
         }
       }
-      return AuthenticationStatus.unauthenticated;
+      // return AuthenticationStatus.unauthenticated;
     } catch (e) {
       log('Network Error: $e');
       return AuthenticationStatus.exception;

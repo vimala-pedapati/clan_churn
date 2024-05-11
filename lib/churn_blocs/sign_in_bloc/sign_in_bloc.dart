@@ -24,14 +24,15 @@ class SignInBloc extends Bloc<SignInBlocEvent, SignInBlocState> {
     if (result == AuthenticationStatus.authenticated) {
       emit(state.copyWith(status: AuthenticationStatus.authenticated));
       GoRouter.of(event.context).go(AppRoutes.home);
+    } else if (result == AuthenticationStatus.unauthenticated) {
+      emit(state.copyWith(status: AuthenticationStatus.unauthenticated));
+      signInFail(
+          context: event.context,
+          message1: "Authentication Failed",
+          message2: "Please check your credentials");
     } else {
       emit(state.copyWith(status: AuthenticationStatus.unauthenticated));
       signInFail(context: event.context);
-      // if (await authRepository.getAuthSession() != null) {
-      //   log("access token from local storage: ${await authRepository.getAuthSession()}");
-      //   emit(state.copyWith(status: AuthenticationStatus.authenticated));
-      // } else {
-      // }
     }
   }
 
@@ -49,17 +50,21 @@ class SignInBloc extends Bloc<SignInBlocEvent, SignInBlocState> {
   }
 }
 
-Future<void> signInFail({required BuildContext context}) async {
+Future<void> signInFail(
+    {required BuildContext context,
+    String message1 = "unable to login",
+    String message2 =
+        "Something went wrong or Email or password not correct"}) async {
   return showDialog<void>(
     context: context,
     barrierDismissible: false, // user must tap button!
     builder: (BuildContext context) {
       return AlertDialog(
-        title: const Text('Authentication Failed'),
-        content: const SingleChildScrollView(
+        title: Text(message1),
+        content: SingleChildScrollView(
           child: ListBody(
             children: <Widget>[
-              Text('Something went wrong, try again later'),
+              Text(message2),
             ],
           ),
         ),
