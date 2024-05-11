@@ -21,7 +21,7 @@ class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
   TextEditingController passwordController = TextEditingController();
   String email = '';
   String password = '';
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -59,27 +59,25 @@ class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
                   direction: Direction.horizontal,
                   offset: 0.9,
                   child: IntrinsicHeight(
-                    child: Expanded(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            "assets/clan_logo.png",
-                            scale: 2,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          "assets/clan_logo.png",
+                          scale: 2,
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.only(left: 10, right: 10),
+                          child: VerticalDivider(
+                            color: Color.fromRGBO(175, 175, 175, 1),
+                            thickness: 1,
                           ),
-                          const Padding(
-                            padding: EdgeInsets.only(left: 10, right: 10),
-                            child: VerticalDivider(
-                              color: Color.fromRGBO(175, 175, 175, 1),
-                              thickness: 1,
-                            ),
-                          ),
-                          Image.asset(
-                            "assets/churn_logo.png",
-                            scale: 2,
-                          )
-                        ],
-                      ),
+                        ),
+                        Image.asset(
+                          "assets/churn_logo.png",
+                          scale: 2,
+                        )
+                      ],
                     ),
                   ),
                 ),
@@ -92,17 +90,15 @@ class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
                   offset: 0.9,
                   child: Padding(
                     padding: EdgeInsets.only(top: h * 0.05, bottom: h * 0.05),
-                    child: Expanded(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            "welcome",
-                            style: ClanChurnTypography.font48400,
-                          ),
-                        ],
-                      ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          "welcome",
+                          style: ClanChurnTypography.font48400,
+                        ),
+                      ],
                     ),
                   ),
                 ),

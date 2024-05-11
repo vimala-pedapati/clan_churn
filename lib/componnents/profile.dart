@@ -12,56 +12,69 @@ class ProfileWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final h = MediaQuery.of(context).size.height;
     final w = MediaQuery.of(context).size.width;
-    return Row(
-      children: [
-        Container(
-          height: h * 0.07,
-          padding:
-              const EdgeInsets.only(left: 10, right: 10, top: 2, bottom: 2),
-          decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(30)),
-          child: Row(children: [
-            const Icon(
-              Icons.expand_circle_down_outlined,
-            ),
-            ClanChurnSpacing.w5,
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                BlocBuilder<UserBloc, UserState>(
-                  builder: (context, state) {
-                    return Text(
-                      "${state.user}",
-                      style: ClanChurnTypography.font15600,
-                    );
-                  },
-                ),
-                Text(
-                  "Project Head - Piramal",
-                  style: ClanChurnTypography.font10600,
-                )
-              ],
-            ),
-            ClanChurnSpacing.w5,
-            CircleAvatar(
-              radius: 18,
-              backgroundColor:
-                  Theme.of(context).colorScheme.primary.withOpacity(0.1),
-              child: const Icon(
-                Icons.person,
-              ),
-            )
-          ]),
-        ),
-        IconButton(
-          icon: const Icon(Icons.logout_outlined),
-          onPressed: () {
-            context.read<SignInBloc>().add(SignOutEvent(context: context));
-          },
-        ),
-      ],
+    return BlocBuilder<UserBloc, UserState>(
+      builder: (context, state) {
+        return state.user == null
+            ? Container()
+            : Row(
+                children: [
+                  Container(
+                    height: h * 0.07,
+                    padding: const EdgeInsets.only(
+                        left: 10, right: 10, top: 2, bottom: 2),
+                    decoration: BoxDecoration(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .primary
+                            .withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(30)),
+                    child: Row(children: [
+                      const Icon(
+                        Icons.expand_circle_down_outlined,
+                      ),
+                      ClanChurnSpacing.w5,
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          BlocBuilder<UserBloc, UserState>(
+                            builder: (context, state) {
+                              return Text(
+                                "${state.user!.firstName}",
+                                style: ClanChurnTypography.font15600,
+                              );
+                            },
+                          ),
+                          Text(
+                            "${state.user!.role} - ${state.user!.client}",
+                            style: ClanChurnTypography.font10600,
+                          )
+                        ],
+                      ),
+                      ClanChurnSpacing.w5,
+                      CircleAvatar(
+                        radius: 18,
+                        backgroundColor: Theme.of(context)
+                            .colorScheme
+                            .primary
+                            .withOpacity(0.1),
+                        child: const Icon(
+                          Icons.person,
+                        ),
+                      )
+                    ]),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.logout_outlined),
+                    onPressed: () {
+                      context
+                          .read<SignInBloc>()
+                          .add(SignOutEvent(context: context));
+                    },
+                  ),
+                ],
+              );
+      },
     );
   }
 }

@@ -12,7 +12,8 @@ class ApiRepository {
   Future<User?> getUserDetails() async {
     try {
       // Fetch auth credentials
-      final AuthCredentials authCredentials = await AuthRepository().getTokens();
+      final AuthCredentials authCredentials =
+          await AuthRepository().getTokens();
 
       // Check if auth credentials are null
       if (authCredentials.accessToken.isEmpty) {
@@ -32,8 +33,9 @@ class ApiRepository {
       // Handle API response
       if (response.statusCode == 200) {
         final Map<String, dynamic> data = json.decode(response.body);
+        User user = User.fromJson(data);
         log("getUserResponse:..... $data");
-        return null;
+        return user;
       } else {
         log('Status Code: ${response.statusCode}');
         if (response.statusCode == 401) {
@@ -50,9 +52,4 @@ class ApiRepository {
       return null;
     }
   }
-
- 
-
-
-
 }
