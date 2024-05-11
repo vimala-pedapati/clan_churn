@@ -224,28 +224,35 @@ class ClanChurnSignInPage extends StatelessWidget {
 
       return Scaffold(
         body: Center(
-          child: Container(
-            height: h * 0.8,
-            width: w * 0.9,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                      color: shadowColor,
-                      blurRadius: 5,
-                      spreadRadius: 2,
-                      offset: const Offset(0, 2))
-                ],
-                color: background),
-            child: sizingInformation.deviceScreenType == DeviceScreenType.mobile
-                ? SingleChildScrollView(
-                    child: Column(
-                      children: [a, b],
-                    ),
-                  )
-                : Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [a, b]),
+          child: ShowUpAnimation(
+              delayStart: const Duration(milliseconds: 0),
+                animationDuration: const Duration(seconds: 2),
+                curve: Curves.easeInOutCubicEmphasized,
+                direction: Direction.vertical,
+                offset: -0.9,
+            child: Container(
+              height: h * 0.8,
+              width: w * 0.9,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                        color: shadowColor,
+                        blurRadius: 5,
+                        spreadRadius: 2,
+                        offset: const Offset(0, 2))
+                  ],
+                  color: background),
+              child: sizingInformation.deviceScreenType == DeviceScreenType.mobile
+                  ? SingleChildScrollView(
+                      child: Column(
+                        children: [a, b],
+                      ),
+                    )
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [a, b]),
+            ),
           ),
         ),
       );
