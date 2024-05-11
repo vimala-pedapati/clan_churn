@@ -1,4 +1,5 @@
-import 'package:clan_churn/churn_blocs/sign_in_bloc/sign_in_bloc.dart'; 
+import 'package:clan_churn/churn_blocs/sign_in_bloc/sign_in_bloc.dart';
+import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
 import 'package:clan_churn/utils/spacing.dart';
 import 'package:clan_churn/utils/typography.dart';
 import 'package:flutter/material.dart';
@@ -29,9 +30,13 @@ class ProfileWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  "Vishal Sharma",
-                  style: ClanChurnTypography.font15600,
+                BlocBuilder<UserBloc, UserState>(
+                  builder: (context, state) {
+                    return Text(
+                      "${state.user}",
+                      style: ClanChurnTypography.font15600,
+                    );
+                  },
                 ),
                 Text(
                   "Project Head - Piramal",

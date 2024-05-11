@@ -19,16 +19,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     context.read<UserBloc>().add(GetUserDetailsEvent());
-    // context.read<UserBloc>().add(GetUserDetailsEvent());
     super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-    // Future.delayed(const Duration(seconds: 2), () {
-    //   context.read<UserBloc>().add(GetUserDetailsEvent());
-    // });
-    super.didChangeDependencies();
   }
 
   @override
