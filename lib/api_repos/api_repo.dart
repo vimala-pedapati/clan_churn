@@ -9,11 +9,6 @@ import 'package:clan_churn/api_repos/models/user_model.dart';
 import 'package:clan_churn/utils/api_endpoins.dart';
 
 class ApiRepository {
-  AuthCredentials authCredentials;
-  ApiRepository({
-    required this.authCredentials,
-  });
-
   Future<User?> getUserDetails() async {
     try {
       // Fetch auth credentials
