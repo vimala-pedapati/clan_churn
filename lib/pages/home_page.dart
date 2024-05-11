@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:clan_churn/churn_blocs/sign_in_bloc/sign_in_bloc.dart';
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
 import 'package:clan_churn/componnents/clients_component.dart';
 import 'package:clan_churn/componnents/profile.dart';
@@ -16,6 +17,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  bool isExpanded = false;
   @override
   void initState() {
     context.read<UserBloc>().add(GetUserDetailsEvent());
@@ -26,10 +28,12 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final h = MediaQuery.of(context).size.height;
     final w = MediaQuery.of(context).size.width;
+
     return Scaffold(
       // appBar: const ClanChurnAppBar(),
       backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.05),
       body: Column(children: [
+        // profile and logo bar
         Container(
           height: h * 0.1,
           color: Theme.of(context).colorScheme.background,
@@ -80,57 +84,109 @@ class _HomePageState extends State<HomePage> {
         ),
         SizedBox(height: h * 0.01),
         Row(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 300),
               height: h * 0.89,
-              width: w * 0.15,
+              width: isExpanded ? w * 0.05 : w * 0.15,
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.background,
               ),
-              child: Column(children: [
-                ClanChurnSpacing.h10,
-                Padding(
-                  padding: const EdgeInsets.only(left: 20, top: 10, bottom: 10),
-                  child: Row(
-                    children: [
-                      const Icon(Icons.keyboard_double_arrow_left),
-                      ClanChurnSpacing.w10,
-                      Text(
-                        "Menu",
-                        style: ClanChurnTypography.font16700,
-                      )
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20, top: 10, bottom: 10),
-                  child: Row(
-                    children: [
-                      const Icon(Icons.home),
-                      ClanChurnSpacing.w10,
-                      Text(
-                        "Home",
-                        style: ClanChurnTypography.font16700,
-                      )
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20, top: 10, bottom: 10),
-                  child: Row(
-                    children: [
-                      const Icon(Icons.save),
-                      ClanChurnSpacing.w10,
-                      Text(
-                        "Saved Reports",
-                        style: ClanChurnTypography.font16700,
-                      )
-                    ],
-                  ),
-                ),
-              ]),
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Column(
+                      children: [
+                        // menu
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              isExpanded = !isExpanded;
+                            });
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                left: 20, top: 10, bottom: 10),
+                            child: Row(
+                              children: [
+                                const Icon(Icons.keyboard_double_arrow_left),
+                                ClanChurnSpacing.w10,
+                                isExpanded
+                                    ? Container()
+                                    : Text(
+                                        "Menu",
+                                        style: ClanChurnTypography.font16700,
+                                      )
+                              ],
+                            ),
+                          ),
+                        ),
+                        // home
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              left: 20, top: 10, bottom: 10),
+                          child: Row(
+                            children: [
+                              const Icon(Icons.home),
+                              ClanChurnSpacing.w10,
+                              isExpanded
+                                  ? Container()
+                                  : Text(
+                                      "Home",
+                                      style: ClanChurnTypography.font16700,
+                                    )
+                            ],
+                          ),
+                        ),
+                        // saved reports
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              left: 20, top: 10, bottom: 10),
+                          child: Row(
+                            children: [
+                              const Icon(Icons.save),
+                              ClanChurnSpacing.w10,
+                              isExpanded
+                                  ? Container()
+                                  : Text(
+                                      "Saved Reports",
+                                      style: ClanChurnTypography.font16700,
+                                    )
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    // logout
+                    InkWell(
+                      onTap: () {
+                        context
+                            .read<SignInBloc>()
+                            .add(SignOutEvent(context: context));
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            left: 20, top: 10, bottom: 10),
+                        child: Row(
+                          children: [
+                            const Icon(Icons.logout_outlined,
+                                color: Colors.red),
+                            ClanChurnSpacing.w10,
+                            isExpanded
+                                ? Container()
+                                : Text(
+                                    "Log Out",
+                                    style: ClanChurnTypography.font16700
+                                        .copyWith(color: Colors.red),
+                                  )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ]),
             ),
             const ClientsComponent()
             // const ClientsViewComponent()

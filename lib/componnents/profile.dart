@@ -1,4 +1,3 @@
-import 'package:clan_churn/churn_blocs/sign_in_bloc/sign_in_bloc.dart';
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
 import 'package:clan_churn/utils/spacing.dart';
 import 'package:clan_churn/utils/typography.dart';
@@ -64,14 +63,14 @@ class ProfileWidget extends StatelessWidget {
                       )
                     ]),
                   ),
-                  IconButton(
-                    icon: const Icon(Icons.logout_outlined),
-                    onPressed: () {
-                      context
-                          .read<SignInBloc>()
-                          .add(SignOutEvent(context: context));
-                    },
-                  ),
+                  // IconButton(
+                  //   icon: const Icon(Icons.logout_outlined),
+                  //   onPressed: () {
+                  //     context
+                  //         .read<SignInBloc>()
+                  //         .add(SignOutEvent(context: context));
+                  //   },
+                  // ),
                 ],
               );
       },
