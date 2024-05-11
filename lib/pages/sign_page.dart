@@ -71,11 +71,6 @@ class ClanChurnSignInPage extends StatelessWidget {
                   ),
                 ),
               ),
-              BlocBuilder<SignInBloc, SignInBlocState>(
-                builder: (context, state) {
-                  return Text("${state.status}");
-                },
-              ),
               Text(
                 "Login ID",
                 style: ClanChurnTypography.font18500,
