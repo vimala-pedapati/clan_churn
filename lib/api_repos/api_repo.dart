@@ -13,19 +13,30 @@ class ApiRepository {
   ApiRepository({
     required this.authCredentials,
   });
-  Future<User?> getUserDetails() async {
-    log("access token: ${authCredentials.accessToken}");
-    try {
-      final http.Response response = await http.post(
-          Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.getUserDetails}"),
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ${authCredentials.accessToken}',
-          });
 
+  Future<User?> getUserDetails() async {
+    try {
+      // Fetch auth credentials
+      final AuthCredentials authCredentials = await AuthRepository().getTokens();
+
+      // Check if auth credentials are null
+      if (authCredentials.accessToken.isEmpty) {
+        log('Access token is empty');
+        return null;
+      }
+
+      // Make API call with access token
+      final http.Response response = await http.post(
+        Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.getUserDetails}"),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${authCredentials.accessToken}',
+        },
+      );
+
+      // Handle API response
       if (response.statusCode == 200) {
         final Map<String, dynamic> data = json.decode(response.body);
-
         log("getUserResponse:..... $data");
         return null;
       } else {
@@ -37,12 +48,16 @@ class ApiRepository {
         } else {
           log('Unexpected Error');
         }
+        return null;
       }
-      return null;
     } catch (e) {
       log('Network Error: $e');
       return null;
     }
   }
+
+ 
+
+
 
 }

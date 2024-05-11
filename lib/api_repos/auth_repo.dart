@@ -26,8 +26,7 @@ class AuthCredentials extends Equatable {
 class AuthRepository {
   final String apiUrl = BaseUrl.baseUrl + ApiEndpoints.signIn;
 
-  Future<void> storeTokens(
-      {required String accessToken, required String refreshToken}) async {
+  Future<void> storeTokens({required String accessToken, required String refreshToken}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('accessToken', accessToken);
     await prefs.setString('refreshToken', refreshToken);
@@ -38,32 +37,10 @@ class AuthRepository {
     String accessToken = prefs.getString('accessToken') ?? '';
     String refreshToken = prefs.getString('refreshToken') ?? '';
     log(accessToken);
-    return AuthCredentials(
-        accessToken: accessToken, refreshToken: refreshToken);
+    return AuthCredentials(  accessToken: accessToken, refreshToken: refreshToken);
   }
 
-  // Future<bool> clearTokens() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   await prefs.remove('accessToken').then(
-  //     (value) async {
-  //       if (value) {
-  //         log("removed access token $value");
-  //         await prefs.remove('refreshToken').then(
-  //           (value) {
-  //             if (value) {
-  //               log("removed refresh token $value");
-  //               log("return1");
-  //               return true;
-  //             }
-  //           },
-  //         );
-  //       }
-  //     },
-  //   );
-  //   log("return2");
-  //   return false;
-  // }
-  Future<bool> clearTokens() async {
+   Future<bool> clearTokens() async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       bool accessTokenRemoved = await prefs.remove('accessToken');
