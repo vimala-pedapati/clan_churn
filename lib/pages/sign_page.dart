@@ -1,19 +1,26 @@
+import 'dart:developer';
+
 import 'package:clan_churn/animation/show_up_animation/enums.dart';
 import 'package:clan_churn/animation/show_up_animation/show_up.dart';
-import 'package:clan_churn/api_repos/auth_repo.dart';
 import 'package:clan_churn/churn_blocs/sign_in_bloc/sign_in_bloc.dart';
-import 'package:clan_churn/utils/routes.dart';
 import 'package:clan_churn/utils/spacing.dart';
 import 'package:clan_churn/utils/typography.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
-import '../main.dart';
-
-class ClanChurnSignInPage extends StatelessWidget {
+class ClanChurnSignInPage extends StatefulWidget {
   const ClanChurnSignInPage({super.key});
+
+  @override
+  State<ClanChurnSignInPage> createState() => _ClanChurnSignInPageState();
+}
+
+class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  String email = '';
+  String password = '';
 
   @override
   Widget build(BuildContext context) {
@@ -118,6 +125,7 @@ class ClanChurnSignInPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8.0)),
                   margin: const EdgeInsets.only(top: 5, bottom: 20),
                   child: TextFormField(
+                    controller: emailController,
                     keyboardType: TextInputType.emailAddress,
                     autofocus: false,
                     decoration: InputDecoration(
@@ -129,7 +137,15 @@ class ClanChurnSignInPage extends StatelessWidget {
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8.0)),
                     ),
+                    onChanged: (value) {
+                      setState(() {
+                        email = value;
+                      });
+                    },
                     validator: (String? val) {
+                      if (val == null) {
+                        return "mail shouldn't be empty";
+                      }
                       return null;
                     },
                     onSaved: (String? val) {},
@@ -137,7 +153,7 @@ class ClanChurnSignInPage extends StatelessWidget {
                 ),
               ),
               ShowUpAnimation(
-                  delayStart: const Duration(milliseconds: 1500),
+                delayStart: const Duration(milliseconds: 1500),
                 animationDuration: const Duration(seconds: 2),
                 curve: Curves.easeInOutCubicEmphasized,
                 direction: Direction.horizontal,
@@ -148,7 +164,7 @@ class ClanChurnSignInPage extends StatelessWidget {
                 ),
               ),
               ShowUpAnimation(
-                  delayStart: const Duration(milliseconds: 1500),
+                delayStart: const Duration(milliseconds: 1500),
                 animationDuration: const Duration(seconds: 2),
                 curve: Curves.easeInOutCubicEmphasized,
                 direction: Direction.horizontal,
@@ -161,6 +177,7 @@ class ClanChurnSignInPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8.0)),
                   margin: const EdgeInsets.only(top: 5, bottom: 25),
                   child: TextFormField(
+                    controller: passwordController,
                     keyboardType: TextInputType.emailAddress,
                     autofocus: false,
                     decoration: InputDecoration(
@@ -169,10 +186,24 @@ class ClanChurnSignInPage extends StatelessWidget {
                           .copyWith(color: secondary2),
                       contentPadding:
                           const EdgeInsets.only(top: 10, left: 10, right: 10),
+                      errorBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(color: Colors.red),
+                          borderRadius: BorderRadius.circular(8.0)),
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8.0)),
                     ),
+                    onChanged: (value) {
+                      setState(() {
+                        password = value;
+                        // passwordController.text = value;
+                      });
+                    },
                     validator: (String? val) {
+                      if (val == null) {
+                        return "password shouldn't be empty";
+                      }else if (val.isEmpty) {
+                        return "password shouldn't be empty";
+                      }
                       return null;
                     },
                     onSaved: (String? val) {},
@@ -180,7 +211,7 @@ class ClanChurnSignInPage extends StatelessWidget {
                 ),
               ),
               ShowUpAnimation(
-                  delayStart: const Duration(milliseconds: 2000),
+                delayStart: const Duration(milliseconds: 2000),
                 animationDuration: const Duration(seconds: 2),
                 curve: Curves.easeInOutCubicEmphasized,
                 direction: Direction.horizontal,
@@ -189,10 +220,11 @@ class ClanChurnSignInPage extends StatelessWidget {
                     width: w * 0.3,
                     child: ElevatedButton(
                       onPressed: () {
-                        context.read<SignInBloc>().add(SignInEvent(
-                            email: "test2@tminetwork.com",
-                            password: "123456",
-                            context: context));
+                        log("${emailController.text}, ${passwordController.text}");
+                        // context.read<SignInBloc>().add(SignInEvent(
+                        //     email: "test2@tminetwork.com",
+                        //     password: "123456",
+                        //     context: context));
                       },
                       child: Text(
                         "Submit",
@@ -202,7 +234,7 @@ class ClanChurnSignInPage extends StatelessWidget {
               ),
               ClanChurnSpacing.h20,
               ShowUpAnimation(
-                  delayStart: const Duration(milliseconds: 2500),
+                delayStart: const Duration(milliseconds: 2500),
                 animationDuration: const Duration(seconds: 2),
                 curve: Curves.easeInOutCubicEmphasized,
                 direction: Direction.horizontal,
@@ -225,11 +257,11 @@ class ClanChurnSignInPage extends StatelessWidget {
       return Scaffold(
         body: Center(
           child: ShowUpAnimation(
-              delayStart: const Duration(milliseconds: 0),
-                animationDuration: const Duration(seconds: 2),
-                curve: Curves.easeInOutCubicEmphasized,
-                direction: Direction.vertical,
-                offset: -0.9,
+            delayStart: const Duration(milliseconds: 0),
+            animationDuration: const Duration(seconds: 2),
+            curve: Curves.easeInOutCubicEmphasized,
+            direction: Direction.vertical,
+            offset: -0.9,
             child: Container(
               height: h * 0.8,
               width: w * 0.9,
@@ -243,15 +275,16 @@ class ClanChurnSignInPage extends StatelessWidget {
                         offset: const Offset(0, 2))
                   ],
                   color: background),
-              child: sizingInformation.deviceScreenType == DeviceScreenType.mobile
-                  ? SingleChildScrollView(
-                      child: Column(
-                        children: [a, b],
-                      ),
-                    )
-                  : Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [a, b]),
+              child:
+                  sizingInformation.deviceScreenType == DeviceScreenType.mobile
+                      ? SingleChildScrollView(
+                          child: Column(
+                            children: [a, b],
+                          ),
+                        )
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [a, b]),
             ),
           ),
         ),
