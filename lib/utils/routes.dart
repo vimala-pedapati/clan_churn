@@ -6,7 +6,7 @@ class AppRoutes {
   static const home = "/home";
   static const signIn = "/signIn";
   static const savedProjects = "/savedProjects";
-  // static const clientProjects = "/clientProjects";
+  static const clientProjects = "/clientProjects";
 }
 
 CustomTransitionPage CustomRoute<T>({

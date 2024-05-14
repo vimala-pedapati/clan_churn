@@ -1,12 +1,15 @@
 import 'package:clan_churn/componnents/project_history_data_table.dart';
 import 'package:clan_churn/componnents/search.dart';
+import 'package:clan_churn/utils/routes.dart';
 import 'package:clan_churn/utils/spacing.dart';
 import 'package:clan_churn/utils/typography.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class ClientsViewComponent extends StatefulWidget {
-  const ClientsViewComponent({super.key});
+  final double width;
+  const ClientsViewComponent({super.key, required this.width});
 
   @override
   State<ClientsViewComponent> createState() => _ClientsViewComponentState();
@@ -17,9 +20,10 @@ class _ClientsViewComponentState extends State<ClientsViewComponent> {
   Widget build(BuildContext context) {
     final h = MediaQuery.of(context).size.height;
     final w = MediaQuery.of(context).size.width;
-    return Container(
+    return AnimatedContainer(
+      duration: const Duration(seconds: 1),
+      width: widget.width,
       height: h * 0.83,
-      width: w * 0.8,
       margin: EdgeInsets.only(
           left: w * 0.025, right: w * 0.025, top: 10, bottom: 20),
       child: Column(
@@ -62,9 +66,14 @@ class _ClientsViewComponentState extends State<ClientsViewComponent> {
                       children: [
                         Row(
                           children: [
-                            Icon(
-                              Icons.keyboard_backspace,
-                              color: Theme.of(context).colorScheme.secondary,
+                            IconButton(
+                              icon: Icon(
+                                Icons.keyboard_backspace,
+                                color: Theme.of(context).colorScheme.secondary,
+                              ),
+                              onPressed: () {
+                                GoRouter.of(context).go(AppRoutes.home);
+                              },
                             ),
                             ClanChurnSpacing.w10,
                             Text(
