@@ -3,7 +3,7 @@ import 'package:clan_churn/api_repos/auth_repo.dart';
 import 'package:clan_churn/churn_blocs/sign_in_bloc/sign_in_bloc.dart';
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
 import 'package:clan_churn/pages/home_page.dart';
-import 'package:clan_churn/pages/projects_list_page.dart';
+import 'package:clan_churn/pages/client_projects_view.dart';
 import 'package:clan_churn/pages/saved_projects.dart';
 import 'package:clan_churn/pages/sign_page.dart';
 import 'package:clan_churn/utils/routes.dart';
@@ -74,7 +74,7 @@ class ClanChurnApp extends StatelessWidget {
         GoRoute(
           path: AppRoutes.clientProjects,
           pageBuilder: (context, state) => CustomRoute<void>(
-              context: context, state: state, child: const ProjectsList()),
+              context: context, state: state, child: const ClientProjectsView()),
         ),
       ],
     );

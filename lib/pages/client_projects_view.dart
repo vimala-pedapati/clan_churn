@@ -5,8 +5,8 @@ import 'package:clan_churn/componnents/side_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ProjectsList extends StatelessWidget {
-  const ProjectsList({super.key});
+class ClientProjectsView extends StatelessWidget {
+  const ClientProjectsView({super.key});
 
   @override
   Widget build(BuildContext context) {
