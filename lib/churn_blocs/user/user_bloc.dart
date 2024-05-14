@@ -12,6 +12,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   ApiRepository apiRepository;
   UserBloc({required this.apiRepository}) : super(const UserState.initial()) {
     on<GetUserDetailsEvent>(_onGetUserDetails);
+    on<GetClientsEvent>(_onClientsEvent);
+    on<SideBarExpandedEvent>(_onSideBarExpandedEvent);
   }
 
   _onGetUserDetails(GetUserDetailsEvent event, Emitter<UserState> emit) async {
@@ -20,5 +22,16 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     if (result != null) {
       emit(state.copyWith(user: result));
     }
+  }
+
+  _onClientsEvent(GetClientsEvent event, Emitter<UserState> emit) async {
+    final result = await apiRepository.getClientsList();
+    if (result != null) {
+      emit(state.copyWith(clientList: result));
+    }
+  }
+
+  _onSideBarExpandedEvent(SideBarExpandedEvent event, Emitter<UserState> emit) {
+    emit(state.copyWith(isExpanded: event.isExpanded));
   }
 }

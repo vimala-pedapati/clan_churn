@@ -8,4 +8,5 @@ class BaseUrl {
 class ApiEndpoints {
   static String signIn = '/sign_in';
   static String getUserDetails = '/user/get_user_details';
+  static String clientsList = '/client/client_list';
 }

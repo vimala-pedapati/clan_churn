@@ -3,6 +3,7 @@ import 'package:clan_churn/api_repos/auth_repo.dart';
 import 'package:clan_churn/churn_blocs/sign_in_bloc/sign_in_bloc.dart';
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
 import 'package:clan_churn/pages/home_page.dart';
+import 'package:clan_churn/pages/projects_list_page.dart';
 import 'package:clan_churn/pages/sign_page.dart';
 import 'package:clan_churn/utils/routes.dart';
 import 'package:flutter/material.dart';
@@ -44,9 +45,6 @@ class ClanChurnApp extends StatelessWidget {
             builder: (BuildContext context, GoRouterState state) =>
                 BlocBuilder<SignInBloc, SignInBlocState>(
                   builder: (context, state) {
-                    // if (state.status == AuthenticationStatus.authenticated) {
-                    //   return const HomePage();
-                    // }
                     return const ClanChurnSignInPage();
                   },
                 )),
@@ -58,6 +56,10 @@ class ClanChurnApp extends StatelessWidget {
             path: AppRoutes.home,
             builder: (BuildContext context, GoRouterState state) =>
                 const HomePage()),
+        // GoRoute(
+        //     path: AppRoutes.clientProjects,
+        //     builder: (BuildContext context, GoRouterState state) =>
+        //         const ProjectsList()),
       ],
     );
     return MultiBlocProvider(

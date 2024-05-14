@@ -7,3 +7,10 @@ class UserEvent extends Equatable {
 }
 
 class GetUserDetailsEvent extends UserEvent {}
+
+class GetClientsEvent extends UserEvent {}
+
+class SideBarExpandedEvent extends UserEvent {
+  final bool isExpanded;
+  const SideBarExpandedEvent({required this.isExpanded});
+}

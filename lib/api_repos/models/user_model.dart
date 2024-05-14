@@ -1,115 +1,85 @@
-// import 'dart:convert';
-
-// User userFromJson(String str) => User.fromJson(json.decode(str));
-// String userToJson(User data) => json.encode(data.toJson());
-
-// class User {
-//   String? firstName;
-//   String? lastName;
-//   String? email;
-//   String userId;
-//   String? client;
-//   String? role;
-//   String? profileUrl;
-
-//   User(
-//       {required this.firstName,
-//       required this.lastName,
-//       required this.email,
-//       required this.userId,
-//       required this.client,
-//       required this.role,
-//       required this.profileUrl});
-
-//   factory User.fromJson(Map<String, dynamic> json) => User(
-//       firstName: json["first_name"] ?? "first name",
-//       lastName: json["last_name"] ?? "last name",
-//       email: json["email"] ?? "example@gmail.com",
-//       userId: json["user_id"],
-//       client: json["clinet"] ?? "client name",
-//       role: json["role"] ?? "no role",
-//       profileUrl: json["profile_url"] ?? "");
-
-//   Map<String, dynamic> toJson() => {
-//         "first_name": firstName,
-//         "last_name": lastName,
-//         "email": email,
-//         "user_id": userId,
-//       };
-// }
-
-
-
-// To parse this JSON data, do
-//
-//     final user = userFromJson(jsonString);
-
 import 'dart:convert';
+
+import 'package:equatable/equatable.dart';
 
 User userFromJson(String str) => User.fromJson(json.decode(str));
 
 String userToJson(User data) => json.encode(data.toJson());
 
-class User {
-    ClientDetails clientDetails;
-    String firstName;
-    String lastName;
-    String email;
-    String userId;
-    String userType;
+class User extends Equatable {
+  final ClientDetails clientDetails;
+  final String firstName;
+  final String lastName;
+  final String email;
+  final String userId;
+  final String userType;
 
-    User({
-        required this.clientDetails,
-        required this.firstName,
-        required this.lastName,
-        required this.email,
-        required this.userId,
-        required this.userType,
-    });
+  const User({
+    required this.clientDetails,
+    required this.firstName,
+    required this.lastName,
+    required this.email,
+    required this.userId,
+    required this.userType,
+  });
 
-    factory User.fromJson(Map<String, dynamic> json) => User(
+  factory User.fromJson(Map<String, dynamic> json) => User(
         clientDetails: ClientDetails.fromJson(json["client_details"]),
         firstName: json["first_name"],
         lastName: json["last_name"],
         email: json["email"],
         userId: json["user_id"],
         userType: json["user_type"],
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "client_details": clientDetails.toJson(),
         "first_name": firstName,
         "last_name": lastName,
         "email": email,
         "user_id": userId,
         "user_type": userType,
-    };
+      };
+
+  @override
+  List<Object?> get props => [
+        firstName,
+        email,
+        userType,
+      ];
 }
 
-class ClientDetails {
-    String id;
-    String name;
-    dynamic role;
-    dynamic address1;
-    dynamic address2;
-    dynamic pocName;
-    dynamic pocContactNumber;
-    dynamic pocMailId;
-    String image;
+List<ClientDetails> clientDetailsFromJson(String str) =>
+    List<ClientDetails>.from(
+        json.decode(str).map((x) => ClientDetails.fromJson(x)));
 
-    ClientDetails({
-        required this.id,
-        required this.name,
-        required this.role,
-        required this.address1,
-        required this.address2,
-        required this.pocName,
-        required this.pocContactNumber,
-        required this.pocMailId,
-        required this.image,
-    });
+String clientDetailsToJson(List<ClientDetails> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-    factory ClientDetails.fromJson(Map<String, dynamic> json) => ClientDetails(
+class ClientDetails extends Equatable {
+  final String id;
+  final String name;
+  final dynamic role;
+  final dynamic address1;
+  final dynamic address2;
+  final dynamic pocName;
+  final dynamic pocContactNumber;
+  final dynamic pocMailId;
+  final String image;
+
+  const ClientDetails({
+    required this.id,
+    required this.name,
+    required this.role,
+    required this.address1,
+    required this.address2,
+    required this.pocName,
+    required this.pocContactNumber,
+    required this.pocMailId,
+    required this.image,
+  });
+
+  factory ClientDetails.fromJson(Map<String, dynamic> json) => ClientDetails(
         id: json["id"],
         name: json["name"],
         role: json["role"],
@@ -119,9 +89,9 @@ class ClientDetails {
         pocContactNumber: json["poc_contact_number"],
         pocMailId: json["poc_mail_id"],
         image: json["image"],
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
         "role": role,
@@ -131,5 +101,12 @@ class ClientDetails {
         "poc_contact_number": pocContactNumber,
         "poc_mail_id": pocMailId,
         "image": image,
-    };
+      };
+
+  @override
+  List<Object?> get props => [
+        name,
+        role,
+        pocMailId,
+      ];
 }

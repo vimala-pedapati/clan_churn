@@ -52,4 +52,49 @@ class ApiRepository {
       return null;
     }
   }
+
+  Future<List<ClientDetails>?> getClientsList() async {
+    try {
+      // Fetch auth credentials
+      final AuthCredentials authCredentials =
+          await AuthRepository().getTokens();
+
+      // Check if auth credentials are null
+      if (authCredentials.accessToken.isEmpty) {
+        log('Access token is empty');
+        return null;
+      }
+
+      // Make API call with access token
+      final http.Response response = await http.get(
+        Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.clientsList}"),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${authCredentials.accessToken}',
+        },
+      );
+
+      // Handle API response
+      if (response.statusCode == 200) {
+        // final List<Map<String, dynamic>> data = json.decode(response.body);
+        List<ClientDetails> clientDetails =
+            clientDetailsFromJson(response.body);
+        log("Clients:..... $clientDetails");
+        return clientDetails;
+      } else {
+        log('Status Code: ${response.statusCode}');
+        if (response.statusCode == 401) {
+          log('Unauthorized - Please check your credentials');
+        } else if (response.statusCode == 404) {
+          log('API endpoint not found');
+        } else {
+          log('Unexpected Error');
+        }
+        return null;
+      }
+    } catch (e) {
+      log('Network Error: $e');
+      return null;
+    }
+  }
 }
