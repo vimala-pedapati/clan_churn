@@ -9,15 +9,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-class ClientsViewComponent extends StatefulWidget {
+class ProjectsViewComponent extends StatefulWidget {
   final double width;
-  const ClientsViewComponent({super.key, required this.width});
+  const ProjectsViewComponent({super.key, required this.width});
 
   @override
-  State<ClientsViewComponent> createState() => _ClientsViewComponentState();
+  State<ProjectsViewComponent> createState() => _ProjectsViewComponentState();
 }
 
-class _ClientsViewComponentState extends State<ClientsViewComponent> {
+class _ProjectsViewComponentState extends State<ProjectsViewComponent> {
   @override
   Widget build(BuildContext context) {
     final h = MediaQuery.of(context).size.height;
@@ -115,26 +115,6 @@ class _ClientsViewComponentState extends State<ClientsViewComponent> {
                                 style: ClanChurnTypography.font15600,
                               ),
                               ClanChurnSpacing.h10,
-                              // Row(
-                              //   children: [
-                              //     Row(
-                              //       children: [
-                              //         Icon(
-                              //           Icons.filter_alt_outlined,
-                              //           color: Theme.of(context).colorScheme.secondary,
-                              //           size: 18,
-                              //         ),
-                              //         Text(
-                              //           " Filters:",
-                              //           style: ClanChurnTypography.font14500,
-                              //         ),
-                              //         ClanChurnSpacing.w15,
-                              //         const GetFiltersDropDown(),
-                              //         // const GetSearchWidget()
-                              //       ],
-                              //     )
-                              //   ],
-                              // ),
                               ProjectHistory()
                             ]),
                       ),

@@ -67,11 +67,9 @@ class _SideBarState extends State<SideBar> {
                     ),
                     // home
                     InkWell(
-                      onTap: widget.selectedRoute == SelectedRoute.home
-                          ? null
-                          : () {
-                              GoRouter.of(context).go(AppRoutes.home);
-                            },
+                      onTap: () {
+                        GoRouter.of(context).go(AppRoutes.home);
+                      },
                       child: Container(
                         padding: const EdgeInsets.only(
                             left: 20, top: 10, bottom: 10),

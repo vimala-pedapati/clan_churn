@@ -1,13 +1,18 @@
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
-import 'package:clan_churn/componnents/clients_view_component.dart';
+import 'package:clan_churn/componnents/projects_view_component.dart';
 import 'package:clan_churn/componnents/nav_bar.dart';
 import 'package:clan_churn/componnents/side_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ClientProjectsView extends StatelessWidget {
+class ClientProjectsView extends StatefulWidget {
   const ClientProjectsView({super.key});
 
+  @override
+  State<ClientProjectsView> createState() => _ClientProjectsViewState();
+}
+
+class _ClientProjectsViewState extends State<ClientProjectsView> {
   @override
   Widget build(BuildContext context) {
     final h = MediaQuery.of(context).size.height;
@@ -28,7 +33,7 @@ class ClientProjectsView extends StatelessWidget {
                   const SideBar(
                     selectedRoute: SelectedRoute.home,
                   ),
-                  ClientsViewComponent(
+                  ProjectsViewComponent(
                     width: state.isExpanded ? w * 0.89 : w * 0.8,
                   )
                 ],
