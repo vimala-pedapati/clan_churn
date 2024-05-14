@@ -14,6 +14,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     on<GetUserDetailsEvent>(_onGetUserDetails);
     on<GetClientsEvent>(_onClientsEvent);
     on<SideBarExpandedEvent>(_onSideBarExpandedEvent);
+    on<SetSelectedClientEvent>(_onSetSelectedClientEvent);
   }
 
   _onGetUserDetails(GetUserDetailsEvent event, Emitter<UserState> emit) async {
@@ -33,5 +34,10 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
   _onSideBarExpandedEvent(SideBarExpandedEvent event, Emitter<UserState> emit) {
     emit(state.copyWith(isExpanded: event.isExpanded));
+  }
+
+  _onSetSelectedClientEvent(
+      SetSelectedClientEvent event, Emitter<UserState> emit) {
+    emit(state.copyWith(selectedClient: event.selectedClient));
   }
 }

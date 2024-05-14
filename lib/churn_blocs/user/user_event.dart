@@ -14,3 +14,8 @@ class SideBarExpandedEvent extends UserEvent {
   final bool isExpanded;
   const SideBarExpandedEvent({required this.isExpanded});
 }
+
+class SetSelectedClientEvent extends UserEvent {
+  final ClientDetails selectedClient;
+  const SetSelectedClientEvent({required this.selectedClient});
+}

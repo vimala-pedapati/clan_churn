@@ -53,6 +53,7 @@ class ClientsCard extends StatelessWidget {
                       style: ClanChurnTypography.font15600,
                     ),
                     onPressed: () {
+                      context.read<UserBloc>().add(SetSelectedClientEvent(selectedClient: state.clientList[index]));
                       GoRouter.of(context).go(AppRoutes.clientProjects);
                     },
                   ),

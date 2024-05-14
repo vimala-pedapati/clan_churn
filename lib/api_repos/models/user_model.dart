@@ -59,13 +59,13 @@ String clientDetailsToJson(List<ClientDetails> data) =>
 class ClientDetails extends Equatable {
   final String id;
   final String name;
-  final dynamic role;
-  final dynamic address1;
-  final dynamic address2;
-  final dynamic pocName;
-  final dynamic pocContactNumber;
-  final dynamic pocMailId;
-  final String image;
+  final String? role;
+  final String? address1;
+  final String? address2;
+  final String? pocName;
+  final String? pocContactNumber;
+  final String? pocMailId;
+  final String? image;
 
   const ClientDetails({
     required this.id,
