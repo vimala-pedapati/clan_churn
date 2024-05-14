@@ -76,7 +76,7 @@ class AuthRepository {
         headers: BaseUrl.headers,
         body: json.encode(requestBody),
       );
-
+      log("auth response: $response");
       if (response.statusCode == 200) {
         final Map<String, dynamic> data = json.decode(response.body);
         storeTokens(

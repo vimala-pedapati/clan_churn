@@ -22,7 +22,7 @@ class ApiRepository {
       }
 
       // Make API call with access token
-      final http.Response response = await http.post(
+      final http.Response response = await http.get(
         Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.getUserDetails}"),
         headers: {
           'Content-Type': 'application/json',
