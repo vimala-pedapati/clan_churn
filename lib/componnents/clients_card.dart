@@ -1,9 +1,7 @@
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
-import 'package:clan_churn/utils/routes.dart';
 import 'package:clan_churn/utils/typography.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 
 class ClientsCard extends StatelessWidget {
   const ClientsCard({super.key, required this.index});

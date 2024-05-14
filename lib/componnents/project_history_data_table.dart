@@ -116,7 +116,7 @@ class _ProjectHistoryState extends State<ProjectHistory> {
 
   @override
   Widget build(BuildContext context) {
-    final h = MediaQuery.of(context).size.height;
+    // final h = MediaQuery.of(context).size.height;
     final w = MediaQuery.of(context).size.width;
     return SizedBox(
         width: double.infinity,
@@ -143,7 +143,7 @@ class _ProjectHistoryState extends State<ProjectHistory> {
                   ],
                 ),
                 // Search
-                Container(
+                SizedBox(
                   height: 30,
                   width: w * 0.2,
                   // padding: const EdgeInsets.all(5),
@@ -179,7 +179,7 @@ class _ProjectHistoryState extends State<ProjectHistory> {
                       setState(() {
                         myData = filterData!
                             .where((element) =>
-                                element.projectDoneBy!.contains(value))
+                                element.projectDoneBy.contains(value))
                             .toList();
                       });
                     },
@@ -203,7 +203,7 @@ class _ProjectHistoryState extends State<ProjectHistory> {
               columns: [
                 
                 DataColumn(
-                  label: Container(
+                  label: SizedBox(
                     width: w * 0.06,
                     child: const Text(
                       "Project ID",
@@ -213,7 +213,7 @@ class _ProjectHistoryState extends State<ProjectHistory> {
                   ),
                 ),
                 DataColumn(
-                    label: Container(
+                    label: SizedBox(
                       width: w * 0.12,
                       child: const Text(
                         "Sheet Name",
@@ -229,7 +229,7 @@ class _ProjectHistoryState extends State<ProjectHistory> {
                       onsortColum(columnIndex, ascending);
                     }),
                 DataColumn(
-                  label: Container(
+                  label: SizedBox(
                     width: w * 0.2,
                     child: const Text(
                       "Project Done By",
@@ -239,7 +239,7 @@ class _ProjectHistoryState extends State<ProjectHistory> {
                   ),
                 ),
                 DataColumn(
-                  label: Container(
+                  label: SizedBox(
                     width: w * 0.1,
                     child: const Text(
                       "Uploaded Date",
@@ -259,9 +259,9 @@ class _ProjectHistoryState extends State<ProjectHistory> {
                   ),
                 ),
                 DataColumn(
-                  label: Container(
+                  label: SizedBox(
                     width: w * 0.1,
-                    child: Text(
+                    child: const Text(
                       "",
                       style: TextStyle(
                           fontWeight: FontWeight.w600, fontSize: 14),

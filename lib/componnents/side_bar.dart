@@ -67,9 +67,11 @@ class _SideBarState extends State<SideBar> {
                     ),
                     // home
                     InkWell(
-                      onTap:widget.selectedRoute == SelectedRoute.home ? null:  () {
-                        // GoRouter.of(context).goNamed(AppRoutes.clientProjects);
-                      },
+                      onTap: widget.selectedRoute == SelectedRoute.home
+                          ? null
+                          : () {
+                              GoRouter.of(context).go(AppRoutes.home);
+                            },
                       child: Container(
                         padding: const EdgeInsets.only(
                             left: 20, top: 10, bottom: 10),
@@ -109,9 +111,11 @@ class _SideBarState extends State<SideBar> {
                     ),
                     // saved reports
                     InkWell(
-                       onTap:widget.selectedRoute == SelectedRoute.savedReports ? null:  () {
-                        // GoRouter.of(context).go(AppRoutes.clientProjects);
-                      },
+                      onTap: widget.selectedRoute == SelectedRoute.savedReports
+                          ? null
+                          : () {
+                              GoRouter.of(context).go(AppRoutes.savedProjects);
+                            },
                       child: Container(
                         margin: const EdgeInsets.only(
                             left: 10, top: 10, bottom: 10, right: 10),
@@ -124,8 +128,8 @@ class _SideBarState extends State<SideBar> {
                                         .withOpacity(0.2),
                                     borderRadius: BorderRadius.circular(5))
                                 : null,
-                        padding:
-                            const EdgeInsets.only(left: 20, top: 10, bottom: 10),
+                        padding: const EdgeInsets.only(
+                            left: 20, top: 10, bottom: 10),
                         child: Row(
                           children: [
                             const Icon(Icons.save),

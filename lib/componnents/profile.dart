@@ -10,7 +10,7 @@ class ProfileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final h = MediaQuery.of(context).size.height;
-    final w = MediaQuery.of(context).size.width;
+    // final w = MediaQuery.of(context).size.width;
     return BlocBuilder<UserBloc, UserState>(
       builder: (context, state) {
         return state.user == null
