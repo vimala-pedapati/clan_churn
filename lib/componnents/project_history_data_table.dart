@@ -1,6 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
-import 'package:clan_churn/componnents/clients_card.dart';
+import 'package:clan_churn/componnents/project_card.dart';
 import 'package:clan_churn/componnents/projects_view_component.dart';
 import 'package:clan_churn/utils/spacing.dart';
 import 'package:clan_churn/utils/typography.dart';
@@ -119,7 +119,7 @@ class _ProjectHistoryState extends State<ProjectHistory> {
 
   @override
   Widget build(BuildContext context) {
-    // final h = MediaQuery.of(context).size.height;
+    final h = MediaQuery.of(context).size.height;
     final w = MediaQuery.of(context).size.width;
     return BlocBuilder<UserBloc, UserState>(
       builder: (context, state) {
@@ -187,20 +187,24 @@ class _ProjectHistoryState extends State<ProjectHistory> {
                   ],
                 ),
                 ClanChurnSpacing.h20,
-                GridView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 5,
-                      childAspectRatio: 1,
-                      crossAxisSpacing: 15,
-                      mainAxisSpacing: 15),
-                  itemCount: state.clientList.length,
-                  itemBuilder: (context, index) {
-                    return ClientsCard(
-                      index: index,
-                    );
-                  },
+                SizedBox(
+                  height: h * 0.55,
+                  child: SingleChildScrollView(
+                    child: GridView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 4,
+                              childAspectRatio: 1.4,
+                              crossAxisSpacing: 15,
+                              mainAxisSpacing: 15),
+                      itemCount: 30,
+                      itemBuilder: (context, index) {
+                        return const ProjectCard();
+                      },
+                    ),
+                  ),
                 )
 
                 // PaginatedDataTable(

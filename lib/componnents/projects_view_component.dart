@@ -64,60 +64,56 @@ class _ProjectsViewComponentState extends State<ProjectsViewComponent> {
                       decoration: BoxDecoration(
                           color: Theme.of(context).colorScheme.background,
                           borderRadius: BorderRadius.circular(30)),
-                      child: SingleChildScrollView(
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      IconButton(
-                                        icon: Icon(
-                                          Icons.keyboard_backspace,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .secondary,
-                                        ),
-                                        onPressed: () {
-                                          GoRouter.of(context)
-                                              .go(AppRoutes.home);
-                                        },
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    IconButton(
+                                      icon: Icon(
+                                        Icons.keyboard_backspace,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .secondary,
                                       ),
-                                      ClanChurnSpacing.w10,
-                                      Text(
-                                        "${state.selectedClient!.name} - ${state.selectedClient!.role}",
-                                        style: ClanChurnTypography.font18600,
-                                      ),
-                                    ],
-                                  ),
-                                  ElevatedButton(
-                                    onPressed: () {},
-                                    child: Row(children: [
-                                      const Icon(
-                                        Icons.add_box_outlined,
-                                        size: 18,
-                                      ),
-                                      ClanChurnSpacing.w5,
-                                      Text(
-                                        "Start New Project",
-                                        style: ClanChurnTypography.font14600,
-                                      )
-                                    ]),
-                                  )
-                                ],
-                              ),
-                              ClanChurnSpacing.h20,
-                              Text(
-                                "Project History",
-                                style: ClanChurnTypography.font15600,
-                              ),
-                              ClanChurnSpacing.h10,
-                              ProjectHistory()
-                            ]),
-                      ),
+                                      onPressed: () {
+                                        GoRouter.of(context).go(AppRoutes.home);
+                                      },
+                                    ),
+                                    ClanChurnSpacing.w10,
+                                    Text(
+                                      "${state.selectedClient!.name} - ${state.selectedClient!.role}",
+                                      style: ClanChurnTypography.font18600,
+                                    ),
+                                  ],
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {},
+                                  child: Row(children: [
+                                    const Icon(
+                                      Icons.add_box_outlined,
+                                      size: 18,
+                                    ),
+                                    ClanChurnSpacing.w5,
+                                    Text(
+                                      "Start New Project",
+                                      style: ClanChurnTypography.font14600,
+                                    )
+                                  ]),
+                                )
+                              ],
+                            ),
+                            ClanChurnSpacing.h20,
+                            Text(
+                              "Project History",
+                              style: ClanChurnTypography.font15600,
+                            ),
+                            ClanChurnSpacing.h10,
+                            ProjectHistory()
+                          ]),
                     ),
                   ],
                 );
