@@ -39,7 +39,7 @@ class ProfileWidget extends StatelessWidget {
                           BlocBuilder<UserBloc, UserState>(
                             builder: (context, state) {
                               return Text(
-                                state.user!.firstName,
+                                "${state.user!.firstName} ${state.user!.lastName}",
                                 style: ClanChurnTypography.font15600,
                               );
                             },
