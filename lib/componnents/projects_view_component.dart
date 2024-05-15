@@ -86,7 +86,7 @@ class _ProjectsViewComponentState extends State<ProjectsViewComponent> {
                                     ),
                                     ClanChurnSpacing.w10,
                                     Text(
-                                      "${state.selectedClient!.name} - ${state.selectedClient!.role}",
+                                      state.selectedClient!.name,
                                       style: ClanChurnTypography.font18600,
                                     ),
                                   ],
@@ -113,10 +113,10 @@ class _ProjectsViewComponentState extends State<ProjectsViewComponent> {
                                             child: ListBody(
                                               children: <Widget>[
                                                 Container(
-                                                  height: 75,
-                                                  width: 50,
-                                                  // color: Colors.amber,
-                                                  child: HorizontalStepper()),
+                                                    height: 75,
+                                                    width: 50,
+                                                    // color: Colors.amber,
+                                                    child: HorizontalStepper()),
                                                 Text(
                                                   "Customer Name",
                                                   style: ClanChurnTypography
@@ -259,7 +259,7 @@ class _ProjectsViewComponentState extends State<ProjectsViewComponent> {
                               style: ClanChurnTypography.font15600,
                             ),
                             ClanChurnSpacing.h10,
-                            const ProjectHistory()
+                            const ProjectsList()
                           ]),
                     ),
                   ],

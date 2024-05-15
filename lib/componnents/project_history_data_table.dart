@@ -7,111 +7,111 @@ import 'package:clan_churn/utils/typography.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class Data {
-  String projectId;
-  String sheetName;
-  String projectDoneBy;
-  DateTime uploadedDate;
-  String status;
+// class Data {
+//   String projectId;
+//   String sheetName;
+//   String projectDoneBy;
+//   DateTime uploadedDate;
+//   String status;
 
-  Data({
-    required this.projectId,
-    required this.sheetName,
-    required this.projectDoneBy,
-    required this.uploadedDate,
-    required this.status,
-  });
-}
+//   Data({
+//     required this.projectId,
+//     required this.sheetName,
+//     required this.projectDoneBy,
+//     required this.uploadedDate,
+//     required this.status,
+//   });
+// }
 
-List<Data> myData = [
-  Data(
-      projectDoneBy: "Vimala",
-      projectId: '#\$123',
-      sheetName: "Piramal_Emp_Data_Oct...",
-      uploadedDate: DateTime.now(),
-      status: "complete"),
-  Data(
-      projectDoneBy: "Vishal Sharma",
-      projectId: '#\$123',
-      sheetName: "Piramal_Emp_Data_Oct...",
-      uploadedDate: DateTime.now(),
-      status: "complete"),
-  Data(
-      projectDoneBy: "Vishal Sharma",
-      projectId: '#\$123',
-      sheetName: "Piramal_Emp_Data_Oct...",
-      uploadedDate: DateTime.now(),
-      status: "complete"),
-  Data(
-      projectDoneBy: "Vishal Sharma",
-      projectId: '#\$123',
-      sheetName: "Piramal_Emp_Data_Oct...",
-      uploadedDate: DateTime.now(),
-      status: "complete"),
-  Data(
-      projectDoneBy: "Vishal Sharma",
-      projectId: '#\$123',
-      sheetName: "Piramal_Emp_Data_Oct...",
-      uploadedDate: DateTime.now(),
-      status: "complete"),
-  Data(
-      projectDoneBy: "Vishal Sharma",
-      projectId: '#\$123',
-      sheetName: "Piramal_Emp_Data_Oct...",
-      uploadedDate: DateTime.now(),
-      status: "complete"),
-  Data(
-      projectDoneBy: "Vishal Sharma",
-      projectId: '#\$123',
-      sheetName: "Piramal_Emp_Data_Oct...",
-      uploadedDate: DateTime.now(),
-      status: "complete"),
-  Data(
-      projectDoneBy: "Vishal Sharma",
-      projectId: '#\$123',
-      sheetName: "Piramal_Emp_Data_Oct...",
-      uploadedDate: DateTime.now(),
-      status: "complete"),
-  Data(
-      projectDoneBy: "Vishal Sharma",
-      projectId: '#\$123',
-      sheetName: "Piramal_Emp_Data_Oct...",
-      uploadedDate: DateTime.now(),
-      status: "complete"),
-  Data(
-      projectDoneBy: "Vishal Sharma",
-      projectId: '#\$123',
-      sheetName: "Piramal_Emp_Data_Oct...",
-      uploadedDate: DateTime.now(),
-      status: "complete"),
-];
+// List<Data> myData = [
+//   Data(
+//       projectDoneBy: "Vimala",
+//       projectId: '#\$123',
+//       sheetName: "Piramal_Emp_Data_Oct...",
+//       uploadedDate: DateTime.now(),
+//       status: "complete"),
+//   Data(
+//       projectDoneBy: "Vishal Sharma",
+//       projectId: '#\$123',
+//       sheetName: "Piramal_Emp_Data_Oct...",
+//       uploadedDate: DateTime.now(),
+//       status: "complete"),
+//   Data(
+//       projectDoneBy: "Vishal Sharma",
+//       projectId: '#\$123',
+//       sheetName: "Piramal_Emp_Data_Oct...",
+//       uploadedDate: DateTime.now(),
+//       status: "complete"),
+//   Data(
+//       projectDoneBy: "Vishal Sharma",
+//       projectId: '#\$123',
+//       sheetName: "Piramal_Emp_Data_Oct...",
+//       uploadedDate: DateTime.now(),
+//       status: "complete"),
+//   Data(
+//       projectDoneBy: "Vishal Sharma",
+//       projectId: '#\$123',
+//       sheetName: "Piramal_Emp_Data_Oct...",
+//       uploadedDate: DateTime.now(),
+//       status: "complete"),
+//   Data(
+//       projectDoneBy: "Vishal Sharma",
+//       projectId: '#\$123',
+//       sheetName: "Piramal_Emp_Data_Oct...",
+//       uploadedDate: DateTime.now(),
+//       status: "complete"),
+//   Data(
+//       projectDoneBy: "Vishal Sharma",
+//       projectId: '#\$123',
+//       sheetName: "Piramal_Emp_Data_Oct...",
+//       uploadedDate: DateTime.now(),
+//       status: "complete"),
+//   Data(
+//       projectDoneBy: "Vishal Sharma",
+//       projectId: '#\$123',
+//       sheetName: "Piramal_Emp_Data_Oct...",
+//       uploadedDate: DateTime.now(),
+//       status: "complete"),
+//   Data(
+//       projectDoneBy: "Vishal Sharma",
+//       projectId: '#\$123',
+//       sheetName: "Piramal_Emp_Data_Oct...",
+//       uploadedDate: DateTime.now(),
+//       status: "complete"),
+//   Data(
+//       projectDoneBy: "Vishal Sharma",
+//       projectId: '#\$123',
+//       sheetName: "Piramal_Emp_Data_Oct...",
+//       uploadedDate: DateTime.now(),
+//       status: "complete"),
+// ];
 
-class ProjectHistory extends StatefulWidget {
-  const ProjectHistory({
+class ProjectsList extends StatefulWidget {
+  const ProjectsList({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<ProjectHistory> createState() => _ProjectHistoryState();
+  State<ProjectsList> createState() => _ProjectsListState();
 }
 
-class _ProjectHistoryState extends State<ProjectHistory> {
+class _ProjectsListState extends State<ProjectsList> {
   bool sort = true;
-  List<Data>? filterData;
+  // List<Data>? filterData;
 
-  onsortColum(int columnIndex, bool ascending) {
-    if (columnIndex == 0) {
-      if (ascending) {
-        filterData!.sort((a, b) => a.projectDoneBy.compareTo(b.projectDoneBy));
-      } else {
-        filterData!.sort((a, b) => b.projectDoneBy.compareTo(a.projectDoneBy));
-      }
-    }
-  }
+  // onsortColum(int columnIndex, bool ascending) {
+  //   if (columnIndex == 0) {
+  //     if (ascending) {
+  //       filterData!.sort((a, b) => a.projectDoneBy.compareTo(b.projectDoneBy));
+  //     } else {
+  //       filterData!.sort((a, b) => b.projectDoneBy.compareTo(a.projectDoneBy));
+  //     }
+  //   }
+  // }
 
   @override
   void initState() {
-    filterData = myData;
+    // filterData = myData;
     super.initState();
   }
 
@@ -175,12 +175,12 @@ class _ProjectHistoryState extends State<ProjectHistory> {
                             ),
                             hintText: "Enter something to filter"),
                         onChanged: (value) {
-                          setState(() {
-                            myData = filterData!
-                                .where((element) =>
-                                    element.projectDoneBy.contains(value))
-                                .toList();
-                          });
+                          // setState(() {
+                          //   myData = filterData!
+                          //       .where((element) =>
+                          //           element.projectDoneBy.contains(value))
+                          //       .toList();
+                          // });
                         },
                       ),
                     ),
@@ -297,94 +297,94 @@ class _ProjectHistoryState extends State<ProjectHistory> {
   }
 }
 
-class RowSource extends DataTableSource {
-  var myData;
-  final count;
-  final BuildContext context;
-  RowSource({required this.myData, required this.count, required this.context});
+// class RowSource extends DataTableSource {
+//   var myData;
+//   final count;
+//   final BuildContext context;
+//   RowSource({required this.myData, required this.count, required this.context});
 
-  @override
-  DataRow? getRow(int index) {
-    if (index < rowCount) {
-      return recentFileDataRow(myData![index], context);
-    } else
-      return null;
-  }
+//   @override
+//   DataRow? getRow(int index) {
+//     if (index < rowCount) {
+//       return recentFileDataRow(myData![index], context);
+//     } else
+//       return null;
+//   }
 
-  @override
-  bool get isRowCountApproximate => false;
+//   @override
+//   bool get isRowCountApproximate => false;
 
-  @override
-  int get rowCount => count;
+//   @override
+//   int get rowCount => count;
 
-  @override
-  int get selectedRowCount => 0;
-}
+//   @override
+//   int get selectedRowCount => 0;
+// }
 
-DataRow recentFileDataRow(Data data, BuildContext context) {
-  return DataRow(
-    // color: MaterialStateProperty.all( Theme.of(context).colorScheme.primary.withOpacity(0.1)),
-    cells: [
-      DataCell(Container(
-        margin: const EdgeInsets.only(top: 10, bottom: 10),
-        child: Text(data.projectId),
-      )),
-      DataCell(Text(data.sheetName)),
-      DataCell(Padding(
-        padding: const EdgeInsets.only(top: 5, bottom: 5),
-        child: Row(
-          children: [
-            CircleAvatar(
-              radius: 30,
-              child: Icon(
-                Icons.person,
-                size: 20,
-              ),
-              backgroundColor: Theme.of(context).colorScheme.background,
-            ),
-            Column(
-              // mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(data.projectDoneBy),
-                Text("Project Head - Piramal"),
-              ],
-            ),
-          ],
-        ),
-      )),
-      DataCell(Text(data.uploadedDate.toString().split(" ")[0])),
-      DataCell(Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.check_circle_outlined,
-            size: 18,
-            color: Colors.green,
-          ),
-          ClanChurnSpacing.w7,
-          Text(data.status),
-        ],
-      )),
-      DataCell(SizedBox(
-        height: 25,
-        width: 100,
-        child: OutlinedButton(
-          style: ButtonStyle(
-            padding: MaterialStateProperty.all(
-                const EdgeInsets.only(top: 0, bottom: 0)),
-            side: MaterialStateProperty.all(
-                BorderSide(color: Theme.of(context).colorScheme.primary)),
-            backgroundColor: MaterialStateProperty.all(
-                Theme.of(context).colorScheme.background),
-          ),
-          child: Text(
-            "View",
-            style: ClanChurnTypography.font13600,
-          ),
-          onPressed: () {},
-        ),
-      )),
-    ],
-  );
-}
+// DataRow recentFileDataRow(Data data, BuildContext context) {
+//   return DataRow(
+//     // color: MaterialStateProperty.all( Theme.of(context).colorScheme.primary.withOpacity(0.1)),
+//     cells: [
+//       DataCell(Container(
+//         margin: const EdgeInsets.only(top: 10, bottom: 10),
+//         child: Text(data.projectId),
+//       )),
+//       DataCell(Text(data.sheetName)),
+//       DataCell(Padding(
+//         padding: const EdgeInsets.only(top: 5, bottom: 5),
+//         child: Row(
+//           children: [
+//             CircleAvatar(
+//               radius: 30,
+//               child: Icon(
+//                 Icons.person,
+//                 size: 20,
+//               ),
+//               backgroundColor: Theme.of(context).colorScheme.background,
+//             ),
+//             Column(
+//               // mainAxisAlignment: MainAxisAlignment.start,
+//               crossAxisAlignment: CrossAxisAlignment.start,
+//               children: [
+//                 Text(data.projectDoneBy),
+//                 Text("Project Head - Piramal"),
+//               ],
+//             ),
+//           ],
+//         ),
+//       )),
+//       DataCell(Text(data.uploadedDate.toString().split(" ")[0])),
+//       DataCell(Row(
+//         crossAxisAlignment: CrossAxisAlignment.center,
+//         children: [
+//           Icon(
+//             Icons.check_circle_outlined,
+//             size: 18,
+//             color: Colors.green,
+//           ),
+//           ClanChurnSpacing.w7,
+//           Text(data.status),
+//         ],
+//       )),
+//       DataCell(SizedBox(
+//         height: 25,
+//         width: 100,
+//         child: OutlinedButton(
+//           style: ButtonStyle(
+//             padding: MaterialStateProperty.all(
+//                 const EdgeInsets.only(top: 0, bottom: 0)),
+//             side: MaterialStateProperty.all(
+//                 BorderSide(color: Theme.of(context).colorScheme.primary)),
+//             backgroundColor: MaterialStateProperty.all(
+//                 Theme.of(context).colorScheme.background),
+//           ),
+//           child: Text(
+//             "View",
+//             style: ClanChurnTypography.font13600,
+//           ),
+//           onPressed: () {},
+//         ),
+//       )),
+//     ],
+//   );
+// }
