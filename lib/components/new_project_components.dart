@@ -305,7 +305,6 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     ElevatedButton(
-                      child: const Text("Next"),
                       onPressed: projectName.isEmpty
                           ? null
                           : () {
@@ -313,6 +312,7 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                                   .read<UserBloc>()
                                   .add(AddColumnsToProjectEvent());
                             },
+                      child: const Text("Next"),
                     ),
                   ],
                 )

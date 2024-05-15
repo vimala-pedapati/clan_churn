@@ -1,6 +1,6 @@
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
 import 'package:clan_churn/components/new_project_components.dart';
-import 'package:clan_churn/components/project_history_data_table.dart';
+import 'package:clan_churn/components/project_list_data.dart';
 import 'package:clan_churn/components/search.dart';
 import 'package:clan_churn/utils/routes.dart';
 import 'package:clan_churn/utils/spacing.dart';
