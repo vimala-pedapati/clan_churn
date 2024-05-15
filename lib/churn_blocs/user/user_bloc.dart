@@ -2,6 +2,8 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:clan_churn/api_repos/api_repo.dart';
+import 'package:clan_churn/api_repos/models/column_model.dart';
+import 'package:clan_churn/api_repos/models/project_model.dart';
 import 'package:clan_churn/api_repos/models/user_model.dart';
 import 'package:equatable/equatable.dart';
 

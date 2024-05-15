@@ -36,10 +36,10 @@ class ClientsCard extends StatelessWidget {
                       state.clientList[index].name,
                       style: ClanChurnTypography.font15600,
                     ),
-                    Text(
-                      "${state.clientList[index].role}",
-                      style: ClanChurnTypography.font12500,
-                    ),
+                    // Text(
+                    //   "${state.clientList[index].role}",
+                    //   style: ClanChurnTypography.font12500,
+                    // ),
                   ],
                 ),
                 SizedBox(

@@ -9,4 +9,8 @@ class ApiEndpoints {
   static String signIn = '/sign_in';
   static String getUserDetails = '/user/get_user_details';
   static String clientsList = '/client/client_list';
+  static String getAllProjects = '/project/get_all_projects';
+  static String addProject = '/project/add';
+  static String getAllColumns = '/project/get_all_columns';
+  static String allColumnsToProject = '/project/column_to_project';
 }

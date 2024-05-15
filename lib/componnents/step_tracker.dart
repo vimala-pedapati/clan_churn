@@ -14,7 +14,7 @@ class HorizontalStepperState extends State<HorizontalStepper> {
   Widget build(BuildContext context) {
     return Theme(
       data: ThemeData(
-          canvasColor: Theme.of(context).colorScheme.primary,
+          canvasColor: Colors.transparent,
           primarySwatch: MaterialColor(
             Theme.of(context).colorScheme.background.value,
             <int, Color>{

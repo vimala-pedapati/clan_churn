@@ -195,8 +195,8 @@ class _ProjectHistoryState extends State<ProjectHistory> {
                       shrinkWrap: true,
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 4,
-                              childAspectRatio: 1.4,
+                              crossAxisCount: 5,
+                              childAspectRatio: 1,
                               crossAxisSpacing: 15,
                               mainAxisSpacing: 15),
                       itemCount: 30,
