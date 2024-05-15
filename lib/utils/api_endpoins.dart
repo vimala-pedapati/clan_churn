@@ -12,5 +12,5 @@ class ApiEndpoints {
   static String getAllProjects = '/project/get_all_projects';
   static String addProject = '/project/add';
   static String getAllColumns = '/project/get_all_columns';
-  static String allColumnsToProject = '/project/column_to_project';
+  static String addColumnsToProject = '/project/column_to_project';
 }

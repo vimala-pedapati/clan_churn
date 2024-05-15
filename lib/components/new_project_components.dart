@@ -1,14 +1,18 @@
 import 'dart:developer';
+import 'dart:html';
 
 import 'package:clan_churn/api_repos/models/column_model.dart';
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
 import 'package:clan_churn/components/nav_bar.dart';
-import 'package:clan_churn/components/projects_view_component.dart';
 import 'package:clan_churn/components/side_bar.dart';
+import 'package:clan_churn/utils/routes.dart';
 import 'package:clan_churn/utils/spacing.dart';
 import 'package:clan_churn/utils/typography.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
 
 class CreateNewProject extends StatelessWidget {
   const CreateNewProject({super.key});
@@ -60,6 +64,14 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
       clientController.text =
           context.read<UserBloc>().state.selectedClient!.name;
     });
+
+    if (context.read<UserBloc>().state.createdProject != null) {
+      setState(() {
+        projectController.text =
+            context.read<UserBloc>().state.createdProject!.name;
+        projectName = context.read<UserBloc>().state.createdProject!.name;
+      });
+    }
     context.read<UserBloc>().add(GetColumnsEvent());
     super.initState();
   }
@@ -311,6 +323,7 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                               context
                                   .read<UserBloc>()
                                   .add(AddColumnsToProjectEvent());
+                              showDownloadDialog(context);
                             },
                       child: const Text("Next"),
                     ),
@@ -322,3 +335,83 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
     );
   }
 }
+
+Future<void> showDownloadDialog(BuildContext context) async {
+  return showDialog<void>(
+    context: context,
+    builder: (BuildContext context) {
+      return BlocBuilder<UserBloc, UserState>(
+        builder: (context, state) {
+          return AlertDialog(
+            title: Text('Download File'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.file_download, size: 48.0),
+                SizedBox(height: 20.0),
+                state.projectCreating
+                    ? const CircularProgressIndicator()
+                    : ElevatedButton(
+                        onPressed: () {
+                          String a =
+                              "https://s3.ap-south-1.amazonaws.com/clan-profile-pictures/ppa/663f3d3e2b20003da5b870f6/6644af6c0fd060a1f4ae6c00/2024_05_15_12_49_55/Project%2023_input_sheet.xlsx?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIASHKMDVP4QE7LHSWY%2F20240515%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20240515T124955Z&X-Amz-Expires=18600&X-Amz-SignedHeaders=host&X-Amz-Signature=be09559485335c919b4e3a2f14602c5143f3fa1d110e72054be510805db55fd7";
+                          downloadFile(a, context);
+                          launchURL(state.createdProject!.inputSheet!);
+                        },
+                        child: Text('Download'),
+                      ),
+              ],
+            ),
+          );
+        },
+      );
+    },
+  );
+}
+
+Future<void> launchURL(String url) async {
+  if (await canLaunchUrl(Uri.parse(url))) {
+    await launchUrl(Uri.parse(url));
+  } else {
+    throw 'Could not launch $url';
+  }
+}
+
+void downloadFile(String url, BuildContext context) async {
+  try {
+    // Send an HTTP request to the URL
+    http.Response response = await http.get(Uri.parse(url));
+
+    // Get the file name from the URL
+    String fileName = url.split('/').last;
+
+    // Create a blob from the response body
+    Blob blob = Blob([response.bodyBytes]);
+
+    // Create an anchor element
+    AnchorElement anchorElement =
+        AnchorElement(href: Url.createObjectUrlFromBlob(blob));
+    anchorElement.download = fileName;
+    anchorElement.click(); // initiate download
+  } catch (e) {
+    print("Error downloading file: $e");
+  }
+  // ignore: use_build_context_synchronously
+  //  Navigator.push(
+  //                         context,
+  //                         customPageRouteForNavigation(
+  //                             const HomePage()));
+  // ignore: use_build_context_synchronously
+  GoRouter.of(context).go(AppRoutes.home);
+}
+
+//  Future<void> _launchURL(String url) async {
+//     if (await canLaunch(url)) {
+//       await launch(url);
+//     } else {
+//       throw 'Could not launch $url';
+//     }
+//   }
+
+    
+  

@@ -13,26 +13,26 @@ class ProjectDetails extends Equatable {
   final String name;
   final List<InputColumn>? inputColumns;
   final String? projectStatus;
-
-  const ProjectDetails({
-    required this.id,
-    required this.name,
-    required this.inputColumns,
-    required this.projectStatus,
-  });
+  final String? inputSheet;
+  const ProjectDetails(
+      {required this.id,
+      required this.name,
+      required this.inputColumns,
+      required this.projectStatus,
+      required this.inputSheet});
 
   factory ProjectDetails.fromJson(Map<String, dynamic> json) => ProjectDetails(
-        id: json["id"],
-        name: json["name"],
-        inputColumns: json["input_columns"] == null
-            ? null
-            : List<InputColumn>.from(
-                json["input_columns"].map((x) => InputColumn.fromJson(x))),
-        projectStatus: json["project_status"],
-      );
+      id: json["id"],
+      name: json["name"],
+      inputColumns: json["input_columns"] == null
+          ? null
+          : List<InputColumn>.from(
+              json["input_columns"].map((x) => InputColumn.fromJson(x))),
+      projectStatus: json["project_status"],
+      inputSheet: json["input_sheet"]);
 
   @override
-  List<Object?> get props => [name];
+  List<Object?> get props => [name, inputColumns, inputSheet];
 
   // Map<String, dynamic> toJson() => {
   //     "id": id,

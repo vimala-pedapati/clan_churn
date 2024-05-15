@@ -130,7 +130,10 @@ class ApiRepository {
         // final List<Map<String, dynamic>> data = json.decode(response.body);
         List<ProjectDetails> listOfProjects =
             projectDetailsFromJson(response.body);
-        log("List of Projects:..... $listOfProjects");
+        for (var i in json.decode(response.body)) {
+          print("project: $i");
+        }
+        print("List of Projects:..... $listOfProjects");
         return listOfProjects;
       } else {
         log('Status Code: ${response.statusCode}');
@@ -258,18 +261,19 @@ class ApiRepository {
 
       // Make API call with access token
       http.Response response = await http.post(
-          Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.allColumnsToProject}"),
+          Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.addColumnsToProject}"),
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ${authCredentials.accessToken}',
           },
-          body: columnsToAdd);
+          body: json.encode(columnsToAdd));
 
       // Handle API response
       if (response.statusCode == 200) {
         final Map<String, dynamic> data = json.decode(response.body);
+        print(" response: ${response.body}");
         ProjectDetails updatedProjectDetails = ProjectDetails.fromJson(data);
-        log("Updated Project Details:..... $updatedProjectDetails");
+        // log("Updated Project Details:..... $updatedProjectDetails");
         return updatedProjectDetails;
       } else {
         log('Status Code: ${response.statusCode}');

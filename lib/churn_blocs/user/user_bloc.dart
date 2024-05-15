@@ -23,6 +23,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     on<CreateProjectEvent>(_onCreateProjectEvent);
     on<ReplaceColumnsEvent>(_onReplaceColumnsEvent);
     on<AddColumnsToProjectEvent>(_onAddColumnsToProjectEvent);
+    on<SetCreatedProjectEvent>(_onSetCreatedProjectEvent);
   }
 
   _onGetUserDetails(GetUserDetailsEvent event, Emitter<UserState> emit) async {
@@ -84,20 +85,29 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
   _onAddColumnsToProjectEvent(
       AddColumnsToProjectEvent event, Emitter<UserState> emit) async {
+    emit(state.copyWith(projectCreating: true));
     List a = [];
     if (state.createdProject != null) {
       for (var i in state.columnsList) {
         if (i.isUserCheckedIn) {
-          a.add(json.encode({
+          a.add({
             "column_id": i.id,
             "project_id": state.createdProject!.id,
             "add": true
-          }));
+          });
         }
-
-        final result = await apiRepository.addColumnsToProject(columnsToAdd: a);
+      }
+      // print(a);
+      final result = await apiRepository.addColumnsToProject(columnsToAdd: a);
+      if (result != null) {
+        emit(state.copyWith(createdProject: result, projectCreating: false));
       }
     }
     log("${a.length}");
+  }
+
+  _onSetCreatedProjectEvent(
+      SetCreatedProjectEvent event, Emitter<UserState> emit) {
+    emit(state.copyWith(createdProject: event.createdProject));
   }
 }
