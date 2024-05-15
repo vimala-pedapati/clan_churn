@@ -130,7 +130,7 @@ class _ProjectsViewComponentState extends State<ProjectsViewComponent> {
                               style: ClanChurnTypography.font15600,
                             ),
                             ClanChurnSpacing.h10,
-                            const ProjectsList()
+                            const ProjectsListData()
                           ]),
                     ),
                   ],

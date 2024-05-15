@@ -86,16 +86,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 //       status: "complete"),
 // ];
 
-class ProjectsList extends StatefulWidget {
-  const ProjectsList({
+class ProjectsListData extends StatefulWidget {
+  const ProjectsListData({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<ProjectsList> createState() => _ProjectsListState();
+  State<ProjectsListData> createState() => _ProjectsListDataState();
 }
 
-class _ProjectsListState extends State<ProjectsList> {
+class _ProjectsListDataState extends State<ProjectsListData> {
   bool sort = true;
   // List<Data>? filterData;
 
