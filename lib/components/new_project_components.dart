@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:clan_churn/api_repos/models/column_model.dart';
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
 import 'package:clan_churn/components/nav_bar.dart';
 import 'package:clan_churn/components/projects_view_component.dart';
@@ -23,11 +26,11 @@ class CreateNewProject extends StatelessWidget {
               // Nav bar
               const NavBar(),
               SizedBox(height: h * 0.01),
-              Row(
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SideBar(
+                  SideBar(
                     selectedRoute: SelectedRoute.home,
                   ),
                   AddNewProjectComponent()
@@ -57,6 +60,7 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
       clientController.text =
           context.read<UserBloc>().state.selectedClient!.name;
     });
+    context.read<UserBloc>().add(GetColumnsEvent());
     super.initState();
   }
 
@@ -77,49 +81,52 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
           margin: EdgeInsets.only(
               left: w * 0.025, right: w * 0.025, top: 10, bottom: 20),
           duration: const Duration(seconds: 1),
-          child: Column(children: [
-            Row(
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                IconButton(
-                  icon: Icon(
-                    Icons.keyboard_backspace,
-                    color: Theme.of(context).colorScheme.secondary,
-                  ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                    // GoRouter.of(context).go(AppRoutes.home);
-                  },
+                Row(
+                  children: [
+                    IconButton(
+                      icon: Icon(
+                        Icons.keyboard_backspace,
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                        // GoRouter.of(context).go(AppRoutes.home);
+                      },
+                    ),
+                    ClanChurnSpacing.w10,
+                    Text(
+                      "Start New Project",
+                      style: ClanChurnTypography.font18600,
+                    ),
+                  ],
                 ),
-                ClanChurnSpacing.w10,
-                Text(
-                  "State New Project",
-                  style: ClanChurnTypography.font18600,
-                ),
-              ],
-            ),
-            ClanChurnSpacing.h30,
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
+                ClanChurnSpacing.h30,
+                Column(
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Row(
-                          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          // crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
-                            // Container(
-                            //     height: 75,
-                            //     width: 50,
-                            //     // color: Colors.amber,
-                            //     child: HorizontalStepper()),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  "Customer Name",
-                                  style: ClanChurnTypography.font15900,
+                                Row(
+                                  children: [
+                                    Text(
+                                      "Customer Name",
+                                      style: ClanChurnTypography.font15900,
+                                    ),
+                                    Text(
+                                      "*",
+                                      style: ClanChurnTypography.font10600
+                                          .copyWith(color: Colors.red),
+                                    )
+                                  ],
                                 ),
                                 Container(
                                   width: w * 0.25,
@@ -159,7 +166,6 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                               ],
                             ),
                             ClanChurnSpacing.w20,
-
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -211,7 +217,7 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                         ),
                         ElevatedButton(
                           onPressed: (projectName.isEmpty ||
-                                  state.columnsList.isNotEmpty)
+                                  state.columnsList.isEmpty)
                               ? null
                               : () {
                                   context.read<UserBloc>().add(
@@ -219,17 +225,98 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                                           clientId: state.selectedClient!.id,
                                           projectName: projectController.text));
                                 },
-                          child: Text(
-                              " ${state.columnsList.isEmpty ? "Create Project" : "Update Project"}"),
+                          child: Text("Create Project"),
                         )
                       ],
                     ),
-                    Text("${state.columnsList}")
+                    // Text("${state.columnsList}")
                   ],
                 ),
-              ),
-            )
-          ]),
+                Text(
+                  "Columns to choose",
+                  style: ClanChurnTypography.font18600,
+                ),
+                // ClanChurnSpacing.h10,
+                Expanded(
+                  child: AbsorbPointer(
+                    absorbing: projectName.isEmpty,
+                    child: Opacity(
+                      opacity: projectName.isEmpty ? 0.4 : 1.0,
+                      child: SingleChildScrollView(
+                        child: GridView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            childAspectRatio: 5,
+                          ),
+                          itemCount: state.columnsList.length,
+                          itemBuilder: (context, index) {
+                            return Row(
+                              children: [
+                                Checkbox(
+                                  value:
+                                      state.columnsList[index].isUserCheckedIn,
+                                  onChanged: state
+                                          .columnsList[index].isMandatory
+                                      ? null
+                                      : (value) {
+                                          ColumnDetails a = state
+                                              .columnsList[index]
+                                              .copyWith(isUserCheckedIn: value);
+                                          List<ColumnDetails> b =
+                                              state.columnsList.toList();
+                                          b[index] = a;
+                                          log("$a");
+                                          log("/");
+                                          log("${b[index]}");
+
+                                          context.read<UserBloc>().add(
+                                              ReplaceColumnsEvent(
+                                                  columns: b, index: index));
+                                        },
+                                ),
+                                Expanded(
+                                  // Use Expanded to allow the Text widget to take remaining space
+                                  child: Column(
+                                    // Wrap the Text widget in a Column
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment
+                                        .start, // Align text to the start of the column
+                                    children: [
+                                      Text(
+                                        state.columnsList[index].columnName,
+                                        overflow: TextOverflow.visible,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    ElevatedButton(
+                      child: const Text("Next"),
+                      onPressed: projectName.isEmpty
+                          ? null
+                          : () {
+                              context
+                                  .read<UserBloc>()
+                                  .add(AddColumnsToProjectEvent());
+                            },
+                    ),
+                  ],
+                )
+              ]),
         );
       },
     );

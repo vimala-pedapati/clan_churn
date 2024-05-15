@@ -34,6 +34,7 @@ class UserState extends Equatable {
       List<ProjectDetails>? projectsList,
       List<ColumnDetails>? columnsList,
       ProjectDetails? createdProject}) {
+        
     return UserState(
         user: user ?? this.user,
         clientList: clientList ?? this.clientList,

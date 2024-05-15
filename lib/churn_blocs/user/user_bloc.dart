@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
@@ -20,6 +21,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     on<GetProjectsListEvent>(_onGetProjectsListEvent);
     on<GetColumnsEvent>(_onGetColumnsEvent);
     on<CreateProjectEvent>(_onCreateProjectEvent);
+    on<ReplaceColumnsEvent>(_onReplaceColumnsEvent);
+    on<AddColumnsToProjectEvent>(_onAddColumnsToProjectEvent);
   }
 
   _onGetUserDetails(GetUserDetailsEvent event, Emitter<UserState> emit) async {
@@ -69,9 +72,32 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     if (result != null) {
       emit(state.copyWith(createdProject: result));
       final columnsResult = await apiRepository.getAllColumns();
-      if(columnsResult != null){
-       emit(state.copyWith(columnsList: columnsResult));
+      if (columnsResult != null) {
+        emit(state.copyWith(columnsList: columnsResult));
       }
     }
+  }
+
+  _onReplaceColumnsEvent(ReplaceColumnsEvent event, Emitter<UserState> emit) {
+    emit(state.copyWith(columnsList: event.columns));
+  }
+
+  _onAddColumnsToProjectEvent(
+      AddColumnsToProjectEvent event, Emitter<UserState> emit) async {
+    List a = [];
+    if (state.createdProject != null) {
+      for (var i in state.columnsList) {
+        if (i.isUserCheckedIn) {
+          a.add(json.encode({
+            "column_id": i.id,
+            "project_id": state.createdProject!.id,
+            "add": true
+          }));
+        }
+
+        final result = await apiRepository.addColumnsToProject(columnsToAdd: a);
+      }
+    }
+    log("${a.length}");
   }
 }

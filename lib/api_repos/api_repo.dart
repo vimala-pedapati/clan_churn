@@ -223,7 +223,7 @@ class ApiRepository {
       if (response.statusCode == 200) {
         // final List<Map<String, dynamic>> data = json.decode(response.body);
         List<ColumnDetails> columnsList = columnDetailsFromJson(response.body);
-        log("List of Projects:..... $columnsList");
+        log("List of Columns:..... $columnsList");
         return columnsList;
       } else {
         log('Status Code: ${response.statusCode}');
@@ -244,7 +244,7 @@ class ApiRepository {
 
 // Add columns to project
   Future<ProjectDetails?> addColumnsToProject(
-      {required List<Map<String, dynamic>> columnsToAdd}) async {
+      {required List columnsToAdd}) async {
     try {
       // Fetch auth credentials
       final AuthCredentials authCredentials =
