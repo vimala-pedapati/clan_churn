@@ -199,9 +199,11 @@ class _ProjectsListState extends State<ProjectsList> {
                               childAspectRatio: 1,
                               crossAxisSpacing: 15,
                               mainAxisSpacing: 15),
-                      itemCount: 30,
+                      itemCount: state.projectsList.length,
                       itemBuilder: (context, index) {
-                        return const ProjectCard();
+                        return ProjectCard(
+                          index: index,
+                        );
                       },
                     ),
                   ),

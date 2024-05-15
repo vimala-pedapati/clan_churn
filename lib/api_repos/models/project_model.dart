@@ -1,18 +1,20 @@
 import 'dart:convert';
 
+import 'package:equatable/equatable.dart';
+
 List<ProjectDetails> projectDetailsFromJson(String str) =>
     List<ProjectDetails>.from(
         json.decode(str).map((x) => ProjectDetails.fromJson(x)));
 
 // String projectDetailsToJson(List<ProjectDetails> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class ProjectDetails {
-  String id;
-  String name;
-  List<InputColumn>? inputColumns;
-  String? projectStatus;
+class ProjectDetails extends Equatable {
+  final String id;
+  final String name;
+  final List<InputColumn>? inputColumns;
+  final String? projectStatus;
 
-  ProjectDetails({
+  const ProjectDetails({
     required this.id,
     required this.name,
     required this.inputColumns,
@@ -28,6 +30,9 @@ class ProjectDetails {
                 json["input_columns"].map((x) => InputColumn.fromJson(x))),
         projectStatus: json["project_status"],
       );
+
+  @override
+  List<Object?> get props => [name];
 
   // Map<String, dynamic> toJson() => {
   //     "id": id,

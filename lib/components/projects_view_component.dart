@@ -1,7 +1,6 @@
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
 import 'package:clan_churn/componnents/project_history_data_table.dart';
 import 'package:clan_churn/componnents/search.dart';
-import 'package:clan_churn/componnents/step_tracker.dart';
 import 'package:clan_churn/utils/routes.dart';
 import 'package:clan_churn/utils/spacing.dart';
 import 'package:clan_churn/utils/typography.dart';
@@ -19,6 +18,16 @@ class ProjectsViewComponent extends StatefulWidget {
 }
 
 class _ProjectsViewComponentState extends State<ProjectsViewComponent> {
+  @override
+  void initState() {
+    if (context.read<UserBloc>().state.selectedClient != null) {
+      context.read<UserBloc>().add(GetProjectsListEvent(
+          clientId: context.read<UserBloc>().state.selectedClient!.id));
+    }
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final h = MediaQuery.of(context).size.height;
@@ -57,6 +66,7 @@ class _ProjectsViewComponentState extends State<ProjectsViewComponent> {
                       ],
                     ),
                     ClanChurnSpacing.h10,
+                    // Text("${state.projectsList}"),
                     Container(
                       height: h * 0.785,
                       width: w * 0.8,
@@ -106,17 +116,16 @@ class _ProjectsViewComponentState extends State<ProjectsViewComponent> {
                                         return AlertDialog(
                                           title: Text(
                                             "Start New Project",
-                                            style:
-                                                ClanChurnTypography.font18900,
+                                            style: ClanChurnTypography.font18900,
                                           ),
                                           content: SingleChildScrollView(
                                             child: ListBody(
                                               children: <Widget>[
-                                                Container(
-                                                    height: 75,
-                                                    width: 50,
-                                                    // color: Colors.amber,
-                                                    child: HorizontalStepper()),
+                                                // Container(
+                                                //     height: 75,
+                                                //     width: 50,
+                                                //     // color: Colors.amber,
+                                                //     child: HorizontalStepper()),
                                                 Text(
                                                   "Customer Name",
                                                   style: ClanChurnTypography

@@ -123,9 +123,7 @@ class ApiRepository {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ${authCredentials.accessToken}',
           },
-          body: {
-            "client_id": clientId
-          });
+          body: json.encode({"client_id": clientId}));
 
       // Handle API response
       if (response.statusCode == 200) {
@@ -146,7 +144,7 @@ class ApiRepository {
         return null;
       }
     } catch (e) {
-      log('Network Error: $e');
+      print('Network Error: $e');
       return null;
     }
   }

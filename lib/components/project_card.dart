@@ -1,11 +1,11 @@
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
-import 'package:clan_churn/utils/routes.dart';
 import 'package:clan_churn/utils/typography.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProjectCard extends StatelessWidget {
-  const ProjectCard({super.key});
+  final int index;
+  const ProjectCard({super.key, required this.index});
 
   @override
   Widget build(BuildContext context) {
@@ -31,12 +31,12 @@ class ProjectCard extends StatelessWidget {
                 Column(
                   children: [
                     Text(
-                      "Company Name",
-                      style: ClanChurnTypography.font15600,
+                      state.selectedClient!.name,
+                      style: ClanChurnTypography.font12500,
                     ),
                     Text(
-                      "Project Name",
-                      style: ClanChurnTypography.font12500,
+                      state.projectsList[index].name,
+                      style: ClanChurnTypography.font15600,
                     ),
                   ],
                 ),

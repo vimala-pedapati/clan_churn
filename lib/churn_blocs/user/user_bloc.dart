@@ -17,6 +17,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     on<GetClientsEvent>(_onClientsEvent);
     on<SideBarExpandedEvent>(_onSideBarExpandedEvent);
     on<SetSelectedClientEvent>(_onSetSelectedClientEvent);
+    on<GetProjectsListEvent>(_onGetProjectsListEvent);
+    on<GetColumnsEvent>(_onGetColumnsEvent);
   }
 
   _onGetUserDetails(GetUserDetailsEvent event, Emitter<UserState> emit) async {
@@ -41,5 +43,21 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   _onSetSelectedClientEvent(
       SetSelectedClientEvent event, Emitter<UserState> emit) {
     emit(state.copyWith(selectedClient: event.selectedClient));
+  }
+
+  _onGetProjectsListEvent(
+      GetProjectsListEvent event, Emitter<UserState> emit) async {
+    final result =
+        await apiRepository.getProjectDetails(clientId: event.clientId);
+    if (result != null) {
+      emit(state.copyWith(projectsList: result));
+    }
+  }
+
+  _onGetColumnsEvent(GetColumnsEvent event, Emitter<UserState> emit) async {
+    final result = await apiRepository.getAllColumns();
+    if (result != null) {
+      emit(state.copyWith(columnsList: result));
+    }
   }
 }

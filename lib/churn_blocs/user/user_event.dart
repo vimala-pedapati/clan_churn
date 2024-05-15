@@ -19,3 +19,11 @@ class SetSelectedClientEvent extends UserEvent {
   final ClientDetails selectedClient;
   const SetSelectedClientEvent({required this.selectedClient});
 }
+
+class GetProjectsListEvent extends UserEvent {
+  final String clientId;
+  const GetProjectsListEvent({required this.clientId});
+}
+
+class GetColumnsEvent extends UserEvent {}
+
