@@ -1,7 +1,8 @@
 import 'dart:developer';
 
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
-import 'package:clan_churn/components/new_project_components.dart';
+import 'package:clan_churn/pages/new_project_components.dart';
+import 'package:clan_churn/pages/project_input_fields_sheet.dart';
 import 'package:clan_churn/utils/routes.dart';
 import 'package:clan_churn/utils/typography.dart';
 import 'package:flutter/material.dart';
@@ -58,13 +59,18 @@ class ProjectCard extends StatelessWidget {
                       log("${state.projectsList[index]}");
                       log("${state.projectsList[index].inputColumns}");
                       if (state.projectsList[index].inputSheet == null) {
-                        context.read<UserBloc>().add(SetCreatedProjectEvent(createdProject: state.projectsList[index]));
+                        context.read<UserBloc>().add(SetCreatedProjectEvent(
+                            createdProject: state.projectsList[index]));
                         Navigator.push(
                             context,
                             customPageRouteForNavigation(
                                 const CreateNewProject()));
-                      }else{
-
+                      } else {
+                        Navigator.push(
+                            context,
+                            customPageRouteForNavigation(
+                                const ProjectInputFieldsPage()));
+                        ;
                       }
                     },
                   ),
