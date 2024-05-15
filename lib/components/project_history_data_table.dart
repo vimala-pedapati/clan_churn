@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
-import 'package:clan_churn/componnents/project_card.dart';
-import 'package:clan_churn/componnents/projects_view_component.dart';
+import 'package:clan_churn/components/project_card.dart';
+import 'package:clan_churn/components/projects_view_component.dart';
 import 'package:clan_churn/utils/spacing.dart';
 import 'package:clan_churn/utils/typography.dart';
 import 'package:flutter/material.dart';

@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:equatable/equatable.dart';
+
 List<ColumnDetails> columnDetailsFromJson(String str) =>
     List<ColumnDetails>.from(
         json.decode(str).map((x) => ColumnDetails.fromJson(x)));
@@ -7,7 +9,7 @@ List<ColumnDetails> columnDetailsFromJson(String str) =>
 String columnDetailsToJson(List<ColumnDetails> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class ColumnDetails {
+class ColumnDetails extends Equatable {
   String id;
   String sheetName;
   String columnName;
@@ -33,4 +35,7 @@ class ColumnDetails {
         "column_name": columnName,
         "is_mandatory": isMandatory,
       };
+
+  @override
+  List<Object?> get props => [ columnName, isMandatory];
 }

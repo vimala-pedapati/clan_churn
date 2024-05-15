@@ -1,5 +1,5 @@
-import 'package:clan_churn/componnents/nav_bar.dart';
-import 'package:clan_churn/componnents/side_bar.dart';
+import 'package:clan_churn/components/nav_bar.dart';
+import 'package:clan_churn/components/side_bar.dart';
 import 'package:flutter/material.dart';
 
 class SavedProjects extends StatelessWidget {

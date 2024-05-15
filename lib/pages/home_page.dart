@@ -1,7 +1,7 @@
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
-import 'package:clan_churn/componnents/clients_component.dart';
-import 'package:clan_churn/componnents/nav_bar.dart';
-import 'package:clan_churn/componnents/side_bar.dart';
+import 'package:clan_churn/components/clients_component.dart';
+import 'package:clan_churn/components/nav_bar.dart';
+import 'package:clan_churn/components/side_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

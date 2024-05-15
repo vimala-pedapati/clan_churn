@@ -2,7 +2,7 @@ import 'package:clan_churn/api_repos/api_repo.dart';
 import 'package:clan_churn/api_repos/auth_repo.dart';
 import 'package:clan_churn/churn_blocs/sign_in_bloc/sign_in_bloc.dart';
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
-import 'package:clan_churn/componnents/step_tracker.dart';
+import 'package:clan_churn/components/step_tracker.dart';
 import 'package:clan_churn/pages/home_page.dart';
 import 'package:clan_churn/pages/client_projects_view.dart';
 import 'package:clan_churn/pages/saved_projects.dart';
@@ -50,38 +50,38 @@ class ClanChurnApp extends StatelessWidget {
           //         return const ClanChurnSignInPage();
           //       },
           //     )
-          pageBuilder: (context, state) => CustomRoute<void>(
+          pageBuilder: (context, state) => customPageRouteForGoRouter<void>(
               context: context,
               state: state,
               child: const ClanChurnSignInPage()),
         ),
         GoRoute(
           path: AppRoutes.signIn,
-          pageBuilder: (context, state) => CustomRoute<void>(
+          pageBuilder: (context, state) => customPageRouteForGoRouter<void>(
               context: context,
               state: state,
               child: const ClanChurnSignInPage()),
         ),
         GoRoute(
           path: AppRoutes.home,
-          pageBuilder: (context, state) => CustomRoute<void>(
+          pageBuilder: (context, state) => customPageRouteForGoRouter<void>(
               context: context, state: state, child: const HomePage()),
         ),
         GoRoute(
           path: AppRoutes.savedProjects,
-          pageBuilder: (context, state) => CustomRoute<void>(
+          pageBuilder: (context, state) => customPageRouteForGoRouter<void>(
               context: context, state: state, child: const SavedProjects()),
         ),
         GoRoute(
           path: AppRoutes.clientProjects,
-          pageBuilder: (context, state) => CustomRoute<void>(
+          pageBuilder: (context, state) => customPageRouteForGoRouter<void>(
               context: context,
               state: state,
               child: const ClientProjectsView()),
         ),
         GoRoute(
           path: '/myApp',
-          pageBuilder: (context, state) => CustomRoute<void>(
+          pageBuilder: (context, state) => customPageRouteForGoRouter<void>(
               context: context, state: state, child: const MyApp()),
         ),
       ],

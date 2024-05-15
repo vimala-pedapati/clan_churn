@@ -1,4 +1,4 @@
-import 'package:clan_churn/componnents/profile.dart';
+import 'package:clan_churn/components/profile.dart';
 import 'package:clan_churn/utils/spacing.dart';
 import 'package:flutter/material.dart';
 

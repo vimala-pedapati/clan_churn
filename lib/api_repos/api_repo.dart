@@ -149,6 +149,54 @@ class ApiRepository {
     }
   }
 
+// To add project
+  Future<ProjectDetails?> createProject(
+      {required String clientId, required String projectName}) async {
+    try {
+      // Fetch auth credentials
+      final AuthCredentials authCredentials =
+          await AuthRepository().getTokens();
+
+      // Check if auth credentials are null
+      if (authCredentials.accessToken.isEmpty) {
+        log('Access token is empty');
+        return null;
+      }
+
+      // Make API call with access token
+      http.Response response = await http.post(
+          Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.addProject}"),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ${authCredentials.accessToken}',
+          },
+          body: json.encode({"client_id": clientId, "name": projectName}));
+
+      // Handle API response
+      if (response.statusCode == 200) {
+        // final List<Map<String, dynamic>> data = json.decode(response.body);
+        ProjectDetails createdProject =
+            ProjectDetails.fromJson(json.decode(response.body));
+
+        log("Created Project:..... $createdProject");
+        return createdProject;
+      } else {
+        log('Status Code: ${response.statusCode}');
+        if (response.statusCode == 401) {
+          log('Unauthorized - Please check your credentials');
+        } else if (response.statusCode == 404) {
+          log('API endpoint not found');
+        } else {
+          log('Unexpected Error');
+        }
+        return null;
+      }
+    } catch (e) {
+      log('Network Error: $e');
+      return null;
+    }
+  }
+
 // To get all columns
   Future<List<ColumnDetails>?> getAllColumns() async {
     try {

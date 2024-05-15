@@ -1,4 +1,5 @@
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
+import 'package:clan_churn/pages/client_projects_view.dart';
 import 'package:clan_churn/utils/routes.dart';
 import 'package:clan_churn/utils/typography.dart';
 import 'package:flutter/material.dart';
@@ -53,8 +54,13 @@ class ClientsCard extends StatelessWidget {
                       style: ClanChurnTypography.font15600,
                     ),
                     onPressed: () {
-                      context.read<UserBloc>().add(SetSelectedClientEvent(selectedClient: state.clientList[index]));
-                      GoRouter.of(context).go(AppRoutes.clientProjects);
+                      context.read<UserBloc>().add(SetSelectedClientEvent(
+                          selectedClient: state.clientList[index]));
+                      // GoRouter.of(context).go(AppRoutes.clientProjects);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ClientProjectsView()));
                     },
                   ),
                 )

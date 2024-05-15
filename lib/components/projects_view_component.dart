@@ -1,6 +1,7 @@
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
-import 'package:clan_churn/componnents/project_history_data_table.dart';
-import 'package:clan_churn/componnents/search.dart';
+import 'package:clan_churn/components/new_project_components.dart';
+import 'package:clan_churn/components/project_history_data_table.dart';
+import 'package:clan_churn/components/search.dart';
 import 'package:clan_churn/utils/routes.dart';
 import 'package:clan_churn/utils/spacing.dart';
 import 'package:clan_churn/utils/typography.dart';
@@ -91,7 +92,8 @@ class _ProjectsViewComponentState extends State<ProjectsViewComponent> {
                                             .secondary,
                                       ),
                                       onPressed: () {
-                                        GoRouter.of(context).go(AppRoutes.home);
+                                        Navigator.pop(context);
+                                        // GoRouter.of(context).go(AppRoutes.home);
                                       },
                                     ),
                                     ClanChurnSpacing.w10,
@@ -103,150 +105,10 @@ class _ProjectsViewComponentState extends State<ProjectsViewComponent> {
                                 ),
                                 ElevatedButton(
                                   onPressed: () {
-                                    TextEditingController clientController =
-                                        TextEditingController(
-                                            text: state.selectedClient!.name);
-                                    TextEditingController projectController =
-                                        TextEditingController();
-                                    showDialog<void>(
-                                      context: context,
-                                      barrierDismissible:
-                                          false, // user must tap button!
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: Text(
-                                            "Start New Project",
-                                            style: ClanChurnTypography.font18900,
-                                          ),
-                                          content: SingleChildScrollView(
-                                            child: ListBody(
-                                              children: <Widget>[
-                                                // Container(
-                                                //     height: 75,
-                                                //     width: 50,
-                                                //     // color: Colors.amber,
-                                                //     child: HorizontalStepper()),
-                                                Text(
-                                                  "Customer Name",
-                                                  style: ClanChurnTypography
-                                                      .font15900,
-                                                ),
-                                                Container(
-                                                  width: w * 0.3,
-                                                  height: 30,
-                                                  decoration: BoxDecoration(
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .primary
-                                                          .withOpacity(0.1),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              8.0)),
-                                                  margin: const EdgeInsets.only(
-                                                      top: 5, bottom: 20),
-                                                  child: TextFormField(
-                                                    controller:
-                                                        clientController,
-                                                    keyboardType: TextInputType
-                                                        .emailAddress,
-                                                    autofocus: false,
-                                                    cursorHeight: 15,
-                                                    readOnly: true,
-                                                    decoration: InputDecoration(
-                                                      hintText:
-                                                          'Enter Client ID',
-                                                      hintStyle: ClanChurnTypography
-                                                          .font12500
-                                                          .copyWith(
-                                                              color: Theme.of(
-                                                                      context)
-                                                                  .colorScheme
-                                                                  .tertiary),
-                                                      contentPadding:
-                                                          const EdgeInsets.only(
-                                                              top: 10,
-                                                              left: 10,
-                                                              right: 10),
-                                                      border:
-                                                          OutlineInputBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          8.0)),
-                                                    ),
-                                                    onChanged: (value) {},
-                                                    validator: (String? val) {},
-                                                    onSaved: (String? val) {},
-                                                  ),
-                                                ),
-                                                Text(
-                                                  "Project Name",
-                                                  style: ClanChurnTypography
-                                                      .font15900,
-                                                ),
-                                                Container(
-                                                  width: w * 0.3,
-                                                  height: 30,
-                                                  decoration: BoxDecoration(
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .primary
-                                                          .withOpacity(0.1),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              8.0)),
-                                                  margin: const EdgeInsets.only(
-                                                      top: 5, bottom: 20),
-                                                  child: TextFormField(
-                                                    controller:
-                                                        projectController,
-                                                    keyboardType: TextInputType
-                                                        .emailAddress,
-                                                    autofocus: false,
-                                                    cursorHeight: 15,
-                                                    readOnly: false,
-                                                    decoration: InputDecoration(
-                                                      hintText:
-                                                          'Enter Project Name',
-                                                      hintStyle:
-                                                          ClanChurnTypography
-                                                              .font15400
-                                                              .copyWith(
-                                                                  color: Colors
-                                                                      .grey
-                                                                      .withOpacity(
-                                                                          0.7)),
-                                                      contentPadding:
-                                                          const EdgeInsets.only(
-                                                              top: 10,
-                                                              left: 10,
-                                                              right: 10),
-                                                      border:
-                                                          OutlineInputBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          8.0)),
-                                                    ),
-                                                    onChanged: (value) {},
-                                                    validator: (String? val) {},
-                                                    onSaved: (String? val) {},
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              child: const Text('Next'),
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
+                                    Navigator.push(
+                                        context,
+                                        customPageRouteForNavigation(
+                                            const CreateNewProject()));
                                   },
                                   child: Row(children: [
                                     const Icon(

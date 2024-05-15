@@ -27,3 +27,8 @@ class GetProjectsListEvent extends UserEvent {
 
 class GetColumnsEvent extends UserEvent {}
 
+class CreateProjectEvent extends UserEvent {
+  final String clientId;
+  final String projectName;
+  const CreateProjectEvent({required this.clientId, required this.projectName});
+}
