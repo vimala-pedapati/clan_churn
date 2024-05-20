@@ -40,6 +40,8 @@ class CreateProjectEvent extends UserEvent {
   const CreateProjectEvent({required this.clientId, required this.projectName});
 }
 
+class ClearCreateProjectEvent extends UserEvent{}
+
 class ReplaceColumnsEvent extends UserEvent {
   final List<ColumnDetails> columns;
   final int index;

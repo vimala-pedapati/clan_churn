@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:html';
 
 import 'package:clan_churn/api_repos/models/column_model.dart';
@@ -67,8 +66,7 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
 
     if (context.read<UserBloc>().state.createdProject != null) {
       setState(() {
-        projectController.text =
-            context.read<UserBloc>().state.createdProject!.name;
+        projectController.text = context.read<UserBloc>().state.createdProject!.name;
         projectName = context.read<UserBloc>().state.createdProject!.name;
       });
     }
@@ -265,7 +263,7 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                           spacing: 0, // Horizontal spacing
                           runSpacing: 0, // Vertical spacing
                           children:
-                              List.generate(state.columnsList.length, (index) { 
+                              List.generate(state.columnsList.length, (index) {
                             return Row(
                               children: [
                                 Checkbox(
@@ -302,7 +300,7 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                                           width: 300,
                                           child: TextFormField(
                                             controller: state
-                                                .customerColumnNames[index], 
+                                                .customerColumnNames[index],
                                             cursorHeight: 15,
                                             onChanged: (value) {
                                               // Create a copy of the list of controllers
@@ -314,7 +312,7 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                                               controllers[index].text = value;
 
                                               // Get the current cursor position
-                                              int cursorPosition =value.length;
+                                              int cursorPosition = value.length;
 
                                               // Update the selection of the controller at the specified index
                                               controllers[index].selection =

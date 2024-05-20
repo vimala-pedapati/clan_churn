@@ -8,7 +8,6 @@ import 'package:clan_churn/utils/typography.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 
 class ProjectsViewComponent extends StatefulWidget {
   final double width;
@@ -18,14 +17,13 @@ class ProjectsViewComponent extends StatefulWidget {
   State<ProjectsViewComponent> createState() => _ProjectsViewComponentState();
 }
 
-class _ProjectsViewComponentState extends State<ProjectsViewComponent> {
+class _ProjectsViewComponentState extends State<ProjectsViewComponent>  {
   @override
   void initState() {
     if (context.read<UserBloc>().state.selectedClient != null) {
       context.read<UserBloc>().add(GetProjectsListEvent(
           clientId: context.read<UserBloc>().state.selectedClient!.id));
     }
-
     super.initState();
   }
 
@@ -105,6 +103,9 @@ class _ProjectsViewComponentState extends State<ProjectsViewComponent> {
                                 ),
                                 ElevatedButton(
                                   onPressed: () {
+                                    context
+                                        .read<UserBloc>()
+                                        .add(ClearCreateProjectEvent());
                                     Navigator.push(
                                         context,
                                         customPageRouteForNavigation(

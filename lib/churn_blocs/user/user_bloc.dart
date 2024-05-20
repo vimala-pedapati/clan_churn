@@ -22,6 +22,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     on<GetProjectsListEvent>(_onGetProjectsListEvent);
     on<GetColumnsEvent>(_onGetColumnsEvent);
     on<CreateProjectEvent>(_onCreateProjectEvent);
+    on<ClearCreateProjectEvent>(_onClearCreateProjectEvent);
     on<ReplaceColumnsEvent>(_onReplaceColumnsEvent);
     on<AddColumnsToProjectEvent>(_onAddColumnsToProjectEvent);
     on<SetCreatedProjectEvent>(_onSetCreatedProjectEvent);
@@ -100,6 +101,18 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         inputSheet: '',
       )));
     }
+  }
+
+  _onClearCreateProjectEvent(
+      ClearCreateProjectEvent event, Emitter<UserState> emit) {
+    emit(state.copyWith(
+        createdProject: const ProjectDetails(
+      id: "",
+      name: '',
+      inputColumns: [],
+      projectStatus: '',
+      inputSheet: '',
+    )));
   }
 
   _onReplaceColumnsEvent(ReplaceColumnsEvent event, Emitter<UserState> emit) {
