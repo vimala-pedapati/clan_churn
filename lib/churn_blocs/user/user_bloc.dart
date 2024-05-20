@@ -31,13 +31,15 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     log("user profile: $result");
     if (result != null) {
       emit(state.copyWith(user: result));
-    }
+    } else {}
   }
 
   _onClientsEvent(GetClientsEvent event, Emitter<UserState> emit) async {
     final result = await apiRepository.getClientsList();
     if (result != null) {
       emit(state.copyWith(clientList: result));
+    } else {
+      emit(state.copyWith(clientList: []));
     }
   }
 
@@ -56,6 +58,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         await apiRepository.getProjectDetails(clientId: event.clientId);
     if (result != null) {
       emit(state.copyWith(projectsList: result));
+    } else {
+      emit(state.copyWith(projectsList: []));
     }
   }
 
@@ -63,6 +67,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     final result = await apiRepository.getAllColumns();
     if (result != null) {
       emit(state.copyWith(columnsList: result));
+    } else {
+      emit(state.copyWith(columnsList: []));
     }
   }
 
@@ -75,7 +81,18 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       final columnsResult = await apiRepository.getAllColumns();
       if (columnsResult != null) {
         emit(state.copyWith(columnsList: columnsResult));
+      } else {
+        emit(state.copyWith(columnsList: []));
       }
+    } else {
+      emit(state.copyWith(
+          createdProject: const ProjectDetails(
+        id: "",
+        name: '',
+        inputColumns: [],
+        projectStatus: '',
+        inputSheet: '',
+      )));
     }
   }
 
@@ -89,13 +106,14 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     List a = [];
     if (state.createdProject != null) {
       for (var i in state.columnsList) {
-        if (i.isUserCheckedIn) {
-          a.add({
-            "column_id": i.id,
-            "project_id": state.createdProject!.id,
-            "add": true
-          });
-        }
+        // if (i.isUserCheckedIn) {
+        a.add({
+          "column_id": i.id,
+          "project_id": state.createdProject!.id,
+          "add": i.isMandatory,
+          "customer_column_name": i.customerColumnName
+        });
+        // }
       }
       // print(a);
       final result = await apiRepository.addColumnsToProject(columnsToAdd: a);

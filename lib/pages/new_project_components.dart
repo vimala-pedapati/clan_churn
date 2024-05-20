@@ -253,58 +253,69 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                   child: AbsorbPointer(
                     absorbing: projectName.isEmpty,
                     child: Opacity(
-                      opacity: projectName.isEmpty ? 0.4 : 1.0,
+                      opacity:
+                          (projectName.isEmpty)
+                              ? 0.4
+                              :  1.0,
+                      // opacity:
+                      //     (projectName.isEmpty || state.createdProject == null)
+                      //         ? 0.4
+                      //         : (state.createdProject!.id.isEmpty)
+                      //             ? 0.4
+                      //             : 1.0,
                       child: SingleChildScrollView(
                         child: GridView.builder(
                           physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
+                          padding: EdgeInsets.zero,
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3,
+                            crossAxisCount: 2,
                             childAspectRatio: 5,
+                            mainAxisSpacing: 0,
+                            crossAxisSpacing: 0,
                           ),
                           itemCount: state.columnsList.length,
                           itemBuilder: (context, index) {
-                            return Row(
-                              children: [
-                                Checkbox(
-                                  value:
-                                      state.columnsList[index].isUserCheckedIn,
-                                  onChanged: state
-                                          .columnsList[index].isMandatory
-                                      ? null
-                                      : (value) {
-                                          ColumnDetails a = state
-                                              .columnsList[index]
-                                              .copyWith(isUserCheckedIn: value);
-                                          List<ColumnDetails> b =
-                                              state.columnsList.toList();
-                                          b[index] = a;
-                                          log("$a");
-                                          log("/");
-                                          log("${b[index]}");
-
-                                          context.read<UserBloc>().add(
-                                              ReplaceColumnsEvent(
-                                                  columns: b, index: index));
-                                        },
-                                ),
-                                Expanded(
-                                  // Use Expanded to allow the Text widget to take remaining space
-                                  child: Column(
-                                    // Wrap the Text widget in a Column
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment
-                                        .start, // Align text to the start of the column
-                                    children: [
-                                      Text(
-                                        state.columnsList[index].columnName,
-                                        overflow: TextOverflow.visible,
-                                      ),
-                                    ],
+                            return Container(
+                              color: Colors.amber,
+                              child: Row(
+                                children: [
+                                  Checkbox(
+                                    value:
+                                        state.columnsList[index].isUserCheckedIn,
+                                    onChanged: state
+                                            .columnsList[index].isMandatory
+                                        ? null
+                                        : (value) {
+                                            ColumnDetails a = state
+                                                .columnsList[index]
+                                                .copyWith(isUserCheckedIn: value);
+                                            List<ColumnDetails> b =
+                                                state.columnsList.toList();
+                                            b[index] = a;
+                                            context.read<UserBloc>().add(
+                                                ReplaceColumnsEvent(
+                                                    columns: b, index: index));
+                                          },
                                   ),
-                                ),
-                              ],
+                                  Expanded(
+                                    // Use Expanded to allow the Text widget to take remaining space
+                                    child: Column(
+                                      // Wrap the Text widget in a Column
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment
+                                          .start, // Align text to the start of the column
+                                      children: [
+                                        Text(
+                                          state.columnsList[index].columnName,
+                                          overflow: TextOverflow.visible,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
                             );
                           },
                         ),
@@ -317,14 +328,17 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     ElevatedButton(
-                      onPressed: projectName.isEmpty
-                          ? null
-                          : () {
-                              context
-                                  .read<UserBloc>()
-                                  .add(AddColumnsToProjectEvent());
-                              showDownloadDialog(context);
-                            },
+                      onPressed:
+                          (projectName.isEmpty || state.createdProject == null)
+                              ? null
+                              : (state.createdProject!.id.isEmpty)
+                                  ? null
+                                  : () {
+                                      context
+                                          .read<UserBloc>()
+                                          .add(AddColumnsToProjectEvent());
+                                      showDownloadDialog(context);
+                                    },
                       child: const Text("Next"),
                     ),
                   ],
