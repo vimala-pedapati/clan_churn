@@ -9,8 +9,9 @@ class UserState extends Equatable {
             selectedClient: null,
             projectsList: const [],
             columnsList: const [],
-            createdProject: null, 
-            projectCreating: false);
+            createdProject: null,
+            projectCreating: false,
+            customerColumnNames: const []);
   final User? user;
   final List<ClientDetails> clientList;
   final bool isExpanded;
@@ -19,6 +20,7 @@ class UserState extends Equatable {
   final List<ColumnDetails> columnsList;
   final ProjectDetails? createdProject;
   final bool projectCreating;
+  final List<TextEditingController> customerColumnNames;
   const UserState(
       {required this.user,
       required this.clientList,
@@ -26,7 +28,9 @@ class UserState extends Equatable {
       required this.selectedClient,
       required this.projectsList,
       required this.columnsList,
-      required this.createdProject, required this.projectCreating});
+      required this.createdProject,
+      required this.projectCreating,
+      required this.customerColumnNames});
 
   UserState copyWith(
       {User? user,
@@ -36,7 +40,8 @@ class UserState extends Equatable {
       List<ProjectDetails>? projectsList,
       List<ColumnDetails>? columnsList,
       ProjectDetails? createdProject,
-      bool? projectCreating}) {
+      bool? projectCreating,
+      List<TextEditingController>? customerColumnNames}) {
     return UserState(
         user: user ?? this.user,
         clientList: clientList ?? this.clientList,
@@ -45,7 +50,8 @@ class UserState extends Equatable {
         projectsList: projectsList ?? this.projectsList,
         columnsList: columnsList ?? this.columnsList,
         createdProject: createdProject ?? this.createdProject,
-        projectCreating:  projectCreating ?? this.projectCreating);
+        projectCreating: projectCreating ?? this.projectCreating,
+        customerColumnNames: customerColumnNames ?? this.customerColumnNames);
   }
 
   @override
@@ -57,6 +63,7 @@ class UserState extends Equatable {
         projectsList,
         columnsList,
         createdProject,
-        projectCreating
+        projectCreating,
+        customerColumnNames
       ];
 }

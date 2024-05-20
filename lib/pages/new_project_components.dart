@@ -72,7 +72,7 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
         projectName = context.read<UserBloc>().state.createdProject!.name;
       });
     }
-    context.read<UserBloc>().add(GetColumnsEvent());
+    context.read<UserBloc>().add(const GetColumnsEvent());
     super.initState();
   }
 
@@ -253,71 +253,105 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                   child: AbsorbPointer(
                     absorbing: projectName.isEmpty,
                     child: Opacity(
+                      // opacity: (projectName.isEmpty) ? 0.4 : 1.0,
                       opacity:
-                          (projectName.isEmpty)
+                          (projectName.isEmpty || state.createdProject == null)
                               ? 0.4
-                              :  1.0,
-                      // opacity:
-                      //     (projectName.isEmpty || state.createdProject == null)
-                      //         ? 0.4
-                      //         : (state.createdProject!.id.isEmpty)
-                      //             ? 0.4
-                      //             : 1.0,
+                              : (state.createdProject!.id.isEmpty)
+                                  ? 0.4
+                                  : 1.0,
                       child: SingleChildScrollView(
-                        child: GridView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          padding: EdgeInsets.zero,
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            childAspectRatio: 5,
-                            mainAxisSpacing: 0,
-                            crossAxisSpacing: 0,
-                          ),
-                          itemCount: state.columnsList.length,
-                          itemBuilder: (context, index) {
-                            return Container(
-                              color: Colors.amber,
-                              child: Row(
-                                children: [
-                                  Checkbox(
-                                    value:
-                                        state.columnsList[index].isUserCheckedIn,
-                                    onChanged: state
-                                            .columnsList[index].isMandatory
-                                        ? null
-                                        : (value) {
-                                            ColumnDetails a = state
-                                                .columnsList[index]
-                                                .copyWith(isUserCheckedIn: value);
-                                            List<ColumnDetails> b =
-                                                state.columnsList.toList();
-                                            b[index] = a;
-                                            context.read<UserBloc>().add(
-                                                ReplaceColumnsEvent(
-                                                    columns: b, index: index));
-                                          },
+                        child: Wrap(
+                          spacing: 0, // Horizontal spacing
+                          runSpacing: 0, // Vertical spacing
+                          children:
+                              List.generate(state.columnsList.length, (index) {
+                            // TextEditingController customerColumnNameController =
+                            //     TextEditingController(
+                            //         text: state
+                            //             .columnsList[index].customerColumnName);
+                            return Row(
+                              children: [
+                                Checkbox(
+                                  value:
+                                      state.columnsList[index].isUserCheckedIn,
+                                  onChanged: state
+                                          .columnsList[index].isMandatory
+                                      ? null
+                                      : (value) {
+                                          ColumnDetails a = state
+                                              .columnsList[index]
+                                              .copyWith(isUserCheckedIn: value);
+                                          List<ColumnDetails> b =
+                                              state.columnsList.toList();
+                                          b[index] = a;
+                                          context.read<UserBloc>().add(
+                                              ReplaceColumnsEvent(
+                                                  columns: b, index: index));
+                                        },
+                                ),
+                                Expanded(
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        state.columnsList[index].columnName,
+                                        overflow: TextOverflow.visible,
+                                      ),
+                                      SizedBox(
+                                          height: 30,
+                                          width: 300,
+                                          child: TextFormField(
+                                            controller: state
+                                                .customerColumnNames[index],
+                                            // controller:
+                                            //     customerColumnNames[index],
+                                            cursorHeight: 15,
+                                            onChanged: (value) {
+                                              List<TextEditingController> a =
+                                                  state.customerColumnNames
+                                                      .toList();
+                                              a[index].text = value;
+                                              a[index].selection =
+                                                  TextSelection.fromPosition(
+                                                      TextPosition(
+                                                          offset:
+                                                              value.length));
+                                              context.read<UserBloc>().add(
+                                                  CustomerColumnNamesEvent(
+                                                      customerColumnNames: a));
+                                              // log("on field submitted triggered");
+                                              // state.columnsList[index].copyWith(
+                                              //     customerColumnName: value);
+                                              // ColumnDetails a = state
+                                              //     .columnsList[index]
+                                              //     .copyWith(
+                                              //         customerColumnName:
+                                              //             value);
+                                              // log("$a");
+                                              // List<ColumnDetails> b =
+                                              //     state.columnsList.toList();
+                                              // b[index] = a;
+                                              // context.read<UserBloc>().add(
+                                              //     ReplaceColumnsEvent(
+                                              //         columns: b,
+                                              //         index: index));
+                                              // log("${state.columnsList[index]}");
+                                            },
+                                            decoration: const InputDecoration(
+                                                contentPadding: EdgeInsets.only(
+                                                    left: 10, right: 10),
+                                                border: OutlineInputBorder()),
+                                          ))
+                                    ],
                                   ),
-                                  Expanded(
-                                    // Use Expanded to allow the Text widget to take remaining space
-                                    child: Column(
-                                      // Wrap the Text widget in a Column
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment
-                                          .start, // Align text to the start of the column
-                                      children: [
-                                        Text(
-                                          state.columnsList[index].columnName,
-                                          overflow: TextOverflow.visible,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
+                                ),
+                              ],
                             );
-                          },
+                          }),
                         ),
                       ),
                     ),
@@ -334,6 +368,7 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                               : (state.createdProject!.id.isEmpty)
                                   ? null
                                   : () {
+                                      // print("${state.customerColumnNames}");
                                       context
                                           .read<UserBloc>()
                                           .add(AddColumnsToProjectEvent());

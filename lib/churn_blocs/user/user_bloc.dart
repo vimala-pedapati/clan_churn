@@ -7,6 +7,7 @@ import 'package:clan_churn/api_repos/models/column_model.dart';
 import 'package:clan_churn/api_repos/models/project_model.dart';
 import 'package:clan_churn/api_repos/models/user_model.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 
 part 'user_event.dart';
 part 'user_state.dart';
@@ -67,6 +68,11 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     final result = await apiRepository.getAllColumns();
     if (result != null) {
       emit(state.copyWith(columnsList: result));
+      List<TextEditingController> a = [];
+      for (var i in result) {
+        a.add(TextEditingController(text: i.customerColumnName));
+      }
+      emit(state.copyWith(customerColumnNames: a));
     } else {
       emit(state.copyWith(columnsList: []));
     }
@@ -105,13 +111,13 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     emit(state.copyWith(projectCreating: true));
     List a = [];
     if (state.createdProject != null) {
-      for (var i in state.columnsList) {
+      for (int i = 0; i < state.columnsList.length; i++) {
         // if (i.isUserCheckedIn) {
         a.add({
-          "column_id": i.id,
+          "column_id": state.columnsList[i].id,
           "project_id": state.createdProject!.id,
-          "add": i.isMandatory,
-          "customer_column_name": i.customerColumnName
+          "add": state.columnsList[i].isMandatory,
+          "customer_column_name": state.customerColumnNames[i].text
         });
         // }
       }

@@ -62,5 +62,6 @@ class ColumnDetails extends Equatable {
   List<Object?> get props => [
         columnName,
         isUserCheckedIn,
+        customerColumnName
       ];
 }

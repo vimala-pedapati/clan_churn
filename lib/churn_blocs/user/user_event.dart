@@ -25,7 +25,14 @@ class GetProjectsListEvent extends UserEvent {
   const GetProjectsListEvent({required this.clientId});
 }
 
-class GetColumnsEvent extends UserEvent {}
+class GetColumnsEvent extends UserEvent {
+  const GetColumnsEvent();
+}
+
+class CustomerColumnNamesEvent extends UserEvent {
+  final List<TextEditingController> customerColumnNames;
+  const CustomerColumnNamesEvent({required this.customerColumnNames});
+}
 
 class CreateProjectEvent extends UserEvent {
   final String clientId;
