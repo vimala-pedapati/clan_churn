@@ -265,11 +265,7 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                           spacing: 0, // Horizontal spacing
                           runSpacing: 0, // Vertical spacing
                           children:
-                              List.generate(state.columnsList.length, (index) {
-                            // TextEditingController customerColumnNameController =
-                            //     TextEditingController(
-                            //         text: state
-                            //             .columnsList[index].customerColumnName);
+                              List.generate(state.columnsList.length, (index) { 
                             return Row(
                               children: [
                                 Checkbox(
@@ -306,40 +302,35 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                                           width: 300,
                                           child: TextFormField(
                                             controller: state
-                                                .customerColumnNames[index],
-                                            // controller:
-                                            //     customerColumnNames[index],
+                                                .customerColumnNames[index], 
                                             cursorHeight: 15,
                                             onChanged: (value) {
-                                              List<TextEditingController> a =
-                                                  state.customerColumnNames
-                                                      .toList();
-                                              a[index].text = value;
-                                              a[index].selection =
-                                                  TextSelection.fromPosition(
-                                                      TextPosition(
-                                                          offset:
-                                                              value.length));
+                                              // Create a copy of the list of controllers
+                                              List<TextEditingController>
+                                                  controllers = List.from(state
+                                                      .customerColumnNames);
+
+                                              // Update the text of the controller at the specified index
+                                              controllers[index].text = value;
+
+                                              // Get the current cursor position
+                                              int cursorPosition =value.length;
+
+                                              // Update the selection of the controller at the specified index
+                                              controllers[index].selection =
+                                                  TextSelection.collapsed(
+                                                      offset: cursorPosition
+                                                      //   TextSelection.fromPosition(
+                                                      // TextPosition(
+                                                      //     offset: cursorPosition),
+                                                      );
+
+                                              // Dispatch an event to update the state with the modified list of controllers
                                               context.read<UserBloc>().add(
-                                                  CustomerColumnNamesEvent(
-                                                      customerColumnNames: a));
-                                              // log("on field submitted triggered");
-                                              // state.columnsList[index].copyWith(
-                                              //     customerColumnName: value);
-                                              // ColumnDetails a = state
-                                              //     .columnsList[index]
-                                              //     .copyWith(
-                                              //         customerColumnName:
-                                              //             value);
-                                              // log("$a");
-                                              // List<ColumnDetails> b =
-                                              //     state.columnsList.toList();
-                                              // b[index] = a;
-                                              // context.read<UserBloc>().add(
-                                              //     ReplaceColumnsEvent(
-                                              //         columns: b,
-                                              //         index: index));
-                                              // log("${state.columnsList[index]}");
+                                                    CustomerColumnNamesEvent(
+                                                        customerColumnNames:
+                                                            controllers),
+                                                  );
                                             },
                                             decoration: const InputDecoration(
                                                 contentPadding: EdgeInsets.only(
