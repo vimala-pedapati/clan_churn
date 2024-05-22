@@ -1,4 +1,5 @@
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
+import 'package:clan_churn/components/input_fields.dart';
 import 'package:clan_churn/components/nav_bar.dart';
 import 'package:clan_churn/components/projects_view_component.dart';
 import 'package:clan_churn/components/side_bar.dart';
@@ -91,6 +92,7 @@ class GetInputFieldsComponent extends StatelessWidget {
                 const GetInitializationDropDown(),
               ],
             ),
+            GetFields()
           ]),
         );
       },
@@ -178,49 +180,5 @@ class _GetInitializationDropDownState extends State<GetInitializationDropDown> {
   }
 }
 
-class GetFields extends StatelessWidget {
-  const GetFields({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      child: Column(children: []),
-    );
-  }
-}
 
-class GetTextFormField extends StatelessWidget {
-  const GetTextFormField({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final h = MediaQuery.of(context).size.height;
-    final w = MediaQuery.of(context).size.width;
-    return Container(
-      width: w * 0.25,
-      height: 30,
-      decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(8.0)),
-      margin: const EdgeInsets.only(top: 5, bottom: 20),
-      child: TextFormField(
-        // controller: clientController,
-        keyboardType: TextInputType.emailAddress,
-        autofocus: false,
-        cursorHeight: 15,
-        readOnly: true,
-        decoration: InputDecoration(
-          hintText: 'Enter Client ID',
-          hintStyle: ClanChurnTypography.font12500
-              .copyWith(color: Theme.of(context).colorScheme.tertiary),
-          contentPadding: const EdgeInsets.only(top: 10, left: 10, right: 10),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.0)),
-        ),
-        onChanged: (value) {},
-        validator: (String? val) {},
-        onSaved: (String? val) {},
-      ),
-    );
-  }
-}

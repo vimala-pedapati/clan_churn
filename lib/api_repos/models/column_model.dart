@@ -15,7 +15,7 @@ class ColumnDetails extends Equatable {
   final String columnName;
   final bool isMandatory;
   final bool isUserCheckedIn;
-  final String customerColumnName;
+  final String clientColumnName;
 
   const ColumnDetails(
       {required this.id,
@@ -23,7 +23,7 @@ class ColumnDetails extends Equatable {
       required this.columnName,
       required this.isMandatory,
       required this.isUserCheckedIn,
-      required this.customerColumnName});
+      required this.clientColumnName});
 
   factory ColumnDetails.fromJson(Map<String, dynamic> json) => ColumnDetails(
       id: json["id"],
@@ -31,15 +31,15 @@ class ColumnDetails extends Equatable {
       columnName: json["column_name"],
       isMandatory: json["is_mandatory"],
       isUserCheckedIn: json["is_mandatory"] ?? false,
-      customerColumnName:
-          json["customer_column_name"] ?? json["column_name"] ?? "");
+      clientColumnName:
+          json["client_column_name"] ?? json["column_name"] ?? "");
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "sheet_name": sheetName,
         "column_name": columnName,
         "is_mandatory": isMandatory,
-        "customer_column_name": customerColumnName
+        "client_column_name": clientColumnName
       };
 
   ColumnDetails copyWith(
@@ -48,20 +48,20 @@ class ColumnDetails extends Equatable {
       String? columnName,
       bool? isMandatory,
       bool? isUserCheckedIn,
-      String? customerColumnName}) {
+      String? clientColumnName}) {
     return ColumnDetails(
         id: id ?? this.id,
         sheetName: sheetName ?? this.sheetName,
         columnName: columnName ?? this.columnName,
         isMandatory: isMandatory ?? this.isMandatory,
         isUserCheckedIn: isUserCheckedIn ?? this.isUserCheckedIn,
-        customerColumnName: customerColumnName ?? this.customerColumnName);
+        clientColumnName: clientColumnName ?? this.clientColumnName);
   }
 
   @override
   List<Object?> get props => [
         columnName,
         isUserCheckedIn,
-        customerColumnName
+        clientColumnName
       ];
 }

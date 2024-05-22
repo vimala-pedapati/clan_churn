@@ -71,7 +71,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       emit(state.copyWith(columnsList: result));
       List<TextEditingController> a = [];
       for (var i in result) {
-        a.add(TextEditingController(text: i.customerColumnName));
+        a.add(TextEditingController(text: i.clientColumnName));
       }
       emit(state.copyWith(customerColumnNames: a));
     } else {
@@ -130,7 +130,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
           "column_id": state.columnsList[i].id,
           "project_id": state.createdProject!.id,
           "add": state.columnsList[i].isMandatory,
-          "customer_column_name": state.customerColumnNames[i].text
+          "client_column_name": state.customerColumnNames[i].text
         });
         // }
       }

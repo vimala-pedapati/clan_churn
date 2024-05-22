@@ -166,6 +166,7 @@ class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
                   animationDuration: const Duration(seconds: 2),
                   curve: Curves.easeInOutCubicEmphasized,
                   direction: Direction.horizontal,
+                  
                   offset: 0.9,
                   child: Text(
                     "Password",
@@ -190,6 +191,8 @@ class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
                       controller: passwordController,
                       keyboardType: TextInputType.emailAddress,
                       autofocus: false,
+                      obscureText: true,
+                      obscuringCharacter: '*',
                       decoration: InputDecoration(
                         hintText: 'Enter Password',
                         hintStyle: ClanChurnTypography.font18500
