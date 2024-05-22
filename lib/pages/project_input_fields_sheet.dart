@@ -93,7 +93,8 @@ class GetInputFieldsComponent extends StatelessWidget {
               ],
             ),
             ClanChurnSpacing.h10,
-            const GetFields()
+            // const GetFields()
+            SignUpContainer()
           ]),
         );
       },
