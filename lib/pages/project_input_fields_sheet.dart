@@ -92,7 +92,8 @@ class GetInputFieldsComponent extends StatelessWidget {
                 const GetInitializationDropDown(),
               ],
             ),
-            GetFields()
+            ClanChurnSpacing.h10,
+            const GetFields()
           ]),
         );
       },
