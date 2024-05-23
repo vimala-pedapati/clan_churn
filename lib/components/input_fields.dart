@@ -1,9 +1,11 @@
 import 'package:clan_churn/api_repos/models/project_model.dart';
+import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
 import 'package:clan_churn/utils/input_field_strings.dart';
 import 'package:clan_churn/utils/spacing.dart';
 import 'package:clan_churn/utils/typography.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class InputLabel extends StatelessWidget {
   const InputLabel({super.key, required this.label});
@@ -124,8 +126,6 @@ class _GetInputFieldsState extends State<GetInputFields> {
         label: "department1 covered in the study",
         controller: departments[0],
         textInputType: TextInputType.name,
-        hintText: "hint text",
-        prefixIcon: Icons.person,
         isObscureText: false,
         isEnabled: true,
         textInputAction: TextInputAction.next,
@@ -135,14 +135,156 @@ class _GetInputFieldsState extends State<GetInputFields> {
         label: "designation1 covered in the study",
         controller: designations[0],
         textInputType: TextInputType.name,
-        hintText: "hint text",
-        prefixIcon: Icons.person,
         isObscureText: false,
         isEnabled: true,
         textInputAction: TextInputAction.next,
         textInputFormatterType: TextInputFormatterType.string,
       ));
     });
+
+    if (context.read<UserBloc>().state.selectedClient != null) {
+      setState(() {
+        customerNameController.text =
+            context.read<UserBloc>().state.selectedClient!.name;
+      });
+    }
+    Project? p = context.read<UserBloc>().state.createdProject;
+    if (p != null) {
+      setState(() {
+        projectNameController.text = p.name ?? '';
+        ProjectDetails? pd =
+            context.read<UserBloc>().state.createdProject!.projectDetails;
+        if (pd != null) {
+          projectStartDateController.text = pd.projectStartDate ?? "";
+          studyPeriodBeginningDateController.text =
+              pd.studyPeriodBeginingDate ?? "";
+
+          studyPeriodEndDateController.text = pd.studyPeriodEndDate ?? "";
+
+          earliestDateForDateOfJoiningReleventForTheStudyController.text =
+              pd.earliestDateForDateOfJoiningReleventForTheStudy ?? "";
+
+          endDateForDateOfJoiningReleventForTheStudyController.text =
+              pd.endDateForDateOfJoiningReleventForTheStudy ?? "";
+
+          unitForValuePerformanceController.text =
+              pd.unitForValuePerformance ?? "";
+
+          unitForQuantityPerformanceController.text =
+              pd.unitForQuantityPerformance ?? "";
+
+          projectMaximumResidencyMonthController.text =
+              (pd.projectMaximumResidencyMonth ?? "").toString();
+
+          projectTopOutlierRankForResidencyMonthOfPerformanceMonthController
+                  .text =
+              (pd.projectTopOutlierRankForResidencyMonthOfPerformanceMonth ??
+                      "")
+                  .toString();
+
+          projectBottomOutlierRankForResidencyMonthOfPerformanceMonthController
+                  .text =
+              (pd.projectBottomOutlierRankForResidencyMonthOfPerformanceMonth ??
+                      "")
+                  .toString();
+
+          projectMaxPerformanceValueTargetController.text =
+              (pd.projectMaxPerformanceValueTarget ?? "").toString();
+
+          projectTopOutlierRankForMaximumPerformanceValueTargetController.text =
+              (pd.projectTopOutlierRankForMaximumPerformanceValueTarget ?? "")
+                  .toString();
+
+          projectBottomOutlierRankForMaximumPerformanceValueTargetController
+                  .text =
+              (pd.projectBottomOutlierRankForMaximumPerformanceValueTarget ??
+                      "")
+                  .toString();
+
+          projectMaximumPerformanceValueActualController.text =
+              (pd.projectMaximumPerformanceValueActual ?? "").toString();
+
+          projectTopOutlierRankForMaximumPerformanceValueActualController.text =
+              (pd.projectTopOutlierRankForMaximumPerformanceValueActual ?? "")
+                  .toString();
+
+          projectBottomOutlierRankForMaximumPerformanceValueActualController
+                  .text =
+              (pd.projectBottomOutlierRankForMaximumPerformanceValueActual ??
+                      "")
+                  .toString();
+
+          //  projectMaximumPerformanceQuantityActualController.text= (pd.projectMaximumPerformanceQuantityActual ?? "").toString();
+          projectMaximumPerformanceQuantityActualController.text =
+              ("").toString();
+
+          // projectTopOutlierRankForMaximumPerformanceQuantityActualController.text= (pd.projectTopOutlierRankForMaximumPerformanceQuantityActual ?? "").toString();
+          projectTopOutlierRankForMaximumPerformanceQuantityActualController
+              .text = ("").toString();
+
+          // projectBottomOutlierRankMaximumPerformanceQuantityActualController.text= (pd.projectBottomOutlierRankMaximumPerformanceQuantityActual ?? "").toString();
+          projectBottomOutlierRankMaximumPerformanceQuantityActualController
+              .text = ("").toString();
+
+          projectMaximumPerformanceQuantityTargetController.text =
+              (pd.projectMaximumPerformanceQuantityTarget ?? "").toString();
+
+          projectTopOutlierRankForMaximumPerformanceQuantityTargetController
+                  .text =
+              (pd.projectTopOutlierRankForMaximumPerformanceQuantityTarget ??
+                      "")
+                  .toString();
+
+          projectBottomOutlierRankForMaximumPerformanceQuantityTargetController
+                  .text =
+              (pd.projectBottomOutlierRankForMaximumPerformanceQuantityTarget ??
+                      "")
+                  .toString();
+
+          projectMaximumOverAllPerformanceAchievementPerController.text =
+              (pd.projectMaximumOverAllPerformanceAchievementPer ?? "")
+                  .toString();
+
+          projectTopOutlierRankForMaximumOverAllPerformanceAchievementPerController
+                  .text =
+              (pd.projectTopOutlierRankForMaximumOverAllPerformanceAchievementPer ??
+                      "")
+                  .toString();
+
+          projectBottomOutlierRankForMaximumOverAllPerformanceAchievementPerController
+                  .text =
+              (pd.projectBottomOutlierRankForMaximumOverAllPerformanceAchievementPer ??
+                      "")
+                  .toString();
+
+          projectMaximumMonthlyFixedSalaryIndexController.text =
+              (pd.projectMaximumMonthlyFixedSalaryIndex ?? "").toString();
+
+          projectTopOutlierRankForMaximumMonthlyFixedSalaryIndexController
+                  .text =
+              (pd.projectTopOutlierRankForMaximumMonthlyFixedSalaryIndex ?? "")
+                  .toString();
+
+          projectBottomOutlierRankForMaximumMonthlyFixedSalaryIndexController
+                  .text =
+              (pd.projectBottomOutlierRankForMaximumMonthlyFixedSalaryIndex ??
+                      "")
+                  .toString();
+
+          projectMaximumMonthlyIncentiveController.text =
+              (pd.projectMaximumMonthlyIncentive ?? "").toString();
+
+          projectTopOutlierRankForMaximumMonthlyIncentiveController.text =
+              (pd.projectTopOutlierRankForMaximumMonthlyIncentive ?? "")
+                  .toString();
+
+          projectBottomOutlierRankForMaximumMonthlyIncentiveController.text =
+              (pd.projectBottomOutlierRankForMaximumMonthlyIncentive ?? "")
+                  .toString();
+        }
+      });
+    }
+
     super.initState();
   }
 
@@ -202,6 +344,20 @@ class _GetInputFieldsState extends State<GetInputFields> {
     super.dispose();
   }
 
+  Future<String> selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2101),
+    );
+    if (picked != null) {
+      return picked.toString();
+    } else {
+      return '';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -223,25 +379,23 @@ class _GetInputFieldsState extends State<GetInputFields> {
                             label: InputFieldLabels.customerName,
                             controller: customerNameController,
                             textInputType: TextInputType.name,
-                            hintText: "hint text",
-                            prefixIcon: Icons.person,
                             isObscureText: false,
                             isEnabled: true,
                             textInputAction: TextInputAction.next,
                             textInputFormatterType:
                                 TextInputFormatterType.string,
+                            readOnly: true,
                           ),
                           CustomTextFormField(
                             label: InputFieldLabels.projectName,
                             controller: projectNameController,
                             textInputType: TextInputType.name,
-                            hintText: "hint text",
-                            prefixIcon: Icons.person,
                             isObscureText: false,
                             isEnabled: true,
                             textInputAction: TextInputAction.next,
                             textInputFormatterType:
                                 TextInputFormatterType.string,
+                            readOnly: true,
                           ),
                         ],
                       ),
@@ -252,8 +406,6 @@ class _GetInputFieldsState extends State<GetInputFields> {
                             label: InputFieldLabels.projectOwner,
                             controller: projectOwnerController,
                             textInputType: TextInputType.name,
-                            hintText: "hint text",
-                            prefixIcon: Icons.person,
                             isObscureText: false,
                             isEnabled: true,
                             textInputAction: TextInputAction.next,
@@ -263,9 +415,18 @@ class _GetInputFieldsState extends State<GetInputFields> {
                           CustomTextFormField(
                             label: InputFieldLabels.projectStartDate,
                             controller: projectStartDateController,
+                            hintText: 'Select Date',
+                            suffixIcon: IconButton(
+                              icon: const Icon(Icons.calendar_month),
+                              onPressed: () async {
+                                setState(() async {
+                                  projectStartDateController.text =
+                                      await selectDate(context);
+                                });
+                              },
+                            ),
+                            readOnly: true,
                             textInputType: TextInputType.name,
-                            hintText: "hint text",
-                            prefixIcon: Icons.person,
                             isObscureText: false,
                             isEnabled: true,
                             textInputAction: TextInputAction.next,
@@ -281,8 +442,17 @@ class _GetInputFieldsState extends State<GetInputFields> {
                             label: InputFieldLabels.studyPeriodBeginningDate,
                             controller: studyPeriodBeginningDateController,
                             textInputType: TextInputType.name,
-                            hintText: "hint text",
-                            prefixIcon: Icons.person,
+                            hintText: 'Select Date',
+                            suffixIcon: IconButton(
+                              icon: const Icon(Icons.calendar_month),
+                              onPressed: () async {
+                                setState(() async {
+                                  studyPeriodBeginningDateController.text =
+                                      await selectDate(context);
+                                });
+                              },
+                            ),
+                            readOnly: true,
                             isObscureText: false,
                             isEnabled: true,
                             textInputAction: TextInputAction.next,
@@ -293,10 +463,19 @@ class _GetInputFieldsState extends State<GetInputFields> {
                             label: InputFieldLabels.studyPeriodEndDate,
                             controller: studyPeriodEndDateController,
                             textInputType: TextInputType.name,
-                            hintText: "hint text",
-                            prefixIcon: Icons.person,
                             isObscureText: false,
                             isEnabled: true,
+                            hintText: 'Select Date',
+                            suffixIcon: IconButton(
+                              icon: const Icon(Icons.calendar_month),
+                              onPressed: () async {
+                                setState(() async {
+                                  studyPeriodEndDateController.text =
+                                      await selectDate(context);
+                                });
+                              },
+                            ),
+                            readOnly: true,
                             textInputAction: TextInputAction.next,
                             textInputFormatterType:
                                 TextInputFormatterType.string,
@@ -312,8 +491,17 @@ class _GetInputFieldsState extends State<GetInputFields> {
                             controller:
                                 earliestDateForDateOfJoiningReleventForTheStudyController,
                             textInputType: TextInputType.name,
-                            hintText: "hint text",
-                            prefixIcon: Icons.person,
+                            hintText: 'Select Date',
+                            suffixIcon: IconButton(
+                              icon: const Icon(Icons.calendar_month),
+                              onPressed: () async {
+                                setState(() async {
+                                  earliestDateForDateOfJoiningReleventForTheStudyController
+                                      .text = await selectDate(context);
+                                });
+                              },
+                            ),
+                            readOnly: true,
                             isObscureText: false,
                             isEnabled: true,
                             textInputAction: TextInputAction.next,
@@ -325,9 +513,18 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                 .endDateForDateOfJoiningRelevantForStudy,
                             controller:
                                 endDateForDateOfJoiningReleventForTheStudyController,
+                            hintText: 'Select Date',
+                            suffixIcon: IconButton(
+                              icon: const Icon(Icons.calendar_month),
+                              onPressed: () async {
+                                setState(() async {
+                                  endDateForDateOfJoiningReleventForTheStudyController
+                                      .text = await selectDate(context);
+                                });
+                              },
+                            ),
+                            readOnly: true,
                             textInputType: TextInputType.name,
-                            hintText: "hint text",
-                            prefixIcon: Icons.person,
                             isObscureText: false,
                             isEnabled: true,
                             textInputAction: TextInputAction.next,
@@ -343,8 +540,6 @@ class _GetInputFieldsState extends State<GetInputFields> {
                             label: InputFieldLabels.unitForValuePerformance,
                             controller: unitForValuePerformanceController,
                             textInputType: TextInputType.name,
-                            hintText: "hint text",
-                            prefixIcon: Icons.person,
                             isObscureText: false,
                             isEnabled: true,
                             textInputAction: TextInputAction.next,
@@ -353,8 +548,6 @@ class _GetInputFieldsState extends State<GetInputFields> {
                             label: InputFieldLabels.unitForQuantityPerformance,
                             controller: unitForQuantityPerformanceController,
                             textInputType: TextInputType.name,
-                            hintText: "hint text",
-                            prefixIcon: Icons.person,
                             isObscureText: false,
                             isEnabled: true,
                             textInputAction: TextInputAction.next,
@@ -369,8 +562,6 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                 InputFieldLabels.projectMaximumResidencyMonth,
                             controller: projectMaximumResidencyMonthController,
                             textInputType: TextInputType.name,
-                            hintText: "hint text",
-                            prefixIcon: Icons.person,
                             isObscureText: false,
                             isEnabled: true,
                             textInputAction: TextInputAction.next,
@@ -381,8 +572,6 @@ class _GetInputFieldsState extends State<GetInputFields> {
                             controller:
                                 projectTopOutlierRankForResidencyMonthOfPerformanceMonthController,
                             textInputType: TextInputType.name,
-                            hintText: "hint text",
-                            prefixIcon: Icons.person,
                             isObscureText: false,
                             isEnabled: true,
                             textInputAction: TextInputAction.next,
@@ -398,8 +587,6 @@ class _GetInputFieldsState extends State<GetInputFields> {
                             controller:
                                 projectBottomOutlierRankForResidencyMonthOfPerformanceMonthController,
                             textInputType: TextInputType.name,
-                            hintText: "hint text",
-                            prefixIcon: Icons.person,
                             isObscureText: false,
                             isEnabled: true,
                             textInputAction: TextInputAction.next,
@@ -410,8 +597,6 @@ class _GetInputFieldsState extends State<GetInputFields> {
                             controller:
                                 projectMaxPerformanceValueTargetController,
                             textInputType: TextInputType.name,
-                            hintText: "hint text",
-                            prefixIcon: Icons.person,
                             isObscureText: false,
                             isEnabled: true,
                             textInputAction: TextInputAction.next,
@@ -427,8 +612,6 @@ class _GetInputFieldsState extends State<GetInputFields> {
                             controller:
                                 projectTopOutlierRankForMaximumPerformanceValueTargetController,
                             textInputType: TextInputType.name,
-                            hintText: "hint text",
-                            prefixIcon: Icons.person,
                             isObscureText: false,
                             isEnabled: true,
                             textInputAction: TextInputAction.next,
@@ -439,8 +622,6 @@ class _GetInputFieldsState extends State<GetInputFields> {
                             controller:
                                 projectBottomOutlierRankForMaximumPerformanceValueTargetController,
                             textInputType: TextInputType.name,
-                            hintText: "hint text",
-                            prefixIcon: Icons.person,
                             isObscureText: false,
                             isEnabled: true,
                             textInputAction: TextInputAction.next,
@@ -456,8 +637,6 @@ class _GetInputFieldsState extends State<GetInputFields> {
                             controller:
                                 projectMaximumPerformanceValueActualController,
                             textInputType: TextInputType.name,
-                            hintText: "hint text",
-                            prefixIcon: Icons.person,
                             isObscureText: false,
                             isEnabled: true,
                             textInputAction: TextInputAction.next,
@@ -468,8 +647,6 @@ class _GetInputFieldsState extends State<GetInputFields> {
                             controller:
                                 projectTopOutlierRankForMaximumPerformanceValueActualController,
                             textInputType: TextInputType.name,
-                            hintText: "hint text",
-                            prefixIcon: Icons.person,
                             isObscureText: false,
                             isEnabled: true,
                             textInputAction: TextInputAction.next,
@@ -485,8 +662,6 @@ class _GetInputFieldsState extends State<GetInputFields> {
                             controller:
                                 projectBottomOutlierRankForMaximumPerformanceValueActualController,
                             textInputType: TextInputType.name,
-                            hintText: "hint text",
-                            prefixIcon: Icons.person,
                             isObscureText: false,
                             isEnabled: true,
                             textInputAction: TextInputAction.next,
@@ -497,8 +672,6 @@ class _GetInputFieldsState extends State<GetInputFields> {
                             controller:
                                 projectMaximumPerformanceQuantityActualController,
                             textInputType: TextInputType.name,
-                            hintText: "hint text",
-                            prefixIcon: Icons.person,
                             isObscureText: false,
                             isEnabled: true,
                             textInputAction: TextInputAction.next,
@@ -514,8 +687,6 @@ class _GetInputFieldsState extends State<GetInputFields> {
                             controller:
                                 projectTopOutlierRankForMaximumPerformanceQuantityTargetController,
                             textInputType: TextInputType.name,
-                            hintText: "hint text",
-                            prefixIcon: Icons.person,
                             isObscureText: false,
                             isEnabled: true,
                             textInputAction: TextInputAction.next,
@@ -526,8 +697,6 @@ class _GetInputFieldsState extends State<GetInputFields> {
                             controller:
                                 projectBottomOutlierRankForMaximumPerformanceQuantityTargetController,
                             textInputType: TextInputType.name,
-                            hintText: "hint text",
-                            prefixIcon: Icons.person,
                             isObscureText: false,
                             isEnabled: true,
                             textInputAction: TextInputAction.next,
@@ -543,8 +712,6 @@ class _GetInputFieldsState extends State<GetInputFields> {
                             controller:
                                 projectMaximumPerformanceQuantityActualController,
                             textInputType: TextInputType.name,
-                            hintText: "hint text",
-                            prefixIcon: Icons.person,
                             isObscureText: false,
                             isEnabled: true,
                             textInputAction: TextInputAction.next,
@@ -555,8 +722,6 @@ class _GetInputFieldsState extends State<GetInputFields> {
                             controller:
                                 projectTopOutlierRankForMaximumPerformanceQuantityActualController,
                             textInputType: TextInputType.name,
-                            hintText: "hint text",
-                            prefixIcon: Icons.person,
                             isObscureText: false,
                             isEnabled: true,
                             textInputAction: TextInputAction.next,
@@ -572,8 +737,6 @@ class _GetInputFieldsState extends State<GetInputFields> {
                             controller:
                                 projectBottomOutlierRankMaximumPerformanceQuantityActualController,
                             textInputType: TextInputType.name,
-                            hintText: "hint text",
-                            prefixIcon: Icons.person,
                             isObscureText: false,
                             isEnabled: true,
                             textInputAction: TextInputAction.next,
@@ -584,8 +747,6 @@ class _GetInputFieldsState extends State<GetInputFields> {
                             controller:
                                 projectMaximumOverAllPerformanceAchievementPerController,
                             textInputType: TextInputType.name,
-                            hintText: "hint text",
-                            prefixIcon: Icons.person,
                             isObscureText: false,
                             isEnabled: true,
                             textInputAction: TextInputAction.next,
@@ -601,8 +762,6 @@ class _GetInputFieldsState extends State<GetInputFields> {
                             controller:
                                 projectTopOutlierRankForMaximumOverAllPerformanceAchievementPerController,
                             textInputType: TextInputType.name,
-                            hintText: "hint text",
-                            prefixIcon: Icons.person,
                             isObscureText: false,
                             isEnabled: true,
                             textInputAction: TextInputAction.next,
@@ -613,8 +772,6 @@ class _GetInputFieldsState extends State<GetInputFields> {
                             controller:
                                 projectBottomOutlierRankForMaximumOverAllPerformanceAchievementPerController,
                             textInputType: TextInputType.name,
-                            hintText: "hint text",
-                            prefixIcon: Icons.person,
                             isObscureText: false,
                             isEnabled: true,
                             textInputAction: TextInputAction.next,
@@ -630,8 +787,6 @@ class _GetInputFieldsState extends State<GetInputFields> {
                             controller:
                                 projectMaximumMonthlyFixedSalaryIndexController,
                             textInputType: TextInputType.name,
-                            hintText: "hint text",
-                            prefixIcon: Icons.person,
                             isObscureText: false,
                             isEnabled: true,
                             textInputAction: TextInputAction.next,
@@ -642,8 +797,6 @@ class _GetInputFieldsState extends State<GetInputFields> {
                             controller:
                                 projectTopOutlierRankForMaximumMonthlyFixedSalaryIndexController,
                             textInputType: TextInputType.name,
-                            hintText: "hint text",
-                            prefixIcon: Icons.person,
                             isObscureText: false,
                             isEnabled: true,
                             textInputAction: TextInputAction.next,
@@ -659,8 +812,6 @@ class _GetInputFieldsState extends State<GetInputFields> {
                             controller:
                                 projectBottomOutlierRankForMaximumMonthlyFixedSalaryIndexController,
                             textInputType: TextInputType.name,
-                            hintText: "hint text",
-                            prefixIcon: Icons.person,
                             isObscureText: false,
                             isEnabled: true,
                             textInputAction: TextInputAction.next,
@@ -671,8 +822,6 @@ class _GetInputFieldsState extends State<GetInputFields> {
                             controller:
                                 projectMaximumMonthlyIncentiveController,
                             textInputType: TextInputType.name,
-                            hintText: "hint text",
-                            prefixIcon: Icons.person,
                             isObscureText: false,
                             isEnabled: true,
                             textInputAction: TextInputAction.next,
@@ -688,8 +837,6 @@ class _GetInputFieldsState extends State<GetInputFields> {
                             controller:
                                 projectTopOutlierRankForMaximumMonthlyIncentiveController,
                             textInputType: TextInputType.name,
-                            hintText: "hint text",
-                            prefixIcon: Icons.person,
                             isObscureText: false,
                             isEnabled: true,
                             textInputAction: TextInputAction.next,
@@ -700,8 +847,6 @@ class _GetInputFieldsState extends State<GetInputFields> {
                             controller:
                                 projectBottomOutlierRankForMaximumMonthlyIncentiveController,
                             textInputType: TextInputType.name,
-                            hintText: "hint text",
-                            prefixIcon: Icons.person,
                             isObscureText: false,
                             isEnabled: true,
                             textInputAction: TextInputAction.next,
@@ -713,11 +858,11 @@ class _GetInputFieldsState extends State<GetInputFields> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Column(
-                            // crossAxisAlignment: CrossAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             // mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               ...departmentFields,
-                              ElevatedButton(
+                              TextButton(
                                 child: const Text("add department"),
                                 onPressed: () {
                                   setState(() {
@@ -728,8 +873,6 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                       controller:
                                           departments[departments.length - 1],
                                       textInputType: TextInputType.name,
-                                      hintText: "hint text",
-                                      prefixIcon: Icons.person,
                                       isObscureText: false,
                                       isEnabled: true,
                                       textInputAction: TextInputAction.next,
@@ -742,11 +885,11 @@ class _GetInputFieldsState extends State<GetInputFields> {
                             ],
                           ),
                           Column(
-                            // crossAxisAlignment: CrossAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             // mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               ...designationFields,
-                              ElevatedButton(
+                              TextButton(
                                 child: const Text("add designation"),
                                 onPressed: () {
                                   setState(() {
@@ -757,8 +900,6 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                       controller:
                                           designations[designations.length - 1],
                                       textInputType: TextInputType.name,
-                                      hintText: "hint text",
-                                      prefixIcon: Icons.person,
                                       isObscureText: false,
                                       isEnabled: true,
                                       textInputAction: TextInputAction.next,
@@ -772,7 +913,10 @@ class _GetInputFieldsState extends State<GetInputFields> {
                           )
                         ],
                       ),
+                      ClanChurnSpacing.h10,
                       Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           ElevatedButton(
                             onPressed: () {
@@ -887,6 +1031,8 @@ class CustomTextFormField extends StatelessWidget {
       this.textInputAction,
       this.label,
       this.textInputFormatterType,
+      this.readOnly = false,
+      this.suffixIcon,
       Key? key})
       : super(key: key);
   final TextEditingController? controller;
@@ -898,12 +1044,15 @@ class CustomTextFormField extends StatelessWidget {
   final TextInputAction? textInputAction;
   final String? label;
   final TextInputFormatterType? textInputFormatterType;
+  final bool readOnly;
+  final Widget? suffixIcon;
   @override
   Widget build(BuildContext context) {
     //     // final h = MediaQuery.of(context).size.height;
     final w = MediaQuery.of(context).size.width;
     return Container(
       // padding: const EdgeInsets.fromLTRB(10, 3, 20, 0),
+
       margin: const EdgeInsets.only(bottom: 15),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -917,9 +1066,11 @@ class CustomTextFormField extends StatelessWidget {
               alignment: Alignment.center,
               height: 40,
               decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+
                   // border: Border.all(color: Colors.black),
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(100)),
+                  // color: Colors.white,
+                  borderRadius: BorderRadius.circular(10)),
               child: TextField(
                 keyboardType: textInputType,
                 cursorColor: Colors.grey,
@@ -928,12 +1079,14 @@ class CustomTextFormField extends StatelessWidget {
                 controller: controller,
                 obscureText: isObscureText!,
                 enabled: isEnabled,
+                readOnly: readOnly,
                 textInputAction: textInputAction,
                 inputFormatters: getTextInputFormatterType(
                     textInputFormatterType ??
                         TextInputFormatterType.digitsOnly),
                 decoration: InputDecoration(
-                  hintText: label,
+                  hintText: hintText ?? label,
+                  suffixIcon: suffixIcon,
                   hintStyle: ClanChurnTypography.font14500
                       .copyWith(color: Theme.of(context).colorScheme.tertiary),
                   contentPadding:
