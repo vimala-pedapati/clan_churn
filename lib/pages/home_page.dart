@@ -1,6 +1,7 @@
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
 import 'package:clan_churn/components/clients_component.dart';
 import 'package:clan_churn/components/nav_bar.dart';
+import 'package:clan_churn/components/profile.dart';
 import 'package:clan_churn/components/side_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,6 +30,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       // appBar: const ClanChurnAppBar(),
       backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.05),
+      endDrawer:  MyDrawer(),
       body: BlocBuilder<UserBloc, UserState>(
         builder: (context, state) {
           return Column(children: [

@@ -155,38 +155,102 @@ class _SideBarState extends State<SideBar> {
                   ],
                 ),
                 // logout
-                InkWell(
-                  onTap: () {
-                    context
-                        .read<SignInBloc>()
-                        .add(SignOutEvent(context: context));
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.only(
-                        left: 10, top: 10, bottom: 10, right: 10),
-                    padding:
-                        const EdgeInsets.only(left: 20, top: 10, bottom: 10),
-                    child: Row(
-                      children: [
-                        const Icon(Icons.logout_outlined, color: Colors.red),
-                        ClanChurnSpacing.w10,
-                        state.isExpanded
-                            ? Container()
-                            : AnimatedContainer(
-                                duration: const Duration(seconds: 1),
-                                child: Text(
-                                  "Log Out",
-                                  style: ClanChurnTypography.font16700
-                                      .copyWith(color: Colors.red),
-                                ),
-                              )
-                      ],
-                    ),
-                  ),
-                ),
+                // InkWell(
+                //   onTap: () {
+                //     context
+                //         .read<SignInBloc>()
+                //         .add(SignOutEvent(context: context));
+                //   },
+                //   focusNode: null,
+                //   child: Container(
+                //     margin: const EdgeInsets.only(
+                //         left: 10, top: 10, bottom: 10, right: 10),
+                //     padding:
+                //         const EdgeInsets.only(left: 20, top: 10, bottom: 10),
+                //     child: Row(
+                //       children: [
+                //         const Icon(Icons.logout_outlined, color: Colors.red),
+                //         ClanChurnSpacing.w10,
+                //         state.isExpanded
+                //             ? Container()
+                //             : AnimatedContainer(
+                //                 duration: const Duration(seconds: 1),
+                //                 child: Text(
+                //                   "Log Out",
+                //                   style: ClanChurnTypography.font16700
+                //                       .copyWith(color: Colors.red),
+                //                 ),
+                //               )
+                //       ],
+                //     ),
+                //   ),
+                // ),
               ]),
         );
       },
+    );
+  }
+}
+
+class MyHomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('EndDrawer Example'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.menu),
+            onPressed: () {
+              Scaffold.of(context).openEndDrawer();
+            },
+          ),
+        ],
+      ),
+      body: Center(
+        child: Text(
+            'Swipe from the right or click the menu icon to open the EndDrawer.'),
+      ),
+      endDrawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: Text(
+                'End Drawer Header',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.message),
+              title: Text('Messages'),
+              onTap: () {
+                // Handle tap
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.account_circle),
+              title: Text('Profile'),
+              onTap: () {
+                // Handle tap
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.settings),
+              title: Text('Settings'),
+              onTap: () {
+                // Handle tap
+              },
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
