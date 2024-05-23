@@ -1,10 +1,7 @@
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
 import 'package:clan_churn/components/input_fields.dart';
 import 'package:clan_churn/components/nav_bar.dart';
-import 'package:clan_churn/components/projects_view_component.dart';
 import 'package:clan_churn/components/side_bar.dart';
-import 'package:clan_churn/utils/spacing.dart';
-import 'package:clan_churn/utils/typography.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -53,14 +50,15 @@ class GetInputFieldsComponent extends StatelessWidget {
         return AnimatedContainer(
           width: state.isExpanded ? w * 0.89 : w * 0.8,
           height: h * 0.83,
-          padding:  const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 10),
+          padding:
+              const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 10),
           decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.background,
               borderRadius: BorderRadius.circular(30)),
           margin: EdgeInsets.only(
               left: w * 0.025, right: w * 0.025, top: 10, bottom: 20),
           duration: const Duration(seconds: 1),
-          child: Column(children: [
+          child: const Column(children: [
             // Row(
             //   children: [
             //     IconButton(
