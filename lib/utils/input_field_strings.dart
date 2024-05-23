@@ -49,11 +49,11 @@ class InputFieldLabels {
       "Project Top outlier rank for Maximum Performance Quantity ACTUAL";
   static String projectBottomOutlierRankMaximumPerformanceQuantityActual =
       "Project Bottom  outlier rank Maximum Performance Quantity ACTUAL";
-  static String projectMaximumOverAllPerformanceAchievement =
+  static String projectMaximumOverAllPerformancePerAchievement =
       "Project Maximum  OVER ALL Performance Achievement %";
-  static String projectTopOutlierRankForMaximumOverAllPerformanceAchievent =
+  static String projectTopOutlierRankForMaximumOverAllPerformanceAchieventPer =
       "Project Top outlier rank for Maximum OVER ALL Performance Achievement %  ";
-  static String projectBottomOutlierRankMaximumOverAllPerformanceAchievement =
+  static String projectBottomOutlierRankMaximumOverAllPerformanceAchievementPer =
       "Project Bottom outlier rank Maximum OVER ALL Performance Achievement %";
   static String projectMaximumMonthlyFixedSalaryIndex =
       "Project Maximum Monthly Fixed salary Index";
