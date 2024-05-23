@@ -1,5 +1,6 @@
 import 'package:clan_churn/api_repos/models/project_model.dart';
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
+import 'package:clan_churn/components/upload_new_data.dart';
 import 'package:clan_churn/pages/project_input_fields_sheet.dart';
 import 'package:clan_churn/utils/input_field_strings.dart';
 import 'package:clan_churn/utils/spacing.dart';
@@ -1160,7 +1161,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                     print(a);
                                     print(a.toJson());
 
-                                    // goToNextPage();
+                                    goToNextPage();
                                   },
                                   child: const Text("Next"),
                                 )
@@ -1173,8 +1174,10 @@ class _GetInputFieldsState extends State<GetInputFields> {
               ),
             ],
           ),
-          Container(
-            child: Text("vimala"),
+          UploadNewData(
+            onPressed: () {
+              goToPreviousPage();
+            },
           )
         ],
       ),
