@@ -218,13 +218,13 @@ class ProjectDetails extends Equatable {
       );
 
   Map<String, dynamic> toJson() => {
-        "project_start_date": projectStartDate,
-        "study_period_begining_date": studyPeriodBeginingDate,
-        "study_period_end_date": studyPeriodEndDate,
+        "project_start_date": projectStartDate == null ? projectStartDate : projectStartDate!.isEmpty? null : projectStartDate ,
+        "study_period_begining_date": studyPeriodBeginingDate == null ? studyPeriodBeginingDate : studyPeriodBeginingDate!.isEmpty? null : studyPeriodBeginingDate,
+        "study_period_end_date": studyPeriodEndDate == null ? studyPeriodEndDate : studyPeriodEndDate!.isEmpty? null : studyPeriodEndDate,
         "earliest_date_for_date_of_joining_relevent_for_the_study":
-            earliestDateForDateOfJoiningReleventForTheStudy,
+            earliestDateForDateOfJoiningReleventForTheStudy == null ? earliestDateForDateOfJoiningReleventForTheStudy : earliestDateForDateOfJoiningReleventForTheStudy!.isEmpty? null : earliestDateForDateOfJoiningReleventForTheStudy,
         "end_date_for_date_of_joining_relevent_for_the_study":
-            endDateForDateOfJoiningReleventForTheStudy,
+            endDateForDateOfJoiningReleventForTheStudy == null ? endDateForDateOfJoiningReleventForTheStudy : endDateForDateOfJoiningReleventForTheStudy!.isEmpty? null : endDateForDateOfJoiningReleventForTheStudy,
         "designations": List<dynamic>.from((designations ?? []).map((x) => x)),
         "departments": List<dynamic>.from((departments ?? []).map((x) => x)),
         "unit_for_value_performance": unitForValuePerformance,

@@ -167,7 +167,7 @@ class ApiRepository {
 
       // Make API call with access token
       http.Response response = await http.post(
-          Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.getAllProjects}"),
+          Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.updateProjectDetails}"),
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ${authCredentials.accessToken}',
@@ -177,11 +177,15 @@ class ApiRepository {
             "project_details": projectDetails.toJson()
           }));
 
+      print(json.encode({
+        "project_id": projectId,
+        "project_details": projectDetails.toJson()
+      }));
       // Handle API response
       if (response.statusCode == 200) {
         // final List<Map<String, dynamic>> data = json.decode(response.body);
         Project project = Project.fromJson(json.decode(response.body));
-         
+
         log("Updated project:..... $project");
         return project;
       } else {
@@ -191,7 +195,7 @@ class ApiRepository {
         } else if (response.statusCode == 404) {
           log('API endpoint not found');
         } else {
-          log('Unexpected Error');
+          log('Unexpected Error ${response}');
         }
         return null;
       }
@@ -329,7 +333,7 @@ class ApiRepository {
         } else if (response.statusCode == 404) {
           log('API endpoint not found');
         } else {
-          log('Unexpected Error');
+          log('Unexpected Error ${response}');
         }
         return null;
       }

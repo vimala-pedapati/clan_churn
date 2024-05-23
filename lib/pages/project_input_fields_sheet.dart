@@ -53,8 +53,7 @@ class GetInputFieldsComponent extends StatelessWidget {
         return AnimatedContainer(
           width: state.isExpanded ? w * 0.89 : w * 0.8,
           height: h * 0.83,
-          padding:
-              const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 10),
+          padding:  const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 10),
           decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.background,
               borderRadius: BorderRadius.circular(30)),
@@ -62,39 +61,40 @@ class GetInputFieldsComponent extends StatelessWidget {
               left: w * 0.025, right: w * 0.025, top: 10, bottom: 20),
           duration: const Duration(seconds: 1),
           child: Column(children: [
-            Row(
-              children: [
-                IconButton(
-                  icon: Icon(
-                    Icons.keyboard_backspace,
-                    color: Theme.of(context).colorScheme.secondary,
-                  ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                    // GoRouter.of(context).go(AppRoutes.home);
-                  },
-                ),
-                ClanChurnSpacing.w10,
-                Text(
-                  "Project Initialization",
-                  style: ClanChurnTypography.font18600,
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Text(
-                  "Select Initialization",
-                  style: ClanChurnTypography.font14500,
-                ),
-                ClanChurnSpacing.w15,
-                // DropDown
-                const GetInitializationDropDown(),
-              ],
-            ),
-            ClanChurnSpacing.h10,
-            // const GetFields()
+            // Row(
+            //   children: [
+            //     IconButton(
+            //       icon: Icon(
+            //         Icons.keyboard_backspace,
+            //         color: Theme.of(context).colorScheme.secondary,
+            //       ),
+            //       onPressed: () {
+            //         Navigator.pop(context);
+            //         // GoRouter.of(context).go(AppRoutes.home);
+            //       },
+            //     ),
+            //     ClanChurnSpacing.w10,
+            //     Text(
+            //       "Project Initialization",
+            //       style: ClanChurnTypography.font18600,
+            //     ),
+            //   ],
+            // ),
+            // Row(
+            //   children: [
+            //     Text(
+            //       "Select Initialization",
+            //       style: ClanChurnTypography.font14500,
+            //     ),
+            //     ClanChurnSpacing.w15,
+            //     // DropDown
+            //     const GetInitializationDropDown(),
+            //   ],
+            // ),
+            // ClanChurnSpacing.h10,
+
             GetInputFields()
+            // Container(height: 200, child: const ProjectInitialization())
           ]),
         );
       },
@@ -181,6 +181,3 @@ class _GetInitializationDropDownState extends State<GetInitializationDropDown> {
     );
   }
 }
-
-
-
