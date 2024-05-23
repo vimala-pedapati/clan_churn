@@ -27,6 +27,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     on<AddColumnsToProjectEvent>(_onAddColumnsToProjectEvent);
     on<SetCreatedProjectEvent>(_onSetCreatedProjectEvent);
     on<UpdateProjectDetailsEvent>(_onUpdateProjectDetailsEvent);
+    on<GetProjectDetailsEvent>(_onGetProjectDetailsEvent);
   }
 
   _onGetUserDetails(GetUserDetailsEvent event, Emitter<UserState> emit) async {
@@ -58,7 +59,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   _onGetProjectsListEvent(
       GetProjectsListEvent event, Emitter<UserState> emit) async {
     final result =
-        await apiRepository.getProjectDetails(clientId: event.clientId);
+        await apiRepository.getAllProjectDetails(clientId: event.clientId);
     if (result != null) {
       emit(state.copyWith(projectsList: result));
     } else {
@@ -159,8 +160,29 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         projectId: event.projectId, projectDetails: event.projectDetails);
     if (result != null) {
       emit(state.copyWith(createdProject: result));
-    }else{
-       emit(state.copyWith(
+    } else {
+      emit(state.copyWith(
+          createdProject: const Project(
+        id: "",
+        name: '',
+        inputColumns: [],
+        projectStatus: '',
+        inputSheet: '',
+        projectDetails: null,
+        allInputs: [],
+      )));
+    }
+  }
+
+  _onGetProjectDetailsEvent(
+      GetProjectDetailsEvent event, Emitter<UserState> emit) async {
+    final result = await apiRepository.getProjectDetails(
+      projectId: event.projectId,
+    );
+    if (result != null) {
+      emit(state.copyWith(createdProject: result));
+    } else {
+      emit(state.copyWith(
           createdProject: const Project(
         id: "",
         name: '',

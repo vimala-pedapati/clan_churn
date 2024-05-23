@@ -58,8 +58,8 @@ class ProjectCard extends StatelessWidget {
                     onPressed: () {
                       log("${state.projectsList[index]}");
                       log("${state.projectsList[index].inputColumns}");
-                      context.read<UserBloc>().add(SetCreatedProjectEvent(
-                          createdProject: state.projectsList[index]));
+                      context.read<UserBloc>().add(SetCreatedProjectEvent( createdProject: state.projectsList[index]));
+                      context.read<UserBloc>().add(GetProjectDetailsEvent(projectId: state.projectsList[index].id));
                       if (state.projectsList[index].inputSheet == null) {
                         Navigator.push(
                             context,

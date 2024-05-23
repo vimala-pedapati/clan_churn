@@ -103,7 +103,8 @@ class ApiRepository {
   }
 
 // To fetch projects list
-  Future<List<Project>?> getProjectDetails({required String clientId}) async {
+  Future<List<Project>?> getAllProjectDetails(
+      {required String clientId}) async {
     try {
       // Fetch auth credentials
       final AuthCredentials authCredentials =
@@ -150,7 +151,7 @@ class ApiRepository {
     }
   }
 
-// To fetch projects list
+// To upload project details
   Future<Project?> updateProjectDetails(
       {required String projectId,
       required ProjectDetails projectDetails}) async {
@@ -187,6 +188,55 @@ class ApiRepository {
         Project project = Project.fromJson(json.decode(response.body));
 
         log("Updated project:..... $project");
+        return project;
+      } else {
+        log('Status Code: ${response.statusCode}');
+        if (response.statusCode == 401) {
+          log('Unauthorized - Please check your credentials');
+        } else if (response.statusCode == 404) {
+          log('API endpoint not found');
+        } else {
+          log('Unexpected Error ${response}');
+        }
+        return null;
+      }
+    } catch (e) {
+      log('Network Error: $e');
+      return null;
+    }
+  }
+
+// To get specific project details
+  Future<Project?> getProjectDetails({required String projectId}) async {
+    try {
+      // Fetch auth credentials
+      final AuthCredentials authCredentials =
+          await AuthRepository().getTokens();
+
+      // Check if auth credentials are null
+      if (authCredentials.accessToken.isEmpty) {
+        log('Access token is empty');
+        return null;
+      }
+
+      // Make API call with access token
+      http.Response response = await http.post(
+          Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.getProjectDetails}"),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ${authCredentials.accessToken}',
+          },
+          body: json.encode({
+            "project_id": projectId,
+          }));
+      print("get project:..... $response");
+      // Handle API response
+      if (response.statusCode == 200) {
+        // final List<Map<String, dynamic>> data = json.decode(response.body);
+        Project project = Project.fromJson(json.decode(response.body));
+
+        print("get project:..... ${response.body}");
+        print("get project:..... $project");
         return project;
       } else {
         log('Status Code: ${response.statusCode}');
