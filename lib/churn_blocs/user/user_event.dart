@@ -51,6 +51,6 @@ class ReplaceColumnsEvent extends UserEvent {
 class AddColumnsToProjectEvent extends UserEvent {}
 
 class SetCreatedProjectEvent extends UserEvent {
-  final ProjectDetails createdProject;
+  final Project createdProject;
   const SetCreatedProjectEvent({required this.createdProject});
 }

@@ -40,7 +40,7 @@ class ProjectCard extends StatelessWidget {
                       style: ClanChurnTypography.font12500,
                     ),
                     Text(
-                      state.projectsList[index].name,
+                      "${state.projectsList[index].name}",
                       style: ClanChurnTypography.font15600,
                     ),
                   ],

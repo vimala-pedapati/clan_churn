@@ -103,7 +103,7 @@ class ApiRepository {
   }
 
 // To fetch projects list
-  Future<List<ProjectDetails>?> getProjectDetails(
+  Future<List<Project>?> getProjectDetails(
       {required String clientId}) async {
     try {
       // Fetch auth credentials
@@ -128,8 +128,8 @@ class ApiRepository {
       // Handle API response
       if (response.statusCode == 200) {
         // final List<Map<String, dynamic>> data = json.decode(response.body);
-        List<ProjectDetails> listOfProjects =
-            projectDetailsFromJson(response.body);
+        List<Project> listOfProjects =
+            projectFromJson(response.body);
         for (var i in json.decode(response.body)) {
           print("project: $i");
         }
@@ -153,7 +153,7 @@ class ApiRepository {
   }
 
 // To add project
-  Future<ProjectDetails?> createProject(
+  Future<Project?> createProject(
       {required String clientId, required String projectName}) async {
     try {
       // Fetch auth credentials
@@ -178,8 +178,8 @@ class ApiRepository {
       // Handle API response
       if (response.statusCode == 200) {
         // final List<Map<String, dynamic>> data = json.decode(response.body);
-        ProjectDetails createdProject =
-            ProjectDetails.fromJson(json.decode(response.body));
+        Project createdProject =
+            Project.fromJson(json.decode(response.body));
 
         log("Created Project:..... $createdProject");
         return createdProject;
@@ -246,7 +246,7 @@ class ApiRepository {
   }
 
 // Add columns to project
-  Future<ProjectDetails?> addColumnsToProject(
+  Future<Project?> addColumnsToProject(
       {required List columnsToAdd}) async {
     try {
       // Fetch auth credentials
@@ -272,7 +272,7 @@ class ApiRepository {
       if (response.statusCode == 200) {
         final Map<String, dynamic> data = json.decode(response.body);
         print(" response: ${response.body}");
-        ProjectDetails updatedProjectDetails = ProjectDetails.fromJson(data);
+        Project updatedProjectDetails = Project.fromJson(data);
         // log("Updated Project Details:..... $updatedProjectDetails");
         return updatedProjectDetails;
       } else {

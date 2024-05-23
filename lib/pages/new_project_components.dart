@@ -66,8 +66,9 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
 
     if (context.read<UserBloc>().state.createdProject != null) {
       setState(() {
-        projectController.text = context.read<UserBloc>().state.createdProject!.name;
-        projectName = context.read<UserBloc>().state.createdProject!.name;
+        projectController.text =
+            context.read<UserBloc>().state.createdProject!.name ?? '';
+        projectName = context.read<UserBloc>().state.createdProject!.name ?? '';
       });
     }
     context.read<UserBloc>().add(const GetColumnsEvent());

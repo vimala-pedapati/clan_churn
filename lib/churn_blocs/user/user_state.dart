@@ -16,9 +16,9 @@ class UserState extends Equatable {
   final List<ClientDetails> clientList;
   final bool isExpanded;
   final ClientDetails? selectedClient;
-  final List<ProjectDetails> projectsList;
+  final List<Project> projectsList;
   final List<ColumnDetails> columnsList;
-  final ProjectDetails? createdProject;
+  final Project? createdProject;
   final bool projectCreating;
   final List<TextEditingController> customerColumnNames;
   const UserState(
@@ -37,9 +37,9 @@ class UserState extends Equatable {
       List<ClientDetails>? clientList,
       bool? isExpanded,
       ClientDetails? selectedClient,
-      List<ProjectDetails>? projectsList,
+      List<Project>? projectsList,
       List<ColumnDetails>? columnsList,
-      ProjectDetails? createdProject,
+      Project? createdProject,
       bool? projectCreating,
       List<TextEditingController>? customerColumnNames}) {
     return UserState(

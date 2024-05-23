@@ -93,12 +93,13 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       }
     } else {
       emit(state.copyWith(
-          createdProject: const ProjectDetails(
+          createdProject:   Project(
         id: "",
         name: '',
         inputColumns: [],
         projectStatus: '',
         inputSheet: '',
+         projectDetails: null, allInputs: [],
       )));
     }
   }
@@ -106,12 +107,12 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   _onClearCreateProjectEvent(
       ClearCreateProjectEvent event, Emitter<UserState> emit) {
     emit(state.copyWith(
-        createdProject: const ProjectDetails(
+        createdProject: Project(
       id: "",
       name: '',
       inputColumns: [],
       projectStatus: '',
-      inputSheet: '',
+      inputSheet: '', projectDetails: null, allInputs: [],
     )));
   }
 
