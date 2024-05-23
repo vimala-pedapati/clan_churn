@@ -194,7 +194,8 @@ class _GetInputFieldsState extends State<GetInputFields> {
                             isObscureText: false,
                             isEnabled: true,
                             textInputAction: TextInputAction.next,
-                            textInputFormatterType: TextInputFormatterType.string,
+                            textInputFormatterType:
+                                TextInputFormatterType.string,
                           ),
                           CustomTextFormField(
                             label: InputFieldLabels.projectName,
@@ -205,7 +206,8 @@ class _GetInputFieldsState extends State<GetInputFields> {
                             isObscureText: false,
                             isEnabled: true,
                             textInputAction: TextInputAction.next,
-                              textInputFormatterType: TextInputFormatterType.string,
+                            textInputFormatterType:
+                                TextInputFormatterType.string,
                           ),
                         ],
                       ),
@@ -221,7 +223,8 @@ class _GetInputFieldsState extends State<GetInputFields> {
                             isObscureText: false,
                             isEnabled: true,
                             textInputAction: TextInputAction.next,
-                              textInputFormatterType: TextInputFormatterType.string,
+                            textInputFormatterType:
+                                TextInputFormatterType.string,
                           ),
                           CustomTextFormField(
                             label: InputFieldLabels.projectStartDate,
@@ -232,7 +235,8 @@ class _GetInputFieldsState extends State<GetInputFields> {
                             isObscureText: false,
                             isEnabled: true,
                             textInputAction: TextInputAction.next,
-                              textInputFormatterType: TextInputFormatterType.string,
+                            textInputFormatterType:
+                                TextInputFormatterType.string,
                           ),
                         ],
                       ),
@@ -248,7 +252,8 @@ class _GetInputFieldsState extends State<GetInputFields> {
                             isObscureText: false,
                             isEnabled: true,
                             textInputAction: TextInputAction.next,
-                              textInputFormatterType: TextInputFormatterType.string,
+                            textInputFormatterType:
+                                TextInputFormatterType.string,
                           ),
                           CustomTextFormField(
                             label: InputFieldLabels.studyPeriodEndDate,
@@ -259,7 +264,8 @@ class _GetInputFieldsState extends State<GetInputFields> {
                             isObscureText: false,
                             isEnabled: true,
                             textInputAction: TextInputAction.next,
-                              textInputFormatterType: TextInputFormatterType.string,
+                            textInputFormatterType:
+                                TextInputFormatterType.string,
                           ),
                         ],
                       ),
@@ -277,7 +283,8 @@ class _GetInputFieldsState extends State<GetInputFields> {
                             isObscureText: false,
                             isEnabled: true,
                             textInputAction: TextInputAction.next,
-                              textInputFormatterType: TextInputFormatterType.string,
+                            textInputFormatterType:
+                                TextInputFormatterType.string,
                           ),
                           CustomTextFormField(
                             label: InputFieldLabels
@@ -290,7 +297,8 @@ class _GetInputFieldsState extends State<GetInputFields> {
                             isObscureText: false,
                             isEnabled: true,
                             textInputAction: TextInputAction.next,
-                              textInputFormatterType: TextInputFormatterType.string,
+                            textInputFormatterType:
+                                TextInputFormatterType.string,
                           ),
                         ],
                       ),
@@ -718,7 +726,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
                               print(a);
                               print(a.toJson());
                             },
-                            child: Text("Next"),
+                            child: const Text("Next"),
                           )
                         ],
                       ),
@@ -732,11 +740,9 @@ class _GetInputFieldsState extends State<GetInputFields> {
   }
 }
 
- 
-
 // Define the input formatters
 List<TextInputFormatter> a = <TextInputFormatter>[
-  FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z]')),
+  FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z ]')),
 ];
 
 List<TextInputFormatter> b = <TextInputFormatter>[
@@ -744,14 +750,16 @@ List<TextInputFormatter> b = <TextInputFormatter>[
 ];
 
 List<TextInputFormatter> c = <TextInputFormatter>[
-  FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9]')),  // Allowing both digits and letters
+  FilteringTextInputFormatter.allow(
+      RegExp(r'[a-zA-Z0-9 ]')), // Allowing both digits and letters
 ];
 
 // Define the enum
 enum TextInputFormatterType { string, digitsOnly }
 
 // Function to get the appropriate input formatter list
-List<TextInputFormatter> getTextInputFormatterType(TextInputFormatterType textInputFormatterType) {
+List<TextInputFormatter> getTextInputFormatterType(
+    TextInputFormatterType textInputFormatterType) {
   switch (textInputFormatterType) {
     case TextInputFormatterType.string:
       return a;
@@ -761,7 +769,6 @@ List<TextInputFormatter> getTextInputFormatterType(TextInputFormatterType textIn
       return c;
   }
 }
-
 
 class CustomTextFormField extends StatelessWidget {
   const CustomTextFormField(
@@ -816,7 +823,9 @@ class CustomTextFormField extends StatelessWidget {
                 obscureText: isObscureText!,
                 enabled: isEnabled,
                 textInputAction: textInputAction,
-                inputFormatters: getTextInputFormatterType(textInputFormatterType?? TextInputFormatterType.digitsOnly),
+                inputFormatters: getTextInputFormatterType(
+                    textInputFormatterType ??
+                        TextInputFormatterType.digitsOnly),
                 decoration: InputDecoration(
                   hintText: label,
                   hintStyle: ClanChurnTypography.font14500
