@@ -21,8 +21,7 @@ class _ProjectsViewComponentState extends State<ProjectsViewComponent>  {
   @override
   void initState() {
     if (context.read<UserBloc>().state.selectedClient != null) {
-      context.read<UserBloc>().add(GetProjectsListEvent(
-          clientId: context.read<UserBloc>().state.selectedClient!.id));
+      context.read<UserBloc>().add(GetProjectsListEvent(clientId: context.read<UserBloc>().state.selectedClient!.id));
     }
     super.initState();
   }
