@@ -3,7 +3,7 @@ import 'package:clan_churn/utils/input_field_strings.dart';
 import 'package:clan_churn/utils/spacing.dart';
 import 'package:clan_churn/utils/typography.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart'; 
+import 'package:flutter/services.dart';
 
 class InputLabel extends StatelessWidget {
   const InputLabel({super.key, required this.label});
@@ -30,6 +30,8 @@ class GetInputFields extends StatefulWidget {
 
 class _GetInputFieldsState extends State<GetInputFields> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  List<TextEditingController> designations = [TextEditingController()];
+  List<TextEditingController> departments = [TextEditingController()];
   TextEditingController customerNameController = TextEditingController();
   TextEditingController projectNameController = TextEditingController();
   TextEditingController projectOwnerController = TextEditingController();
@@ -111,8 +113,38 @@ class _GetInputFieldsState extends State<GetInputFields> {
   TextEditingController
       projectBottomOutlierRankForMaximumMonthlyIncentiveController =
       TextEditingController();
-  // final List<TextEditingController> c =
-  //     List.generate(34, (_) => TextEditingController());
+
+  List<CustomTextFormField> departmentFields = [];
+  List<CustomTextFormField> designationFields = [];
+
+  @override
+  void initState() {
+    setState(() {
+      departmentFields.add(CustomTextFormField(
+        label: "department1 covered in the study",
+        controller: departments[0],
+        textInputType: TextInputType.name,
+        hintText: "hint text",
+        prefixIcon: Icons.person,
+        isObscureText: false,
+        isEnabled: true,
+        textInputAction: TextInputAction.next,
+        textInputFormatterType: TextInputFormatterType.string,
+      ));
+      designationFields.add(CustomTextFormField(
+        label: "designation1 covered in the study",
+        controller: designations[0],
+        textInputType: TextInputType.name,
+        hintText: "hint text",
+        prefixIcon: Icons.person,
+        isObscureText: false,
+        isEnabled: true,
+        textInputAction: TextInputAction.next,
+        textInputFormatterType: TextInputFormatterType.string,
+      ));
+    });
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -161,15 +193,18 @@ class _GetInputFieldsState extends State<GetInputFields> {
     projectMaximumMonthlyIncentiveController.dispose();
     projectTopOutlierRankForMaximumMonthlyIncentiveController.dispose();
     projectBottomOutlierRankForMaximumMonthlyIncentiveController.dispose();
-    // for (var i in c) {
-    //   i.clear();
-    // }
+    for (var i in designations) {
+      i.dispose();
+    }
+    for (var i in departments) {
+      i.dispose();
+    }
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: MediaQuery.of(context).size.height * 0.65,
       width: MediaQuery.of(context).size.width,
       child: SingleChildScrollView(
@@ -674,11 +709,83 @@ class _GetInputFieldsState extends State<GetInputFields> {
                         ],
                       ),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Column(
+                            // crossAxisAlignment: CrossAxisAlignment.spaceBetween,
+                            // mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              ...departmentFields,
+                              ElevatedButton(
+                                child: const Text("add department"),
+                                onPressed: () {
+                                  setState(() {
+                                    departments.add(TextEditingController());
+                                    departmentFields.add(CustomTextFormField(
+                                      label:
+                                          "department${departmentFields.length + 1}",
+                                      controller:
+                                          departments[departments.length - 1],
+                                      textInputType: TextInputType.name,
+                                      hintText: "hint text",
+                                      prefixIcon: Icons.person,
+                                      isObscureText: false,
+                                      isEnabled: true,
+                                      textInputAction: TextInputAction.next,
+                                      textInputFormatterType:
+                                          TextInputFormatterType.string,
+                                    ));
+                                  });
+                                },
+                              )
+                            ],
+                          ),
+                          Column(
+                            // crossAxisAlignment: CrossAxisAlignment.start,
+                            // mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              ...designationFields,
+                              ElevatedButton(
+                                child: const Text("add designation"),
+                                onPressed: () {
+                                  setState(() {
+                                    designations.add(TextEditingController());
+                                    designationFields.add(CustomTextFormField(
+                                      label:
+                                          "designation ${designationFields.length + 1}",
+                                      controller:
+                                          designations[designations.length - 1],
+                                      textInputType: TextInputType.name,
+                                      hintText: "hint text",
+                                      prefixIcon: Icons.person,
+                                      isObscureText: false,
+                                      isEnabled: true,
+                                      textInputAction: TextInputAction.next,
+                                      textInputFormatterType:
+                                          TextInputFormatterType.string,
+                                    ));
+                                  });
+                                },
+                              )
+                            ],
+                          )
+                        ],
+                      ),
+                      Row(
                         children: [
                           ElevatedButton(
                             onPressed: () {
+                              List<String> depart = [];
+                              List<String> design = [];
+                              for (var i in departments) {
+                                depart.add(i.text);
+                              }
+                              for (var i in designations) {
+                                design.add(i.text);
+                              }
                               ProjectDetails a = ProjectDetails(
-                                  departments: [],
+                                  departments: depart,
                                   projectStartDate:
                                       projectStartDateController.text,
                                   studyPeriodBeginingDate:
@@ -691,7 +798,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                   endDateForDateOfJoiningReleventForTheStudy:
                                       endDateForDateOfJoiningReleventForTheStudyController
                                           .text,
-                                  designations: [],
+                                  designations: design,
                                   unitForValuePerformance:
                                       unitForValuePerformanceController.text,
                                   unitForQuantityPerformance: '',
