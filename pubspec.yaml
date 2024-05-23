@@ -25,6 +25,7 @@ dependencies:
   shared_preferences: ^2.2.3
   easy_stepper: ^0.8.3
   url_launcher: ^6.2.4
+  file_picker: ^8.0.0+1
 dev_dependencies:
   flutter_test:
     sdk: flutter
