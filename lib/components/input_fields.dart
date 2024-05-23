@@ -7,6 +7,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+
+
+
+
+
+
+
 class InputLabel extends StatelessWidget {
   const InputLabel({super.key, required this.label});
   final String label;
@@ -543,6 +550,8 @@ class _GetInputFieldsState extends State<GetInputFields> {
                             isObscureText: false,
                             isEnabled: true,
                             textInputAction: TextInputAction.next,
+                             textInputFormatterType:
+                                TextInputFormatterType.string,
                           ),
                           CustomTextFormField(
                             label: InputFieldLabels.unitForQuantityPerformance,
@@ -551,6 +560,8 @@ class _GetInputFieldsState extends State<GetInputFields> {
                             isObscureText: false,
                             isEnabled: true,
                             textInputAction: TextInputAction.next,
+                             textInputFormatterType:
+                                TextInputFormatterType.string,
                           ),
                         ],
                       ),
@@ -973,6 +984,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                   projectMaximumMonthlyIncentive: int.parse(projectMaximumMonthlyIncentiveController.text.isEmpty ? '0' : projectMaximumMonthlyIncentiveController.text),
                                   projectTopOutlierRankForMaximumMonthlyIncentive: int.parse(projectTopOutlierRankForMaximumMonthlyIncentiveController.text.isEmpty ? '0' : projectTopOutlierRankForMaximumMonthlyIncentiveController.text),
                                   projectBottomOutlierRankForMaximumMonthlyIncentive: int.parse(projectBottomOutlierRankForMaximumMonthlyIncentiveController.text.isEmpty ? '0' : projectBottomOutlierRankForMaximumMonthlyIncentiveController.text));
+                              context.read<UserBloc>().add(UpdateProjectDetailsEvent(projectId: context.read<UserBloc>().state.createdProject!.id, projectDetails: a));
                               print(a);
                               print(a.toJson());
                             },

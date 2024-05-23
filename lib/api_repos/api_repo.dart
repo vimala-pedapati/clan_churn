@@ -103,8 +103,7 @@ class ApiRepository {
   }
 
 // To fetch projects list
-  Future<List<Project>?> getProjectDetails(
-      {required String clientId}) async {
+  Future<List<Project>?> getProjectDetails({required String clientId}) async {
     try {
       // Fetch auth credentials
       final AuthCredentials authCredentials =
@@ -128,8 +127,7 @@ class ApiRepository {
       // Handle API response
       if (response.statusCode == 200) {
         // final List<Map<String, dynamic>> data = json.decode(response.body);
-        List<Project> listOfProjects =
-            projectFromJson(response.body);
+        List<Project> listOfProjects = projectFromJson(response.body);
         for (var i in json.decode(response.body)) {
           print("project: $i");
         }
@@ -148,6 +146,57 @@ class ApiRepository {
       }
     } catch (e) {
       print('Network Error: $e');
+      return null;
+    }
+  }
+
+// To fetch projects list
+  Future<Project?> updateProjectDetails(
+      {required String projectId,
+      required ProjectDetails projectDetails}) async {
+    try {
+      // Fetch auth credentials
+      final AuthCredentials authCredentials =
+          await AuthRepository().getTokens();
+
+      // Check if auth credentials are null
+      if (authCredentials.accessToken.isEmpty) {
+        log('Access token is empty');
+        return null;
+      }
+
+      // Make API call with access token
+      http.Response response = await http.post(
+          Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.getAllProjects}"),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ${authCredentials.accessToken}',
+          },
+          body: json.encode({
+            "project_id": projectId,
+            "project_details": projectDetails.toJson()
+          }));
+
+      // Handle API response
+      if (response.statusCode == 200) {
+        // final List<Map<String, dynamic>> data = json.decode(response.body);
+        Project project = Project.fromJson(json.decode(response.body));
+         
+        log("Updated project:..... $project");
+        return project;
+      } else {
+        log('Status Code: ${response.statusCode}');
+        if (response.statusCode == 401) {
+          log('Unauthorized - Please check your credentials');
+        } else if (response.statusCode == 404) {
+          log('API endpoint not found');
+        } else {
+          log('Unexpected Error');
+        }
+        return null;
+      }
+    } catch (e) {
+      log('Network Error: $e');
       return null;
     }
   }
@@ -178,8 +227,7 @@ class ApiRepository {
       // Handle API response
       if (response.statusCode == 200) {
         // final List<Map<String, dynamic>> data = json.decode(response.body);
-        Project createdProject =
-            Project.fromJson(json.decode(response.body));
+        Project createdProject = Project.fromJson(json.decode(response.body));
 
         log("Created Project:..... $createdProject");
         return createdProject;
@@ -246,8 +294,7 @@ class ApiRepository {
   }
 
 // Add columns to project
-  Future<Project?> addColumnsToProject(
-      {required List columnsToAdd}) async {
+  Future<Project?> addColumnsToProject({required List columnsToAdd}) async {
     try {
       // Fetch auth credentials
       final AuthCredentials authCredentials =

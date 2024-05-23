@@ -25,6 +25,12 @@ class GetProjectsListEvent extends UserEvent {
   const GetProjectsListEvent({required this.clientId});
 }
 
+class UpdateProjectDetailsEvent extends UserEvent {
+  final String projectId;
+  final ProjectDetails projectDetails;
+  const UpdateProjectDetailsEvent({required this.projectId, required this.projectDetails});
+}
+
 class GetColumnsEvent extends UserEvent {
   const GetColumnsEvent();
 }
@@ -40,7 +46,7 @@ class CreateProjectEvent extends UserEvent {
   const CreateProjectEvent({required this.clientId, required this.projectName});
 }
 
-class ClearCreateProjectEvent extends UserEvent{}
+class ClearCreateProjectEvent extends UserEvent {}
 
 class ReplaceColumnsEvent extends UserEvent {
   final List<ColumnDetails> columns;

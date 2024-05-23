@@ -26,6 +26,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     on<ReplaceColumnsEvent>(_onReplaceColumnsEvent);
     on<AddColumnsToProjectEvent>(_onAddColumnsToProjectEvent);
     on<SetCreatedProjectEvent>(_onSetCreatedProjectEvent);
+    on<UpdateProjectDetailsEvent>(_onUpdateProjectDetailsEvent);
   }
 
   _onGetUserDetails(GetUserDetailsEvent event, Emitter<UserState> emit) async {
@@ -93,13 +94,14 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       }
     } else {
       emit(state.copyWith(
-          createdProject:   Project(
+          createdProject: const Project(
         id: "",
         name: '',
         inputColumns: [],
         projectStatus: '',
         inputSheet: '',
-         projectDetails: null, allInputs: [],
+        projectDetails: null,
+        allInputs: [],
       )));
     }
   }
@@ -107,12 +109,14 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   _onClearCreateProjectEvent(
       ClearCreateProjectEvent event, Emitter<UserState> emit) {
     emit(state.copyWith(
-        createdProject: Project(
+        createdProject: const Project(
       id: "",
       name: '',
       inputColumns: [],
       projectStatus: '',
-      inputSheet: '', projectDetails: null, allInputs: [],
+      inputSheet: '',
+      projectDetails: null,
+      allInputs: [],
     )));
   }
 
@@ -147,5 +151,25 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   _onSetCreatedProjectEvent(
       SetCreatedProjectEvent event, Emitter<UserState> emit) {
     emit(state.copyWith(createdProject: event.createdProject));
+  }
+
+  _onUpdateProjectDetailsEvent(
+      UpdateProjectDetailsEvent event, Emitter<UserState> emit) async {
+    final result = await apiRepository.updateProjectDetails(
+        projectId: event.projectId, projectDetails: event.projectDetails);
+    if (result != null) {
+      emit(state.copyWith(createdProject: result));
+    }else{
+       emit(state.copyWith(
+          createdProject: const Project(
+        id: "",
+        name: '',
+        inputColumns: [],
+        projectStatus: '',
+        inputSheet: '',
+        projectDetails: null,
+        allInputs: [],
+      )));
+    }
   }
 }
