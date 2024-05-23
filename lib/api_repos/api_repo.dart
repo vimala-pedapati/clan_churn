@@ -4,7 +4,9 @@ import 'dart:developer';
 
 import 'package:clan_churn/api_repos/models/column_model.dart';
 import 'package:clan_churn/api_repos/models/project_model.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 
 import 'package:clan_churn/api_repos/auth_repo.dart';
 import 'package:clan_churn/api_repos/models/user_model.dart';
@@ -390,6 +392,63 @@ class ApiRepository {
     } catch (e) {
       log('Network Error: $e');
       return null;
+    }
+  }
+
+  Future<void> uploadFile(
+      {required String projectId,
+      required FilePickerResult filePickerResult}) async {
+    try {
+      // Fetch auth credentials
+      final AuthCredentials authCredentials =
+          await AuthRepository().getTokens();
+
+      // Check if auth credentials are null
+      if (authCredentials.accessToken.isEmpty) {
+        log('Access token is empty');
+        return;
+      }
+      if (filePickerResult.files.isNotEmpty) {
+        PlatformFile file = filePickerResult.files.first;
+
+        if (file.path != null) {
+          var request = http.MultipartRequest(
+            'POST',
+            Uri.parse(
+                'https://churnapi.clanonline.in/project/upload_input_data'),
+          );
+
+          request.headers.addAll({
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ${authCredentials.accessToken}',
+          });
+
+          request.fields['project_id'] = projectId;
+
+          request.files.add(http.MultipartFile.fromBytes(
+            'input_sheet',
+            file.bytes!,
+            filename: file.name,
+            contentType: MediaType('multipart/form-data'),
+            // contentType: MediaType('application',  'vnd.openxmlformats-officedocument.spreadsheetml.sheet'),
+          ));
+
+          var response = await request.send();
+          print('${response}');
+          if (response.statusCode == 200) {
+            print('File uploaded successfully');
+            // Optionally, you can read the response body
+            final responseBody = await response.stream.bytesToString();
+            print(responseBody);
+          } else {
+            print('File upload failed with status: ${response.statusCode}');
+          }
+        }
+      } else {
+        print('File picking canceled');
+      }
+    } catch (e) {
+      log('Network Error: $e');
     }
   }
 }

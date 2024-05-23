@@ -7,6 +7,7 @@ import 'package:clan_churn/api_repos/models/column_model.dart';
 import 'package:clan_churn/api_repos/models/project_model.dart';
 import 'package:clan_churn/api_repos/models/user_model.dart';
 import 'package:equatable/equatable.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
 part 'user_event.dart';
@@ -28,6 +29,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     on<SetCreatedProjectEvent>(_onSetCreatedProjectEvent);
     on<UpdateProjectDetailsEvent>(_onUpdateProjectDetailsEvent);
     on<GetProjectDetailsEvent>(_onGetProjectDetailsEvent);
+    on<UploadFileEvent>(_onUploadFileEvent);
   }
 
   _onGetUserDetails(GetUserDetailsEvent event, Emitter<UserState> emit) async {
@@ -193,5 +195,9 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         allInputs: [],
       )));
     }
+  }
+
+  _onUploadFileEvent(UploadFileEvent event, Emitter<UserState> emit) async{
+    final result = await apiRepository.uploadFile(projectId: event.projectId, filePickerResult: event.filePickerResult );
   }
 }

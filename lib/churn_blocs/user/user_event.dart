@@ -67,3 +67,10 @@ class SetCreatedProjectEvent extends UserEvent {
   final Project createdProject;
   const SetCreatedProjectEvent({required this.createdProject});
 }
+
+class UploadFileEvent extends UserEvent {
+  final FilePickerResult filePickerResult;
+  final String projectId;
+  const UploadFileEvent(
+      {required this.filePickerResult, required this.projectId});
+}
