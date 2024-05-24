@@ -11,7 +11,8 @@ class UserState extends Equatable {
             columnsList: const [],
             createdProject: null,
             projectCreating: false,
-            customerColumnNames: const []);
+            customerColumnNames: const [],
+            uploadingFile:  false);
   final User? user;
   final List<ClientDetails> clientList;
   final bool isExpanded;
@@ -21,6 +22,7 @@ class UserState extends Equatable {
   final Project? createdProject;
   final bool projectCreating;
   final List<TextEditingController> customerColumnNames;
+  final bool uploadingFile;
   const UserState(
       {required this.user,
       required this.clientList,
@@ -30,7 +32,8 @@ class UserState extends Equatable {
       required this.columnsList,
       required this.createdProject,
       required this.projectCreating,
-      required this.customerColumnNames});
+      required this.customerColumnNames,
+      required this.uploadingFile});
 
   UserState copyWith(
       {User? user,
@@ -41,7 +44,10 @@ class UserState extends Equatable {
       List<ColumnDetails>? columnsList,
       Project? createdProject,
       bool? projectCreating,
-      List<TextEditingController>? customerColumnNames}) {
+      List<TextEditingController>? customerColumnNames,
+      bool? uploadingFile,
+   
+      }) {
     return UserState(
         user: user ?? this.user,
         clientList: clientList ?? this.clientList,
@@ -51,7 +57,8 @@ class UserState extends Equatable {
         columnsList: columnsList ?? this.columnsList,
         createdProject: createdProject ?? this.createdProject,
         projectCreating: projectCreating ?? this.projectCreating,
-        customerColumnNames: customerColumnNames ?? this.customerColumnNames);
+        customerColumnNames: customerColumnNames ?? this.customerColumnNames,
+        uploadingFile : uploadingFile ?? this.uploadingFile);
   }
 
   @override
@@ -64,6 +71,7 @@ class UserState extends Equatable {
         columnsList,
         createdProject,
         projectCreating,
-        customerColumnNames
+        customerColumnNames,
+        uploadingFile
       ];
 }

@@ -2,6 +2,7 @@ import 'dart:html';
 
 import 'package:clan_churn/api_repos/models/column_model.dart';
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
+import 'package:clan_churn/components/dialogs.dart';
 import 'package:clan_churn/components/nav_bar.dart';
 import 'package:clan_churn/components/side_bar.dart';
 import 'package:clan_churn/utils/routes.dart';
@@ -362,7 +363,7 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                                       context
                                           .read<UserBloc>()
                                           .add(AddColumnsToProjectEvent());
-                                      showDownloadDialog(context);
+                                      GetDialog.showDownloadDialog(context);
                                     },
                       child: const Text("Next"),
                     ),
@@ -375,41 +376,7 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
   }
 }
 
-Future<void> showDownloadDialog(BuildContext context) async {
-  return showDialog<void>(
-    context: context,
-    builder: (BuildContext context) {
-      return BlocBuilder<UserBloc, UserState>(
-        builder: (context, state) {
-          return AlertDialog(
-            title: Text(
-                ' ${state.projectCreating ? "Preparing for download..." : "Ready to Download "}'),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(Icons.download_for_offline, size: 148.0),
-                const SizedBox(height: 20.0),
-                state.projectCreating
-                    ? const CircularProgressIndicator()
-                    : ElevatedButton(
-                        onPressed: () {
-                          // String a =
-                          //     "https://s3.ap-south-1.amazonaws.com/clan-profile-pictures/ppa/663f3d3e2b20003da5b870f6/6644af6c0fd060a1f4ae6c00/2024_05_15_12_49_55/Project%2023_input_sheet.xlsx?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIASHKMDVP4QE7LHSWY%2F20240515%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20240515T124955Z&X-Amz-Expires=18600&X-Amz-SignedHeaders=host&X-Amz-Signature=be09559485335c919b4e3a2f14602c5143f3fa1d110e72054be510805db55fd7";
-                          // downloadFile(a, context);
-                          launchURL(state.createdProject!.inputSheet!);
-                          Navigator.pop(context);
-                          Navigator.pop(context);
-                        },
-                        child: const Text('Download'),
-                      ),
-              ],
-            ),
-          );
-        },
-      );
-    },
-  );
-}
+ 
 
 Future<void> launchURL(String url) async {
   if (await canLaunchUrl(Uri.parse(url))) {

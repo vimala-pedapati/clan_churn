@@ -395,7 +395,7 @@ class ApiRepository {
     }
   }
 
-  Future<void> uploadFile(
+  Future<Project?> uploadFile(
       {required String projectId,
       required FilePickerResult filePickerResult}) async {
     try {
@@ -406,43 +406,42 @@ class ApiRepository {
       // Check if auth credentials are null
       if (authCredentials.accessToken.isEmpty) {
         log('Access token is empty');
-        return;
+        return null;
       }
+
       if (filePickerResult.files.isNotEmpty) {
         PlatformFile file = filePickerResult.files.first;
+        var headers = {
+          'Authorization': 'Bearer ${authCredentials.accessToken}',
+        };
+        var request = http.MultipartRequest(
+          'POST',
+          Uri.parse('${BaseUrl.baseUrl}${ApiEndpoints.uploadFile}'),
+        );
+        request.fields.addAll({'project_id': projectId});
 
-        if (file.path != null) {
-          var request = http.MultipartRequest(
-            'POST',
-            Uri.parse(
-                'https://churnapi.clanonline.in/project/upload_input_data'),
-          );
-
-          request.headers.addAll({
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ${authCredentials.accessToken}',
-          });
-
-          request.fields['project_id'] = projectId;
-
+        if (file.bytes != null) {
           request.files.add(http.MultipartFile.fromBytes(
             'input_sheet',
             file.bytes!,
             filename: file.name,
-            contentType: MediaType('multipart/form-data'),
-            // contentType: MediaType('application',  'vnd.openxmlformats-officedocument.spreadsheetml.sheet'),
           ));
-
-          var response = await request.send();
-          print('${response}');
-          if (response.statusCode == 200) {
-            print('File uploaded successfully');
-            // Optionally, you can read the response body
-            final responseBody = await response.stream.bytesToString();
-            print(responseBody);
-          } else {
-            print('File upload failed with status: ${response.statusCode}');
-          }
+        }
+        request.headers.addAll(headers);
+        http.StreamedResponse response = await request.send();
+        // print(projectId);
+        // print(response.statusCode);
+        // print(response.reasonPhrase);
+        // print(response);
+        // print(response.stream);
+        if (response.statusCode == 200) {
+          String responseString = await response.stream.bytesToString();
+          print(responseString);
+          Project project = Project.fromJson(json.decode(responseString));
+          return project;
+        } else {
+          print(response.reasonPhrase);
+          return null;
         }
       } else {
         print('File picking canceled');
@@ -450,5 +449,43 @@ class ApiRepository {
     } catch (e) {
       log('Network Error: $e');
     }
+    return null;
+  }
+
+  Future<String?> getErrorReportForInput({required String inputId}) async {
+    print("......get error report $inputId");
+    try {
+      // Fetch auth credentials
+      final AuthCredentials authCredentials =
+          await AuthRepository().getTokens();
+
+      // Check if auth credentials are null
+      if (authCredentials.accessToken.isEmpty) {
+        log('Access token is empty');
+        return null;
+      }
+
+      var headers = {
+        'Authorization': 'Bearer ${authCredentials.accessToken}',
+      };
+      var request = http.MultipartRequest(
+          'POST',
+          Uri.parse(
+              '${BaseUrl.baseUrl}${ApiEndpoints.getErrorReport}?input_id=$inputId'));
+      request.headers.addAll(headers);
+
+      http.StreamedResponse response = await request.send();
+      print(response);
+      if (response.statusCode == 200) {
+        String res = await response.stream.bytesToString();
+        // final result = json.decode(res);
+        print(res);
+      } else {
+        print(response.reasonPhrase);
+      }
+    } catch (e) {
+      log('Network Error: $e');
+    }
+    return null;
   }
 }

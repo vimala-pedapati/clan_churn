@@ -8,13 +8,14 @@ List<Project> projectFromJson(String str) =>
 String projectToJson(Project data) => json.encode(data.toJson());
 
 class Project extends Equatable {
- final  String id;
- final  String? name;
- final  List<InputColumn>? inputColumns;
+  final String id;
+  final String? name;
+  final List<InputColumn>? inputColumns;
   final String? projectStatus;
- final  String? inputSheet;
- final  ProjectDetails? projectDetails;
- final  List<String>? allInputs;
+  final String? inputSheet;
+  final ProjectDetails? projectDetails;
+  final List<String>? allInputs;
+  final String? latestInput;
 
   const Project({
     required this.id,
@@ -24,6 +25,7 @@ class Project extends Equatable {
     required this.inputSheet,
     required this.projectDetails,
     required this.allInputs,
+    required this.latestInput
   });
 
   factory Project.fromJson(Map<String, dynamic> json) => Project(
@@ -41,6 +43,7 @@ class Project extends Equatable {
         allInputs: json["all_inputs"] == null
             ? null
             : List<String>.from(json["all_inputs"].map((x) => x)),
+        latestInput:  json["latest_input"] 
       );
 
   Map<String, dynamic> toJson() => {
@@ -53,11 +56,13 @@ class Project extends Equatable {
         "project_details":
             projectDetails == null ? null : projectDetails!.toJson(),
         "all_inputs": List<dynamic>.from((allInputs ?? []).map((x) => x)),
+        "latest_input": latestInput
       };
-      
-        @override
-        // TODO: implement props
-        List<Object?> get props => [id, name, inputColumns, projectStatus, projectDetails, allInputs];
+
+  @override
+  // TODO: implement props
+  List<Object?> get props =>
+      [id, name, inputColumns, projectStatus, projectDetails, allInputs, latestInput];
 }
 
 class InputColumn extends Equatable {
@@ -129,7 +134,7 @@ class ProjectDetails extends Equatable {
   final int? projectTopOutlierRankForMaximumMonthlyIncentive;
   final int? projectBottomOutlierRankForMaximumMonthlyIncentive;
 
- const  ProjectDetails({
+  const ProjectDetails({
     required this.projectStartDate,
     required this.studyPeriodBeginingDate,
     required this.studyPeriodEndDate,
@@ -218,13 +223,33 @@ class ProjectDetails extends Equatable {
       );
 
   Map<String, dynamic> toJson() => {
-        "project_start_date": projectStartDate == null ? projectStartDate : projectStartDate!.isEmpty? null : projectStartDate ,
-        "study_period_begining_date": studyPeriodBeginingDate == null ? studyPeriodBeginingDate : studyPeriodBeginingDate!.isEmpty? null : studyPeriodBeginingDate,
-        "study_period_end_date": studyPeriodEndDate == null ? studyPeriodEndDate : studyPeriodEndDate!.isEmpty? null : studyPeriodEndDate,
+        "project_start_date": projectStartDate == null
+            ? projectStartDate
+            : projectStartDate!.isEmpty
+                ? null
+                : projectStartDate,
+        "study_period_begining_date": studyPeriodBeginingDate == null
+            ? studyPeriodBeginingDate
+            : studyPeriodBeginingDate!.isEmpty
+                ? null
+                : studyPeriodBeginingDate,
+        "study_period_end_date": studyPeriodEndDate == null
+            ? studyPeriodEndDate
+            : studyPeriodEndDate!.isEmpty
+                ? null
+                : studyPeriodEndDate,
         "earliest_date_for_date_of_joining_relevent_for_the_study":
-            earliestDateForDateOfJoiningReleventForTheStudy == null ? earliestDateForDateOfJoiningReleventForTheStudy : earliestDateForDateOfJoiningReleventForTheStudy!.isEmpty? null : earliestDateForDateOfJoiningReleventForTheStudy,
+            earliestDateForDateOfJoiningReleventForTheStudy == null
+                ? earliestDateForDateOfJoiningReleventForTheStudy
+                : earliestDateForDateOfJoiningReleventForTheStudy!.isEmpty
+                    ? null
+                    : earliestDateForDateOfJoiningReleventForTheStudy,
         "end_date_for_date_of_joining_relevent_for_the_study":
-            endDateForDateOfJoiningReleventForTheStudy == null ? endDateForDateOfJoiningReleventForTheStudy : endDateForDateOfJoiningReleventForTheStudy!.isEmpty? null : endDateForDateOfJoiningReleventForTheStudy,
+            endDateForDateOfJoiningReleventForTheStudy == null
+                ? endDateForDateOfJoiningReleventForTheStudy
+                : endDateForDateOfJoiningReleventForTheStudy!.isEmpty
+                    ? null
+                    : endDateForDateOfJoiningReleventForTheStudy,
         "designations": List<dynamic>.from((designations ?? []).map((x) => x)),
         "departments": List<dynamic>.from((departments ?? []).map((x) => x)),
         "unit_for_value_performance": unitForValuePerformance,

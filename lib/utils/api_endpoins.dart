@@ -15,4 +15,6 @@ class ApiEndpoints {
   static String addColumnsToProject = '/project/column_to_project';
   static String updateProjectDetails = "/project/update_project_details";
   static String getProjectDetails = "/project/get_project";
+  static String uploadFile = "/project/upload_input_data";
+  static String getErrorReport = "/project/get_error_report_for_input";
 }

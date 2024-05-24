@@ -10,6 +10,8 @@ import 'package:equatable/equatable.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
+import '../../components/dialogs.dart';
+
 part 'user_event.dart';
 part 'user_state.dart';
 
@@ -98,14 +100,14 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     } else {
       emit(state.copyWith(
           createdProject: const Project(
-        id: "",
-        name: '',
-        inputColumns: [],
-        projectStatus: '',
-        inputSheet: '',
-        projectDetails: null,
-        allInputs: [],
-      )));
+              id: "-1",
+              name: null,
+              inputColumns: null,
+              projectStatus: null,
+              inputSheet: null,
+              projectDetails: null,
+              allInputs: null,
+              latestInput: null)));
     }
   }
 
@@ -113,14 +115,14 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       ClearCreateProjectEvent event, Emitter<UserState> emit) {
     emit(state.copyWith(
         createdProject: const Project(
-      id: "",
-      name: '',
-      inputColumns: [],
-      projectStatus: '',
-      inputSheet: '',
-      projectDetails: null,
-      allInputs: [],
-    )));
+            id: "-1",
+            name: null,
+            inputColumns: null,
+            projectStatus: null,
+            inputSheet: null,
+            projectDetails: null,
+            allInputs: null,
+            latestInput: null)));
   }
 
   _onReplaceColumnsEvent(ReplaceColumnsEvent event, Emitter<UserState> emit) {
@@ -165,14 +167,14 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     } else {
       emit(state.copyWith(
           createdProject: const Project(
-        id: "",
-        name: '',
-        inputColumns: [],
-        projectStatus: '',
-        inputSheet: '',
-        projectDetails: null,
-        allInputs: [],
-      )));
+              id: "-1",
+              name: null,
+              inputColumns: null,
+              projectStatus: null,
+              inputSheet: null,
+              projectDetails: null,
+              allInputs: null,
+              latestInput: null)));
     }
   }
 
@@ -186,18 +188,45 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     } else {
       emit(state.copyWith(
           createdProject: const Project(
-        id: "",
-        name: '',
-        inputColumns: [],
-        projectStatus: '',
-        inputSheet: '',
-        projectDetails: null,
-        allInputs: [],
-      )));
+              id: "-1",
+              name: null,
+              inputColumns: null,
+              projectStatus: null,
+              inputSheet: null,
+              projectDetails: null,
+              allInputs: null,
+              latestInput: null)));
     }
   }
 
-  _onUploadFileEvent(UploadFileEvent event, Emitter<UserState> emit) async{
-    final result = await apiRepository.uploadFile(projectId: event.projectId, filePickerResult: event.filePickerResult );
+  _onUploadFileEvent(UploadFileEvent event, Emitter<UserState> emit) async {
+    emit(state.copyWith(uploadingFile: true));
+    GetDialog.uploadFile(event.context);
+    final result = await apiRepository.uploadFile(
+        projectId: event.projectId, filePickerResult: event.filePickerResult);
+    if (result != null) {
+      // ignore: use_build_context_synchronously
+      Navigator.pop(event.context);
+      if (result.latestInput != null) {
+        // ignore: use_build_context_synchronously
+        Navigator.pop(event.context);
+        // ignore: use_build_context_synchronously
+        GetDialog.preparingDownloadErrorReport(event.context);
+        final res = await apiRepository.getErrorReportForInput(
+            inputId: result.latestInput!);
+        if (res != null) {
+          // ignore: use_build_context_synchronously
+          Navigator.pop(event.context);
+        } else {
+          // ignore: use_build_context_synchronously
+          Navigator.pop(event.context);
+          // ignore: use_build_context_synchronously
+          GetDialog.failedErrorReport(event.context);
+        }
+        print(res);
+      }
+      emit(state.copyWith(createdProject: result));
+    } else {}
+    emit(state.copyWith(uploadingFile: true));
   }
 }
