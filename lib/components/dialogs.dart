@@ -161,34 +161,28 @@ class GetDialog {
     );
   }
 
-  static Future<void> successErrorReport(BuildContext context) async {
+  static Future<void> successErrorReport(
+      BuildContext context, String errorShet) async {
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
         return BlocBuilder<UserBloc, UserState>(
           builder: (context, state) {
             return AlertDialog(
-              title: Text(state.projectCreating
-                  ? "Preparing for download..."
-                  : "Ready to Download "),
+              title: const Text("Ready to Download "),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const Icon(Icons.download_for_offline, size: 148.0),
                   const SizedBox(height: 20.0),
-                  state.projectCreating
-                      ? const CircularProgressIndicator()
-                      : ElevatedButton(
-                          onPressed: () {
-                            // String a =
-                            //     "https://s3.ap-south-1.amazonaws.com/clan-profile-pictures/ppa/663f3d3e2b20003da5b870f6/6644af6c0fd060a1f4ae6c00/2024_05_15_12_49_55/Project%2023_input_sheet.xlsx?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIASHKMDVP4QE7LHSWY%2F20240515%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20240515T124955Z&X-Amz-Expires=18600&X-Amz-SignedHeaders=host&X-Amz-Signature=be09559485335c919b4e3a2f14602c5143f3fa1d110e72054be510805db55fd7";
-                            // downloadFile(a, context);
-                            launchURL(state.createdProject!.inputSheet!);
-                            Navigator.pop(context);
-                            Navigator.pop(context);
-                          },
-                          child: const Text('Download'),
-                        ),
+                  ElevatedButton(
+                    onPressed: () {
+                      String a =  "https://s3.ap-south-1.amazonaws.com/clan-profile-pictures/ppa/663f3d3e2b20003da5b870f6/6644af6c0fd060a1f4ae6c00/2024_05_15_12_49_55/Project%2023_input_sheet.xlsx?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIASHKMDVP4QE7LHSWY%2F20240515%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20240515T124955Z&X-Amz-Expires=18600&X-Amz-SignedHeaders=host&X-Amz-Signature=be09559485335c919b4e3a2f14602c5143f3fa1d110e72054be510805db55fd7";
+
+                      launchURL(a);
+                    },
+                    child: const Text('Download'),
+                  ),
                 ],
               ),
             );

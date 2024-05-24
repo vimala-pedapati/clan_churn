@@ -214,7 +214,11 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         GetDialog.preparingDownloadErrorReport(event.context);
         final res = await apiRepository.getErrorReportForInput(
             inputId: result.latestInput!);
-        if (res != null) {
+        if (res == null) {
+          // ignore: use_build_context_synchronously
+          Navigator.pop(event.context);
+          // ignore: use_build_context_synchronously
+          GetDialog.successErrorReport(event.context, "");
           // ignore: use_build_context_synchronously
           Navigator.pop(event.context);
         } else {
