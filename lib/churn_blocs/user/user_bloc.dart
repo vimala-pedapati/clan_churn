@@ -100,7 +100,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     } else {
       emit(state.copyWith(
           createdProject: const Project(
-              id: "-1",
+              id: "",
               name: null,
               inputColumns: null,
               projectStatus: null,
@@ -115,7 +115,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       ClearCreateProjectEvent event, Emitter<UserState> emit) {
     emit(state.copyWith(
         createdProject: const Project(
-            id: "-1",
+            id: "",
             name: null,
             inputColumns: null,
             projectStatus: null,
@@ -167,7 +167,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     } else {
       emit(state.copyWith(
           createdProject: const Project(
-              id: "-1",
+              id: "",
               name: null,
               inputColumns: null,
               projectStatus: null,
@@ -188,7 +188,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     } else {
       emit(state.copyWith(
           createdProject: const Project(
-              id: "-1",
+              id: "",
               name: null,
               inputColumns: null,
               projectStatus: null,
