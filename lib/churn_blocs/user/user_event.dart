@@ -34,7 +34,6 @@ class UpdateProjectDetailsEvent extends UserEvent {
 
 class GetProjectDetailsEvent extends UserEvent {
   final String projectId;
-
   const GetProjectDetailsEvent({required this.projectId});
 }
 

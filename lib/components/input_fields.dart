@@ -24,7 +24,7 @@ class _ProjectInitializationState extends State<ProjectInitialization> {
       _currentPage++;
       _pageController.animateToPage(
         _currentPage,
-        duration: Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
       );
     }
@@ -35,7 +35,7 @@ class _ProjectInitializationState extends State<ProjectInitialization> {
       _currentPage--;
       _pageController.animateToPage(
         _currentPage,
-        duration: Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
       );
     }
@@ -57,7 +57,7 @@ class _ProjectInitializationState extends State<ProjectInitialization> {
             children: <Widget>[
               Container(
                 color: Colors.red,
-                child: Center(
+                child: const Center(
                   child: Text(
                     'Page 1',
                     style: TextStyle(fontSize: 24, color: Colors.white),
@@ -66,7 +66,7 @@ class _ProjectInitializationState extends State<ProjectInitialization> {
               ),
               Container(
                 color: Colors.green,
-                child: Center(
+                child: const Center(
                   child: Text(
                     'Page 2',
                     style: TextStyle(fontSize: 24, color: Colors.white),
@@ -75,7 +75,7 @@ class _ProjectInitializationState extends State<ProjectInitialization> {
               ),
               Container(
                 color: Colors.blue,
-                child: Center(
+                child: const Center(
                   child: Text(
                     'Page 3',
                     style: TextStyle(fontSize: 24, color: Colors.white),
@@ -89,11 +89,11 @@ class _ProjectInitializationState extends State<ProjectInitialization> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             IconButton(
-              icon: Icon(Icons.arrow_back),
+              icon: const Icon(Icons.arrow_back),
               onPressed: _goToPreviousPage,
             ),
             IconButton(
-              icon: Icon(Icons.arrow_forward),
+              icon: const Icon(Icons.arrow_forward),
               onPressed: _goToNextPage,
             ),
           ],

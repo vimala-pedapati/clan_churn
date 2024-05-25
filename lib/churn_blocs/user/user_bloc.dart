@@ -155,6 +155,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
   _onSetCreatedProjectEvent(
       SetCreatedProjectEvent event, Emitter<UserState> emit) {
+    add(GetProjectDetailsEvent(projectId: event.createdProject.id));
     emit(state.copyWith(createdProject: event.createdProject));
   }
 
@@ -183,9 +184,12 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     final result = await apiRepository.getProjectDetails(
       projectId: event.projectId,
     );
+
     if (result != null) {
+      print("get project details result if case");
       emit(state.copyWith(createdProject: result));
     } else {
+      print("get project details result else case");
       emit(state.copyWith(
           createdProject: const Project(
               id: "",
