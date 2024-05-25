@@ -128,8 +128,8 @@ class GetInputFields extends StatefulWidget {
 
 class _GetInputFieldsState extends State<GetInputFields> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  List<TextEditingController> designations = [TextEditingController()];
-  List<TextEditingController> departments = [TextEditingController()];
+  List<TextEditingController> designations = [];
+  List<TextEditingController> departments = [];
   TextEditingController customerNameController = TextEditingController();
   TextEditingController projectNameController = TextEditingController();
   TextEditingController projectOwnerController = TextEditingController();
@@ -240,27 +240,6 @@ class _GetInputFieldsState extends State<GetInputFields> {
 
   @override
   void initState() {
-    setState(() {
-      departmentFields.add(CustomTextFormField(
-        label: "department1 covered in the study",
-        controller: departments[0],
-        textInputType: TextInputType.name,
-        isObscureText: false,
-        isEnabled: true,
-        textInputAction: TextInputAction.next,
-        textInputFormatterType: TextInputFormatterType.string,
-      ));
-      designationFields.add(CustomTextFormField(
-        label: "designation1 covered in the study",
-        controller: designations[0],
-        textInputType: TextInputType.name,
-        isObscureText: false,
-        isEnabled: true,
-        textInputAction: TextInputAction.next,
-        textInputFormatterType: TextInputFormatterType.string,
-      ));
-    });
-
     if (context.read<UserBloc>().state.selectedClient != null) {
       setState(() {
         customerNameController.text =
@@ -400,6 +379,67 @@ class _GetInputFieldsState extends State<GetInputFields> {
           projectBottomOutlierRankForMaximumMonthlyIncentiveController.text =
               (pd.projectBottomOutlierRankForMaximumMonthlyIncentive ?? "")
                   .toString();
+
+          departments = [];
+          designations = [];
+          departmentFields = [];
+          designationFields = [];
+
+          if (pd.departments == null) {
+            departments.add(TextEditingController());
+            departmentFields.add(CustomTextFormField(
+              label: "department 1 covered in the study",
+              controller: departments[0],
+              textInputType: TextInputType.name,
+              isObscureText: false,
+              isEnabled: true,
+              textInputAction: TextInputAction.next,
+              textInputFormatterType: TextInputFormatterType.string,
+            ));
+          } else {
+            for (int i = 0; i < pd.departments!.length; i++) {
+              departments.add(TextEditingController(text: pd.departments![i]));
+            }
+            for (int i = 0; i < pd.departments!.length; i++) {
+              departmentFields.add(CustomTextFormField(
+                label: "department ${i + 1} covered in the study",
+                controller: departments[i],
+                textInputType: TextInputType.name,
+                isObscureText: false,
+                isEnabled: true,
+                textInputAction: TextInputAction.next,
+                textInputFormatterType: TextInputFormatterType.string,
+              ));
+            }
+          }
+
+          if (pd.designations == null) {
+            designations.add(TextEditingController());
+            designationFields.add(CustomTextFormField(
+              label: "designation 1 covered in the study",
+              controller: designations[0],
+              textInputType: TextInputType.name,
+              isObscureText: false,
+              isEnabled: true,
+              textInputAction: TextInputAction.next,
+              textInputFormatterType: TextInputFormatterType.string,
+            ));
+          } else {
+            for (int i = 0; i < pd.designations!.length; i++) {
+              designations.add(TextEditingController(text:pd.designations![i]  ));
+            }
+            for (int i = 0; i < pd.designations!.length; i++) {
+              designationFields.add(CustomTextFormField(
+                label: "designation ${i + 1} covered in the study",
+                controller: designations[i],
+                textInputType: TextInputType.name,
+                isObscureText: false,
+                isEnabled: true,
+                textInputAction: TextInputAction.next,
+                textInputFormatterType: TextInputFormatterType.string,
+              ));
+            }
+          }
         }
       });
     }
@@ -492,6 +532,12 @@ class _GetInputFieldsState extends State<GetInputFields> {
           SingleChildScrollView(
             child: Column(
               children: [
+                BlocBuilder<UserBloc, UserState>(
+                  builder: (context, state) {
+                    return Text(
+                        "${state.createdProject!.projectDetails!.departments!}");
+                  },
+                ),
                 Row(
                   children: [
                     IconButton(
@@ -533,7 +579,8 @@ class _GetInputFieldsState extends State<GetInputFields> {
                             children: [
                               ClanChurnSpacing.h10,
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   CustomTextFormField(
                                     label: InputFieldLabels.customerName,
@@ -560,7 +607,8 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                 ],
                               ),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   CustomTextFormField(
                                     label: InputFieldLabels.projectOwner,
@@ -596,11 +644,12 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                 ],
                               ),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   CustomTextFormField(
-                                    label:
-                                        InputFieldLabels.studyPeriodBeginningDate,
+                                    label: InputFieldLabels
+                                        .studyPeriodBeginningDate,
                                     controller:
                                         studyPeriodBeginningDateController,
                                     textInputType: TextInputType.name,
@@ -645,7 +694,8 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                 ],
                               ),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   CustomTextFormField(
                                     label: InputFieldLabels
@@ -696,12 +746,14 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                 ],
                               ),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   CustomTextFormField(
-                                    label:
-                                        InputFieldLabels.unitForValuePerformance,
-                                    controller: unitForValuePerformanceController,
+                                    label: InputFieldLabels
+                                        .unitForValuePerformance,
+                                    controller:
+                                        unitForValuePerformanceController,
                                     textInputType: TextInputType.name,
                                     isObscureText: false,
                                     isEnabled: true,
@@ -724,7 +776,8 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                 ],
                               ),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   CustomTextFormField(
                                     label: InputFieldLabels
@@ -749,7 +802,8 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                 ],
                               ),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   CustomTextFormField(
                                     label: InputFieldLabels
@@ -774,7 +828,8 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                 ],
                               ),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   CustomTextFormField(
                                     label: InputFieldLabels
@@ -799,7 +854,8 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                 ],
                               ),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   CustomTextFormField(
                                     label: InputFieldLabels
@@ -824,7 +880,8 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                 ],
                               ),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   CustomTextFormField(
                                     label: InputFieldLabels
@@ -849,7 +906,8 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                 ],
                               ),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   CustomTextFormField(
                                     label: InputFieldLabels
@@ -874,7 +932,8 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                 ],
                               ),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   CustomTextFormField(
                                     label: InputFieldLabels
@@ -899,7 +958,8 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                 ],
                               ),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   CustomTextFormField(
                                     label: InputFieldLabels
@@ -924,7 +984,8 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                 ],
                               ),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   CustomTextFormField(
                                     label: InputFieldLabels
@@ -949,7 +1010,8 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                 ],
                               ),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   CustomTextFormField(
                                     label: InputFieldLabels
@@ -974,7 +1036,8 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                 ],
                               ),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   CustomTextFormField(
                                     label: InputFieldLabels
@@ -999,7 +1062,8 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                 ],
                               ),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   CustomTextFormField(
                                     label: InputFieldLabels
@@ -1024,11 +1088,13 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                 ],
                               ),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     // mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       ...departmentFields,
@@ -1058,7 +1124,8 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                     ],
                                   ),
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     // mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       ...designationFields,
@@ -1096,7 +1163,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                 children: [
                                   ElevatedButton(
                                     onPressed: () {
-                                      List<String> depart = [];
+                                      List<String> depart =  [];
                                       List<String> design = [];
                                       for (var i in departments) {
                                         depart.add(i.text);
@@ -1106,6 +1173,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                       }
                                       ProjectDetails a = ProjectDetails(
                                           departments: depart,
+                                          designations: design,
                                           projectStartDate:
                                               projectStartDateController.text,
                                           studyPeriodBeginingDate:
@@ -1119,7 +1187,6 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                           endDateForDateOfJoiningReleventForTheStudy:
                                               endDateForDateOfJoiningReleventForTheStudyController
                                                   .text,
-                                          designations: design,
                                           unitForValuePerformance:
                                               unitForValuePerformanceController
                                                   .text,
@@ -1161,7 +1228,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                               projectDetails: a));
                                       print(a);
                                       print(a.toJson());
-          
+
                                       goToNextPage();
                                     },
                                     child: const Text("Next"),
