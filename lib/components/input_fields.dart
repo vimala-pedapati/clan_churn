@@ -489,690 +489,692 @@ class _GetInputFieldsState extends State<GetInputFields> {
           });
         },
         children: [
-          Column(
-            children: [
-              Row(
-                children: [
-                  IconButton(
-                    icon: Icon(
-                      Icons.keyboard_backspace,
-                      color: Theme.of(context).colorScheme.secondary,
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    IconButton(
+                      icon: Icon(
+                        Icons.keyboard_backspace,
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                        // GoRouter.of(context).go(AppRoutes.home);
+                      },
                     ),
-                    onPressed: () {
-                      Navigator.pop(context);
-                      // GoRouter.of(context).go(AppRoutes.home);
-                    },
-                  ),
-                  ClanChurnSpacing.w10,
-                  Text(
-                    "Project Initialization",
-                    style: ClanChurnTypography.font18600,
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Text(
-                    "Select Initialization",
-                    style: ClanChurnTypography.font14500,
-                  ),
-                  ClanChurnSpacing.w15,
-                  // DropDown
-                  const GetInitializationDropDown(),
-                ],
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.65,
-                width: MediaQuery.of(context).size.width,
-                child: SingleChildScrollView(
-                  child: Form(
-                      key: _formKey,
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            ClanChurnSpacing.h10,
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                CustomTextFormField(
-                                  label: InputFieldLabels.customerName,
-                                  controller: customerNameController,
-                                  textInputType: TextInputType.name,
-                                  isObscureText: false,
-                                  isEnabled: true,
-                                  textInputAction: TextInputAction.next,
-                                  textInputFormatterType:
-                                      TextInputFormatterType.string,
-                                  readOnly: true,
-                                ),
-                                CustomTextFormField(
-                                  label: InputFieldLabels.projectName,
-                                  controller: projectNameController,
-                                  textInputType: TextInputType.name,
-                                  isObscureText: false,
-                                  isEnabled: true,
-                                  textInputAction: TextInputAction.next,
-                                  textInputFormatterType:
-                                      TextInputFormatterType.string,
-                                  readOnly: true,
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                CustomTextFormField(
-                                  label: InputFieldLabels.projectOwner,
-                                  controller: projectOwnerController,
-                                  textInputType: TextInputType.name,
-                                  isObscureText: false,
-                                  isEnabled: true,
-                                  textInputAction: TextInputAction.next,
-                                  textInputFormatterType:
-                                      TextInputFormatterType.string,
-                                ),
-                                CustomTextFormField(
-                                  label: InputFieldLabels.projectStartDate,
-                                  controller: projectStartDateController,
-                                  hintText: 'Select Date',
-                                  suffixIcon: IconButton(
-                                    icon: const Icon(Icons.calendar_month),
-                                    onPressed: () async {
-                                      setState(() async {
-                                        projectStartDateController.text =
-                                            await selectDate(context);
-                                      });
-                                    },
-                                  ),
-                                  readOnly: true,
-                                  textInputType: TextInputType.name,
-                                  isObscureText: false,
-                                  isEnabled: true,
-                                  textInputAction: TextInputAction.next,
-                                  textInputFormatterType:
-                                      TextInputFormatterType.string,
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                CustomTextFormField(
-                                  label:
-                                      InputFieldLabels.studyPeriodBeginningDate,
-                                  controller:
-                                      studyPeriodBeginningDateController,
-                                  textInputType: TextInputType.name,
-                                  hintText: 'Select Date',
-                                  suffixIcon: IconButton(
-                                    icon: const Icon(Icons.calendar_month),
-                                    onPressed: () async {
-                                      setState(() async {
-                                        studyPeriodBeginningDateController
-                                            .text = await selectDate(context);
-                                      });
-                                    },
-                                  ),
-                                  readOnly: true,
-                                  isObscureText: false,
-                                  isEnabled: true,
-                                  textInputAction: TextInputAction.next,
-                                  textInputFormatterType:
-                                      TextInputFormatterType.string,
-                                ),
-                                CustomTextFormField(
-                                  label: InputFieldLabels.studyPeriodEndDate,
-                                  controller: studyPeriodEndDateController,
-                                  textInputType: TextInputType.name,
-                                  isObscureText: false,
-                                  isEnabled: true,
-                                  hintText: 'Select Date',
-                                  suffixIcon: IconButton(
-                                    icon: const Icon(Icons.calendar_month),
-                                    onPressed: () async {
-                                      setState(() async {
-                                        studyPeriodEndDateController.text =
-                                            await selectDate(context);
-                                      });
-                                    },
-                                  ),
-                                  readOnly: true,
-                                  textInputAction: TextInputAction.next,
-                                  textInputFormatterType:
-                                      TextInputFormatterType.string,
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                CustomTextFormField(
-                                  label: InputFieldLabels
-                                      .earliestDateForDateOfJoiningRelevantForStudy,
-                                  controller:
-                                      earliestDateForDateOfJoiningReleventForTheStudyController,
-                                  textInputType: TextInputType.name,
-                                  hintText: 'Select Date',
-                                  suffixIcon: IconButton(
-                                    icon: const Icon(Icons.calendar_month),
-                                    onPressed: () async {
-                                      setState(() async {
-                                        earliestDateForDateOfJoiningReleventForTheStudyController
-                                            .text = await selectDate(context);
-                                      });
-                                    },
-                                  ),
-                                  readOnly: true,
-                                  isObscureText: false,
-                                  isEnabled: true,
-                                  textInputAction: TextInputAction.next,
-                                  textInputFormatterType:
-                                      TextInputFormatterType.string,
-                                ),
-                                CustomTextFormField(
-                                  label: InputFieldLabels
-                                      .endDateForDateOfJoiningRelevantForStudy,
-                                  controller:
-                                      endDateForDateOfJoiningReleventForTheStudyController,
-                                  hintText: 'Select Date',
-                                  suffixIcon: IconButton(
-                                    icon: const Icon(Icons.calendar_month),
-                                    onPressed: () async {
-                                      setState(() async {
-                                        endDateForDateOfJoiningReleventForTheStudyController
-                                            .text = await selectDate(context);
-                                      });
-                                    },
-                                  ),
-                                  readOnly: true,
-                                  textInputType: TextInputType.name,
-                                  isObscureText: false,
-                                  isEnabled: true,
-                                  textInputAction: TextInputAction.next,
-                                  textInputFormatterType:
-                                      TextInputFormatterType.string,
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                CustomTextFormField(
-                                  label:
-                                      InputFieldLabels.unitForValuePerformance,
-                                  controller: unitForValuePerformanceController,
-                                  textInputType: TextInputType.name,
-                                  isObscureText: false,
-                                  isEnabled: true,
-                                  textInputAction: TextInputAction.next,
-                                  textInputFormatterType:
-                                      TextInputFormatterType.string,
-                                ),
-                                CustomTextFormField(
-                                  label: InputFieldLabels
-                                      .unitForQuantityPerformance,
-                                  controller:
-                                      unitForQuantityPerformanceController,
-                                  textInputType: TextInputType.name,
-                                  isObscureText: false,
-                                  isEnabled: true,
-                                  textInputAction: TextInputAction.next,
-                                  textInputFormatterType:
-                                      TextInputFormatterType.string,
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                CustomTextFormField(
-                                  label: InputFieldLabels
-                                      .projectMaximumResidencyMonth,
-                                  controller:
-                                      projectMaximumResidencyMonthController,
-                                  textInputType: TextInputType.name,
-                                  isObscureText: false,
-                                  isEnabled: true,
-                                  textInputAction: TextInputAction.next,
-                                ),
-                                CustomTextFormField(
-                                  label: InputFieldLabels
-                                      .projectTopOutlierRankForResidencyMonthofPerformanceMonth,
-                                  controller:
-                                      projectTopOutlierRankForResidencyMonthOfPerformanceMonthController,
-                                  textInputType: TextInputType.name,
-                                  isObscureText: false,
-                                  isEnabled: true,
-                                  textInputAction: TextInputAction.next,
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                CustomTextFormField(
-                                  label: InputFieldLabels
-                                      .projectBottomOutlierRankForResidencyMonthOfPerformaceMonth,
-                                  controller:
-                                      projectBottomOutlierRankForResidencyMonthOfPerformanceMonthController,
-                                  textInputType: TextInputType.name,
-                                  isObscureText: false,
-                                  isEnabled: true,
-                                  textInputAction: TextInputAction.next,
-                                ),
-                                CustomTextFormField(
-                                  label: InputFieldLabels
-                                      .projectMaximumPerformanceValueTarget,
-                                  controller:
-                                      projectMaxPerformanceValueTargetController,
-                                  textInputType: TextInputType.name,
-                                  isObscureText: false,
-                                  isEnabled: true,
-                                  textInputAction: TextInputAction.next,
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                CustomTextFormField(
-                                  label: InputFieldLabels
-                                      .projectTopOutlierRankForMaximumPerforamceValueTarget,
-                                  controller:
-                                      projectTopOutlierRankForMaximumPerformanceValueTargetController,
-                                  textInputType: TextInputType.name,
-                                  isObscureText: false,
-                                  isEnabled: true,
-                                  textInputAction: TextInputAction.next,
-                                ),
-                                CustomTextFormField(
-                                  label: InputFieldLabels
-                                      .projectBottomOutlierRankMaximumPerformanceValueTarget,
-                                  controller:
-                                      projectBottomOutlierRankForMaximumPerformanceValueTargetController,
-                                  textInputType: TextInputType.name,
-                                  isObscureText: false,
-                                  isEnabled: true,
-                                  textInputAction: TextInputAction.next,
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                CustomTextFormField(
-                                  label: InputFieldLabels
-                                      .projectMaximumPerformanceValueActual,
-                                  controller:
-                                      projectMaximumPerformanceValueActualController,
-                                  textInputType: TextInputType.name,
-                                  isObscureText: false,
-                                  isEnabled: true,
-                                  textInputAction: TextInputAction.next,
-                                ),
-                                CustomTextFormField(
-                                  label: InputFieldLabels
-                                      .projectTopOutlierRankForMaximumPerformanceValueActual,
-                                  controller:
-                                      projectTopOutlierRankForMaximumPerformanceValueActualController,
-                                  textInputType: TextInputType.name,
-                                  isObscureText: false,
-                                  isEnabled: true,
-                                  textInputAction: TextInputAction.next,
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                CustomTextFormField(
-                                  label: InputFieldLabels
-                                      .projectBottomOutlierRankMaximumPerformacealueActual,
-                                  controller:
-                                      projectBottomOutlierRankForMaximumPerformanceValueActualController,
-                                  textInputType: TextInputType.name,
-                                  isObscureText: false,
-                                  isEnabled: true,
-                                  textInputAction: TextInputAction.next,
-                                ),
-                                CustomTextFormField(
-                                  label: InputFieldLabels
-                                      .projectMaximumPerformanceQuantityActual,
-                                  controller:
-                                      projectMaximumPerformanceQuantityActualController,
-                                  textInputType: TextInputType.name,
-                                  isObscureText: false,
-                                  isEnabled: true,
-                                  textInputAction: TextInputAction.next,
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                CustomTextFormField(
-                                  label: InputFieldLabels
-                                      .projectTopOutlierRankForMaximumPerformanceQuantityTarget,
-                                  controller:
-                                      projectTopOutlierRankForMaximumPerformanceQuantityTargetController,
-                                  textInputType: TextInputType.name,
-                                  isObscureText: false,
-                                  isEnabled: true,
-                                  textInputAction: TextInputAction.next,
-                                ),
-                                CustomTextFormField(
-                                  label: InputFieldLabels
-                                      .projectBottomOutlierRankMaximumPerformanceQuatityTarget,
-                                  controller:
-                                      projectBottomOutlierRankForMaximumPerformanceQuantityTargetController,
-                                  textInputType: TextInputType.name,
-                                  isObscureText: false,
-                                  isEnabled: true,
-                                  textInputAction: TextInputAction.next,
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                CustomTextFormField(
-                                  label: InputFieldLabels
-                                      .projectMaximumPerformanceQuantityActual,
-                                  controller:
-                                      projectMaximumPerformanceQuantityActualController,
-                                  textInputType: TextInputType.name,
-                                  isObscureText: false,
-                                  isEnabled: true,
-                                  textInputAction: TextInputAction.next,
-                                ),
-                                CustomTextFormField(
-                                  label: InputFieldLabels
-                                      .projectTopOutlierRankForMaximumPerformanceQuantityActual,
-                                  controller:
-                                      projectTopOutlierRankForMaximumPerformanceQuantityActualController,
-                                  textInputType: TextInputType.name,
-                                  isObscureText: false,
-                                  isEnabled: true,
-                                  textInputAction: TextInputAction.next,
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                CustomTextFormField(
-                                  label: InputFieldLabels
-                                      .projectBottomOutlierRankMaximumPerformanceQuantityActual,
-                                  controller:
-                                      projectBottomOutlierRankMaximumPerformanceQuantityActualController,
-                                  textInputType: TextInputType.name,
-                                  isObscureText: false,
-                                  isEnabled: true,
-                                  textInputAction: TextInputAction.next,
-                                ),
-                                CustomTextFormField(
-                                  label: InputFieldLabels
-                                      .projectMaximumOverAllPerformancePerAchievement,
-                                  controller:
-                                      projectMaximumOverAllPerformanceAchievementPerController,
-                                  textInputType: TextInputType.name,
-                                  isObscureText: false,
-                                  isEnabled: true,
-                                  textInputAction: TextInputAction.next,
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                CustomTextFormField(
-                                  label: InputFieldLabels
-                                      .projectTopOutlierRankForMaximumOverAllPerformanceAchieventPer,
-                                  controller:
-                                      projectTopOutlierRankForMaximumOverAllPerformanceAchievementPerController,
-                                  textInputType: TextInputType.name,
-                                  isObscureText: false,
-                                  isEnabled: true,
-                                  textInputAction: TextInputAction.next,
-                                ),
-                                CustomTextFormField(
-                                  label: InputFieldLabels
-                                      .projectBottomOutlierRankMaximumOverAllPerformanceAchievementPer,
-                                  controller:
-                                      projectBottomOutlierRankForMaximumOverAllPerformanceAchievementPerController,
-                                  textInputType: TextInputType.name,
-                                  isObscureText: false,
-                                  isEnabled: true,
-                                  textInputAction: TextInputAction.next,
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                CustomTextFormField(
-                                  label: InputFieldLabels
-                                      .projectMaximumMonthlyFixedSalaryIndex,
-                                  controller:
-                                      projectMaximumMonthlyFixedSalaryIndexController,
-                                  textInputType: TextInputType.name,
-                                  isObscureText: false,
-                                  isEnabled: true,
-                                  textInputAction: TextInputAction.next,
-                                ),
-                                CustomTextFormField(
-                                  label: InputFieldLabels
-                                      .projectTopOutlierRankForMaximumMonthlyFixedSalaryIndex,
-                                  controller:
-                                      projectTopOutlierRankForMaximumMonthlyFixedSalaryIndexController,
-                                  textInputType: TextInputType.name,
-                                  isObscureText: false,
-                                  isEnabled: true,
-                                  textInputAction: TextInputAction.next,
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                CustomTextFormField(
-                                  label: InputFieldLabels
-                                      .projectBottomOutlierRankMaximumMonthlyFixedSalaryIndex,
-                                  controller:
-                                      projectBottomOutlierRankForMaximumMonthlyFixedSalaryIndexController,
-                                  textInputType: TextInputType.name,
-                                  isObscureText: false,
-                                  isEnabled: true,
-                                  textInputAction: TextInputAction.next,
-                                ),
-                                CustomTextFormField(
-                                  label: InputFieldLabels
-                                      .projectMaximumMonthlyIncentive,
-                                  controller:
-                                      projectMaximumMonthlyIncentiveController,
-                                  textInputType: TextInputType.name,
-                                  isObscureText: false,
-                                  isEnabled: true,
-                                  textInputAction: TextInputAction.next,
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                CustomTextFormField(
-                                  label: InputFieldLabels
-                                      .projectTopOutlierRankForMaximumMonthlyIncentive,
-                                  controller:
-                                      projectTopOutlierRankForMaximumMonthlyIncentiveController,
-                                  textInputType: TextInputType.name,
-                                  isObscureText: false,
-                                  isEnabled: true,
-                                  textInputAction: TextInputAction.next,
-                                ),
-                                CustomTextFormField(
-                                  label: InputFieldLabels
-                                      .projectBottomOutlierRankMaximumMonthlyIncentive,
-                                  controller:
-                                      projectBottomOutlierRankForMaximumMonthlyIncentiveController,
-                                  textInputType: TextInputType.name,
-                                  isObscureText: false,
-                                  isEnabled: true,
-                                  textInputAction: TextInputAction.next,
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  // mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    ...departmentFields,
-                                    TextButton(
-                                      child: const Text("add department"),
-                                      onPressed: () {
-                                        setState(() {
-                                          departments
-                                              .add(TextEditingController());
-                                          departmentFields
-                                              .add(CustomTextFormField(
-                                            label:
-                                                "department${departmentFields.length + 1}",
-                                            controller: departments[
-                                                departments.length - 1],
-                                            textInputType: TextInputType.name,
-                                            isObscureText: false,
-                                            isEnabled: true,
-                                            textInputAction:
-                                                TextInputAction.next,
-                                            textInputFormatterType:
-                                                TextInputFormatterType.string,
-                                          ));
-                                        });
-                                      },
-                                    )
-                                  ],
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  // mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    ...designationFields,
-                                    TextButton(
-                                      child: const Text("add designation"),
-                                      onPressed: () {
-                                        setState(() {
-                                          designations
-                                              .add(TextEditingController());
-                                          designationFields
-                                              .add(CustomTextFormField(
-                                            label:
-                                                "designation ${designationFields.length + 1}",
-                                            controller: designations[
-                                                designations.length - 1],
-                                            textInputType: TextInputType.name,
-                                            isObscureText: false,
-                                            isEnabled: true,
-                                            textInputAction:
-                                                TextInputAction.next,
-                                            textInputFormatterType:
-                                                TextInputFormatterType.string,
-                                          ));
-                                        });
-                                      },
-                                    )
-                                  ],
-                                )
-                              ],
-                            ),
-                            ClanChurnSpacing.h10,
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                ElevatedButton(
-                                  onPressed: () {
-                                    List<String> depart = [];
-                                    List<String> design = [];
-                                    for (var i in departments) {
-                                      depart.add(i.text);
-                                    }
-                                    for (var i in designations) {
-                                      design.add(i.text);
-                                    }
-                                    ProjectDetails a = ProjectDetails(
-                                        departments: depart,
-                                        projectStartDate:
-                                            projectStartDateController.text,
-                                        studyPeriodBeginingDate:
-                                            studyPeriodBeginningDateController
-                                                .text,
-                                        studyPeriodEndDate:
-                                            studyPeriodEndDateController.text,
-                                        earliestDateForDateOfJoiningReleventForTheStudy:
-                                            earliestDateForDateOfJoiningReleventForTheStudyController
-                                                .text,
-                                        endDateForDateOfJoiningReleventForTheStudy:
-                                            endDateForDateOfJoiningReleventForTheStudyController
-                                                .text,
-                                        designations: design,
-                                        unitForValuePerformance:
-                                            unitForValuePerformanceController
-                                                .text,
-                                        unitForQuantityPerformance: '',
-                                        projectMaximumResidencyMonth: int.parse(
-                                            projectMaximumResidencyMonthController
-                                                    .text.isEmpty
-                                                ? '0'
-                                                : projectMaximumResidencyMonthController
-                                                    .text),
-                                        projectTopOutlierRankForResidencyMonthOfPerformanceMonth:
-                                            int.parse(projectTopOutlierRankForResidencyMonthOfPerformanceMonthController.text.isEmpty ? '0' : projectTopOutlierRankForResidencyMonthOfPerformanceMonthController.text),
-                                        projectBottomOutlierRankForResidencyMonthOfPerformanceMonth: int.parse(projectBottomOutlierRankForResidencyMonthOfPerformanceMonthController.text.isEmpty ? '0' : projectBottomOutlierRankForResidencyMonthOfPerformanceMonthController.text),
-                                        projectMaxPerformanceValueTarget: int.parse(projectMaxPerformanceValueTargetController.text.isEmpty ? '0' : projectMaxPerformanceValueTargetController.text),
-                                        projectTopOutlierRankForMaximumPerformanceValueTarget: int.parse(projectTopOutlierRankForMaximumPerformanceValueTargetController.text.isEmpty ? '0' : projectTopOutlierRankForMaximumPerformanceValueTargetController.text),
-                                        projectBottomOutlierRankForMaximumPerformanceValueTarget: int.parse(projectBottomOutlierRankForMaximumPerformanceValueTargetController.text.isEmpty ? '0' : projectBottomOutlierRankForMaximumPerformanceValueTargetController.text),
-                                        projectMaximumPerformanceValueActual: int.parse(projectMaximumPerformanceValueActualController.text.isEmpty ? '0' : projectMaximumPerformanceValueActualController.text),
-                                        projectTopOutlierRankForMaximumPerformanceValueActual: int.parse(projectTopOutlierRankForMaximumPerformanceValueActualController.text.isEmpty ? '0' : projectTopOutlierRankForMaximumPerformanceValueActualController.text),
-                                        projectBottomOutlierRankForMaximumPerformanceValueActual: int.parse(projectBottomOutlierRankForMaximumPerformanceValueActualController.text.isEmpty ? '0' : projectBottomOutlierRankForMaximumPerformanceValueActualController.text),
-                                        projectMaximumPerformanceQuantityTarget: int.parse(projectMaximumPerformanceQuantityTargetController.text.isEmpty ? '0' : projectMaximumPerformanceQuantityTargetController.text),
-                                        projectTopOutlierRankForMaximumPerformanceQuantityTarget: int.parse(projectTopOutlierRankForMaximumPerformanceQuantityTargetController.text.isEmpty ? '0' : projectTopOutlierRankForMaximumPerformanceQuantityTargetController.text),
-                                        projectBottomOutlierRankForMaximumPerformanceQuantityTarget: int.parse(projectBottomOutlierRankForMaximumPerformanceQuantityTargetController.text.isEmpty ? '0' : projectBottomOutlierRankForMaximumPerformanceQuantityTargetController.text),
-                                        projectMaximumOverAllPerformanceAchievementPer: int.parse(projectMaximumOverAllPerformanceAchievementPerController.text.isEmpty ? '0' : projectMaximumOverAllPerformanceAchievementPerController.text),
-                                        projectTopOutlierRankForMaximumOverAllPerformanceAchievementPer: int.parse(projectTopOutlierRankForMaximumOverAllPerformanceAchievementPerController.text.isEmpty ? '0' : projectTopOutlierRankForMaximumOverAllPerformanceAchievementPerController.text),
-                                        projectBottomOutlierRankForMaximumOverAllPerformanceAchievementPer: int.parse(projectBottomOutlierRankForMaximumOverAllPerformanceAchievementPerController.text.isEmpty ? '0' : projectBottomOutlierRankForMaximumOverAllPerformanceAchievementPerController.text),
-                                        projectMaximumMonthlyFixedSalaryIndex: int.parse(projectMaximumMonthlyFixedSalaryIndexController.text.isEmpty ? '0' : projectMaximumMonthlyFixedSalaryIndexController.text),
-                                        projectTopOutlierRankForMaximumMonthlyFixedSalaryIndex: int.parse(projectTopOutlierRankForMaximumMonthlyFixedSalaryIndexController.text.isEmpty ? '0' : projectTopOutlierRankForMaximumMonthlyFixedSalaryIndexController.text),
-                                        projectBottomOutlierRankForMaximumMonthlyFixedSalaryIndex: int.parse(projectBottomOutlierRankForMaximumMonthlyFixedSalaryIndexController.text.isEmpty ? '0' : projectBottomOutlierRankForMaximumMonthlyFixedSalaryIndexController.text),
-                                        projectMaximumMonthlyIncentive: int.parse(projectMaximumMonthlyIncentiveController.text.isEmpty ? '0' : projectMaximumMonthlyIncentiveController.text),
-                                        projectTopOutlierRankForMaximumMonthlyIncentive: int.parse(projectTopOutlierRankForMaximumMonthlyIncentiveController.text.isEmpty ? '0' : projectTopOutlierRankForMaximumMonthlyIncentiveController.text),
-                                        projectBottomOutlierRankForMaximumMonthlyIncentive: int.parse(projectBottomOutlierRankForMaximumMonthlyIncentiveController.text.isEmpty ? '0' : projectBottomOutlierRankForMaximumMonthlyIncentiveController.text));
-                                    context.read<UserBloc>().add(
-                                        UpdateProjectDetailsEvent(
-                                            projectId: context
-                                                .read<UserBloc>()
-                                                .state
-                                                .createdProject!
-                                                .id,
-                                            projectDetails: a));
-                                    print(a);
-                                    print(a.toJson());
-
-                                    goToNextPage();
-                                  },
-                                  child: const Text("Next"),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
-                      )),
+                    ClanChurnSpacing.w10,
+                    Text(
+                      "Project Initialization",
+                      style: ClanChurnTypography.font18600,
+                    ),
+                  ],
                 ),
-              ),
-            ],
+                Row(
+                  children: [
+                    Text(
+                      "Select Initialization",
+                      style: ClanChurnTypography.font14500,
+                    ),
+                    ClanChurnSpacing.w15,
+                    // DropDown
+                    const GetInitializationDropDown(),
+                  ],
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.65,
+                  width: MediaQuery.of(context).size.width,
+                  child: SingleChildScrollView(
+                    child: Form(
+                        key: _formKey,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              ClanChurnSpacing.h10,
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  CustomTextFormField(
+                                    label: InputFieldLabels.customerName,
+                                    controller: customerNameController,
+                                    textInputType: TextInputType.name,
+                                    isObscureText: false,
+                                    isEnabled: true,
+                                    textInputAction: TextInputAction.next,
+                                    textInputFormatterType:
+                                        TextInputFormatterType.string,
+                                    readOnly: true,
+                                  ),
+                                  CustomTextFormField(
+                                    label: InputFieldLabels.projectName,
+                                    controller: projectNameController,
+                                    textInputType: TextInputType.name,
+                                    isObscureText: false,
+                                    isEnabled: true,
+                                    textInputAction: TextInputAction.next,
+                                    textInputFormatterType:
+                                        TextInputFormatterType.string,
+                                    readOnly: true,
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  CustomTextFormField(
+                                    label: InputFieldLabels.projectOwner,
+                                    controller: projectOwnerController,
+                                    textInputType: TextInputType.name,
+                                    isObscureText: false,
+                                    isEnabled: true,
+                                    textInputAction: TextInputAction.next,
+                                    textInputFormatterType:
+                                        TextInputFormatterType.string,
+                                  ),
+                                  CustomTextFormField(
+                                    label: InputFieldLabels.projectStartDate,
+                                    controller: projectStartDateController,
+                                    hintText: 'Select Date',
+                                    suffixIcon: IconButton(
+                                      icon: const Icon(Icons.calendar_month),
+                                      onPressed: () async {
+                                        setState(() async {
+                                          projectStartDateController.text =
+                                              await selectDate(context);
+                                        });
+                                      },
+                                    ),
+                                    readOnly: true,
+                                    textInputType: TextInputType.name,
+                                    isObscureText: false,
+                                    isEnabled: true,
+                                    textInputAction: TextInputAction.next,
+                                    textInputFormatterType:
+                                        TextInputFormatterType.string,
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  CustomTextFormField(
+                                    label:
+                                        InputFieldLabels.studyPeriodBeginningDate,
+                                    controller:
+                                        studyPeriodBeginningDateController,
+                                    textInputType: TextInputType.name,
+                                    hintText: 'Select Date',
+                                    suffixIcon: IconButton(
+                                      icon: const Icon(Icons.calendar_month),
+                                      onPressed: () async {
+                                        setState(() async {
+                                          studyPeriodBeginningDateController
+                                              .text = await selectDate(context);
+                                        });
+                                      },
+                                    ),
+                                    readOnly: true,
+                                    isObscureText: false,
+                                    isEnabled: true,
+                                    textInputAction: TextInputAction.next,
+                                    textInputFormatterType:
+                                        TextInputFormatterType.string,
+                                  ),
+                                  CustomTextFormField(
+                                    label: InputFieldLabels.studyPeriodEndDate,
+                                    controller: studyPeriodEndDateController,
+                                    textInputType: TextInputType.name,
+                                    isObscureText: false,
+                                    isEnabled: true,
+                                    hintText: 'Select Date',
+                                    suffixIcon: IconButton(
+                                      icon: const Icon(Icons.calendar_month),
+                                      onPressed: () async {
+                                        setState(() async {
+                                          studyPeriodEndDateController.text =
+                                              await selectDate(context);
+                                        });
+                                      },
+                                    ),
+                                    readOnly: true,
+                                    textInputAction: TextInputAction.next,
+                                    textInputFormatterType:
+                                        TextInputFormatterType.string,
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  CustomTextFormField(
+                                    label: InputFieldLabels
+                                        .earliestDateForDateOfJoiningRelevantForStudy,
+                                    controller:
+                                        earliestDateForDateOfJoiningReleventForTheStudyController,
+                                    textInputType: TextInputType.name,
+                                    hintText: 'Select Date',
+                                    suffixIcon: IconButton(
+                                      icon: const Icon(Icons.calendar_month),
+                                      onPressed: () async {
+                                        setState(() async {
+                                          earliestDateForDateOfJoiningReleventForTheStudyController
+                                              .text = await selectDate(context);
+                                        });
+                                      },
+                                    ),
+                                    readOnly: true,
+                                    isObscureText: false,
+                                    isEnabled: true,
+                                    textInputAction: TextInputAction.next,
+                                    textInputFormatterType:
+                                        TextInputFormatterType.string,
+                                  ),
+                                  CustomTextFormField(
+                                    label: InputFieldLabels
+                                        .endDateForDateOfJoiningRelevantForStudy,
+                                    controller:
+                                        endDateForDateOfJoiningReleventForTheStudyController,
+                                    hintText: 'Select Date',
+                                    suffixIcon: IconButton(
+                                      icon: const Icon(Icons.calendar_month),
+                                      onPressed: () async {
+                                        setState(() async {
+                                          endDateForDateOfJoiningReleventForTheStudyController
+                                              .text = await selectDate(context);
+                                        });
+                                      },
+                                    ),
+                                    readOnly: true,
+                                    textInputType: TextInputType.name,
+                                    isObscureText: false,
+                                    isEnabled: true,
+                                    textInputAction: TextInputAction.next,
+                                    textInputFormatterType:
+                                        TextInputFormatterType.string,
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  CustomTextFormField(
+                                    label:
+                                        InputFieldLabels.unitForValuePerformance,
+                                    controller: unitForValuePerformanceController,
+                                    textInputType: TextInputType.name,
+                                    isObscureText: false,
+                                    isEnabled: true,
+                                    textInputAction: TextInputAction.next,
+                                    textInputFormatterType:
+                                        TextInputFormatterType.string,
+                                  ),
+                                  CustomTextFormField(
+                                    label: InputFieldLabels
+                                        .unitForQuantityPerformance,
+                                    controller:
+                                        unitForQuantityPerformanceController,
+                                    textInputType: TextInputType.name,
+                                    isObscureText: false,
+                                    isEnabled: true,
+                                    textInputAction: TextInputAction.next,
+                                    textInputFormatterType:
+                                        TextInputFormatterType.string,
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  CustomTextFormField(
+                                    label: InputFieldLabels
+                                        .projectMaximumResidencyMonth,
+                                    controller:
+                                        projectMaximumResidencyMonthController,
+                                    textInputType: TextInputType.name,
+                                    isObscureText: false,
+                                    isEnabled: true,
+                                    textInputAction: TextInputAction.next,
+                                  ),
+                                  CustomTextFormField(
+                                    label: InputFieldLabels
+                                        .projectTopOutlierRankForResidencyMonthofPerformanceMonth,
+                                    controller:
+                                        projectTopOutlierRankForResidencyMonthOfPerformanceMonthController,
+                                    textInputType: TextInputType.name,
+                                    isObscureText: false,
+                                    isEnabled: true,
+                                    textInputAction: TextInputAction.next,
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  CustomTextFormField(
+                                    label: InputFieldLabels
+                                        .projectBottomOutlierRankForResidencyMonthOfPerformaceMonth,
+                                    controller:
+                                        projectBottomOutlierRankForResidencyMonthOfPerformanceMonthController,
+                                    textInputType: TextInputType.name,
+                                    isObscureText: false,
+                                    isEnabled: true,
+                                    textInputAction: TextInputAction.next,
+                                  ),
+                                  CustomTextFormField(
+                                    label: InputFieldLabels
+                                        .projectMaximumPerformanceValueTarget,
+                                    controller:
+                                        projectMaxPerformanceValueTargetController,
+                                    textInputType: TextInputType.name,
+                                    isObscureText: false,
+                                    isEnabled: true,
+                                    textInputAction: TextInputAction.next,
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  CustomTextFormField(
+                                    label: InputFieldLabels
+                                        .projectTopOutlierRankForMaximumPerforamceValueTarget,
+                                    controller:
+                                        projectTopOutlierRankForMaximumPerformanceValueTargetController,
+                                    textInputType: TextInputType.name,
+                                    isObscureText: false,
+                                    isEnabled: true,
+                                    textInputAction: TextInputAction.next,
+                                  ),
+                                  CustomTextFormField(
+                                    label: InputFieldLabels
+                                        .projectBottomOutlierRankMaximumPerformanceValueTarget,
+                                    controller:
+                                        projectBottomOutlierRankForMaximumPerformanceValueTargetController,
+                                    textInputType: TextInputType.name,
+                                    isObscureText: false,
+                                    isEnabled: true,
+                                    textInputAction: TextInputAction.next,
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  CustomTextFormField(
+                                    label: InputFieldLabels
+                                        .projectMaximumPerformanceValueActual,
+                                    controller:
+                                        projectMaximumPerformanceValueActualController,
+                                    textInputType: TextInputType.name,
+                                    isObscureText: false,
+                                    isEnabled: true,
+                                    textInputAction: TextInputAction.next,
+                                  ),
+                                  CustomTextFormField(
+                                    label: InputFieldLabels
+                                        .projectTopOutlierRankForMaximumPerformanceValueActual,
+                                    controller:
+                                        projectTopOutlierRankForMaximumPerformanceValueActualController,
+                                    textInputType: TextInputType.name,
+                                    isObscureText: false,
+                                    isEnabled: true,
+                                    textInputAction: TextInputAction.next,
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  CustomTextFormField(
+                                    label: InputFieldLabels
+                                        .projectBottomOutlierRankMaximumPerformacealueActual,
+                                    controller:
+                                        projectBottomOutlierRankForMaximumPerformanceValueActualController,
+                                    textInputType: TextInputType.name,
+                                    isObscureText: false,
+                                    isEnabled: true,
+                                    textInputAction: TextInputAction.next,
+                                  ),
+                                  CustomTextFormField(
+                                    label: InputFieldLabels
+                                        .projectMaximumPerformanceQuantityActual,
+                                    controller:
+                                        projectMaximumPerformanceQuantityActualController,
+                                    textInputType: TextInputType.name,
+                                    isObscureText: false,
+                                    isEnabled: true,
+                                    textInputAction: TextInputAction.next,
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  CustomTextFormField(
+                                    label: InputFieldLabels
+                                        .projectTopOutlierRankForMaximumPerformanceQuantityTarget,
+                                    controller:
+                                        projectTopOutlierRankForMaximumPerformanceQuantityTargetController,
+                                    textInputType: TextInputType.name,
+                                    isObscureText: false,
+                                    isEnabled: true,
+                                    textInputAction: TextInputAction.next,
+                                  ),
+                                  CustomTextFormField(
+                                    label: InputFieldLabels
+                                        .projectBottomOutlierRankMaximumPerformanceQuatityTarget,
+                                    controller:
+                                        projectBottomOutlierRankForMaximumPerformanceQuantityTargetController,
+                                    textInputType: TextInputType.name,
+                                    isObscureText: false,
+                                    isEnabled: true,
+                                    textInputAction: TextInputAction.next,
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  CustomTextFormField(
+                                    label: InputFieldLabels
+                                        .projectMaximumPerformanceQuantityActual,
+                                    controller:
+                                        projectMaximumPerformanceQuantityActualController,
+                                    textInputType: TextInputType.name,
+                                    isObscureText: false,
+                                    isEnabled: true,
+                                    textInputAction: TextInputAction.next,
+                                  ),
+                                  CustomTextFormField(
+                                    label: InputFieldLabels
+                                        .projectTopOutlierRankForMaximumPerformanceQuantityActual,
+                                    controller:
+                                        projectTopOutlierRankForMaximumPerformanceQuantityActualController,
+                                    textInputType: TextInputType.name,
+                                    isObscureText: false,
+                                    isEnabled: true,
+                                    textInputAction: TextInputAction.next,
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  CustomTextFormField(
+                                    label: InputFieldLabels
+                                        .projectBottomOutlierRankMaximumPerformanceQuantityActual,
+                                    controller:
+                                        projectBottomOutlierRankMaximumPerformanceQuantityActualController,
+                                    textInputType: TextInputType.name,
+                                    isObscureText: false,
+                                    isEnabled: true,
+                                    textInputAction: TextInputAction.next,
+                                  ),
+                                  CustomTextFormField(
+                                    label: InputFieldLabels
+                                        .projectMaximumOverAllPerformancePerAchievement,
+                                    controller:
+                                        projectMaximumOverAllPerformanceAchievementPerController,
+                                    textInputType: TextInputType.name,
+                                    isObscureText: false,
+                                    isEnabled: true,
+                                    textInputAction: TextInputAction.next,
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  CustomTextFormField(
+                                    label: InputFieldLabels
+                                        .projectTopOutlierRankForMaximumOverAllPerformanceAchieventPer,
+                                    controller:
+                                        projectTopOutlierRankForMaximumOverAllPerformanceAchievementPerController,
+                                    textInputType: TextInputType.name,
+                                    isObscureText: false,
+                                    isEnabled: true,
+                                    textInputAction: TextInputAction.next,
+                                  ),
+                                  CustomTextFormField(
+                                    label: InputFieldLabels
+                                        .projectBottomOutlierRankMaximumOverAllPerformanceAchievementPer,
+                                    controller:
+                                        projectBottomOutlierRankForMaximumOverAllPerformanceAchievementPerController,
+                                    textInputType: TextInputType.name,
+                                    isObscureText: false,
+                                    isEnabled: true,
+                                    textInputAction: TextInputAction.next,
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  CustomTextFormField(
+                                    label: InputFieldLabels
+                                        .projectMaximumMonthlyFixedSalaryIndex,
+                                    controller:
+                                        projectMaximumMonthlyFixedSalaryIndexController,
+                                    textInputType: TextInputType.name,
+                                    isObscureText: false,
+                                    isEnabled: true,
+                                    textInputAction: TextInputAction.next,
+                                  ),
+                                  CustomTextFormField(
+                                    label: InputFieldLabels
+                                        .projectTopOutlierRankForMaximumMonthlyFixedSalaryIndex,
+                                    controller:
+                                        projectTopOutlierRankForMaximumMonthlyFixedSalaryIndexController,
+                                    textInputType: TextInputType.name,
+                                    isObscureText: false,
+                                    isEnabled: true,
+                                    textInputAction: TextInputAction.next,
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  CustomTextFormField(
+                                    label: InputFieldLabels
+                                        .projectBottomOutlierRankMaximumMonthlyFixedSalaryIndex,
+                                    controller:
+                                        projectBottomOutlierRankForMaximumMonthlyFixedSalaryIndexController,
+                                    textInputType: TextInputType.name,
+                                    isObscureText: false,
+                                    isEnabled: true,
+                                    textInputAction: TextInputAction.next,
+                                  ),
+                                  CustomTextFormField(
+                                    label: InputFieldLabels
+                                        .projectMaximumMonthlyIncentive,
+                                    controller:
+                                        projectMaximumMonthlyIncentiveController,
+                                    textInputType: TextInputType.name,
+                                    isObscureText: false,
+                                    isEnabled: true,
+                                    textInputAction: TextInputAction.next,
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  CustomTextFormField(
+                                    label: InputFieldLabels
+                                        .projectTopOutlierRankForMaximumMonthlyIncentive,
+                                    controller:
+                                        projectTopOutlierRankForMaximumMonthlyIncentiveController,
+                                    textInputType: TextInputType.name,
+                                    isObscureText: false,
+                                    isEnabled: true,
+                                    textInputAction: TextInputAction.next,
+                                  ),
+                                  CustomTextFormField(
+                                    label: InputFieldLabels
+                                        .projectBottomOutlierRankMaximumMonthlyIncentive,
+                                    controller:
+                                        projectBottomOutlierRankForMaximumMonthlyIncentiveController,
+                                    textInputType: TextInputType.name,
+                                    isObscureText: false,
+                                    isEnabled: true,
+                                    textInputAction: TextInputAction.next,
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    // mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      ...departmentFields,
+                                      TextButton(
+                                        child: const Text("add department"),
+                                        onPressed: () {
+                                          setState(() {
+                                            departments
+                                                .add(TextEditingController());
+                                            departmentFields
+                                                .add(CustomTextFormField(
+                                              label:
+                                                  "department${departmentFields.length + 1}",
+                                              controller: departments[
+                                                  departments.length - 1],
+                                              textInputType: TextInputType.name,
+                                              isObscureText: false,
+                                              isEnabled: true,
+                                              textInputAction:
+                                                  TextInputAction.next,
+                                              textInputFormatterType:
+                                                  TextInputFormatterType.string,
+                                            ));
+                                          });
+                                        },
+                                      )
+                                    ],
+                                  ),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    // mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      ...designationFields,
+                                      TextButton(
+                                        child: const Text("add designation"),
+                                        onPressed: () {
+                                          setState(() {
+                                            designations
+                                                .add(TextEditingController());
+                                            designationFields
+                                                .add(CustomTextFormField(
+                                              label:
+                                                  "designation ${designationFields.length + 1}",
+                                              controller: designations[
+                                                  designations.length - 1],
+                                              textInputType: TextInputType.name,
+                                              isObscureText: false,
+                                              isEnabled: true,
+                                              textInputAction:
+                                                  TextInputAction.next,
+                                              textInputFormatterType:
+                                                  TextInputFormatterType.string,
+                                            ));
+                                          });
+                                        },
+                                      )
+                                    ],
+                                  )
+                                ],
+                              ),
+                              ClanChurnSpacing.h10,
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      List<String> depart = [];
+                                      List<String> design = [];
+                                      for (var i in departments) {
+                                        depart.add(i.text);
+                                      }
+                                      for (var i in designations) {
+                                        design.add(i.text);
+                                      }
+                                      ProjectDetails a = ProjectDetails(
+                                          departments: depart,
+                                          projectStartDate:
+                                              projectStartDateController.text,
+                                          studyPeriodBeginingDate:
+                                              studyPeriodBeginningDateController
+                                                  .text,
+                                          studyPeriodEndDate:
+                                              studyPeriodEndDateController.text,
+                                          earliestDateForDateOfJoiningReleventForTheStudy:
+                                              earliestDateForDateOfJoiningReleventForTheStudyController
+                                                  .text,
+                                          endDateForDateOfJoiningReleventForTheStudy:
+                                              endDateForDateOfJoiningReleventForTheStudyController
+                                                  .text,
+                                          designations: design,
+                                          unitForValuePerformance:
+                                              unitForValuePerformanceController
+                                                  .text,
+                                          unitForQuantityPerformance: '',
+                                          projectMaximumResidencyMonth: int.parse(
+                                              projectMaximumResidencyMonthController
+                                                      .text.isEmpty
+                                                  ? '0'
+                                                  : projectMaximumResidencyMonthController
+                                                      .text),
+                                          projectTopOutlierRankForResidencyMonthOfPerformanceMonth:
+                                              int.parse(projectTopOutlierRankForResidencyMonthOfPerformanceMonthController.text.isEmpty ? '0' : projectTopOutlierRankForResidencyMonthOfPerformanceMonthController.text),
+                                          projectBottomOutlierRankForResidencyMonthOfPerformanceMonth: int.parse(projectBottomOutlierRankForResidencyMonthOfPerformanceMonthController.text.isEmpty ? '0' : projectBottomOutlierRankForResidencyMonthOfPerformanceMonthController.text),
+                                          projectMaxPerformanceValueTarget: int.parse(projectMaxPerformanceValueTargetController.text.isEmpty ? '0' : projectMaxPerformanceValueTargetController.text),
+                                          projectTopOutlierRankForMaximumPerformanceValueTarget: int.parse(projectTopOutlierRankForMaximumPerformanceValueTargetController.text.isEmpty ? '0' : projectTopOutlierRankForMaximumPerformanceValueTargetController.text),
+                                          projectBottomOutlierRankForMaximumPerformanceValueTarget: int.parse(projectBottomOutlierRankForMaximumPerformanceValueTargetController.text.isEmpty ? '0' : projectBottomOutlierRankForMaximumPerformanceValueTargetController.text),
+                                          projectMaximumPerformanceValueActual: int.parse(projectMaximumPerformanceValueActualController.text.isEmpty ? '0' : projectMaximumPerformanceValueActualController.text),
+                                          projectTopOutlierRankForMaximumPerformanceValueActual: int.parse(projectTopOutlierRankForMaximumPerformanceValueActualController.text.isEmpty ? '0' : projectTopOutlierRankForMaximumPerformanceValueActualController.text),
+                                          projectBottomOutlierRankForMaximumPerformanceValueActual: int.parse(projectBottomOutlierRankForMaximumPerformanceValueActualController.text.isEmpty ? '0' : projectBottomOutlierRankForMaximumPerformanceValueActualController.text),
+                                          projectMaximumPerformanceQuantityTarget: int.parse(projectMaximumPerformanceQuantityTargetController.text.isEmpty ? '0' : projectMaximumPerformanceQuantityTargetController.text),
+                                          projectTopOutlierRankForMaximumPerformanceQuantityTarget: int.parse(projectTopOutlierRankForMaximumPerformanceQuantityTargetController.text.isEmpty ? '0' : projectTopOutlierRankForMaximumPerformanceQuantityTargetController.text),
+                                          projectBottomOutlierRankForMaximumPerformanceQuantityTarget: int.parse(projectBottomOutlierRankForMaximumPerformanceQuantityTargetController.text.isEmpty ? '0' : projectBottomOutlierRankForMaximumPerformanceQuantityTargetController.text),
+                                          projectMaximumOverAllPerformanceAchievementPer: int.parse(projectMaximumOverAllPerformanceAchievementPerController.text.isEmpty ? '0' : projectMaximumOverAllPerformanceAchievementPerController.text),
+                                          projectTopOutlierRankForMaximumOverAllPerformanceAchievementPer: int.parse(projectTopOutlierRankForMaximumOverAllPerformanceAchievementPerController.text.isEmpty ? '0' : projectTopOutlierRankForMaximumOverAllPerformanceAchievementPerController.text),
+                                          projectBottomOutlierRankForMaximumOverAllPerformanceAchievementPer: int.parse(projectBottomOutlierRankForMaximumOverAllPerformanceAchievementPerController.text.isEmpty ? '0' : projectBottomOutlierRankForMaximumOverAllPerformanceAchievementPerController.text),
+                                          projectMaximumMonthlyFixedSalaryIndex: int.parse(projectMaximumMonthlyFixedSalaryIndexController.text.isEmpty ? '0' : projectMaximumMonthlyFixedSalaryIndexController.text),
+                                          projectTopOutlierRankForMaximumMonthlyFixedSalaryIndex: int.parse(projectTopOutlierRankForMaximumMonthlyFixedSalaryIndexController.text.isEmpty ? '0' : projectTopOutlierRankForMaximumMonthlyFixedSalaryIndexController.text),
+                                          projectBottomOutlierRankForMaximumMonthlyFixedSalaryIndex: int.parse(projectBottomOutlierRankForMaximumMonthlyFixedSalaryIndexController.text.isEmpty ? '0' : projectBottomOutlierRankForMaximumMonthlyFixedSalaryIndexController.text),
+                                          projectMaximumMonthlyIncentive: int.parse(projectMaximumMonthlyIncentiveController.text.isEmpty ? '0' : projectMaximumMonthlyIncentiveController.text),
+                                          projectTopOutlierRankForMaximumMonthlyIncentive: int.parse(projectTopOutlierRankForMaximumMonthlyIncentiveController.text.isEmpty ? '0' : projectTopOutlierRankForMaximumMonthlyIncentiveController.text),
+                                          projectBottomOutlierRankForMaximumMonthlyIncentive: int.parse(projectBottomOutlierRankForMaximumMonthlyIncentiveController.text.isEmpty ? '0' : projectBottomOutlierRankForMaximumMonthlyIncentiveController.text));
+                                      context.read<UserBloc>().add(
+                                          UpdateProjectDetailsEvent(
+                                              projectId: context
+                                                  .read<UserBloc>()
+                                                  .state
+                                                  .createdProject!
+                                                  .id,
+                                              projectDetails: a));
+                                      print(a);
+                                      print(a.toJson());
+          
+                                      goToNextPage();
+                                    },
+                                    child: const Text("Next"),
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                        )),
+                  ),
+                ),
+              ],
+            ),
           ),
           UploadNewData(
             onPressed: () {

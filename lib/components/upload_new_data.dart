@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
 import 'package:clan_churn/components/dialogs.dart';
+import 'package:clan_churn/pages/new_project_components.dart';
 import 'package:clan_churn/utils/spacing.dart';
 import 'package:clan_churn/utils/typography.dart';
 import 'package:file_picker/_internal/file_picker_web.dart';
@@ -36,39 +37,53 @@ class _UploadNewDataState extends State<UploadNewData> {
                 ),
                 ClanChurnSpacing.w10,
                 SelectableText(
-                  "Upload New Data ${state.createdProject!.latestInput}",
+                  "Upload New Data",
                   style: ClanChurnTypography.font18600,
                 ),
               ],
             ),
             Expanded(
-              child: Center(
-                child: InkWell(
-                    onTap: () async {
-                      if (kIsWeb) {
-                        FilePickerResult? picked =
-                            await FilePickerWeb.platform.pickFiles(
-                          type: FileType.custom,
-                          allowedExtensions: ['xls', 'xlsx'],
-                        );
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  InkWell(
+                      onTap: () async {
+                        if (kIsWeb) {
+                          FilePickerResult? picked =
+                              await FilePickerWeb.platform.pickFiles(
+                            type: FileType.custom,
+                            allowedExtensions: ['xls', 'xlsx'],
+                          );
 
-                        if (picked != null) {
-                          // ignore: use_build_context_synchronously
-                          context.read<UserBloc>().add(UploadFileEvent(
-                              filePickerResult: picked,
-                              context: context,
-                              projectId: context
-                                  .read<UserBloc>()
-                                  .state
-                                  .createdProject!
-                                  .id));
+                          if (picked != null) {
+                            // ignore: use_build_context_synchronously
+                            context.read<UserBloc>().add(UploadFileEvent(
+                                filePickerResult: picked,
+                                context: context,
+                                projectId: context
+                                    .read<UserBloc>()
+                                    .state
+                                    .createdProject!
+                                    .id));
+                          }
                         }
-                      }
-                    },
-                    child: Image.asset(
-                      "assets/upload.png",
-                      scale: 2,
-                    )),
+                      },
+                      child: Image.asset(
+                        "assets/upload.png",
+                        scale: 2,
+                      )),
+
+                  ClanChurnSpacing.h30,
+                  state.errorReport == null
+                      ? Container()
+                      : ElevatedButton(
+                          child: const Text("Download error report"),
+                          onPressed: () {
+                            final b = state.errorReport!;
+                            launchURL(b);
+                          },
+                        )
+                ],
               ),
             ),
           ],

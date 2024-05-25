@@ -33,31 +33,33 @@ class _HomePageState extends State<HomePage> {
       endDrawer:  MyDrawer(),
       body: BlocBuilder<UserBloc, UserState>(
         builder: (context, state) {
-          return Column(children: [
-            // Nav bar
-            const NavBar(),
-            SizedBox(height: h * 0.01),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SideBar(
-                  selectedRoute: SelectedRoute.home,
-                ),
-                // ElevatedButton(
-                //   child: Text("qwerty"),
-                //   onPressed: () {
-                //     GoRouter.of(context).go('/myApp');
-                //   },
-                // ),
-                ClientsComponent(
-                  width: state.isExpanded ? w * 0.89 : w * 0.8,
-                )
-                // const ClientsViewComponent()
-              ],
-            )
-          ]);
+          return SingleChildScrollView(
+            child: Column(children: [
+              // Nav bar
+              const NavBar(),
+              SizedBox(height: h * 0.01),
+          
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SideBar(
+                    selectedRoute: SelectedRoute.home,
+                  ),
+                  // ElevatedButton(
+                  //   child: Text("qwerty"),
+                  //   onPressed: () {
+                  //     GoRouter.of(context).go('/myApp');
+                  //   },
+                  // ),
+                  ClientsComponent(
+                    width: state.isExpanded ? w * 0.89 : w * 0.8,
+                  )
+                  // const ClientsViewComponent()
+                ],
+              )
+            ]),
+          );
         },
       ),
     );

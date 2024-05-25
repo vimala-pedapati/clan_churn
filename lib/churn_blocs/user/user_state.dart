@@ -12,7 +12,8 @@ class UserState extends Equatable {
             createdProject: null,
             projectCreating: false,
             customerColumnNames: const [],
-            uploadingFile:  false);
+            uploadingFile: false,
+            errorReport: null);
   final User? user;
   final List<ClientDetails> clientList;
   final bool isExpanded;
@@ -23,6 +24,7 @@ class UserState extends Equatable {
   final bool projectCreating;
   final List<TextEditingController> customerColumnNames;
   final bool uploadingFile;
+  final String? errorReport;
   const UserState(
       {required this.user,
       required this.clientList,
@@ -33,21 +35,22 @@ class UserState extends Equatable {
       required this.createdProject,
       required this.projectCreating,
       required this.customerColumnNames,
-      required this.uploadingFile});
+      required this.uploadingFile,
+      required this.errorReport});
 
-  UserState copyWith(
-      {User? user,
-      List<ClientDetails>? clientList,
-      bool? isExpanded,
-      ClientDetails? selectedClient,
-      List<Project>? projectsList,
-      List<ColumnDetails>? columnsList,
-      Project? createdProject,
-      bool? projectCreating,
-      List<TextEditingController>? customerColumnNames,
-      bool? uploadingFile,
-   
-      }) {
+  UserState copyWith({
+    User? user,
+    List<ClientDetails>? clientList,
+    bool? isExpanded,
+    ClientDetails? selectedClient,
+    List<Project>? projectsList,
+    List<ColumnDetails>? columnsList,
+    Project? createdProject,
+    bool? projectCreating,
+    List<TextEditingController>? customerColumnNames,
+    bool? uploadingFile,
+    String? errorReport
+  }) {
     return UserState(
         user: user ?? this.user,
         clientList: clientList ?? this.clientList,
@@ -58,7 +61,8 @@ class UserState extends Equatable {
         createdProject: createdProject ?? this.createdProject,
         projectCreating: projectCreating ?? this.projectCreating,
         customerColumnNames: customerColumnNames ?? this.customerColumnNames,
-        uploadingFile : uploadingFile ?? this.uploadingFile);
+        uploadingFile: uploadingFile ?? this.uploadingFile,
+        errorReport: errorReport ?? this.errorReport);
   }
 
   @override
@@ -72,6 +76,7 @@ class UserState extends Equatable {
         createdProject,
         projectCreating,
         customerColumnNames,
-        uploadingFile
+        uploadingFile,
+        errorReport
       ];
 }

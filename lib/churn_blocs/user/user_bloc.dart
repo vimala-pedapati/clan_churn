@@ -204,33 +204,31 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     GetDialog.uploadFile(event.context);
     final result = await apiRepository.uploadFile(
         projectId: event.projectId, filePickerResult: event.filePickerResult);
+    print("upload file result: $result");
     if (result != null) {
+      emit(state.copyWith(uploadingFile: false, createdProject: result));
       // ignore: use_build_context_synchronously
       Navigator.pop(event.context);
       if (result.latestInput != null) {
-        // ignore: use_build_context_synchronously
-        Navigator.pop(event.context);
-        // ignore: use_build_context_synchronously
-        GetDialog.preparingDownloadErrorReport(event.context);
         final res = await apiRepository.getErrorReportForInput(
             inputId: result.latestInput!);
-        if (res == null) {
-          // ignore: use_build_context_synchronously
-          Navigator.pop(event.context);
-          // ignore: use_build_context_synchronously
-          GetDialog.successErrorReport(event.context, "");
-          // ignore: use_build_context_synchronously
-          Navigator.pop(event.context);
+        if (res != null) {
+          emit(state.copyWith(errorReport: res.replaceAll('"', "")));
+          return;
         } else {
-          // ignore: use_build_context_synchronously
-          Navigator.pop(event.context);
-          // ignore: use_build_context_synchronously
-          GetDialog.failedErrorReport(event.context);
+          emit(state.copyWith(errorReport: null));
         }
-        print(res);
+      } else {
+        emit(state.copyWith(uploadingFile: false, createdProject: result));
       }
-      emit(state.copyWith(createdProject: result));
-    } else {}
-    emit(state.copyWith(uploadingFile: true));
+    } else {
+      print("upload file result else case: $result");
+
+      // ignore: use_build_context_synchronously
+      Navigator.pop(event.context);
+      // ignore: use_build_context_synchronously
+      GetDialog.failedErrorReport(event.context);
+      emit(state.copyWith(uploadingFile: false, errorReport: null));
+    }
   }
 }

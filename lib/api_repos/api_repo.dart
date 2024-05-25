@@ -399,11 +399,9 @@ class ApiRepository {
       {required String projectId,
       required FilePickerResult filePickerResult}) async {
     try {
-      // Fetch auth credentials
       final AuthCredentials authCredentials =
           await AuthRepository().getTokens();
 
-      // Check if auth credentials are null
       if (authCredentials.accessToken.isEmpty) {
         log('Access token is empty');
         return null;
@@ -412,7 +410,7 @@ class ApiRepository {
       if (filePickerResult.files.isNotEmpty) {
         PlatformFile file = filePickerResult.files.first;
         var headers = {
-          'Authorization': 'Bearer ${authCredentials.accessToken}',
+          'Authorization': 'Bearer ${authCredentials.accessToken}'
         };
         var request = http.MultipartRequest(
           'POST',
@@ -431,8 +429,8 @@ class ApiRepository {
         http.StreamedResponse response = await request.send();
         // print(projectId);
         // print(response.statusCode);
-        // print(response.reasonPhrase);
-        // print(response);
+        print(response.reasonPhrase);
+        print(response);
         // print(response.stream);
         if (response.statusCode == 200) {
           String responseString = await response.stream.bytesToString();
@@ -465,26 +463,27 @@ class ApiRepository {
         return null;
       }
 
-      var headers = {
-        'Authorization': 'Bearer ${authCredentials.accessToken}',
-      };
-      var request = http.MultipartRequest(
-          'POST',
-          Uri.parse(
-              '${BaseUrl.baseUrl}${ApiEndpoints.getErrorReport}?input_id=$inputId'));
-      request.headers.addAll(headers);
 
-      http.StreamedResponse response = await request.send();
-      print(response);
+      // Make API call with access token
+      http.Response response = await http.post(
+        Uri.parse(
+            '${BaseUrl.baseUrl}${ApiEndpoints.getErrorReport}?input_id=$inputId'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${authCredentials.accessToken}',
+        },
+      );
+
+      print("${ApiEndpoints.getErrorReport} api response : $response");
       if (response.statusCode == 200) {
-        String res = await response.stream.bytesToString();
-        // final result = json.decode(res);
-        print(res);
+        String res = response.body;
+        print("${ApiEndpoints.getErrorReport} response : $res");
+        return res;
       } else {
-        print(response.reasonPhrase);
+        print("${ApiEndpoints.getErrorReport} : ${response.reasonPhrase}");
       }
     } catch (e) {
-      log('Network Error: $e');
+      log('${ApiEndpoints.getErrorReport}:  Network Error: $e');
     }
     return null;
   }
