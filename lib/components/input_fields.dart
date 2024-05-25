@@ -532,12 +532,12 @@ class _GetInputFieldsState extends State<GetInputFields> {
           SingleChildScrollView(
             child: Column(
               children: [
-                BlocBuilder<UserBloc, UserState>(
-                  builder: (context, state) {
-                    return Text(
-                        "${state.createdProject!.projectDetails!.departments!}");
-                  },
-                ),
+                // BlocBuilder<UserBloc, UserState>(
+                //   builder: (context, state) {
+                //     return Text(
+                //         "${state.createdProject!.projectDetails!.departments!}");
+                //   },
+                // ),
                 Row(
                   children: [
                     IconButton(
