@@ -97,6 +97,7 @@ class ClanChurnApp extends StatelessWidget {
       ],
       child: MaterialApp.router(
         theme: ThemeData(
+          canvasColor: Colors.grey,
           textTheme: GoogleFonts.montserratTextTheme().copyWith(),
           colorScheme: ColorScheme.fromSeed(
             seedColor: const Color.fromRGBO(108, 63, 235, 1),

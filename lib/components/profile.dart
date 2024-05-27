@@ -79,54 +79,58 @@ class ProfileWidget extends StatelessWidget {
 }
 
 class MyDrawer extends StatelessWidget {
+  const MyDrawer({super.key});
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<UserBloc, UserState>(
       builder: (context, state) {
-        return Drawer(
-            child: Expanded(
-                child: Align(
-                    alignment: Alignment.topCenter,
-                    child: Column(
-                      children: [
-                        ProfileWidget(
-                          onTap: () {
-                            Scaffold.of(context).closeEndDrawer();
-                          },
-                        ),
-                        InkWell(
-                          onTap: () {
-                            context
-                                .read<SignInBloc>()
-                                .add(SignOutEvent(context: context));
-                          },
-                          focusNode: null,
-                          child: Container(
-                            margin: const EdgeInsets.only(
-                                left: 10, top: 10, bottom: 10, right: 10),
-                            padding: const EdgeInsets.only(
-                                left: 20, top: 10, bottom: 10),
-                            child: Row(
-                              children: [
-                                const Icon(Icons.logout_outlined,
-                                    color: Colors.red),
-                                ClanChurnSpacing.w10,
-                                state.isExpanded
-                                    ? Container()
-                                    : AnimatedContainer(
-                                        duration: const Duration(seconds: 1),
-                                        child: Text(
-                                          "Log Out",
-                                          style: ClanChurnTypography.font16700
-                                              .copyWith(color: Colors.red),
-                                        ),
-                                      )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ))));
+        return Theme(
+          data: Theme.of(context).copyWith(
+            canvasColor: Colors.transparent,
+          ),
+          child: Drawer(
+              child: Column(
+                children: [
+                  ProfileWidget(
+                    onTap: () {
+                      Scaffold.of(context).closeEndDrawer();
+                    },
+                  ),
+                  InkWell(
+                    onTap: () {
+                      context
+                          .read<SignInBloc>()
+                          .add(SignOutEvent(context: context));
+                    },
+                    focusNode: null,
+                    child: Container(
+                      margin: const EdgeInsets.only(
+                          left: 10, top: 10, bottom: 10, right: 10),
+                      padding: const EdgeInsets.only(
+                          left: 20, top: 10, bottom: 10),
+                      child: Row(
+                        children: [
+                          const Icon(Icons.logout_outlined,
+                              color: Colors.red),
+                          ClanChurnSpacing.w10,
+                          state.isExpanded
+                              ? Container()
+                              : AnimatedContainer(
+                                  duration: const Duration(seconds: 1),
+                                  child: Text(
+                                    "Log Out",
+                                    style: ClanChurnTypography.font16700
+                                        .copyWith(color: Colors.red),
+                                  ),
+                                )
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              )),
+        );
       },
     );
   }
