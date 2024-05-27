@@ -132,9 +132,9 @@
 // //         // final List<Map<String, dynamic>> data = json.decode(response.body);
 // //         List<Project> listOfProjects = projectFromJson(response.body);
 // //         for (var i in json.decode(response.body)) {
-// //           print("project: $i");
+// //           log("project: $i");
 // //         }
-// //         print("List of Projects:..... $listOfProjects");
+// //         log("List of Projects:..... $listOfProjects");
 // //         return listOfProjects;
 // //       } else {
 // //         log('Status Code: ${response.statusCode}');
@@ -148,7 +148,7 @@
 // //         return null;
 // //       }
 // //     } catch (e) {
-// //       print('Network Error: $e');
+// //       log('Network Error: $e');
 // //       return null;
 // //     }
 // //   }
@@ -180,7 +180,7 @@
 // //             "project_details": projectDetails.toJson()
 // //           }));
 
-// //       print(json.encode({
+// //       log(json.encode({
 // //         "project_id": projectId,
 // //         "project_details": projectDetails.toJson()
 // //       }));
@@ -231,14 +231,14 @@
 // //           body: json.encode({
 // //             "project_id": projectId,
 // //           }));
-// //       print("get project:..... $response");
+// //       log("get project:..... $response");
 // //       // Handle API response
 // //       if (response.statusCode == 200) {
 // //         // final List<Map<String, dynamic>> data = json.decode(response.body);
 // //         Project project = Project.fromJson(json.decode(response.body));
 
-// //         print("get project:..... ${response.body}");
-// //         print("get project:..... $project");
+// //         log("get project:..... ${response.body}");
+// //         log("get project:..... $project");
 // //         return project;
 // //       } else {
 // //         log('Status Code: ${response.statusCode}');
@@ -374,7 +374,7 @@
 // //       // Handle API response
 // //       if (response.statusCode == 200) {
 // //         final Map<String, dynamic> data = json.decode(response.body);
-// //         print(" response: ${response.body}");
+// //         log(" response: ${response.body}");
 // //         Project updatedProjectDetails = Project.fromJson(data);
 // //         return updatedProjectDetails;
 // //       } else {
@@ -426,22 +426,22 @@
 // //         }
 // //         request.headers.addAll(headers);
 // //         http.StreamedResponse response = await request.send();
-// //         // print(projectId);
-// //         // print(response.statusCode);
-// //         print(response.reasonPhrase);
-// //         print(response);
-// //         // print(response.stream);
+// //         // log(projectId);
+// //         // log(response.statusCode);
+// //         log(response.reasonPhrase);
+// //         log(response);
+// //         // log(response.stream);
 // //         if (response.statusCode == 200) {
 // //           String responseString = await response.stream.bytesToString();
-// //           print(responseString);
+// //           log(responseString);
 // //           Project project = Project.fromJson(json.decode(responseString));
 // //           return project;
 // //         } else {
-// //           print(response.reasonPhrase);
+// //           log(response.reasonPhrase);
 // //           return null;
 // //         }
 // //       } else {
-// //         print('File picking canceled');
+// //         log('File picking canceled');
 // //       }
 // //     } catch (e) {
 // //       log('Network Error: $e');
@@ -450,7 +450,7 @@
 // //   }
 
 // //   Future<String?> getErrorReportForInput({required String inputId}) async {
-// //     print("......get error report $inputId");
+// //     log("......get error report $inputId");
 // //     try {
 // //       // Fetch auth credentials
 // //       final AuthCredentials authCredentials =
@@ -472,13 +472,13 @@
 // //         },
 // //       );
 
-// //       print("${ApiEndpoints.getErrorReport} api response : $response");
+// //       log("${ApiEndpoints.getErrorReport} api response : $response");
 // //       if (response.statusCode == 200) {
 // //         String res = response.body;
-// //         print("${ApiEndpoints.getErrorReport} response : $res");
+// //         log("${ApiEndpoints.getErrorReport} response : $res");
 // //         return res;
 // //       } else {
-// //         print("${ApiEndpoints.getErrorReport} : ${response.reasonPhrase}");
+// //         log("${ApiEndpoints.getErrorReport} : ${response.reasonPhrase}");
 // //       }
 // //     } catch (e) {
 // //       log('${ApiEndpoints.getErrorReport}:  Network Error: $e');
@@ -1055,7 +1055,7 @@ import 'package:clan_churn/api_repos/auth_repo.dart';
 import 'package:clan_churn/api_repos/models/user_model.dart';
 import 'package:clan_churn/utils/api_endpoins.dart';
 
-typedef OnErrorCallback = void Function(String message);
+typedef OnErrorCallback = void Function(String errorMessage, int errorCode);
 typedef OnSuccessCallback = void Function(String message);
 
 class ApiRepository {
@@ -1064,7 +1064,7 @@ class ApiRepository {
 
     if (authCredentials.accessToken.isEmpty) {
       log('Access token is empty');
-      onErrorCallback('Access token is empty');
+      onErrorCallback('Access token is empty', 0);
       return null;
     } else {
       return authCredentials.accessToken;
@@ -1079,7 +1079,7 @@ class ApiRepository {
 
       if (authCredentials.accessToken.isEmpty) {
         log('Access token is empty');
-        onErrorCallback('Access token is empty');
+        onErrorCallback('Access token is empty', 0);
         return null;
       }
 
@@ -1097,13 +1097,12 @@ class ApiRepository {
         log("getUserResponse:..... $data");
         return user;
       } else {
-        _handleStatusCode(
-            response.statusCode, response.reasonPhrase, onErrorCallback);
+        _handleStatusCode(  response.statusCode, response.reasonPhrase, onErrorCallback);
         return null;
       }
     } catch (e) {
       log('Network Error: $e');
-      onErrorCallback('Network Error: $e');
+      onErrorCallback('Network Error: $e', 0);
       return null;
     }
   }
@@ -1116,7 +1115,7 @@ class ApiRepository {
 
       if (authCredentials.accessToken.isEmpty) {
         log('Access token is empty');
-        onErrorCallback('Access token is empty');
+        onErrorCallback('Access token is empty', 0);
         return null;
       }
 
@@ -1140,7 +1139,7 @@ class ApiRepository {
       }
     } catch (e) {
       log('Network Error: $e');
-      onErrorCallback('Network Error: $e');
+      onErrorCallback('Network Error: $e', 0);
       return null;
     }
   }
@@ -1155,7 +1154,7 @@ class ApiRepository {
 
       if (authCredentials.accessToken.isEmpty) {
         log('Access token is empty');
-        onErrorCallback('Access token is empty');
+        onErrorCallback('Access token is empty', 0);
         return null;
       }
 
@@ -1179,7 +1178,7 @@ class ApiRepository {
       }
     } catch (e) {
       log('Network Error: $e');
-      onErrorCallback('Network Error: $e');
+      onErrorCallback('Network Error: $e', 0);
       return null;
     }
   }
@@ -1187,7 +1186,8 @@ class ApiRepository {
   // Get error report for a specific input
   Future<String?> getErrorReportForInput(
       {required String inputId,
-      required OnErrorCallback onErrorCallback}) async {
+      required OnErrorCallback onErrorCallback,
+      required OnSuccessCallback onSuccessCallback}) async {
     log("......get error report $inputId");
     try {
       // Fetch auth credentials
@@ -1214,6 +1214,7 @@ class ApiRepository {
       if (response.statusCode == 200) {
         String res = response.body;
         log("${ApiEndpoints.getErrorReport} response : $res");
+        onSuccessCallback(res);
         return res;
       } else {
         _handleStatusCode(
@@ -1237,7 +1238,7 @@ class ApiRepository {
 
       if (authCredentials.accessToken.isEmpty) {
         log('Access token is empty');
-        onErrorCallback('Access token is empty');
+        onErrorCallback('Access token is empty', 0);
         return null;
       }
 
@@ -1269,7 +1270,7 @@ class ApiRepository {
       }
     } catch (e) {
       log('Network Error: $e');
-      onErrorCallback('Network Error: $e');
+      onErrorCallback('Network Error: $e', 0);
       return null;
     }
   }
@@ -1284,7 +1285,7 @@ class ApiRepository {
 
       if (authCredentials.accessToken.isEmpty) {
         log('Access token is empty');
-        onErrorCallback('Access token is empty');
+        onErrorCallback('Access token is empty', 0);
         return null;
       }
 
@@ -1313,7 +1314,7 @@ class ApiRepository {
       }
     } catch (e) {
       log('Network Error: $e');
-      onErrorCallback('Network Error: $e');
+      onErrorCallback('Network Error: $e', 0);
       return null;
     }
   }
@@ -1329,7 +1330,7 @@ class ApiRepository {
 
       if (authCredentials.accessToken.isEmpty) {
         log('Access token is empty');
-        onErrorCallback('Access token is empty');
+        onErrorCallback('Access token is empty', 0);
         return null;
       }
 
@@ -1354,7 +1355,7 @@ class ApiRepository {
       }
     } catch (e) {
       log('Network Error: $e');
-      onErrorCallback('Network Error: $e');
+      onErrorCallback('Network Error: $e', 0);
       return null;
     }
   }
@@ -1367,7 +1368,7 @@ class ApiRepository {
 
       if (authCredentials.accessToken.isEmpty) {
         log('Access token is empty');
-        onErrorCallback('Access token is empty');
+        onErrorCallback('Access token is empty', 0);
         return null;
       }
 
@@ -1390,7 +1391,7 @@ class ApiRepository {
       }
     } catch (e) {
       log('Network Error: $e');
-      onErrorCallback('Network Error: $e');
+      onErrorCallback('Network Error: $e', 0);
       return null;
     }
   }
@@ -1405,7 +1406,7 @@ class ApiRepository {
 
       if (authCredentials.accessToken.isEmpty) {
         log('Access token is empty');
-        onErrorCallback('Access token is empty');
+        onErrorCallback('Access token is empty', 0);
         return null;
       }
 
@@ -1418,7 +1419,7 @@ class ApiRepository {
         body: json.encode(columnsToAdd),
       );
 
-      print("Columns to add:..... $columnsToAdd");
+      log("Columns to add:..... $columnsToAdd");
 
       if (response.statusCode == 200) {
         Project updatedProject = Project.fromJson(json.decode(response.body));
@@ -1431,7 +1432,7 @@ class ApiRepository {
       }
     } catch (e) {
       log('Network Error: $e');
-      onErrorCallback('Network Error: $e');
+      onErrorCallback('Network Error: $e', 0);
       return null;
     }
   }
@@ -1479,7 +1480,7 @@ class ApiRepository {
       }
     } catch (e) {
       log("updateProjectName exception: $e");
-      onErrorCallback('Network Error: $e');
+      onErrorCallback('Network Error: $e', 0);
       return null;
     }
   }
@@ -1488,7 +1489,8 @@ class ApiRepository {
   Future<Project?> uploadFile(
       {required String projectId,
       required FilePickerResult filePickerResult,
-      required OnErrorCallback onErrorCallback}) async {
+      required OnErrorCallback onErrorCallback,
+      required OnSuccessCallback onSuccessCallback}) async {
     try {
       // Fetch auth credentials
       final AuthCredentials authCredentials =
@@ -1525,10 +1527,10 @@ class ApiRepository {
           String responseString = await response.stream.bytesToString();
           log(responseString);
           Project project = Project.fromJson(json.decode(responseString));
+          onSuccessCallback(responseString);
           return project;
         } else {
-          _handleStatusCode(
-              response.statusCode, response.reasonPhrase, onErrorCallback);
+          _handleStatusCode( response.statusCode, response.reasonPhrase, onErrorCallback);
           return null;
         }
       } else {
@@ -1536,7 +1538,7 @@ class ApiRepository {
       }
     } catch (e) {
       log('Network Error: $e');
-      onErrorCallback('Network Error: $e');
+      onErrorCallback('Network Error: $e', 0);
     }
     return null;
   }
@@ -1545,30 +1547,30 @@ class ApiRepository {
       int statusCode, String? reasonPhrase, OnErrorCallback onErrorCallback) {
     switch (statusCode) {
       case 400:
-        onErrorCallback('Bad request: $reasonPhrase');
+        onErrorCallback('Bad request: $reasonPhrase', 400);
         break;
       case 401:
-        onErrorCallback('Unauthorized: $reasonPhrase');
+        onErrorCallback('Unauthorized: $reasonPhrase', 401);
         break;
       case 403:
-        onErrorCallback('Forbidden: $reasonPhrase');
+        onErrorCallback('Forbidden: $reasonPhrase', 403);
         break;
       case 404:
-        onErrorCallback('Not found: $reasonPhrase');
+        onErrorCallback('Not found: $reasonPhrase', 404);
         break;
       case 422:
         onErrorCallback(
-            'Invalid format. Please check your input and try again.: $reasonPhrase');
+            'Invalid format. Please check your input and try again.: $reasonPhrase', 422);
         break;
       case 500:
-        onErrorCallback('Internal server error: $reasonPhrase');
+        onErrorCallback('Internal server error: $reasonPhrase', 500);
         break;
       default:
-        onErrorCallback('Unexpected error: $reasonPhrase');
+        onErrorCallback('Unexpected error: $reasonPhrase', 0);
     }
   }
 
-  void handleWarningMessage(String message, BuildContext context) {
+  void handleWarningMessage(String message, BuildContext context, int errorCode) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),

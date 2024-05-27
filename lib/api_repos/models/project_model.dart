@@ -59,8 +59,7 @@ class Project extends Equatable {
         "latest_input": latestInput
       };
 
-  @override
-  // TODO: implement props
+  @override 
   List<Object?> get props =>
       [id, name, inputColumns, projectStatus, projectDetails, allInputs, latestInput];
 }
@@ -96,8 +95,7 @@ class InputColumn extends Equatable {
         "client_column_name": clientColumnName,
       };
 
-  @override
-  // TODO: implement props
+  @override 
   List<Object?> get props =>
       [id, sheetName, columnName, isMandatory, clientColumnName];
 }

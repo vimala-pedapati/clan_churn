@@ -1,3 +1,5 @@
+import 'dart:developer';
+// ignore: avoid_web_libraries_in_flutter
 import 'dart:html';
 
 import 'package:clan_churn/api_repos/api_repo.dart';
@@ -21,7 +23,7 @@ class CreateNewProject extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final h = MediaQuery.of(context).size.height;
-    final w = MediaQuery.of(context).size.width;
+    // final w = MediaQuery.of(context).size.width;
     return Scaffold(
         backgroundColor:
             Theme.of(context).colorScheme.primary.withOpacity(0.05),
@@ -178,7 +180,9 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                                               BorderRadius.circular(8.0)),
                                     ),
                                     onChanged: (value) {},
-                                    validator: (String? val) {},
+                                    validator: (String? val) {
+                                      return null;
+                                    },
                                     onSaved: (String? val) {},
                                   ),
                                 ),
@@ -226,7 +230,9 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                                         projectName = value;
                                       });
                                     },
-                                    validator: (String? val) {},
+                                    validator: (String? val) {
+                                      return null;
+                                    },
                                     onSaved: (String? val) {},
                                   ),
                                 ),
@@ -251,10 +257,10 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                                                   context);
                                             },
                                             warningMessageCallback:
-                                                (String message) {
+                                                (String message, int errorCode) {
                                               ApiRepository()
                                                   .handleWarningMessage(
-                                                      message, context);
+                                                      message, context, errorCode);
                                             }));
                                   } else {
                                     context
@@ -270,10 +276,10 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                                                 .handleSuccessMessage(
                                                      "Project created successfully!......", context);
                                           },
-                                          onErrorCallback: (message) {
+                                          onErrorCallback: (message, errorCode) {
                                             ApiRepository().handleWarningMessage(
                                                message,
-                                                context);
+                                                context, errorCode);
                                           },
                                         ));
                                   }
@@ -401,7 +407,7 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                               : (state.createdProject!.id.isEmpty)
                                   ? null
                                   : () {
-                                      // print("${state.customerColumnNames}");
+                                      // log("${state.customerColumnNames}");
                                       context
                                           .read<UserBloc>()
                                           .add(AddColumnsToProjectEvent());
@@ -443,7 +449,7 @@ void downloadFile(String url, BuildContext context) async {
     anchorElement.download = fileName;
     anchorElement.click(); // initiate download
   } catch (e) {
-    print("Error downloading file: $e");
+    log("Error downloading file: $e");
   }
   // ignore: use_build_context_synchronously
   //  Navigator.push(

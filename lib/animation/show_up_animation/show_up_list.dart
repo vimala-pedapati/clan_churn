@@ -37,7 +37,7 @@ class ShowUpList extends StatefulWidget {
   /// Enable lazy loading to build the list lazily. Recommended for large or infinite lists
   final bool enableLazyLoading;
 
-  ShowUpList({
+  const ShowUpList({super.key, 
     required this.children,
     this.offset = 0.2,
     this.curve = Curves.easeIn,
@@ -48,6 +48,7 @@ class ShowUpList extends StatefulWidget {
   }) : assert(children.length > 0);
 
   @override
+  // ignore: library_private_types_in_public_api
   _ShowUpListState createState() => _ShowUpListState();
 }
 
@@ -60,16 +61,16 @@ class _ShowUpListState extends State<ShowUpList> {
     if (widget.enableLazyLoading) {
       return;
     } else {
-      int _length = widget.children.length;
+      int length = widget.children.length;
       _animatedChildren = <Widget?>[];
-      for (int i = 0; i < _length; i++) {
+      for (int i = 0; i < length; i++) {
         _animatedChildren[i] = ShowUpAnimation(
-          child: widget.children[i],
           animationDuration: widget.animationDuration,
           curve: widget.curve,
           offset: widget.offset,
           direction: widget.direction,
           delayStart: widget.delayBetween * (i + 1),
+          child: widget.children[i],
         );
       }
     }
@@ -82,19 +83,20 @@ class _ShowUpListState extends State<ShowUpList> {
           itemCount: widget.children.length,
           itemBuilder: (BuildContext context, int index) {
             return ShowUpAnimation(
-              child: widget.children[index],
               delayStart: widget.delayBetween,
               animationDuration: widget.animationDuration,
               curve: widget.curve,
               direction: widget.direction,
               offset: widget.offset,
+              child: widget.children[index],
             );
           });
-    } else
+    } else {
       return Column(
         mainAxisSize: MainAxisSize.min,
         // crossAxisAlignment: CrossAxisAlignment.stretch,
         children: _animatedChildren as List<Widget>,
       );
+    }
   }
 }

@@ -1,7 +1,6 @@
-import 'dart:io';
 
+import 'package:clan_churn/api_repos/api_repo.dart';
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
-import 'package:clan_churn/components/dialogs.dart';
 import 'package:clan_churn/pages/new_project_components.dart';
 import 'package:clan_churn/utils/spacing.dart';
 import 'package:clan_churn/utils/typography.dart';
@@ -57,14 +56,28 @@ class _UploadNewDataState extends State<UploadNewData> {
 
                           if (picked != null) {
                             // ignore: use_build_context_synchronously
-                            context.read<UserBloc>().add(UploadFileEvent(
-                                filePickerResult: picked,
-                                context: context,
-                                projectId: context
-                                    .read<UserBloc>()
-                                    .state
-                                    .createdProject!
-                                    .id));
+                            context.read<UserBloc>().add(
+                                  // ignore: use_build_context_synchronously
+                                  UploadFileEvent(
+                                    filePickerResult: picked,
+                                    context: context,
+                                    // ignore: use_build_context_synchronously
+                                    projectId: context
+                                        .read<UserBloc>()
+                                        .state
+                                        .createdProject!
+                                        .id,
+                                    onErrorCallback: (message, errorCode) {
+                                      ApiRepository().handleWarningMessage(
+                                          message, context, errorCode);
+                                    },
+                                    onSuccessCallBack: (message) {
+                                      ApiRepository().handleSuccessMessage(
+                                          "File uploaded successfully!....",
+                                          context);
+                                    },
+                                  ),
+                                );
                           }
                         }
                       },
@@ -72,7 +85,6 @@ class _UploadNewDataState extends State<UploadNewData> {
                         "assets/upload.png",
                         scale: 2,
                       )),
-
                   ClanChurnSpacing.h30,
                   state.errorReport == null
                       ? Container()

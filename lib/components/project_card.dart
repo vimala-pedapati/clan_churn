@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
 import 'package:clan_churn/pages/new_project_components.dart';
@@ -68,7 +67,7 @@ class ProjectCard extends StatelessWidget {
                             context,
                             customPageRouteForNavigation(
                                 const ProjectInputFieldsPage()));
-                        ;
+                        
                       }
                     },
                   ),

@@ -36,7 +36,7 @@ class _ClanChurnAppBarState extends State<ClanChurnAppBar> {
           ],
         ),
       ),
-      actions: [
+      actions: const [
         CircleAvatar(
           radius: 50,
           child: Icon(Icons.notifications),

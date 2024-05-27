@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:clan_churn/api_repos/models/project_model.dart';
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
 import 'package:clan_churn/components/upload_new_data.dart';
@@ -46,7 +48,7 @@ class _ProjectInitializationState extends State<ProjectInitialization> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
+        SizedBox(
           height: 150,
           child: PageView(
             controller: _pageController,
@@ -594,15 +596,15 @@ class _GetInputFieldsState extends State<GetInputFields> {
                             child: SingleChildScrollView(
                               child: Column(
                                 children: [
-                                  BlocBuilder<UserBloc, UserState>(
-                                    builder: (context, state) {
-                                      return Container(
-                                          width: MediaQuery.of(context).size.width *
-                                              0.75,
-                                          child: SelectableText(
-                                              "${state.createdProject!.id}"));
-                                    },
-                                  ),
+                                  // BlocBuilder<UserBloc, UserState>(
+                                  //   builder: (context, state) {
+                                  //     return Container(
+                                  //         width: MediaQuery.of(context).size.width *
+                                  //             0.75,
+                                  //         child: SelectableText(
+                                  //             "${state.createdProject!.id}"));
+                                  //   },
+                                  // ),
                                   ClanChurnSpacing.h10,
                                   Row(
                                     mainAxisAlignment:
@@ -1252,8 +1254,8 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                                       .createdProject!
                                                       .id,
                                                   projectDetails: a));
-                                          print(a);
-                                          print(a.toJson());
+                                          log("$a");
+                                          log("${a.toJson()}");
     
                                           goToNextPage();
                                         },

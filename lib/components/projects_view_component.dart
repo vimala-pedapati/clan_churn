@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
 import 'package:clan_churn/pages/new_project_components.dart';
 import 'package:clan_churn/components/project_list_data.dart';
@@ -263,7 +265,7 @@ class _GetSearchWidgetState extends State<GetSearchWidget> {
                     .contains(query.toLowerCase());
               }).toList(),
           overlaySearchListItemBuilder: (dynamic item) {
-            // print('$item');
+            // log('$item');
             return Container(
               padding: EdgeInsets.zero,
               child: Text(
@@ -273,7 +275,7 @@ class _GetSearchWidgetState extends State<GetSearchWidget> {
             );
           },
           onItemSelected: (dynamic item) {
-            print('$item');
+            log('$item');
             setState(() {
               controller.text = item;
             });

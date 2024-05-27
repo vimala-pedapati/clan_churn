@@ -1,7 +1,5 @@
 import 'dart:async';
-import 'dart:developer';
-
-import 'package:clan_churn/utils/typography.dart';
+   
 import 'package:flutter/material.dart';
 
 // typedef QueryListItemBuilder<T> = Widget Function(T item);
@@ -326,7 +324,7 @@ import 'package:flutter/material.dart';
 //                                     color: Colors.red,
 //                                     child: InkWell(
 //                                       onTap: () {
-//                                         print("............fdvrgetrbtgbtrghehgfu");
+//                                         log("............fdvrgetrbtgbtrghehgfu");
 //                                         onSearchListItemSelected(
 //                                             _searchList[index]);
 //                                       },
@@ -548,8 +546,7 @@ class MySingleChoiceSearchState<T> extends State<GFSearchBar<T?>> {
         controller: textController,
         focusNode: _focusNode,
         style: TextStyle(fontSize: 16, color: textColor),
-        decoration: widget.searchBoxInputDecoration == null
-            ? InputDecoration(
+        decoration: widget.searchBoxInputDecoration ?? InputDecoration(
                 enabledBorder: const OutlineInputBorder(
                   borderSide: BorderSide(
                     color: Color(0x4437474F),
@@ -569,8 +566,7 @@ class MySingleChoiceSearchState<T> extends State<GFSearchBar<T?>> {
                   top: 14,
                   bottom: 14,
                 ),
-              )
-            : widget.searchBoxInputDecoration,
+              ),
       ),
     );
 
@@ -659,14 +655,14 @@ class MySingleChoiceSearchState<T> extends State<GFSearchBar<T?>> {
                             Padding(
                               padding: const EdgeInsets.all(8),
                               child: InkWell(
+                                onTap: onCloseOverlaySearchList,
                                 child: const Icon(
                                   Icons.close,
                                   size: 22,
                                 ),
-                                onTap: onCloseOverlaySearchList,
                               ),
                             ),
-                            Container(
+                            SizedBox(
                               height: overlaySearchListHeight,
                               child: Scrollbar(
                                 child: ListView.separated(

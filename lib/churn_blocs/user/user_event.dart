@@ -51,7 +51,12 @@ class CreateProjectEvent extends UserEvent {
   final String projectName;
   final OnErrorCallback onErrorCallback;
   final OnSuccessCallback onSuccessCallback;
-  const CreateProjectEvent( {required this.clientId, required this.projectName, required this.onErrorCallback,required  this.onSuccessCallback,});
+  const CreateProjectEvent({
+    required this.clientId,
+    required this.projectName,
+    required this.onErrorCallback,
+    required this.onSuccessCallback,
+  });
 }
 
 class ClearCreateProjectEvent extends UserEvent {}
@@ -73,10 +78,14 @@ class UploadFileEvent extends UserEvent {
   final FilePickerResult filePickerResult;
   final String projectId;
   final BuildContext context;
+  final OnErrorCallback onErrorCallback;
+  final OnSuccessCallback onSuccessCallBack;
   const UploadFileEvent(
       {required this.filePickerResult,
       required this.projectId,
-      required this.context});
+      required this.context,
+      required this.onErrorCallback,
+      required this.onSuccessCallBack});
 }
 
 class UpdateProjectNameEvent extends UserEvent {

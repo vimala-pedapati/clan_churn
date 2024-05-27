@@ -30,7 +30,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       // appBar: const ClanChurnAppBar(),
       backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.05),
-      endDrawer:  MyDrawer(),
+      endDrawer:  const MyDrawer(),
       body: BlocBuilder<UserBloc, UserState>(
         builder: (context, state) {
           return SingleChildScrollView(

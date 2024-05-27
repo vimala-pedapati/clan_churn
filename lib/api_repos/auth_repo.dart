@@ -38,7 +38,7 @@ class AuthRepository {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String accessToken = prefs.getString('accessToken') ?? '';
     String refreshToken = prefs.getString('refreshToken') ?? '';
-    print(accessToken);
+    log(accessToken);
     return AuthCredentials(
         accessToken: accessToken, refreshToken: refreshToken);
   }
