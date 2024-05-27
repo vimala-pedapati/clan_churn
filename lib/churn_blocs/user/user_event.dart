@@ -49,7 +49,9 @@ class CustomerColumnNamesEvent extends UserEvent {
 class CreateProjectEvent extends UserEvent {
   final String clientId;
   final String projectName;
-  const CreateProjectEvent({required this.clientId, required this.projectName});
+  final OnErrorCallback onErrorCallback;
+  final OnSuccessCallback onSuccessCallback;
+  const CreateProjectEvent( {required this.clientId, required this.projectName, required this.onErrorCallback,required  this.onSuccessCallback,});
 }
 
 class ClearCreateProjectEvent extends UserEvent {}
@@ -72,5 +74,20 @@ class UploadFileEvent extends UserEvent {
   final String projectId;
   final BuildContext context;
   const UploadFileEvent(
-      {required this.filePickerResult, required this.projectId, required this.context});
+      {required this.filePickerResult,
+      required this.projectId,
+      required this.context});
+}
+
+class UpdateProjectNameEvent extends UserEvent {
+  final String projectId;
+  final String updatedProjectName;
+  final OnErrorCallback warningMessageCallback;
+  final OnSuccessCallback onSuccessCallback;
+  const UpdateProjectNameEvent({
+    required this.projectId,
+    required this.updatedProjectName,
+    required this.warningMessageCallback,
+    required this.onSuccessCallback,
+  });
 }

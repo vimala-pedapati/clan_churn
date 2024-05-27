@@ -1,5 +1,6 @@
 import 'dart:html';
 
+import 'package:clan_churn/api_repos/api_repo.dart';
 import 'package:clan_churn/api_repos/models/column_model.dart';
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
 import 'package:clan_churn/components/dialogs.dart';
@@ -56,7 +57,9 @@ class AddNewProjectComponent extends StatefulWidget {
 class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
   TextEditingController clientController = TextEditingController();
   TextEditingController projectController = TextEditingController();
+  String previousName = "";
   String projectName = "";
+  bool isProjectCreated = false;
 
   @override
   void initState() {
@@ -66,10 +69,14 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
     });
 
     if (context.read<UserBloc>().state.createdProject != null) {
+      if (context.read<UserBloc>().state.createdProject!.id.isNotEmpty) {
+        isProjectCreated = true;
+      }
       setState(() {
         projectController.text =
             context.read<UserBloc>().state.createdProject!.name ?? '';
         projectName = context.read<UserBloc>().state.createdProject!.name ?? '';
+        previousName = context.read<UserBloc>().state.createdProject!.name ?? '';
       });
     }
     context.read<UserBloc>().add(const GetColumnsEvent());
@@ -229,15 +236,50 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                         ),
                         ElevatedButton(
                           onPressed: (projectName.isEmpty ||
-                                  state.columnsList.isEmpty)
+                                  state.columnsList.isEmpty || projectName == previousName)
                               ? null
                               : () {
-                                  context.read<UserBloc>().add(
-                                      CreateProjectEvent(
+                                  if (isProjectCreated) {
+                                    context.read<UserBloc>().add(
+                                        UpdateProjectNameEvent(
+                                            projectId: state.createdProject!.id,
+                                            updatedProjectName:
+                                                projectController.text,
+                                            onSuccessCallback: (message) {
+                                              ApiRepository().handleSuccessMessage(
+                                                  "Project name updated successfully!......",
+                                                  context);
+                                            },
+                                            warningMessageCallback:
+                                                (String message) {
+                                              ApiRepository()
+                                                  .handleWarningMessage(
+                                                      message, context);
+                                            }));
+                                  } else {
+                                    context
+                                        .read<UserBloc>()
+                                        .add(CreateProjectEvent(
                                           clientId: state.selectedClient!.id,
-                                          projectName: projectController.text));
+                                          projectName: projectController.text,
+                                          onSuccessCallback: (message) {
+                                            setState(() {
+                                              isProjectCreated = true;
+                                            });
+                                            ApiRepository()
+                                                .handleSuccessMessage(
+                                                     "Project created successfully!......", context);
+                                          },
+                                          onErrorCallback: (message) {
+                                            ApiRepository().handleWarningMessage(
+                                               message,
+                                                context);
+                                          },
+                                        ));
+                                  }
                                 },
-                          child: Text("Create Project"),
+                          child: Text(
+                              " ${isProjectCreated ? "Update Project" : "Create Project"} "),
                         )
                       ],
                     ),
@@ -375,8 +417,6 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
     );
   }
 }
-
- 
 
 Future<void> launchURL(String url) async {
   if (await canLaunchUrl(Uri.parse(url))) {

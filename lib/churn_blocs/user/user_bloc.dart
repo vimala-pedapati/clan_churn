@@ -32,10 +32,14 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     on<UpdateProjectDetailsEvent>(_onUpdateProjectDetailsEvent);
     on<GetProjectDetailsEvent>(_onGetProjectDetailsEvent);
     on<UploadFileEvent>(_onUploadFileEvent);
+    on<UpdateProjectNameEvent>(_onUpdateProjectNameEvent);
   }
 
   _onGetUserDetails(GetUserDetailsEvent event, Emitter<UserState> emit) async {
-    final result = await apiRepository.getUserDetails();
+    final result =
+        await apiRepository.getUserDetails(onErrorCallback: (String message) {
+      log(" $message");
+    });
     log("user profile: $result");
     if (result != null) {
       emit(state.copyWith(user: result));
@@ -43,7 +47,9 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   }
 
   _onClientsEvent(GetClientsEvent event, Emitter<UserState> emit) async {
-    final result = await apiRepository.getClientsList();
+    final result = await apiRepository.getClientsList(onErrorCallback: (String message) {
+      log(" $message");
+    });
     if (result != null) {
       emit(state.copyWith(clientList: result));
     } else {
@@ -63,7 +69,9 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   _onGetProjectsListEvent(
       GetProjectsListEvent event, Emitter<UserState> emit) async {
     final result =
-        await apiRepository.getAllProjectDetails(clientId: event.clientId);
+        await apiRepository.getAllProjectDetails(clientId: event.clientId, onErrorCallback: (String message) {
+      log(" $message");
+    });
     if (result != null) {
       emit(state.copyWith(projectsList: result));
     } else {
@@ -72,7 +80,9 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   }
 
   _onGetColumnsEvent(GetColumnsEvent event, Emitter<UserState> emit) async {
-    final result = await apiRepository.getAllColumns();
+    final result = await apiRepository.getAllColumns(onErrorCallback: (String message) {
+      log(" $message");
+    });
     if (result != null) {
       emit(state.copyWith(columnsList: result));
       List<TextEditingController> a = [];
@@ -88,10 +98,12 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   _onCreateProjectEvent(
       CreateProjectEvent event, Emitter<UserState> emit) async {
     final result = await apiRepository.createProject(
-        clientId: event.clientId, projectName: event.projectName);
+        clientId: event.clientId, projectName: event.projectName, onErrorCallback: event.onErrorCallback, onSuccessCallback: event.onSuccessCallback );
     if (result != null) {
       emit(state.copyWith(createdProject: result));
-      final columnsResult = await apiRepository.getAllColumns();
+      final columnsResult = await apiRepository.getAllColumns(onErrorCallback: (String message) {
+      log(" $message");
+    });
       if (columnsResult != null) {
         emit(state.copyWith(columnsList: columnsResult));
       } else {
@@ -145,7 +157,9 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         // }
       }
       // print(a);
-      final result = await apiRepository.addColumnsToProject(columnsToAdd: a);
+      final result = await apiRepository.addColumnsToProject(columnsToAdd: a, onErrorCallback: (String message) {
+      log(" $message");
+    });
       if (result != null) {
         emit(state.copyWith(createdProject: result, projectCreating: false));
       }
@@ -162,7 +176,9 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   _onUpdateProjectDetailsEvent(
       UpdateProjectDetailsEvent event, Emitter<UserState> emit) async {
     final result = await apiRepository.updateProjectDetails(
-        projectId: event.projectId, projectDetails: event.projectDetails);
+        projectId: event.projectId, projectDetails: event.projectDetails, onErrorCallback: (String message) {
+      log(" $message");
+    });
     if (result != null) {
       emit(state.copyWith(createdProject: result));
     } else {
@@ -183,6 +199,9 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       GetProjectDetailsEvent event, Emitter<UserState> emit) async {
     final result = await apiRepository.getProjectDetails(
       projectId: event.projectId,
+      onErrorCallback: (String message) {
+      log(" $message");
+    }
     );
 
     if (result != null) {
@@ -207,7 +226,11 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     emit(state.copyWith(uploadingFile: true));
     GetDialog.uploadFile(event.context);
     final result = await apiRepository.uploadFile(
-        projectId: event.projectId, filePickerResult: event.filePickerResult);
+        projectId: event.projectId, filePickerResult: event.filePickerResult,
+        onErrorCallback: (String message) {
+      log(" $message");
+    }
+        );
     print("upload file result: $result");
     if (result != null) {
       emit(state.copyWith(uploadingFile: false, createdProject: result));
@@ -215,7 +238,9 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       Navigator.pop(event.context);
       if (result.latestInput != null) {
         final res = await apiRepository.getErrorReportForInput(
-            inputId: result.latestInput!);
+            inputId: result.latestInput!, onErrorCallback: (String message) {
+      log(" $message");
+    });
         if (res != null) {
           emit(state.copyWith(errorReport: res.replaceAll('"', "")));
           return;
@@ -233,6 +258,20 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       // ignore: use_build_context_synchronously
       GetDialog.failedErrorReport(event.context);
       emit(state.copyWith(uploadingFile: false, errorReport: null));
+    }
+  }
+
+  _onUpdateProjectNameEvent(
+      UpdateProjectNameEvent event, Emitter<UserState> emit) async {
+    var result = await ApiRepository().updateProjectName(
+        projectId: event.projectId,
+        updatedProjectName: event.updatedProjectName,
+        onErrorCallback: event.warningMessageCallback,
+        onSuccessCallback: event.onSuccessCallback
+        );
+
+    if (result != null) {
+      emit(state.copyWith(createdProject: result));
     }
   }
 }

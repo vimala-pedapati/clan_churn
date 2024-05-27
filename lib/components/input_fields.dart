@@ -594,15 +594,15 @@ class _GetInputFieldsState extends State<GetInputFields> {
                             child: SingleChildScrollView(
                               child: Column(
                                 children: [
-                                  // BlocBuilder<UserBloc, UserState>(
-                                  //   builder: (context, state) {
-                                  //     return Container(
-                                  //         width: MediaQuery.of(context).size.width *
-                                  //             0.75,
-                                  //         child: Text(
-                                  //             "${state.createdProject!.inputSheet}"));
-                                  //   },
-                                  // ),
+                                  BlocBuilder<UserBloc, UserState>(
+                                    builder: (context, state) {
+                                      return Container(
+                                          width: MediaQuery.of(context).size.width *
+                                              0.75,
+                                          child: SelectableText(
+                                              "${state.createdProject!.id}"));
+                                    },
+                                  ),
                                   ClanChurnSpacing.h10,
                                   Row(
                                     mainAxisAlignment:
