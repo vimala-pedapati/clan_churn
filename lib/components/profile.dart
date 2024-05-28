@@ -13,8 +13,24 @@ class ProfileWidget extends StatefulWidget {
   State<ProfileWidget> createState() => _ProfileWidgetState();
 }
 
-class _ProfileWidgetState extends State<ProfileWidget> {
+class _ProfileWidgetState extends State<ProfileWidget>
+    with SingleTickerProviderStateMixin {
   bool isExpanded = false;
+  AnimationController? animationController;
+  double rotationAngle = 0;
+  @override
+  void initState() {
+    super.initState();
+    animationController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 1000));
+    animationController!.forward();
+  }
+
+  @override
+  void dispose() {
+    animationController!.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,15 +68,27 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(children: [
-                          IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  isExpanded = !isExpanded;
-                                });
-                              },
-                              icon: const Icon(
-                                Icons.expand_circle_down_outlined,
-                              )),
+                          MouseRegion(
+                            cursor: SystemMouseCursors.none,
+                            child: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    isExpanded = !isExpanded;
+                                    if (isExpanded) {
+                                      rotationAngle += 180;
+                                    } else {
+                                      rotationAngle -= 180;
+                                    }
+                                  });
+                                },
+                                icon: AnimatedRotation(
+                                  turns: rotationAngle / 360,
+                                  duration: const Duration(milliseconds: 300),
+                                  child: const Icon(
+                                    Icons.expand_circle_down_outlined,
+                                  ),
+                                )),
+                          ),
                           ClanChurnSpacing.w5,
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
