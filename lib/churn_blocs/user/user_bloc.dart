@@ -8,9 +8,7 @@ import 'package:clan_churn/api_repos/models/user_model.dart';
 import 'package:equatable/equatable.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-
 import '../../components/dialogs.dart';
-
 part 'user_event.dart';
 part 'user_state.dart';
 
@@ -35,8 +33,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   }
 
   _onGetUserDetails(GetUserDetailsEvent event, Emitter<UserState> emit) async {
-    final result =
-        await apiRepository.getUserDetails(onErrorCallback: (String message, int errorCode) {
+    final result = await apiRepository.getUserDetails(
+        onErrorCallback: (String message, int errorCode) {
       log(" $message");
     });
     log("user profile: $result");
@@ -46,8 +44,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   }
 
   _onClientsEvent(GetClientsEvent event, Emitter<UserState> emit) async {
-    final result =
-        await apiRepository.getClientsList(onErrorCallback: (String message, int errorCode) {
+    final result = await apiRepository.getClientsList(
+        onErrorCallback: (String message, int errorCode) {
       log(" $message");
     });
     if (result != null) {
@@ -81,8 +79,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   }
 
   _onGetColumnsEvent(GetColumnsEvent event, Emitter<UserState> emit) async {
-    final result =
-        await apiRepository.getAllColumns(onErrorCallback: (String message, int errorCode) {
+    final result = await apiRepository.getAllColumns(
+        onErrorCallback: (String message, int errorCode) {
       log(" $message");
     });
     if (result != null) {
@@ -106,8 +104,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         onSuccessCallback: event.onSuccessCallback);
     if (result != null) {
       emit(state.copyWith(createdProject: result));
-      final columnsResult =
-          await apiRepository.getAllColumns(onErrorCallback: (String message, int errorCode) {
+      final columnsResult = await apiRepository.getAllColumns(
+          onErrorCallback: (String message, int errorCode) {
         log(" $message");
       });
       if (columnsResult != null) {

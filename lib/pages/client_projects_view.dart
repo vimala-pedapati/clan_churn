@@ -2,6 +2,7 @@ import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
 import 'package:clan_churn/components/projects_view_component.dart';
 import 'package:clan_churn/components/nav_bar.dart';
 import 'package:clan_churn/components/side_bar.dart';
+import 'package:clan_churn/components/wrap_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -22,23 +23,25 @@ class _ClientProjectsViewState extends State<ClientProjectsView> {
             Theme.of(context).colorScheme.primary.withOpacity(0.05),
         body: BlocBuilder<UserBloc, UserState>(
           builder: (context, state) {
-            return Column(children: [
-              // Nav bar
-              const NavBar(),
-              SizedBox(height: h * 0.01),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SideBar(
-                    selectedRoute: SelectedRoute.home,
-                  ),
-                  ProjectsViewComponent(
-                    width: state.isExpanded ? w * 0.89 : w * 0.8,
-                  )
-                ],
-              ),
-            ]);
+            return WrapProfile(
+              child: Column(children: [
+                // Nav bar
+                const NavBar(),
+                SizedBox(height: h * 0.01),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SideBar(
+                      selectedRoute: SelectedRoute.home,
+                    ),
+                    ProjectsViewComponent(
+                      width: state.isExpanded ? w * 0.89 : w * 0.8,
+                    )
+                  ],
+                ),
+              ]),
+            );
           },
         ));
   }

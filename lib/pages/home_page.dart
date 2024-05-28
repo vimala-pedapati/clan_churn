@@ -3,6 +3,7 @@ import 'package:clan_churn/components/clients_component.dart';
 import 'package:clan_churn/components/nav_bar.dart';
 import 'package:clan_churn/components/profile.dart';
 import 'package:clan_churn/components/side_bar.dart';
+import 'package:clan_churn/components/wrap_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -30,35 +31,30 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       // appBar: const ClanChurnAppBar(),
       backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.05),
-      endDrawer:  const MyDrawer(),
+      // endDrawer:  const MyDrawer(),
       body: BlocBuilder<UserBloc, UserState>(
         builder: (context, state) {
           return SingleChildScrollView(
-            child: Column(children: [
-              // Nav bar
-              const NavBar(),
-              SizedBox(height: h * 0.01),
-          
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SideBar(
-                    selectedRoute: SelectedRoute.home,
-                  ),
-                  // ElevatedButton(
-                  //   child: Text("qwerty"),
-                  //   onPressed: () {
-                  //     GoRouter.of(context).go('/myApp');
-                  //   },
-                  // ),
-                  ClientsComponent(
-                    width: state.isExpanded ? w * 0.89 : w * 0.8,
-                  )
-                  // const ClientsViewComponent()
-                ],
-              )
-            ]),
+            child: WrapProfile(
+              child: Column(children: [
+                // Nav bar
+                const NavBar(),
+                SizedBox(height: h * 0.01),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SideBar(
+                      selectedRoute: SelectedRoute.home,
+                    ),
+                    ClientsComponent(
+                      width: state.isExpanded ? w * 0.89 : w * 0.8,
+                    )
+                  ],
+                )
+              ]),
+            ),
           );
         },
       ),

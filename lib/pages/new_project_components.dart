@@ -8,6 +8,7 @@ import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
 import 'package:clan_churn/components/dialogs.dart';
 import 'package:clan_churn/components/nav_bar.dart';
 import 'package:clan_churn/components/side_bar.dart';
+import 'package:clan_churn/components/wrap_profile.dart';
 import 'package:clan_churn/utils/routes.dart';
 import 'package:clan_churn/utils/spacing.dart';
 import 'package:clan_churn/utils/typography.dart';
@@ -29,21 +30,23 @@ class CreateNewProject extends StatelessWidget {
             Theme.of(context).colorScheme.primary.withOpacity(0.05),
         body: BlocBuilder<UserBloc, UserState>(
           builder: (context, state) {
-            return Column(children: [
-              // Nav bar
-              const NavBar(),
-              SizedBox(height: h * 0.01),
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SideBar(
-                    selectedRoute: SelectedRoute.home,
-                  ),
-                  AddNewProjectComponent()
-                ],
-              ),
-            ]);
+            return WrapProfile(
+              child: Column(children: [
+                // Nav bar
+                const NavBar(),
+                SizedBox(height: h * 0.01),
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SideBar(
+                      selectedRoute: SelectedRoute.home,
+                    ),
+                    AddNewProjectComponent()
+                  ],
+                ),
+              ]),
+            );
           },
         ));
   }
