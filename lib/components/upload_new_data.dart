@@ -1,6 +1,7 @@
+import 'dart:convert';
 
 import 'package:clan_churn/api_repos/api_repo.dart';
-import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart'; 
+import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/pages/new_project_components.dart';
 import 'package:clan_churn/utils/spacing.dart';
 import 'package:clan_churn/utils/typography.dart';
@@ -19,6 +20,31 @@ class UploadNewData extends StatefulWidget {
 }
 
 class _UploadNewDataState extends State<UploadNewData> {
+  @override
+  void initState() {
+    if (context.read<ProjectArchitectBloc>().state.createdProject != null) {
+      if (context
+              .read<ProjectArchitectBloc>()
+              .state
+              .createdProject!
+              .latestInput !=
+          null) {
+        context.read<ProjectArchitectBloc>().add(GetInputExcelSummaryEvent(
+              inputId: context
+                  .read<ProjectArchitectBloc>()
+                  .state
+                  .createdProject!
+                  .latestInput!,
+              onErrorCallback: (errorMessage, errorCode) {},
+              onSuccessCallback: (message) {
+                print("Get Input Excel Summary: ${json.decode(message!.body)}");
+              },
+            ));
+      }
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
@@ -45,6 +71,7 @@ class _UploadNewDataState extends State<UploadNewData> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  SelectableText("${state.createdProject!.latestInput}"),
                   InkWell(
                       onTap: () async {
                         if (kIsWeb) {

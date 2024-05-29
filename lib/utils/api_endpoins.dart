@@ -24,4 +24,5 @@ class ApiEndpoints {
   static String uploadFile = "/project/upload_input_data";
   static String getErrorReport = "/project/get_error_report_for_input";
   static String updateProjectName = "/project/update";
+  static String getInputExcelSummary = "/project/get_input_excel_summary";
 }

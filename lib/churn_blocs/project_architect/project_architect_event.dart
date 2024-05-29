@@ -1,6 +1,6 @@
 part of 'project_architect_bloc.dart';
 
- class ProjectArchitectEvent extends Equatable {
+class ProjectArchitectEvent extends Equatable {
   const ProjectArchitectEvent();
 
   @override
@@ -98,4 +98,11 @@ class UpdateProjectNameEvent extends ProjectArchitectEvent {
     required this.warningMessageCallback,
     required this.onSuccessCallback,
   });
+}
+
+class GetInputExcelSummaryEvent extends ProjectArchitectEvent {
+  final String inputId;
+  final OnErrorCallback onErrorCallback;
+  final OnSuccessCallback onSuccessCallback;
+  const GetInputExcelSummaryEvent({required this.inputId, required this.onErrorCallback, required this.onSuccessCallback});
 }

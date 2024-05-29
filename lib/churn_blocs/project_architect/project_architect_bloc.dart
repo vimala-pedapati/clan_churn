@@ -31,6 +31,7 @@ class ProjectArchitectBloc
     on<GetProjectDetailsEvent>(_onGetProjectDetailsEvent);
     on<UploadFileEvent>(_onUploadFileEvent);
     on<UpdateProjectNameEvent>(_onUpdateProjectNameEvent);
+    on<GetInputExcelSummaryEvent>(_onGetInputExcelSummaryEvent);
   }
 
   _onClientsEvent(
@@ -277,5 +278,13 @@ class ProjectArchitectBloc
     if (result != null) {
       emit(state.copyWith(createdProject: result));
     }
+  }
+
+  _onGetInputExcelSummaryEvent(
+      GetInputExcelSummaryEvent event, Emitter<ProjectArchitectState> emit) {
+    final result = apiRepository.getInputExcelSummaryReport(
+        inputId: event.inputId,
+        onErrorCallback: event.onErrorCallback,
+        onSuccessCallback: event.onSuccessCallback);
   }
 }
