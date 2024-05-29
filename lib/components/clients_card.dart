@@ -1,4 +1,4 @@
-import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
+import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart'; 
 import 'package:clan_churn/pages/client_projects_view.dart';
 import 'package:clan_churn/utils/typography.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +10,7 @@ class ClientsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UserBloc, UserState>(
+    return BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
       builder: (context, state) {
         return Container(
           // height: 190,
@@ -52,7 +52,7 @@ class ClientsCard extends StatelessWidget {
                       style: ClanChurnTypography.font15600,
                     ),
                     onPressed: () {
-                      context.read<UserBloc>().add(SetSelectedClientEvent( selectedClient: state.clientList[index]));
+                      context.read<ProjectArchitectBloc>().add(SetSelectedClientEvent( selectedClient: state.clientList[index]));
                       // GoRouter.of(context).go(AppRoutes.clientProjects);
                       Navigator.push(
                           context,

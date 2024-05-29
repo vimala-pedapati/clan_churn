@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:clan_churn/api_repos/models/project_model.dart';
-import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
+import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart'; 
 import 'package:clan_churn/components/upload_new_data.dart';
 import 'package:clan_churn/pages/new_project_components.dart';
 import 'package:clan_churn/pages/project_input_fields_sheet.dart';
@@ -243,18 +243,18 @@ class _GetInputFieldsState extends State<GetInputFields> {
 
   @override
   void initState() {
-    if (context.read<UserBloc>().state.selectedClient != null) {
+    if (context.read<ProjectArchitectBloc>().state.selectedClient != null) {
       setState(() {
         customerNameController.text =
-            context.read<UserBloc>().state.selectedClient!.name;
+            context.read<ProjectArchitectBloc>().state.selectedClient!.name;
       });
     }
-    Project? p = context.read<UserBloc>().state.createdProject;
+    Project? p = context.read<ProjectArchitectBloc>().state.createdProject;
     if (p != null) {
       setState(() {
         projectNameController.text = p.name ?? '';
         ProjectDetails? pd =
-            context.read<UserBloc>().state.createdProject!.projectDetails;
+            context.read<ProjectArchitectBloc>().state.createdProject!.projectDetails;
         if (pd != null) {
           projectStartDateController.text = pd.projectStartDate ?? "";
           studyPeriodBeginningDateController.text =
@@ -523,7 +523,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UserBloc, UserState>(
+    return BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
       builder: (context, state) {
         return SizedBox(
           height: MediaQuery.of(context).size.height * 0.75,
@@ -538,7 +538,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
               SingleChildScrollView(
                 child: Column(
                   children: [
-                    // BlocBuilder<UserBloc, UserState>(
+                    // BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
                     //   builder: (context, state) {
                     //     return Text(
                     //         "${state.createdProject!.projectDetails!.departments!}");
@@ -596,7 +596,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
                             child: SingleChildScrollView(
                               child: Column(
                                 children: [
-                                  // BlocBuilder<UserBloc, UserState>(
+                                  // BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
                                   //   builder: (context, state) {
                                   //     return Container(
                                   //         width: MediaQuery.of(context).size.width *
@@ -1246,10 +1246,10 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                               projectMaximumMonthlyIncentive: int.parse(projectMaximumMonthlyIncentiveController.text.isEmpty ? '0' : projectMaximumMonthlyIncentiveController.text),
                                               projectTopOutlierRankForMaximumMonthlyIncentive: int.parse(projectTopOutlierRankForMaximumMonthlyIncentiveController.text.isEmpty ? '0' : projectTopOutlierRankForMaximumMonthlyIncentiveController.text),
                                               projectBottomOutlierRankForMaximumMonthlyIncentive: int.parse(projectBottomOutlierRankForMaximumMonthlyIncentiveController.text.isEmpty ? '0' : projectBottomOutlierRankForMaximumMonthlyIncentiveController.text));
-                                          context.read<UserBloc>().add(
+                                          context.read<ProjectArchitectBloc>().add(
                                               UpdateProjectDetailsEvent(
                                                   projectId: context
-                                                      .read<UserBloc>()
+                                                      .read<ProjectArchitectBloc>()
                                                       .state
                                                       .createdProject!
                                                       .id,

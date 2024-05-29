@@ -1,5 +1,5 @@
 
-import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
+import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart'; 
 import 'package:clan_churn/pages/new_project_components.dart';
 import 'package:clan_churn/pages/project_input_fields_sheet.dart';
 import 'package:clan_churn/utils/routes.dart';
@@ -13,7 +13,7 @@ class ProjectCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UserBloc, UserState>(
+    return BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
       builder: (context, state) {
         return Container(
           // height: 190,
@@ -55,7 +55,7 @@ class ProjectCard extends StatelessWidget {
                       style: ClanChurnTypography.font15600,
                     ),
                     onPressed: () {
-                      context.read<UserBloc>().add(SetCreatedProjectEvent(
+                      context.read<ProjectArchitectBloc>().add(SetCreatedProjectEvent(
                           createdProject: state.projectsList[index]));
                       if (state.projectsList[index].inputSheet == null) {
                         Navigator.push(
@@ -167,7 +167,7 @@ class ProjectCard extends StatelessWidget {
         //               style: ClanChurnTypography.font15600,
         //             ),
         //             onPressed: () {
-        //               // context.read<UserBloc>().add(SetSelectedClientEvent(selectedClient: state.clientList[index]));
+        //               // context.read<ProjectArchitectBloc>().add(SetSelectedClientEvent(selectedClient: state.clientList[index]));
         //               // GoRouter.of(context).go(AppRoutes.clientProjects);
         //             },
         //           ),

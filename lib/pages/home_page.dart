@@ -1,7 +1,7 @@
+import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
 import 'package:clan_churn/components/clients_component.dart';
-import 'package:clan_churn/components/nav_bar.dart';
-import 'package:clan_churn/components/profile.dart';
+import 'package:clan_churn/components/nav_bar.dart'; 
 import 'package:clan_churn/components/side_bar.dart';
 import 'package:clan_churn/components/wrap_profile.dart';
 import 'package:flutter/material.dart';
@@ -18,8 +18,8 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     context.read<UserBloc>().add(GetUserDetailsEvent());
-    context.read<UserBloc>().add(GetClientsEvent());
-    context.read<UserBloc>().add(const SideBarExpandedEvent(isExpanded: false));
+    context.read<ProjectArchitectBloc>().add(GetClientsEvent());
+    context.read<ProjectArchitectBloc>().add(const SideBarExpandedEvent(isExpanded: false));
     super.initState();
   }
 
@@ -32,7 +32,7 @@ class _HomePageState extends State<HomePage> {
       // appBar: const ClanChurnAppBar(),
       backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.05),
       // endDrawer:  const MyDrawer(),
-      body: BlocBuilder<UserBloc, UserState>(
+      body: BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
         builder: (context, state) {
           return SingleChildScrollView(
             child: WrapProfile(

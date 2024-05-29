@@ -1,3 +1,4 @@
+import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
 import 'package:clan_churn/pages/new_project_components.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +9,7 @@ class GetDialog {
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
-        return BlocBuilder<UserBloc, UserState>(
+        return BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
           builder: (context, state) {
             return AlertDialog(
               title: Text(state.projectCreating
@@ -24,7 +25,7 @@ class GetDialog {
                       : ElevatedButton(
                           onPressed: () {
                             // fetching all project list once the project is created
-                            context.read<UserBloc>().add(GetProjectsListEvent(clientId: state.selectedClient!.id));
+                            context.read<ProjectArchitectBloc>().add(GetProjectsListEvent(clientId: state.selectedClient!.id));
                             
                             launchURL(state.createdProject!.inputSheet!);
                             Navigator.pop(context);

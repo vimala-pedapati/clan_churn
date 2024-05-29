@@ -4,6 +4,7 @@ import 'dart:html';
 
 import 'package:clan_churn/api_repos/api_repo.dart';
 import 'package:clan_churn/api_repos/models/column_model.dart';
+import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
 import 'package:clan_churn/components/dialogs.dart';
 import 'package:clan_churn/components/nav_bar.dart';
@@ -70,21 +71,21 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
   void initState() {
     setState(() {
       clientController.text =
-          context.read<UserBloc>().state.selectedClient!.name;
+          context.read<ProjectArchitectBloc>().state.selectedClient!.name;
     });
 
-    if (context.read<UserBloc>().state.createdProject != null) {
-      if (context.read<UserBloc>().state.createdProject!.id.isNotEmpty) {
+    if (context.read<ProjectArchitectBloc>().state.createdProject != null) {
+      if (context.read<ProjectArchitectBloc>().state.createdProject!.id.isNotEmpty) {
         isProjectCreated = true;
       }
       setState(() {
         projectController.text =
-            context.read<UserBloc>().state.createdProject!.name ?? '';
-        projectName = context.read<UserBloc>().state.createdProject!.name ?? '';
-        previousName = context.read<UserBloc>().state.createdProject!.name ?? '';
+            context.read<ProjectArchitectBloc>().state.createdProject!.name ?? '';
+        projectName = context.read<ProjectArchitectBloc>().state.createdProject!.name ?? '';
+        previousName = context.read<ProjectArchitectBloc>().state.createdProject!.name ?? '';
       });
     }
-    context.read<UserBloc>().add(const GetColumnsEvent());
+    context.read<ProjectArchitectBloc>().add(const GetColumnsEvent());
     super.initState();
   }
 
@@ -92,7 +93,7 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
   Widget build(BuildContext context) {
     final h = MediaQuery.of(context).size.height;
     final w = MediaQuery.of(context).size.width;
-    return BlocBuilder<UserBloc, UserState>(
+    return BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
       builder: (context, state) {
         return AnimatedContainer(
           width: state.isExpanded ? w * 0.89 : w * 0.8,
@@ -249,7 +250,7 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                               ? null
                               : () {
                                   if (isProjectCreated) {
-                                    context.read<UserBloc>().add(
+                                    context.read<ProjectArchitectBloc>().add(
                                         UpdateProjectNameEvent(
                                             projectId: state.createdProject!.id,
                                             updatedProjectName:
@@ -267,7 +268,7 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                                             }));
                                   } else {
                                     context
-                                        .read<UserBloc>()
+                                        .read<ProjectArchitectBloc>()
                                         .add(CreateProjectEvent(
                                           clientId: state.selectedClient!.id,
                                           projectName: projectController.text,
@@ -332,7 +333,7 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                                           List<ColumnDetails> b =
                                               state.columnsList.toList();
                                           b[index] = a;
-                                          context.read<UserBloc>().add(
+                                          context.read<ProjectArchitectBloc>().add(
                                               ReplaceColumnsEvent(
                                                   columns: b, index: index));
                                         },
@@ -377,7 +378,7 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                                                       );
 
                                               // Dispatch an event to update the state with the modified list of controllers
-                                              context.read<UserBloc>().add(
+                                              context.read<ProjectArchitectBloc>().add(
                                                     CustomerColumnNamesEvent(
                                                         customerColumnNames:
                                                             controllers),
@@ -412,7 +413,7 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                                   : () {
                                       // log("${state.customerColumnNames}");
                                       context
-                                          .read<UserBloc>()
+                                          .read<ProjectArchitectBloc>()
                                           .add(AddColumnsToProjectEvent());
                                       GetDialog.showDownloadDialog(context);
                                     },

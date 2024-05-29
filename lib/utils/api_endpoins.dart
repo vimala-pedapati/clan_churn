@@ -6,9 +6,15 @@ class BaseUrl {
 }
 
 class ApiEndpoints {
+
+  // User 
   static String signIn = '/sign_in';
   static String getUserDetails = '/user/get_user_details';
+
+  // client
   static String clientsList = '/client/client_list';
+
+  // Project 
   static String getAllProjects = '/project/get_all_projects';
   static String addProject = '/project/add';
   static String getAllColumns = '/project/get_all_columns';

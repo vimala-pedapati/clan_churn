@@ -1,6 +1,6 @@
 
 import 'package:clan_churn/api_repos/api_repo.dart';
-import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
+import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart'; 
 import 'package:clan_churn/pages/new_project_components.dart';
 import 'package:clan_churn/utils/spacing.dart';
 import 'package:clan_churn/utils/typography.dart';
@@ -21,7 +21,7 @@ class UploadNewData extends StatefulWidget {
 class _UploadNewDataState extends State<UploadNewData> {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UserBloc, UserState>(
+    return BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
       builder: (context, state) {
         return Column(
           children: [
@@ -56,14 +56,14 @@ class _UploadNewDataState extends State<UploadNewData> {
 
                           if (picked != null) {
                             // ignore: use_build_context_synchronously
-                            context.read<UserBloc>().add(
+                            context.read<ProjectArchitectBloc>().add(
                                   // ignore: use_build_context_synchronously
                                   UploadFileEvent(
                                     filePickerResult: picked,
                                     context: context,
                                     // ignore: use_build_context_synchronously
                                     projectId: context
-                                        .read<UserBloc>()
+                                        .read<ProjectArchitectBloc>()
                                         .state
                                         .createdProject!
                                         .id,

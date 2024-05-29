@@ -1,3 +1,4 @@
+import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/churn_blocs/sign_in_bloc/sign_in_bloc.dart';
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
 import 'package:clan_churn/utils/spacing.dart';
@@ -16,21 +17,8 @@ class ProfileWidget extends StatefulWidget {
 class _ProfileWidgetState extends State<ProfileWidget>
     with SingleTickerProviderStateMixin {
   bool isExpanded = false;
-  AnimationController? animationController;
-  double rotationAngle = 0;
-  @override
-  void initState() {
-    super.initState();
-    animationController = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 1000));
-    animationController!.forward();
-  }
 
-  @override
-  void dispose() {
-    animationController!.dispose();
-    super.dispose();
-  }
+  double rotationAngle = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -127,30 +115,36 @@ class _ProfileWidgetState extends State<ProfileWidget>
                                       .read<SignInBloc>()
                                       .add(SignOutEvent(context: context));
                                 },
-                                child: AnimatedContainer(
-                                  duration: const Duration(milliseconds: 500),
-                                  padding: const EdgeInsets.only(
-                                      left: 10, right: 10, top: 20),
-                                  child: Row(
-                                    children: [
-                                      const Icon(Icons.logout_outlined,
-                                          color: Colors.red),
-                                      ClanChurnSpacing.w10,
-                                      state.isExpanded
-                                          ? Container()
-                                          : AnimatedContainer(
-                                              duration:
-                                                  const Duration(seconds: 1),
-                                              child: Text(
-                                                "Log Out",
-                                                style: ClanChurnTypography
-                                                    .font18600
-                                                    .copyWith(
-                                                        color: Colors.red),
-                                              ),
-                                            )
-                                    ],
-                                  ),
+                                child: BlocBuilder<ProjectArchitectBloc,
+                                    ProjectArchitectState>(
+                                  builder: (context, state) {
+                                    return AnimatedContainer(
+                                      duration:
+                                          const Duration(milliseconds: 500),
+                                      padding: const EdgeInsets.only(
+                                          left: 10, right: 10, top: 20),
+                                      child: Row(
+                                        children: [
+                                          const Icon(Icons.logout_outlined,
+                                              color: Colors.red),
+                                          ClanChurnSpacing.w10,
+                                          state.isExpanded
+                                              ? Container()
+                                              : AnimatedContainer(
+                                                  duration: const Duration(
+                                                      seconds: 1),
+                                                  child: Text(
+                                                    "Log Out",
+                                                    style: ClanChurnTypography
+                                                        .font18600
+                                                        .copyWith(
+                                                            color: Colors.red),
+                                                  ),
+                                                )
+                                        ],
+                                      ),
+                                    );
+                                  },
                                 ),
                               )
                             : Container(),
@@ -195,21 +189,25 @@ class MyDrawer extends StatelessWidget {
                   margin: const EdgeInsets.only(
                       left: 10, top: 10, bottom: 10, right: 10),
                   padding: const EdgeInsets.only(left: 20, top: 10, bottom: 10),
-                  child: Row(
-                    children: [
-                      const Icon(Icons.logout_outlined, color: Colors.red),
-                      ClanChurnSpacing.w10,
-                      state.isExpanded
-                          ? Container()
-                          : AnimatedContainer(
-                              duration: const Duration(seconds: 1),
-                              child: Text(
-                                "Log Out",
-                                style: ClanChurnTypography.font16700
-                                    .copyWith(color: Colors.red),
-                              ),
-                            )
-                    ],
+                  child: BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
+                    builder: (context, state) {
+                      return Row(
+                        children: [
+                          const Icon(Icons.logout_outlined, color: Colors.red),
+                          ClanChurnSpacing.w10,
+                          state.isExpanded
+                              ? Container()
+                              : AnimatedContainer(
+                                  duration: const Duration(seconds: 1),
+                                  child: Text(
+                                    "Log Out",
+                                    style: ClanChurnTypography.font16700
+                                        .copyWith(color: Colors.red),
+                                  ),
+                                )
+                        ],
+                      );
+                    },
                   ),
                 ),
               ),

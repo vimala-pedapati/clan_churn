@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
+import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart'; 
 import 'package:clan_churn/pages/new_project_components.dart';
 import 'package:clan_churn/components/project_list_data.dart';
 import 'package:clan_churn/components/search.dart';
@@ -22,8 +22,8 @@ class ProjectsViewComponent extends StatefulWidget {
 class _ProjectsViewComponentState extends State<ProjectsViewComponent>  {
   @override
   void initState() {
-    if (context.read<UserBloc>().state.selectedClient != null) {
-      context.read<UserBloc>().add(GetProjectsListEvent(clientId: context.read<UserBloc>().state.selectedClient!.id));
+    if (context.read<ProjectArchitectBloc>().state.selectedClient != null) {
+      context.read<ProjectArchitectBloc>().add(GetProjectsListEvent(clientId: context.read<ProjectArchitectBloc>().state.selectedClient!.id));
     }
     super.initState();
   }
@@ -38,7 +38,7 @@ class _ProjectsViewComponentState extends State<ProjectsViewComponent>  {
       height: h * 0.83,
       margin: EdgeInsets.only(
           left: w * 0.025, right: w * 0.025, top: 10, bottom: 20),
-      child: BlocBuilder<UserBloc, UserState>(
+      child: BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
         builder: (context, state) {
           return state.selectedClient == null
               ? Container()
@@ -107,7 +107,7 @@ class _ProjectsViewComponentState extends State<ProjectsViewComponent>  {
                                     ElevatedButton(
                                       onPressed: () {
                                         context
-                                            .read<UserBloc>()
+                                            .read<ProjectArchitectBloc>()
                                             .add(ClearCreateProjectEvent());
                                         Navigator.push(
                                             context,

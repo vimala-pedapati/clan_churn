@@ -1,3 +1,4 @@
+import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
 import 'package:clan_churn/components/input_fields.dart';
 import 'package:clan_churn/components/nav_bar.dart';
@@ -48,7 +49,7 @@ class GetInputFieldsComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     final h = MediaQuery.of(context).size.height;
     final w = MediaQuery.of(context).size.width;
-    return BlocBuilder<UserBloc, UserState>(
+    return BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
       builder: (context, state) {
         return AnimatedContainer(
           width: state.isExpanded ? w * 0.89 : w * 0.8,

@@ -1,4 +1,4 @@
-import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
+import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart'; 
 import 'package:clan_churn/components/projects_view_component.dart';
 import 'package:clan_churn/components/nav_bar.dart';
 import 'package:clan_churn/components/side_bar.dart';
@@ -21,7 +21,7 @@ class _ClientProjectsViewState extends State<ClientProjectsView> {
     return Scaffold(
         backgroundColor:
             Theme.of(context).colorScheme.primary.withOpacity(0.05),
-        body: BlocBuilder<UserBloc, UserState>(
+        body: BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
           builder: (context, state) {
             return WrapProfile(
               child: Column(children: [
