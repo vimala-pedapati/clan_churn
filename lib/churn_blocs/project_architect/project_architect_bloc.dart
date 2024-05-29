@@ -150,7 +150,7 @@ class ProjectArchitectBloc
         a.add({
           "column_id": state.columnsList[i].id,
           "project_id": state.createdProject!.id,
-          "add": state.columnsList[i].isMandatory,
+          "add": state.columnsList[i].isUserCheckedIn,
           "client_column_name": state.customerColumnNames[i].text
         });
         // }
