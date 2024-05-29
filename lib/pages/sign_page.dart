@@ -95,7 +95,7 @@ class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          "welcome",
+                          "Welcome",
                           style: ClanChurnTypography.font48400,
                         ),
                       ],
@@ -255,11 +255,11 @@ class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
                   direction: Direction.horizontal,
                   offset: 0.9,
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
                         "Forgot Password?",
-                        style: ClanChurnTypography.font18500,
+                        style: ClanChurnTypography.font18500.copyWith(color: Theme.of(context).colorScheme.primary)
                       ),
                     ],
                   ),
@@ -282,7 +282,7 @@ class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
               height: h * 0.8,
               width: w * 0.9,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(08),
                   boxShadow: [
                     BoxShadow(
                         color: shadowColor,
