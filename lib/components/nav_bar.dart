@@ -12,7 +12,7 @@ class NavBar extends StatelessWidget {
         Stack(
       children: [
         Container(
-          height: h * 0.1,
+          height: 100,
           color: Theme.of(context).colorScheme.background,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -27,7 +27,7 @@ class NavBar extends StatelessWidget {
                   children: [
                     Image.asset(
                       "assets/clan_logo.png",
-                      scale: 2,
+                      scale: 1.8,
                     ),
                     const Padding(
                       padding: EdgeInsets.only(left: 10, right: 10),
@@ -38,7 +38,7 @@ class NavBar extends StatelessWidget {
                     ),
                     Image.asset(
                       "assets/churn_logo.png",
-                      scale: 2,
+                      scale: 1.8,
                     )
                   ],
                 ),

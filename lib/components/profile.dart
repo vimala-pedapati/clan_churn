@@ -43,7 +43,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                   ClanChurnSpacing.w10,
                   AnimatedContainer(
                     duration: const Duration(milliseconds: 300),
-                    height: isExpanded ? h * 0.13 : h * 0.07,
+                    height: isExpanded ? 120:  60 ,
                     padding: const EdgeInsets.only(
                         left: 10, right: 10, top: 10, bottom: 10),
                     decoration: BoxDecoration(
@@ -51,7 +51,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                             .colorScheme
                             .primary
                             .withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(30)),
+                        borderRadius: BorderRadius.circular(isExpanded? 30: 30)),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -189,7 +189,8 @@ class MyDrawer extends StatelessWidget {
                   margin: const EdgeInsets.only(
                       left: 10, top: 10, bottom: 10, right: 10),
                   padding: const EdgeInsets.only(left: 20, top: 10, bottom: 10),
-                  child: BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
+                  child:
+                      BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
                     builder: (context, state) {
                       return Row(
                         children: [
