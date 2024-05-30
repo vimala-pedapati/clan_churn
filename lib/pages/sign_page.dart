@@ -22,6 +22,12 @@ class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
   String email = '';
   String password = '';
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool _isHovered = false;
+  void _onHover(bool isHovered) {
+    setState(() {
+      _isHovered = isHovered;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +70,7 @@ class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
                       children: [
                         Image.asset(
                           "assets/clan_logo.png",
-                          scale: 2,
+                          scale: 1.5,
                         ),
                         const Padding(
                           padding: EdgeInsets.only(left: 10, right: 10),
@@ -75,7 +81,7 @@ class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
                         ),
                         Image.asset(
                           "assets/churn_logo.png",
-                          scale: 2,
+                          scale: 1.5,
                         )
                       ],
                     ),
@@ -132,6 +138,7 @@ class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
                       controller: emailController,
                       keyboardType: TextInputType.emailAddress,
                       autofocus: false,
+                      textInputAction: TextInputAction.next,
                       decoration: InputDecoration(
                         hintText: 'Enter Login ID',
                         hintStyle: ClanChurnTypography.font18500
@@ -166,7 +173,6 @@ class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
                   animationDuration: const Duration(seconds: 2),
                   curve: Curves.easeInOutCubicEmphasized,
                   direction: Direction.horizontal,
-                  
                   offset: 0.9,
                   child: Text(
                     "Password",
@@ -192,6 +198,7 @@ class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
                       keyboardType: TextInputType.emailAddress,
                       autofocus: false,
                       obscureText: true,
+                      textInputAction: TextInputAction.next,
                       obscuringCharacter: '*',
                       decoration: InputDecoration(
                         hintText: 'Enter Password',
@@ -231,19 +238,33 @@ class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
                   offset: 0.9,
                   child: SizedBox(
                       width: w * 0.3,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            log("$email, $password");
-                            context.read<SignInBloc>().add(SignInEvent(
-                                email: email,
-                                password: password,
-                                context: context));
-                          }
-                        },
-                        child: Text(
-                          "Submit",
-                          style: ClanChurnTypography.font18600,
+                      height: 50,
+                      child: MouseRegion(
+                        onEnter: (_) => _onHover(true),
+                        onExit: (_) => _onHover(false),
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(
+                                    _isHovered ? 30.0 : 8.0),
+                              ),
+                            ),
+                          ),
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              log("$email, $password");
+                              context.read<SignInBloc>().add(SignInEvent(
+                                  email: email,
+                                  password: password,
+                                  context: context));
+                            }
+                          },
+                          child: Text(
+                            "Submit",
+                            style: ClanChurnTypography.font18600,
+                          ),
                         ),
                       )),
                 ),
@@ -257,10 +278,9 @@ class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        "Forgot Password?",
-                        style: ClanChurnTypography.font18500.copyWith(color: Theme.of(context).colorScheme.primary)
-                      ),
+                      Text("Forgot Password?",
+                          style: ClanChurnTypography.font18500.copyWith(
+                              color: Theme.of(context).colorScheme.primary)),
                     ],
                   ),
                 ),
@@ -279,10 +299,10 @@ class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
             direction: Direction.vertical,
             offset: -0.9,
             child: Container(
-              height: h * 0.8,
-              width: w * 0.9,
+              height: h * 0.78,
+              width: w * 0.8,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(08),
+                  borderRadius: BorderRadius.circular(10),
                   boxShadow: [
                     BoxShadow(
                         color: shadowColor,
@@ -300,7 +320,7 @@ class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
                         )
                       : Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: [a, b]),
+                          children: [a, ClanChurnSpacing.w70, b]),
             ),
           ),
         ),
