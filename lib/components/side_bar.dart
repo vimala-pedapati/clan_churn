@@ -1,4 +1,4 @@
-import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart'; 
+import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/utils/routes.dart';
 import 'package:clan_churn/utils/spacing.dart';
 import 'package:clan_churn/utils/typography.dart';
@@ -17,6 +17,8 @@ class SideBar extends StatefulWidget {
 }
 
 class _SideBarState extends State<SideBar> {
+  double rotationAngle = 0;
+  bool isExpanded = false;
   @override
   Widget build(BuildContext context) {
     final h = MediaQuery.of(context).size.height;
@@ -25,8 +27,10 @@ class _SideBarState extends State<SideBar> {
       builder: (context, state) {
         return AnimatedContainer(
           duration: const Duration(seconds: 1),
-          height: h * 0.89,
-          width: state.isExpanded ? w * 0.06 : w * 0.15,
+          // height: h * 0.89,
+          // width: state.isExpanded ? w * 0.05 : w * 0.15,
+          height: h * 0.88,
+          width: state.isExpanded ? 90 : 220,
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.background,
           ),
@@ -39,8 +43,17 @@ class _SideBarState extends State<SideBar> {
                     // menu
                     InkWell(
                       onTap: () {
-                        context.read<ProjectArchitectBloc>().add(SideBarExpandedEvent(
-                            isExpanded: !state.isExpanded));
+                        context.read<ProjectArchitectBloc>().add(
+                            SideBarExpandedEvent(
+                                isExpanded: !state.isExpanded));
+                        setState(() {
+                          isExpanded = !isExpanded;
+                          if (isExpanded) {
+                            rotationAngle += 180;
+                          } else {
+                            rotationAngle -= 180;
+                          }
+                        });
                       },
                       child: Container(
                         margin: const EdgeInsets.only(
@@ -49,7 +62,14 @@ class _SideBarState extends State<SideBar> {
                             left: 20, top: 10, bottom: 10),
                         child: Row(
                           children: [
-                            const Icon(Icons.keyboard_double_arrow_left),
+                            AnimatedRotation(
+                                turns: rotationAngle / 360,
+                                duration: const Duration(milliseconds: 300),
+                                child: Icon(
+                                  Icons.keyboard_double_arrow_left,
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                )),
                             ClanChurnSpacing.w10,
                             state.isExpanded
                                 ? Container()
@@ -84,7 +104,12 @@ class _SideBarState extends State<SideBar> {
                             : null,
                         child: Row(
                           children: [
-                            const Icon(Icons.home),
+                            Icon(
+                              Icons.home,
+                              color: widget.selectedRoute == SelectedRoute.home
+                                  ? null
+                                  : Theme.of(context).colorScheme.secondary,
+                            ),
                             ClanChurnSpacing.w10,
                             state.isExpanded
                                 ? Container()
@@ -129,7 +154,12 @@ class _SideBarState extends State<SideBar> {
                             left: 20, top: 10, bottom: 10),
                         child: Row(
                           children: [
-                            const Icon(Icons.save),
+                            Icon(
+                              Icons.save,
+                              color: widget.selectedRoute == SelectedRoute.savedReports
+                                  ? null
+                                  : Theme.of(context).colorScheme.secondary,
+                            ),
                             ClanChurnSpacing.w10,
                             state.isExpanded
                                 ? Container()

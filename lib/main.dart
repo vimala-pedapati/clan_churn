@@ -122,6 +122,7 @@ class ClanChurnApp extends StatelessWidget {
           ),
           iconTheme: const IconThemeData(
             color: Color.fromRGBO(108, 63, 235, 1),
+            // color: Colors.red
           ),
           useMaterial3: true,
         ),

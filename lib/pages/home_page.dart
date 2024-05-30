@@ -1,7 +1,7 @@
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
 import 'package:clan_churn/components/clients_component.dart';
-import 'package:clan_churn/components/nav_bar.dart'; 
+import 'package:clan_churn/components/nav_bar.dart';
 import 'package:clan_churn/components/side_bar.dart';
 import 'package:clan_churn/components/wrap_profile.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +19,9 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     context.read<UserBloc>().add(GetUserDetailsEvent());
     context.read<ProjectArchitectBloc>().add(GetClientsEvent());
-    context.read<ProjectArchitectBloc>().add(const SideBarExpandedEvent(isExpanded: false));
+    context
+        .read<ProjectArchitectBloc>()
+        .add(const SideBarExpandedEvent(isExpanded: false));
     super.initState();
   }
 
@@ -41,15 +43,15 @@ class _HomePageState extends State<HomePage> {
                 const NavBar(),
                 SizedBox(height: h * 0.01),
 
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SideBar(
+                    SideBar(
                       selectedRoute: SelectedRoute.home,
                     ),
-                    ClientsComponent(
-                      width: state.isExpanded ? w * 0.89 : w * 0.8,
+                    Expanded(
+                      child: ClientsComponent(),
                     )
                   ],
                 )

@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart'; 
+import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
+import 'package:clan_churn/components/input_fields.dart';
 import 'package:clan_churn/components/project_card.dart';
 import 'package:clan_churn/components/projects_view_component.dart';
 import 'package:clan_churn/utils/spacing.dart';
@@ -96,30 +97,49 @@ class _ProjectsListDataState extends State<ProjectsListData> {
                   ],
                 ),
                 ClanChurnSpacing.h20,
-                SizedBox(
-                  height: h * 0.55,
-                  child: SingleChildScrollView(
-                    child: GridView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 5,
-                              childAspectRatio: 1,
-                              crossAxisSpacing: 15,
-                              mainAxisSpacing: 15),
-                      itemCount: state.projectsList.length,
-                      itemBuilder: (context, index) {
-                        return ProjectCard(
-                          index: index,
-                        );
-                      },
-                    ),
+                SingleChildScrollView(
+                  child: GridView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: (getCount(context: context, isExpanded: state.isExpanded)),
+                        childAspectRatio: 1,
+                        crossAxisSpacing: 15,
+                        mainAxisSpacing: 15),
+                    itemCount: state.projectsList.length,
+                    itemBuilder: (context, index) {
+                      return ProjectCard(
+                        index: index,
+                      );
+                    },
                   ),
                 )
               ],
             ));
       },
     );
+  }
+}
+
+int getCount({required BuildContext context, required bool isExpanded}) {
+  double h = MediaQuery.of(context).size.height;
+  if (h >= 900) {
+    if (isExpanded) {
+      return 7;
+    } else {
+      return 6;
+    }
+  } else if (h >= 700) {
+     if (isExpanded) {
+      return 6;
+    } else {
+      return 5;
+    }
+  } else {
+     if (isExpanded) {
+      return 5;
+    } else {
+      return 4;
+    }
   }
 }

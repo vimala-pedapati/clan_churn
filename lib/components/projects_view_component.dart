@@ -34,8 +34,9 @@ class _ProjectsViewComponentState extends State<ProjectsViewComponent>  {
     final w = MediaQuery.of(context).size.width;
     return AnimatedContainer(
       duration: const Duration(seconds: 1),
-      width: widget.width,
-      height: h * 0.83,
+      // width: widget.width,
+      // height: h * 0.83,
+      //  width: MediaQuery.of(context).size.width,
       margin: EdgeInsets.only(
           left: w * 0.025, right: w * 0.025, top: 10, bottom: 20),
       child: BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
@@ -68,9 +69,11 @@ class _ProjectsViewComponentState extends State<ProjectsViewComponent>  {
                       ),
                       ClanChurnSpacing.h10,
                       // Text("${state.projectsList}"),
-                      Container(
-                        height: h * 0.785,
-                        width: w * 0.8,
+                      AnimatedContainer(
+                        duration: const Duration(seconds: 1),
+                        height: h * 0.8,
+                        width:state.isExpanded? w* 0.89 : w * 0.82,
+                        // width: MediaQuery.of(context).size.width,
                         padding: const EdgeInsets.only(
                             left: 20, right: 20, top: 20, bottom: 10),
                         decoration: BoxDecoration(

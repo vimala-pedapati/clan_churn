@@ -1,4 +1,4 @@
-import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart'; 
+import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/pages/client_projects_view.dart';
 import 'package:clan_churn/utils/typography.dart';
 import 'package:flutter/material.dart';
@@ -13,8 +13,8 @@ class ClientsCard extends StatelessWidget {
     return BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
       builder: (context, state) {
         return Container(
-          // height: 190,
-          // width: 160,
+          height: 190,
+          width: 160,
           padding:
               const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 20),
           decoration: BoxDecoration(
@@ -25,9 +25,13 @@ class ClientsCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CircleAvatar(
-                  radius: 30,
+                  radius: state.isExpanded? 35: 40,
                   backgroundColor: Theme.of(context).colorScheme.background,
-                  child: const Icon(Icons.person),
+                  child: Icon(
+                    Icons.person,
+                    color: Theme.of(context).colorScheme.primary,
+                    size: state.isExpanded? 35: 40,
+                  ),
                 ),
                 Column(
                   children: [
@@ -52,12 +56,15 @@ class ClientsCard extends StatelessWidget {
                       style: ClanChurnTypography.font15600,
                     ),
                     onPressed: () {
-                      context.read<ProjectArchitectBloc>().add(SetSelectedClientEvent( selectedClient: state.clientList[index]));
+                      context.read<ProjectArchitectBloc>().add(
+                          SetSelectedClientEvent(
+                              selectedClient: state.clientList[index]));
                       // GoRouter.of(context).go(AppRoutes.clientProjects);
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const ClientProjectsView()));
+                              builder: (context) =>
+                                  const ClientProjectsView()));
                     },
                   ),
                 )

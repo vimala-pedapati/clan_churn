@@ -6,7 +6,7 @@ class NavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final h = MediaQuery.of(context).size.height;
+    // final h = MediaQuery.of(context).size.height;
     // final w = MediaQuery.of(context).size.width;
     return // profile and logo bar
         Stack(

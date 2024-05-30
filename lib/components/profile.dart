@@ -22,7 +22,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
 
   @override
   Widget build(BuildContext context) {
-    final h = MediaQuery.of(context).size.height;
+    // final h = MediaQuery.of(context).size.height;
     return BlocBuilder<UserBloc, UserState>(
       builder: (context, state) {
         return state.user == null
@@ -43,7 +43,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                   ClanChurnSpacing.w10,
                   AnimatedContainer(
                     duration: const Duration(milliseconds: 300),
-                    height: isExpanded ? 120:  60 ,
+                    height: isExpanded ? 120 : 60,
                     padding: const EdgeInsets.only(
                         left: 10, right: 10, top: 10, bottom: 10),
                     decoration: BoxDecoration(
@@ -51,7 +51,8 @@ class _ProfileWidgetState extends State<ProfileWidget>
                             .colorScheme
                             .primary
                             .withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(isExpanded? 30: 30)),
+                        borderRadius:
+                            BorderRadius.circular(isExpanded ? 30 : 30)),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -86,13 +87,19 @@ class _ProfileWidgetState extends State<ProfileWidget>
                                 builder: (context, state) {
                                   return Text(
                                     "${state.user!.firstName} ${state.user!.lastName}",
-                                    style: ClanChurnTypography.font15600,
+                                    style: ClanChurnTypography.font15600
+                                        .copyWith(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary),
                                   );
                                 },
                               ),
                               Text(
                                 "${state.user!.userType} - ${state.user!.clientDetails.name}",
-                                style: ClanChurnTypography.font10600,
+                                style: ClanChurnTypography.font10600.copyWith(
+                                    color:
+                                        Theme.of(context).colorScheme.primary),
                               )
                             ],
                           ),
@@ -103,8 +110,9 @@ class _ProfileWidgetState extends State<ProfileWidget>
                                 .colorScheme
                                 .primary
                                 .withOpacity(0.1),
-                            child: const Icon(
+                            child: Icon(
                               Icons.person,
+                              color: Theme.of(context).colorScheme.primary,
                             ),
                           )
                         ]),
@@ -128,9 +136,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                                           const Icon(Icons.logout_outlined,
                                               color: Colors.red),
                                           ClanChurnSpacing.w10,
-                                          state.isExpanded
-                                              ? Container()
-                                              : AnimatedContainer(
+                                           AnimatedContainer(
                                                   duration: const Duration(
                                                       seconds: 1),
                                                   child: Text(
