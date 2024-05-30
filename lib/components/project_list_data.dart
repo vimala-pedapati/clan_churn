@@ -3,6 +3,7 @@ import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.
 import 'package:clan_churn/components/input_fields.dart';
 import 'package:clan_churn/components/project_card.dart';
 import 'package:clan_churn/components/projects_view_component.dart';
+import 'package:clan_churn/utils/device_types.dart';
 import 'package:clan_churn/utils/spacing.dart';
 import 'package:clan_churn/utils/typography.dart';
 import 'package:flutter/material.dart';
@@ -102,7 +103,8 @@ class _ProjectsListDataState extends State<ProjectsListData> {
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: (getCount(context: context, isExpanded: state.isExpanded)),
+                        crossAxisCount: GetDeviceType.getCount(
+                            context: context, isExpanded: state.isExpanded),
                         childAspectRatio: 1,
                         crossAxisSpacing: 15,
                         mainAxisSpacing: 15),
@@ -118,28 +120,5 @@ class _ProjectsListDataState extends State<ProjectsListData> {
             ));
       },
     );
-  }
-}
-
-int getCount({required BuildContext context, required bool isExpanded}) {
-  double h = MediaQuery.of(context).size.height;
-  if (h >= 900) {
-    if (isExpanded) {
-      return 7;
-    } else {
-      return 6;
-    }
-  } else if (h >= 700) {
-     if (isExpanded) {
-      return 6;
-    } else {
-      return 5;
-    }
-  } else {
-     if (isExpanded) {
-      return 5;
-    } else {
-      return 4;
-    }
   }
 }

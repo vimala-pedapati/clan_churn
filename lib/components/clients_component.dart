@@ -3,6 +3,7 @@ import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.
 import 'package:clan_churn/components/clients_card.dart';
 import 'package:clan_churn/components/input_fields.dart';
 import 'package:clan_churn/components/project_list_data.dart';
+import 'package:clan_churn/utils/device_types.dart';
 import 'package:clan_churn/utils/spacing.dart';
 import 'package:clan_churn/utils/typography.dart';
 import 'package:flutter/material.dart';
@@ -50,7 +51,7 @@ class _ClientsComponentState extends State<ClientsComponent> {
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount:  (getCount(context: context, isExpanded: state.isExpanded)),
+                      crossAxisCount:  GetDeviceType.getCount(context: context, isExpanded: state.isExpanded),
                       childAspectRatio: 1,
                       crossAxisSpacing: 15,
                       mainAxisSpacing: 15),
