@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
  - Width * Height
  - 1024 * 768 MINIMUM DIMENSIONs
  - 1920 * 1080 MAXIMUM DIMENSIONS
+ - 1792 * 957
+ - 1366 * 641 
  */
 
 enum DeviceType { mobile, tablet, desktopSmall, deskTopMedium, desktopLarge }
