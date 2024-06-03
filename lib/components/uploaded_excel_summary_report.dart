@@ -286,7 +286,8 @@ class _UploadedExcelSummaryReportState
         sheets = data.keys.toList();
         if (sheets.isNotEmpty) {
           selectedSheet = sheets[0];
-          updatedSelectedSheetColumns( data: data, selectedSheetKey: selectedSheet!);
+          updatedSelectedSheetColumns(
+              data: data, selectedSheetKey: selectedSheet!);
         }
       });
     } else {
@@ -312,7 +313,9 @@ class _UploadedExcelSummaryReportState
     setState(() {
       selectedColumn = selectedCol;
       widgets = [];
-      ((json.decode(jsonObject![selectedSheet]))[selectedColumn] as Map<String, dynamic>).map(
+      ((json.decode(jsonObject![selectedSheet]))[selectedColumn]
+              as Map<String, dynamic>)
+          .map(
         (key, value) {
           setState(() {
             widgets.add(Row(
@@ -330,9 +333,12 @@ class _UploadedExcelSummaryReportState
     // final h = MediaQuery.of(context).size.height;
     // final w = MediaQuery.of(context).size.width;
     return jsonObject == null
-        ? Container()
+        ? const Center(
+          child: Text("Fetching summary report!........"),
+        )
         : SingleChildScrollView(
-          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Row(
                 children: [
                   IconButton(
@@ -379,18 +385,20 @@ class _UploadedExcelSummaryReportState
                                 ],
                               ),
                               items: sheets
-                                  .map((String item) => DropdownMenuItem<String>(
-                                        value: item,
-                                        child: Text(
-                                          item,
-                                          style: ClanChurnTypography.font18500
-                                              .copyWith(
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .background),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ))
+                                  .map(
+                                      (String item) => DropdownMenuItem<String>(
+                                            value: item,
+                                            child: Text(
+                                              item,
+                                              style: ClanChurnTypography
+                                                  .font18500
+                                                  .copyWith(
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .background),
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ))
                                   .toList(),
                               value: selectedSheet,
                               onChanged: (value) {
@@ -406,7 +414,8 @@ class _UploadedExcelSummaryReportState
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(item,
-                                              style: ClanChurnTypography.font18500
+                                              style: ClanChurnTypography
+                                                  .font18500
                                                   .copyWith(
                                                       color: Theme.of(context)
                                                           .colorScheme
@@ -471,9 +480,9 @@ class _UploadedExcelSummaryReportState
                         ),
                       ],
                     ),
-        
+
                     ClanChurnSpacing.w50,
-        
+
                     // Column DropDown
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -499,18 +508,20 @@ class _UploadedExcelSummaryReportState
                                 ],
                               ),
                               items: columns
-                                  .map((String item) => DropdownMenuItem<String>(
-                                        value: item,
-                                        child: Text(
-                                          item,
-                                          style: ClanChurnTypography.font18500
-                                              .copyWith(
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .background),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ))
+                                  .map(
+                                      (String item) => DropdownMenuItem<String>(
+                                            value: item,
+                                            child: Text(
+                                              item,
+                                              style: ClanChurnTypography
+                                                  .font18500
+                                                  .copyWith(
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .background),
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ))
                                   .toList(),
                               selectedItemBuilder: (BuildContext context) {
                                 return columns.map((String item) {
@@ -521,7 +532,8 @@ class _UploadedExcelSummaryReportState
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(item,
-                                              style: ClanChurnTypography.font18500
+                                              style: ClanChurnTypography
+                                                  .font18500
                                                   .copyWith(
                                                       color: Theme.of(context)
                                                           .colorScheme
@@ -611,8 +623,8 @@ class _UploadedExcelSummaryReportState
               //         : Container()
               //     : Container(),
               ClanChurnSpacing.h20,
-                Padding(
-                padding:   EdgeInsets.only(left: 0, right: 0),
+              Padding(
+                padding: EdgeInsets.only(left: 0, right: 0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -630,12 +642,12 @@ class _UploadedExcelSummaryReportState
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         SummaryCard(
-                          value: (json.decode(jsonObject![selectedSheet]))[selectedColumn]
-                                  ["count"]
+                          value: (json.decode(jsonObject![selectedSheet]))[
+                                  selectedColumn]["count"]
                               .toString(),
                           header: "Total Rows",
-                          isDisabled: (json.decode(jsonObject![selectedSheet]))[selectedColumn]
-                                      ["count"] ==
+                          isDisabled: (json.decode(jsonObject![selectedSheet]))[
+                                      selectedColumn]["count"] ==
                                   null
                               ? true
                               : false,
@@ -657,27 +669,29 @@ class _UploadedExcelSummaryReportState
                         ),
                       ],
                     ),
-                   
+
                     ClanChurnSpacing.h30,
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         SummaryCard(
-                          value: (json.decode(jsonObject![selectedSheet]))[selectedColumn]["max"]
+                          value: (json.decode(jsonObject![selectedSheet]))[
+                                  selectedColumn]["max"]
                               .toString(),
                           header: "Maximum Value",
-                          isDisabled: (json.decode(jsonObject![selectedSheet]))[selectedColumn]
-                                      ["max"] ==
+                          isDisabled: (json.decode(jsonObject![selectedSheet]))[
+                                      selectedColumn]["max"] ==
                                   null
                               ? true
                               : false,
                         ),
                         SummaryCard(
-                          value: (json.decode(jsonObject![selectedSheet]))[selectedColumn]["min"]
+                          value: (json.decode(jsonObject![selectedSheet]))[
+                                  selectedColumn]["min"]
                               .toString(),
                           header: "Minimum Value",
-                          isDisabled: (json.decode(jsonObject![selectedSheet]))[selectedColumn]
-                                      ["min"] ==
+                          isDisabled: (json.decode(jsonObject![selectedSheet]))[
+                                      selectedColumn]["min"] ==
                                   null
                               ? true
                               : false,
@@ -688,25 +702,28 @@ class _UploadedExcelSummaryReportState
                           isDisabled: true,
                         ),
                         SummaryCard(
-                          value: (json.decode(jsonObject![selectedSheet]))[selectedColumn]["50%"]
+                          value: (json.decode(jsonObject![selectedSheet]))[
+                                  selectedColumn]["50%"]
                               .toString(),
                           header: "Median Value",
-                          isDisabled: (json.decode(jsonObject![selectedSheet]))[selectedColumn]
-                                      ["50%"] ==
+                          isDisabled: (json.decode(jsonObject![selectedSheet]))[
+                                      selectedColumn]["50%"] ==
                                   null
                               ? true
                               : false,
                         ),
                       ],
                     ),
-                    
+
                     ClanChurnSpacing.h30,
                     SummaryCard(
-                      value: (json.decode(jsonObject![selectedSheet]))[selectedColumn]["mean"]
+                      value: (json.decode(
+                                  jsonObject![selectedSheet]))[selectedColumn]
+                              ["mean"]
                           .toString(),
                       header: "Average Value",
-                      isDisabled: (json.decode(jsonObject![selectedSheet]))[selectedColumn]
-                                  ["mean"] ==
+                      isDisabled: (json.decode(jsonObject![selectedSheet]))[
+                                  selectedColumn]["mean"] ==
                               null
                           ? true
                           : false,
@@ -745,7 +762,7 @@ class _UploadedExcelSummaryReportState
                 ),
               )
             ]),
-        );
+          );
   }
 }
 
