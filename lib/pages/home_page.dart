@@ -7,7 +7,7 @@ import 'package:clan_churn/components/clients_component.dart';
 import 'package:clan_churn/components/input_fields.dart';
 import 'package:clan_churn/components/nav_bar.dart';
 import 'package:clan_churn/components/side_bar.dart';
-import 'package:clan_churn/components/upload_summary_report.dart';
+import 'package:clan_churn/components/uploaded_excel_summary_report.dart';
 import 'package:clan_churn/components/wrap_profile.dart';
 import 'package:clan_churn/utils/spacing.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';

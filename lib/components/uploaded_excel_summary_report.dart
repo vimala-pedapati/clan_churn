@@ -3,15 +3,15 @@ import 'package:clan_churn/utils/typography.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 
-class UploadedSummaryReport extends StatefulWidget {
-  const UploadedSummaryReport({super.key, required this.onPressed});
+class UploadedExcelSummaryReport extends StatefulWidget {
+  const UploadedExcelSummaryReport({super.key, required this.onPressed});
   final Function() onPressed;
 
   @override
-  State<UploadedSummaryReport> createState() => _UploadedSummaryReportState();
+  State<UploadedExcelSummaryReport> createState() => _UploadedExcelSummaryReportState();
 }
 
-class _UploadedSummaryReportState extends State<UploadedSummaryReport> {
+class _UploadedExcelSummaryReportState extends State<UploadedExcelSummaryReport> {
   Map<String, dynamic> jsonObject = {
     "Customer Basic Data": {
       "Employee ID": {

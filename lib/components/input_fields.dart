@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:clan_churn/api_repos/models/project_model.dart';
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/components/upload_new_data.dart';
-import 'package:clan_churn/components/upload_summary_report.dart';
+import 'package:clan_churn/components/uploaded_excel_summary_report.dart';
 import 'package:clan_churn/pages/new_project_components.dart';
 import 'package:clan_churn/pages/project_input_fields_sheet.dart';
 import 'package:clan_churn/utils/input_field_strings.dart';
@@ -1305,7 +1305,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
                         goToPreviousPage();
                       },
                     )
-                  : Expanded(child: UploadedSummaryReport(
+                  : Expanded(child: UploadedExcelSummaryReport(
                       onPressed: () {
                         goToPreviousPage();
                       },
