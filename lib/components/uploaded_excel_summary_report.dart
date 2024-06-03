@@ -8,8 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class UploadedExcelSummaryReport extends StatefulWidget {
-  const UploadedExcelSummaryReport({super.key, required this.onPressed});
+  const UploadedExcelSummaryReport({super.key, required this.onPressed, required this.uploadNewSheetRequested});
   final Function() onPressed;
+  final VoidCallback uploadNewSheetRequested;
 
   @override
   State<UploadedExcelSummaryReport> createState() =>
@@ -334,8 +335,8 @@ class _UploadedExcelSummaryReportState
     // final w = MediaQuery.of(context).size.width;
     return jsonObject == null
         ? const Center(
-          child: Text("Fetching summary report!........"),
-        )
+            child: Text("Fetching summary report!........"),
+          )
         : SingleChildScrollView(
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -624,7 +625,7 @@ class _UploadedExcelSummaryReportState
               //     : Container(),
               ClanChurnSpacing.h20,
               Padding(
-                padding: EdgeInsets.only(left: 0, right: 0),
+                padding: const EdgeInsets.only(left: 0, right: 0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -729,24 +730,28 @@ class _UploadedExcelSummaryReportState
                           : false,
                     ),
                     ClanChurnSpacing.h50,
-                    const Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         OutlinedButtonTemplate(
                           icon: Icons.remove_red_eye_outlined,
                           title: "Excel Summary",
+                          onPressed: () {},
                         ),
                         OutlinedButtonTemplate(
                           icon: Icons.list_alt_outlined,
                           title: "Group Categorization",
+                          onPressed: () {},
                         ),
                         OutlinedButtonTemplate(
                           icon: Icons.sim_card_download_outlined,
                           title: "View Error Report",
+                          onPressed: () {},
                         ),
                         OutlinedButtonTemplate(
                           icon: Icons.upload_file_outlined,
                           title: "Upload New Sheet",
+                          onPressed: widget.uploadNewSheetRequested,
                         ),
                       ],
                     ),
@@ -809,9 +814,13 @@ class _SummaryCardState extends State<SummaryCard> {
 
 class OutlinedButtonTemplate extends StatefulWidget {
   const OutlinedButtonTemplate(
-      {super.key, required this.icon, required this.title});
+      {super.key,
+      required this.icon,
+      required this.title,
+      required this.onPressed});
   final IconData icon;
   final String title;
+  final VoidCallback onPressed;
 
   @override
   State<OutlinedButtonTemplate> createState() => _OutlinedButtonTemplateState();
@@ -863,9 +872,7 @@ class _OutlinedButtonTemplateState extends State<OutlinedButtonTemplate> {
               ),
             ],
           ),
-          onPressed: () {
-            // Define the onPressed action here
-          },
+          onPressed: widget.onPressed,
         ),
       ),
     );

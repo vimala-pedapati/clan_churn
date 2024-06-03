@@ -23,6 +23,7 @@ class ProjectInitialization extends StatefulWidget {
 class _ProjectInitializationState extends State<ProjectInitialization> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
+
   void _goToNextPage() {
     if (_currentPage < 2) {
       _currentPage++;
@@ -219,6 +220,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
   List<CustomTextFormField> departmentFields = [];
   List<CustomTextFormField> designationFields = [];
   final PageController _pageController = PageController();
+  bool uploadNewSheetRequested = false;
   int _currentPage = 0;
   void goToNextPage() {
     if (_currentPage < 3) {
@@ -1299,7 +1301,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
                   ],
                 ),
               ),
-              state.createdProject!.latestInput == null
+              (state.createdProject!.latestInput == null || uploadNewSheetRequested)
                   ? UploadNewData(
                       onPressed: () {
                         goToPreviousPage();
@@ -1308,6 +1310,11 @@ class _GetInputFieldsState extends State<GetInputFields> {
                   : UploadedExcelSummaryReport(
                       onPressed: () {
                         goToPreviousPage();
+                      },
+                      uploadNewSheetRequested: () {
+                        setState(() {
+                          uploadNewSheetRequested = true;
+                        });
                       },
                     )
             ],

@@ -20,7 +20,6 @@ class UploadNewData extends StatefulWidget {
 }
 
 class _UploadNewDataState extends State<UploadNewData> {
- 
   @override
   void initState() {
     super.initState();
@@ -52,7 +51,7 @@ class _UploadNewDataState extends State<UploadNewData> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SelectableText("${state.createdProject!.latestInput}"),
+                  // SelectableText("${state.createdProject!.latestInput}"),
                   InkWell(
                       onTap: () async {
                         if (kIsWeb) {
