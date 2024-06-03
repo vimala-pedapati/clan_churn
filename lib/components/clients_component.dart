@@ -1,8 +1,6 @@
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 
 import 'package:clan_churn/components/clients_card.dart';
-import 'package:clan_churn/components/input_fields.dart';
-import 'package:clan_churn/components/project_list_data.dart';
 import 'package:clan_churn/utils/device_types.dart';
 import 'package:clan_churn/utils/spacing.dart';
 import 'package:clan_churn/utils/typography.dart';
@@ -20,7 +18,7 @@ class ClientsComponent extends StatefulWidget {
 class _ClientsComponentState extends State<ClientsComponent> {
   @override
   Widget build(BuildContext context) {
-    final h = MediaQuery.of(context).size.height;
+    // final h = MediaQuery.of(context).size.height;
     final w = MediaQuery.of(context).size.width;
 
     return BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(

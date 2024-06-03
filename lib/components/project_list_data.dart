@@ -1,6 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
-import 'package:clan_churn/components/input_fields.dart';
 import 'package:clan_churn/components/project_card.dart';
 import 'package:clan_churn/components/projects_view_component.dart';
 import 'package:clan_churn/utils/device_types.dart';
@@ -30,7 +29,7 @@ class _ProjectsListDataState extends State<ProjectsListData> {
 
   @override
   Widget build(BuildContext context) {
-    final h = MediaQuery.of(context).size.height;
+    // final h = MediaQuery.of(context).size.height;
     final w = MediaQuery.of(context).size.width;
     return BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
       builder: (context, state) {

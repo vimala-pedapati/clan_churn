@@ -1,16 +1,10 @@
-import 'dart:collection';
-import 'dart:convert';
 
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
 import 'package:clan_churn/components/clients_component.dart';
-import 'package:clan_churn/components/input_fields.dart';
 import 'package:clan_churn/components/nav_bar.dart';
 import 'package:clan_churn/components/side_bar.dart';
-import 'package:clan_churn/components/uploaded_excel_summary_report.dart';
 import 'package:clan_churn/components/wrap_profile.dart';
-import 'package:clan_churn/utils/spacing.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -33,7 +27,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final h = MediaQuery.of(context).size.height;
-    final w = MediaQuery.of(context).size.width;
+    // final w = MediaQuery.of(context).size.width;
 
     return Scaffold(
       // appBar: const ClanChurnAppBar(),

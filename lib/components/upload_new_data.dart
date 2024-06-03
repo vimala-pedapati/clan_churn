@@ -50,7 +50,9 @@ class _UploadNewDataState extends State<UploadNewData> {
                   .latestInput!,
               onErrorCallback: (errorMessage, errorCode) {},
               onSuccessCallback: (message) {
-                print("Get Input Excel Summary: ${json.decode(message!.body)}");
+                if (kDebugMode) {
+                  print("Get Input Excel Summary: ${json.decode(message!.body)}");
+                }
                 setState(() {
                   
                 });

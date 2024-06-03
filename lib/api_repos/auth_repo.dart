@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:clan_churn/utils/api_endpoins.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -38,7 +39,9 @@ class AuthRepository {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String accessToken = prefs.getString('accessToken') ?? '';
     String refreshToken = prefs.getString('refreshToken') ?? '';
-    print(accessToken);
+    if (kDebugMode) {
+      print(accessToken);
+    }
     return AuthCredentials(
         accessToken: accessToken, refreshToken: refreshToken);
   }

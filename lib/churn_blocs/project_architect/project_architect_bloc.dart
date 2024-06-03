@@ -282,7 +282,7 @@ class ProjectArchitectBloc
 
   _onGetInputExcelSummaryEvent(
       GetInputExcelSummaryEvent event, Emitter<ProjectArchitectState> emit) {
-    final result = apiRepository.getInputExcelSummaryReport(
+    apiRepository.getInputExcelSummaryReport(
         inputId: event.inputId,
         onErrorCallback: event.onErrorCallback,
         onSuccessCallback: event.onSuccessCallback);
