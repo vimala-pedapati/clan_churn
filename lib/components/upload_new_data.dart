@@ -1,4 +1,4 @@
-import 'dart:convert';
+ 
 
 import 'package:clan_churn/api_repos/api_repo.dart';
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
@@ -20,46 +20,9 @@ class UploadNewData extends StatefulWidget {
 }
 
 class _UploadNewDataState extends State<UploadNewData> {
-  List<Map<String, dynamic>> a = [];
-
-  // Recursive function to convert nested JSON objects to lists of maps
-  List<Map<String, dynamic>> jsonToList(Map<String, dynamic> json) {
-    return json.entries.map((entry) {
-      var value = entry.value;
-      if (value is Map<String, dynamic>) {
-        value = jsonToList(value); // Recursively convert nested objects
-      }
-      return {'name': entry.key, 'value': value};
-    }).toList();
-  }
-
+ 
   @override
   void initState() {
-    if (context.read<ProjectArchitectBloc>().state.createdProject != null) {
-      if (context
-              .read<ProjectArchitectBloc>()
-              .state
-              .createdProject!
-              .latestInput !=
-          null) {
-        context.read<ProjectArchitectBloc>().add(GetInputExcelSummaryEvent(
-              inputId: context
-                  .read<ProjectArchitectBloc>()
-                  .state
-                  .createdProject!
-                  .latestInput!,
-              onErrorCallback: (errorMessage, errorCode) {},
-              onSuccessCallback: (message) {
-                if (kDebugMode) {
-                  print("Get Input Excel Summary: ${json.decode(message!.body)}");
-                }
-                setState(() {
-                  
-                });
-              },
-            ));
-      }
-    }
     super.initState();
   }
 

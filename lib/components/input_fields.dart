@@ -1305,11 +1305,11 @@ class _GetInputFieldsState extends State<GetInputFields> {
                         goToPreviousPage();
                       },
                     )
-                  : Expanded(child: UploadedExcelSummaryReport(
+                  : UploadedExcelSummaryReport(
                       onPressed: () {
                         goToPreviousPage();
                       },
-                    ))
+                    )
             ],
           ),
         );
