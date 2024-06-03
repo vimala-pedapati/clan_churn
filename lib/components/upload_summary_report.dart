@@ -301,14 +301,13 @@ class _UploadedSummaryReportState extends State<UploadedSummaryReport> {
       duration: const Duration(seconds: 1),
       // height: h * 0.82,
       // width: widget.width,
-      height: MediaQuery.of(context).size.height * 0.83,
+      height: MediaQuery.of(context).size.height * 0.85,
       width: MediaQuery.of(context).size.width,
-      margin: EdgeInsets.only(
-          left: w * 0.025, right: w * 0.025, top: 20, bottom: 20),
-      padding: const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 10),
-      decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.background,
-          borderRadius: BorderRadius.circular(30)),
+      // margin: EdgeInsets.only( left: w * 0.025, right: w * 0.025, top: 20, bottom: 20),
+      // padding: const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 10),
+      // decoration: BoxDecoration(
+      //     color: Theme.of(context).colorScheme.background,
+      //     borderRadius: BorderRadius.circular(30)),
 
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(
@@ -583,8 +582,9 @@ class _UploadedSummaryReportState extends State<UploadedSummaryReport> {
         //           )
         //         : Container()
         //     : Container(),
+        ClanChurnSpacing.h20,
         Padding(
-          padding: const EdgeInsets.only(left: 50, right: 50),
+          padding: const EdgeInsets.only(left: 0, right: 0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

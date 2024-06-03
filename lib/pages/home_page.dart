@@ -48,17 +48,17 @@ class _HomePageState extends State<HomePage> {
                 const NavBar(),
                 SizedBox(height: h * 0.01),
 
-                  Row(
+                 const  Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SideBar(
                       selectedRoute: SelectedRoute.home,
                     ),
-                    // Expanded(
-                    //   child: ClientsComponent(),
-                    // )
-                    Expanded(child: UploadedSummaryReport(onPressed: () {},))
+                    Expanded(
+                      child: ClientsComponent(),
+                    )
+                   
                   ],
                 )
               ]),

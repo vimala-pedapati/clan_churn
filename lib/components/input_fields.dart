@@ -1,8 +1,9 @@
 import 'dart:developer';
 
 import 'package:clan_churn/api_repos/models/project_model.dart';
-import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart'; 
+import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/components/upload_new_data.dart';
+import 'package:clan_churn/components/upload_summary_report.dart';
 import 'package:clan_churn/pages/new_project_components.dart';
 import 'package:clan_churn/pages/project_input_fields_sheet.dart';
 import 'package:clan_churn/utils/input_field_strings.dart';
@@ -253,8 +254,11 @@ class _GetInputFieldsState extends State<GetInputFields> {
     if (p != null) {
       setState(() {
         projectNameController.text = p.name ?? '';
-        ProjectDetails? pd =
-            context.read<ProjectArchitectBloc>().state.createdProject!.projectDetails;
+        ProjectDetails? pd = context
+            .read<ProjectArchitectBloc>()
+            .state
+            .createdProject!
+            .projectDetails;
         if (pd != null) {
           projectStartDateController.text = pd.projectStartDate ?? "";
           studyPeriodBeginningDateController.text =
@@ -526,7 +530,8 @@ class _GetInputFieldsState extends State<GetInputFields> {
     return BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
       builder: (context, state) {
         return SizedBox(
-          height: MediaQuery.of(context).size.height * 0.75,
+          // color: Colors.amber,
+          height: MediaQuery.of(context).size.height * 0.79,
           child: PageView(
             controller: _pageController,
             onPageChanged: (int page) {
@@ -582,14 +587,15 @@ class _GetInputFieldsState extends State<GetInputFields> {
                             "download input sheet",
                           ),
                           onPressed: () {
-                             launchURL(state.createdProject!.inputSheet ?? "");
+                            launchURL(state.createdProject!.inputSheet ?? "");
                           },
                         )
                       ],
                     ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.65,
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.72,
                       width: MediaQuery.of(context).size.width,
+                      padding: const EdgeInsets.only(top: 10),
                       child: SingleChildScrollView(
                         child: Form(
                             key: _formKey,
@@ -649,11 +655,13 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                             TextInputFormatterType.string,
                                       ),
                                       CustomTextFormField(
-                                        label: InputFieldLabels.projectStartDate,
+                                        label:
+                                            InputFieldLabels.projectStartDate,
                                         controller: projectStartDateController,
                                         hintText: 'Select Date',
                                         suffixIcon: IconButton(
-                                          icon: const Icon(Icons.calendar_month),
+                                          icon:
+                                              const Icon(Icons.calendar_month),
                                           onPressed: () async {
                                             setState(() async {
                                               projectStartDateController.text =
@@ -683,11 +691,13 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                         textInputType: TextInputType.name,
                                         hintText: 'Select Date',
                                         suffixIcon: IconButton(
-                                          icon: const Icon(Icons.calendar_month),
+                                          icon:
+                                              const Icon(Icons.calendar_month),
                                           onPressed: () async {
                                             setState(() async {
                                               studyPeriodBeginningDateController
-                                                  .text = await selectDate(context);
+                                                      .text =
+                                                  await selectDate(context);
                                             });
                                           },
                                         ),
@@ -699,17 +709,21 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                             TextInputFormatterType.string,
                                       ),
                                       CustomTextFormField(
-                                        label: InputFieldLabels.studyPeriodEndDate,
-                                        controller: studyPeriodEndDateController,
+                                        label:
+                                            InputFieldLabels.studyPeriodEndDate,
+                                        controller:
+                                            studyPeriodEndDateController,
                                         textInputType: TextInputType.name,
                                         isObscureText: false,
                                         isEnabled: true,
                                         hintText: 'Select Date',
                                         suffixIcon: IconButton(
-                                          icon: const Icon(Icons.calendar_month),
+                                          icon:
+                                              const Icon(Icons.calendar_month),
                                           onPressed: () async {
                                             setState(() async {
-                                              studyPeriodEndDateController.text =
+                                              studyPeriodEndDateController
+                                                      .text =
                                                   await selectDate(context);
                                             });
                                           },
@@ -733,11 +747,13 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                         textInputType: TextInputType.name,
                                         hintText: 'Select Date',
                                         suffixIcon: IconButton(
-                                          icon: const Icon(Icons.calendar_month),
+                                          icon:
+                                              const Icon(Icons.calendar_month),
                                           onPressed: () async {
                                             setState(() async {
                                               earliestDateForDateOfJoiningReleventForTheStudyController
-                                                  .text = await selectDate(context);
+                                                      .text =
+                                                  await selectDate(context);
                                             });
                                           },
                                         ),
@@ -755,11 +771,13 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                             endDateForDateOfJoiningReleventForTheStudyController,
                                         hintText: 'Select Date',
                                         suffixIcon: IconButton(
-                                          icon: const Icon(Icons.calendar_month),
+                                          icon:
+                                              const Icon(Icons.calendar_month),
                                           onPressed: () async {
                                             setState(() async {
                                               endDateForDateOfJoiningReleventForTheStudyController
-                                                  .text = await selectDate(context);
+                                                      .text =
+                                                  await selectDate(context);
                                             });
                                           },
                                         ),
@@ -1118,7 +1136,8 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                   Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Column(
                                         crossAxisAlignment:
@@ -1130,21 +1149,23 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                             child: const Text("add department"),
                                             onPressed: () {
                                               setState(() {
-                                                departments
-                                                    .add(TextEditingController());
+                                                departments.add(
+                                                    TextEditingController());
                                                 departmentFields
                                                     .add(CustomTextFormField(
                                                   label:
                                                       "department${departmentFields.length + 1}",
                                                   controller: departments[
                                                       departments.length - 1],
-                                                  textInputType: TextInputType.name,
+                                                  textInputType:
+                                                      TextInputType.name,
                                                   isObscureText: false,
                                                   isEnabled: true,
                                                   textInputAction:
                                                       TextInputAction.next,
                                                   textInputFormatterType:
-                                                      TextInputFormatterType.string,
+                                                      TextInputFormatterType
+                                                          .string,
                                                 ));
                                               });
                                             },
@@ -1158,24 +1179,27 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                         children: [
                                           ...designationFields,
                                           TextButton(
-                                            child: const Text("add designation"),
+                                            child:
+                                                const Text("add designation"),
                                             onPressed: () {
                                               setState(() {
-                                                designations
-                                                    .add(TextEditingController());
+                                                designations.add(
+                                                    TextEditingController());
                                                 designationFields
                                                     .add(CustomTextFormField(
                                                   label:
                                                       "designation ${designationFields.length + 1}",
                                                   controller: designations[
                                                       designations.length - 1],
-                                                  textInputType: TextInputType.name,
+                                                  textInputType:
+                                                      TextInputType.name,
                                                   isObscureText: false,
                                                   isEnabled: true,
                                                   textInputAction:
                                                       TextInputAction.next,
                                                   textInputFormatterType:
-                                                      TextInputFormatterType.string,
+                                                      TextInputFormatterType
+                                                          .string,
                                                 ));
                                               });
                                             },
@@ -1203,12 +1227,14 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                               departments: depart,
                                               designations: design,
                                               projectStartDate:
-                                                  projectStartDateController.text,
+                                                  projectStartDateController
+                                                      .text,
                                               studyPeriodBeginingDate:
                                                   studyPeriodBeginningDateController
                                                       .text,
                                               studyPeriodEndDate:
-                                                  studyPeriodEndDateController.text,
+                                                  studyPeriodEndDateController
+                                                      .text,
                                               earliestDateForDateOfJoiningReleventForTheStudy:
                                                   earliestDateForDateOfJoiningReleventForTheStudyController
                                                       .text,
@@ -1246,17 +1272,19 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                               projectMaximumMonthlyIncentive: int.parse(projectMaximumMonthlyIncentiveController.text.isEmpty ? '0' : projectMaximumMonthlyIncentiveController.text),
                                               projectTopOutlierRankForMaximumMonthlyIncentive: int.parse(projectTopOutlierRankForMaximumMonthlyIncentiveController.text.isEmpty ? '0' : projectTopOutlierRankForMaximumMonthlyIncentiveController.text),
                                               projectBottomOutlierRankForMaximumMonthlyIncentive: int.parse(projectBottomOutlierRankForMaximumMonthlyIncentiveController.text.isEmpty ? '0' : projectBottomOutlierRankForMaximumMonthlyIncentiveController.text));
-                                          context.read<ProjectArchitectBloc>().add(
-                                              UpdateProjectDetailsEvent(
+                                          context
+                                              .read<ProjectArchitectBloc>()
+                                              .add(UpdateProjectDetailsEvent(
                                                   projectId: context
-                                                      .read<ProjectArchitectBloc>()
+                                                      .read<
+                                                          ProjectArchitectBloc>()
                                                       .state
                                                       .createdProject!
                                                       .id,
                                                   projectDetails: a));
                                           log("$a");
                                           log("${a.toJson()}");
-    
+
                                           goToNextPage();
                                         },
                                         child: const Text("Next"),
@@ -1271,11 +1299,17 @@ class _GetInputFieldsState extends State<GetInputFields> {
                   ],
                 ),
               ),
-              UploadNewData(
-                onPressed: () {
-                  goToPreviousPage();
-                },
-              )
+              state.createdProject!.latestInput == null
+                  ? UploadNewData(
+                      onPressed: () {
+                        goToPreviousPage();
+                      },
+                    )
+                  : Expanded(child: UploadedSummaryReport(
+                      onPressed: () {
+                        goToPreviousPage();
+                      },
+                    ))
             ],
           ),
         );
