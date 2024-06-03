@@ -1,9 +1,16 @@
+import 'dart:collection';
+import 'dart:convert';
+
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
 import 'package:clan_churn/components/clients_component.dart';
+import 'package:clan_churn/components/input_fields.dart';
 import 'package:clan_churn/components/nav_bar.dart';
 import 'package:clan_churn/components/side_bar.dart';
+import 'package:clan_churn/components/upload_summary_report.dart';
 import 'package:clan_churn/components/wrap_profile.dart';
+import 'package:clan_churn/utils/spacing.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -19,9 +26,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     context.read<UserBloc>().add(GetUserDetailsEvent());
     context.read<ProjectArchitectBloc>().add(GetClientsEvent());
-    context
-        .read<ProjectArchitectBloc>()
-        .add(const SideBarExpandedEvent(isExpanded: false));
+    context .read<ProjectArchitectBloc>().add(const SideBarExpandedEvent(isExpanded: false));
     super.initState();
   }
 
@@ -43,16 +48,17 @@ class _HomePageState extends State<HomePage> {
                 const NavBar(),
                 SizedBox(height: h * 0.01),
 
-                const Row(
+                  Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SideBar(
                       selectedRoute: SelectedRoute.home,
                     ),
-                    Expanded(
-                      child: ClientsComponent(),
-                    )
+                    // Expanded(
+                    //   child: ClientsComponent(),
+                    // )
+                    Expanded(child: UploadedSummaryReport(onPressed: () {},))
                   ],
                 )
               ]),

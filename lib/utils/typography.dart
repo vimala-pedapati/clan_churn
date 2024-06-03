@@ -85,6 +85,10 @@ class ClanChurnTypography {
     fontSize: 22,
     fontWeight: FontWeight.w600,
   );
+  static TextStyle font22700 = const TextStyle(
+    fontSize: 22,
+    fontWeight: FontWeight.w700,
+  );
   static TextStyle font24600 = const TextStyle(
     fontSize: 24,
     fontWeight: FontWeight.w600,
