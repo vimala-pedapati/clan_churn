@@ -4,6 +4,7 @@ import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.
 import 'package:clan_churn/utils/spacing.dart';
 import 'package:clan_churn/utils/typography.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -266,8 +267,10 @@ class _UploadedExcelSummaryReportState
               onErrorCallback: (errorMessage, errorCode) {},
               onSuccessCallback: (message) {
                 if (message != null) {
-                  print(
+                  if (kDebugMode) {
+                    print(
                       "Get Input Excel Summary Report: ${json.decode(message.body)}");
+                  }
                   setState(() {
                     jsonObject = json.decode(message.body);
                   });
@@ -860,6 +863,7 @@ class _OutlinedButtonTemplateState extends State<OutlinedButtonTemplate> {
                   BorderRadius.circular(8), // Adjust the border radius
             ),
           ),
+          onPressed: widget.onPressed,
           child: Row(
             children: [
               Icon(
@@ -872,7 +876,6 @@ class _OutlinedButtonTemplateState extends State<OutlinedButtonTemplate> {
               ),
             ],
           ),
-          onPressed: widget.onPressed,
         ),
       ),
     );
