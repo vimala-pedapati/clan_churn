@@ -1,7 +1,7 @@
 part of 'project_architect_bloc.dart';
 
- class ProjectArchitectState extends Equatable {
-   const ProjectArchitectState.initial()
+class ProjectArchitectState extends Equatable {
+  const ProjectArchitectState.initial()
       : this(
             clientList: const [],
             isExpanded: false,
@@ -12,7 +12,8 @@ part of 'project_architect_bloc.dart';
             projectCreating: false,
             customerColumnNames: const [],
             uploadingFile: false,
-            errorReport: null);
+            errorReport: null,
+            uploadNewSheetRequested: false);
 
   final List<ClientDetails> clientList;
   final bool isExpanded;
@@ -24,6 +25,7 @@ part of 'project_architect_bloc.dart';
   final List<TextEditingController> customerColumnNames;
   final bool uploadingFile;
   final String? errorReport;
+  final bool uploadNewSheetRequested;
   const ProjectArchitectState(
       {required this.clientList,
       required this.isExpanded,
@@ -34,7 +36,8 @@ part of 'project_architect_bloc.dart';
       required this.projectCreating,
       required this.customerColumnNames,
       required this.uploadingFile,
-      required this.errorReport});
+      required this.errorReport,
+      required this.uploadNewSheetRequested});
 
   ProjectArchitectState copyWith(
       {List<ClientDetails>? clientList,
@@ -46,7 +49,8 @@ part of 'project_architect_bloc.dart';
       bool? projectCreating,
       List<TextEditingController>? customerColumnNames,
       bool? uploadingFile,
-      String? errorReport}) {
+      String? errorReport,
+      bool? uploadNewSheetRequested}) {
     return ProjectArchitectState(
         clientList: clientList ?? this.clientList,
         isExpanded: isExpanded ?? this.isExpanded,
@@ -57,7 +61,8 @@ part of 'project_architect_bloc.dart';
         projectCreating: projectCreating ?? this.projectCreating,
         customerColumnNames: customerColumnNames ?? this.customerColumnNames,
         uploadingFile: uploadingFile ?? this.uploadingFile,
-        errorReport: errorReport ?? this.errorReport);
+        errorReport: errorReport ?? this.errorReport,
+        uploadNewSheetRequested : uploadNewSheetRequested?? this.uploadNewSheetRequested);
   }
 
   @override
@@ -71,8 +76,7 @@ part of 'project_architect_bloc.dart';
         projectCreating,
         customerColumnNames,
         uploadingFile,
-        errorReport
+        errorReport,
+        uploadNewSheetRequested
       ];
 }
-
- 

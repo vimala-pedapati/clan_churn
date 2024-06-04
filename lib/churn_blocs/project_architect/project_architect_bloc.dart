@@ -32,6 +32,8 @@ class ProjectArchitectBloc
     on<UploadFileEvent>(_onUploadFileEvent);
     on<UpdateProjectNameEvent>(_onUpdateProjectNameEvent);
     on<GetInputExcelSummaryEvent>(_onGetInputExcelSummaryEvent);
+    on<DownloadErrorReportEvent>(_onDownloadErrorReportEvent);
+    on<UploadNewSheetRequestedEvent>(_onUploadNewSheetRequestedEvent);
   }
 
   _onClientsEvent(
@@ -235,35 +237,31 @@ class ProjectArchitectBloc
         onErrorCallback: event.onErrorCallback);
     log("upload file result: $result");
     if (result != null) {
-      emit(state.copyWith(uploadingFile: false, createdProject: result));
+      emit(state.copyWith(uploadingFile: false, createdProject: result, uploadNewSheetRequested: false));
       // ignore: use_build_context_synchronously
       Navigator.pop(event.context);
-      if (result.latestInput != null) {
-        final res = await apiRepository.getErrorReportForInput(
-          inputId: result.latestInput!,
-          onErrorCallback: event.onErrorCallback,
-          onSuccessCallback: (message) {
-            ApiRepository().handleSuccessMessage(
-                "Ready to download error report!.......", event.context);
-          },
-        );
-        if (res != null) {
-          emit(state.copyWith(errorReport: res.replaceAll('"', "")));
-          return;
-        } else {
-          emit(state.copyWith(errorReport: null));
-        }
-      } else {
-        emit(state.copyWith(uploadingFile: false, createdProject: result));
-      }
     } else {
       log("upload file result else case: $result");
-
       // ignore: use_build_context_synchronously
       Navigator.pop(event.context);
       // ignore: use_build_context_synchronously
       GetDialog.failedErrorReport(event.context);
-      emit(state.copyWith(uploadingFile: false, errorReport: null));
+      emit(state.copyWith(uploadingFile: false, errorReport: null, uploadNewSheetRequested: false));
+    }
+  }
+
+  _onDownloadErrorReportEvent(DownloadErrorReportEvent event,
+      Emitter<ProjectArchitectState> emit) async {
+    final res = await apiRepository.getErrorReportForInput(
+      inputId: event.inputId,
+      onErrorCallback: event.onErrorCallback,
+      onSuccessCallback: event.onSuccessCallback,
+    );
+    if (res != null) {
+      emit(state.copyWith(errorReport: res.replaceAll('"', "")));
+      return;
+    } else {
+      emit(state.copyWith(errorReport: null));
     }
   }
 
@@ -286,5 +284,10 @@ class ProjectArchitectBloc
         inputId: event.inputId,
         onErrorCallback: event.onErrorCallback,
         onSuccessCallback: event.onSuccessCallback);
+  }
+
+  _onUploadNewSheetRequestedEvent(
+      UploadNewSheetRequestedEvent event, Emitter<ProjectArchitectState> emit) {
+    emit(state.copyWith(uploadNewSheetRequested: event.uploadNewSheetRequested));
   }
 }

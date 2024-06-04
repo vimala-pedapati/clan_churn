@@ -220,7 +220,6 @@ class _GetInputFieldsState extends State<GetInputFields> {
   List<CustomTextFormField> departmentFields = [];
   List<CustomTextFormField> designationFields = [];
   final PageController _pageController = PageController();
-  bool uploadNewSheetRequested = false;
   int _currentPage = 0;
   void goToNextPage() {
     if (_currentPage < 3) {
@@ -243,6 +242,8 @@ class _GetInputFieldsState extends State<GetInputFields> {
       );
     }
   }
+
+  
 
   @override
   void initState() {
@@ -1301,7 +1302,8 @@ class _GetInputFieldsState extends State<GetInputFields> {
                   ],
                 ),
               ),
-              (state.createdProject!.latestInput == null || uploadNewSheetRequested)
+              (state.createdProject!.latestInput == null ||
+                      state.uploadNewSheetRequested)
                   ? UploadNewData(
                       onPressed: () {
                         goToPreviousPage();
@@ -1312,9 +1314,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
                         goToPreviousPage();
                       },
                       uploadNewSheetRequested: () {
-                        setState(() {
-                          uploadNewSheetRequested = true;
-                        });
+                        context.read<ProjectArchitectBloc>().add(const UploadNewSheetRequestedEvent(uploadNewSheetRequested: true));
                       },
                     )
             ],

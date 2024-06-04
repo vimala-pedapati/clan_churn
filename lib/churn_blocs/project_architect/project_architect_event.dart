@@ -104,5 +104,23 @@ class GetInputExcelSummaryEvent extends ProjectArchitectEvent {
   final String inputId;
   final OnErrorCallback onErrorCallback;
   final OnSuccessCallback onSuccessCallback;
-  const GetInputExcelSummaryEvent({required this.inputId, required this.onErrorCallback, required this.onSuccessCallback});
+  const GetInputExcelSummaryEvent(
+      {required this.inputId,
+      required this.onErrorCallback,
+      required this.onSuccessCallback});
+}
+
+class DownloadErrorReportEvent extends ProjectArchitectEvent {
+  final String inputId;
+  final OnErrorCallback onErrorCallback;
+  final OnSuccessCallback onSuccessCallback;
+  const DownloadErrorReportEvent(
+      {required this.inputId,
+      required this.onErrorCallback,
+      required this.onSuccessCallback});
+}
+
+class UploadNewSheetRequestedEvent extends ProjectArchitectEvent {
+  final bool uploadNewSheetRequested;
+  const UploadNewSheetRequestedEvent({required  this.uploadNewSheetRequested});
 }
