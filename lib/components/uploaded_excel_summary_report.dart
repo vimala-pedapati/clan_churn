@@ -7,9 +7,13 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dialogs/flutter_dialogs.dart';
 
 class UploadedExcelSummaryReport extends StatefulWidget {
-  const UploadedExcelSummaryReport({super.key, required this.onPressed, required this.uploadNewSheetRequested});
+  const UploadedExcelSummaryReport(
+      {super.key,
+      required this.onPressed,
+      required this.uploadNewSheetRequested});
   final Function() onPressed;
   final VoidCallback uploadNewSheetRequested;
 
@@ -269,7 +273,7 @@ class _UploadedExcelSummaryReportState
                 if (message != null) {
                   if (kDebugMode) {
                     print(
-                      "Get Input Excel Summary Report: ${json.decode(message.body)}");
+                        "Get Input Excel Summary Report: ${json.decode(message.body)}");
                   }
                   setState(() {
                     jsonObject = json.decode(message.body);
@@ -733,31 +737,35 @@ class _UploadedExcelSummaryReportState
                           : false,
                     ),
                     ClanChurnSpacing.h50,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        OutlinedButtonTemplate(
-                          icon: Icons.remove_red_eye_outlined,
-                          title: "Excel Summary",
-                          onPressed: () {},
-                        ),
-                        OutlinedButtonTemplate(
-                          icon: Icons.list_alt_outlined,
-                          title: "Group Categorization",
-                          onPressed: () {},
-                        ),
-                        OutlinedButtonTemplate(
-                          icon: Icons.sim_card_download_outlined,
-                          title: "View Error Report",
-                          onPressed: () {},
-                        ),
-                        OutlinedButtonTemplate(
-                          icon: Icons.upload_file_outlined,
-                          title: "Upload New Sheet",
-                          onPressed: widget.uploadNewSheetRequested,
-                        ),
-                      ],
-                    ),
+                    Builder(builder: (ctx) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          OutlinedButtonTemplate(
+                            icon: Icons.remove_red_eye_outlined,
+                            title: "Excel Summary",
+                            onPressed: () {
+                              showPopup(context, jsonObject!, selectedSheet!);
+                            },
+                          ),
+                          OutlinedButtonTemplate(
+                            icon: Icons.list_alt_outlined,
+                            title: "Group Categorization",
+                            onPressed: () {},
+                          ),
+                          OutlinedButtonTemplate(
+                            icon: Icons.sim_card_download_outlined,
+                            title: "View Error Report",
+                            onPressed: () {},
+                          ),
+                          OutlinedButtonTemplate(
+                            icon: Icons.upload_file_outlined,
+                            title: "Upload New Sheet",
+                            onPressed: widget.uploadNewSheetRequested,
+                          ),
+                        ],
+                      );
+                    }),
                     ClanChurnSpacing.h50,
                     const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -937,4 +945,322 @@ class _GetPublishButtonState extends State<GetPublishButton> {
       ],
     );
   }
+}
+
+void showPopup(
+    BuildContext ctx, Map<String, dynamic> jsonData, String selectedSheet) {
+  final sheetData =
+      json.decode(jsonData[selectedSheet]) as Map<String, dynamic>;
+  showDialog(
+    context: ctx,
+    builder: (_) => AlertDialog(
+      backgroundColor: Theme.of(ctx).colorScheme.background,
+      surfaceTintColor: Colors.transparent,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(08),
+      ),
+      content: Container(
+        decoration: const BoxDecoration(
+            borderRadius: BorderRadius.all(
+          Radius.circular(0.0),
+        )),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+                padding: const EdgeInsets.only(
+                    left: 20, right: 20, top: 10, bottom: 10),
+                decoration: BoxDecoration(
+                    border: Border(
+                  top: BorderSide(
+                      color: Theme.of(ctx).colorScheme.tertiary, width: 1.5),
+                  left: BorderSide(
+                      color: Theme.of(ctx).colorScheme.tertiary, width: 1.5),
+                  right: BorderSide(
+                      color: Theme.of(ctx).colorScheme.tertiary, width: 1.5),
+                )),
+                child: Text(
+                  "Data Summary Report",
+                  style: ClanChurnTypography.font16600
+                      .copyWith(color: Theme.of(ctx).colorScheme.primary),
+                )),
+            Theme(
+              data: Theme.of(ctx).copyWith(
+                  dividerTheme:
+                      const DividerThemeData(color: Colors.transparent)),
+              child: SingleChildScrollView(
+                child: DataTable(
+                  dividerThickness: 1.0,
+                  horizontalMargin: 15,
+                  columnSpacing: 10,
+                  dataRowMaxHeight: 40,
+                  dataRowMinHeight: 40,
+                  border: TableBorder(
+                    horizontalInside: BorderSide.none,
+                    verticalInside: BorderSide(
+                        color: Theme.of(ctx).colorScheme.tertiary, width: 1.5),
+                    bottom: BorderSide(
+                        color: Theme.of(ctx).colorScheme.tertiary,
+                        width: 1.5), // Remove the bottom border
+                    top: BorderSide(
+                        color: Theme.of(ctx).colorScheme.tertiary, width: 1.5),
+                    left: BorderSide(
+                        color: Theme.of(ctx).colorScheme.tertiary, width: 1.5),
+                    right: BorderSide(
+                        color: Theme.of(ctx).colorScheme.tertiary, width: 1.5),
+                  ),
+                  columns: [
+                    DataColumn(
+                        label: Text(
+                      '',
+                      style: ClanChurnTypography.font16500
+                          .copyWith(color: Theme.of(ctx).colorScheme.secondary),
+                    )),
+                    DataColumn(
+                        label: Text(
+                      'Count',
+                      style: ClanChurnTypography.font16600
+                          .copyWith(color: Theme.of(ctx).colorScheme.secondary),
+                    )),
+                    DataColumn(
+                        label: Text(
+                      'Unique',
+                      style: ClanChurnTypography.font16600
+                          .copyWith(color: Theme.of(ctx).colorScheme.secondary),
+                    )),
+                    DataColumn(
+                        label: Text(
+                      'Freq.',
+                      style: ClanChurnTypography.font16600
+                          .copyWith(color: Theme.of(ctx).colorScheme.secondary),
+                    )),
+                    DataColumn(
+                        label: Text(
+                      'Mean',
+                      style: ClanChurnTypography.font16600
+                          .copyWith(color: Theme.of(ctx).colorScheme.secondary),
+                    )),
+                    DataColumn(
+                        label: Text(
+                      'Min',
+                      style: ClanChurnTypography.font16600
+                          .copyWith(color: Theme.of(ctx).colorScheme.secondary),
+                    )),
+                    DataColumn(
+                        label: Text(
+                      '25%',
+                      style: ClanChurnTypography.font16600
+                          .copyWith(color: Theme.of(ctx).colorScheme.secondary),
+                    )),
+                    DataColumn(
+                        label: Text(
+                      '50%',
+                      style: ClanChurnTypography.font16600
+                          .copyWith(color: Theme.of(ctx).colorScheme.secondary),
+                    )),
+                    DataColumn(
+                        label: Text(
+                      '75%',
+                      style: ClanChurnTypography.font16600
+                          .copyWith(color: Theme.of(ctx).colorScheme.secondary),
+                    )),
+                    DataColumn(
+                        label: Text(
+                      'Max',
+                      style: ClanChurnTypography.font16600
+                          .copyWith(color: Theme.of(ctx).colorScheme.secondary),
+                    )),
+                    DataColumn(
+                        label: Text(
+                      'STD',
+                      style: ClanChurnTypography.font16600
+                          .copyWith(color: Theme.of(ctx).colorScheme.secondary),
+                    )),
+                    DataColumn(
+                        label: Text(
+                      'Blank Count',
+                      style: ClanChurnTypography.font16600
+                          .copyWith(color: Theme.of(ctx).colorScheme.secondary),
+                    )),
+                  ],
+                  rows: sheetData.entries.toList().asMap().entries.map((entry) {
+                    int index = entry.key;
+                    String key = entry.value.key;
+                    Map<String, dynamic> value =
+                        entry.value.value as Map<String, dynamic>;
+                    return DataRow(
+                        color: MaterialStateProperty.resolveWith<Color>(
+                            (Set<MaterialState> states) {
+                          if (index % 2 == 0) {
+                            return Theme.of(ctx)
+                                .colorScheme
+                                .primary
+                                .withOpacity(0.1);
+                          }
+                          return Colors.transparent;
+                        }),
+                        cells: [
+                          DataCell(ConstrainedBox(
+                            constraints: const BoxConstraints(
+                              minWidth: 60,
+                              maxWidth: 500,
+                            ),
+                            child: Text(
+                              key,
+                              style: ClanChurnTypography.font16500.copyWith(
+                                  color: Theme.of(ctx).colorScheme.secondary),
+                              textAlign: TextAlign.center,
+                            ),
+                          )),
+                          DataCell(ConstrainedBox(
+                            constraints: const BoxConstraints(
+                              minWidth: 60,
+                              maxWidth: 80,
+                            ),
+                            child: Text(
+                              (value["count"] ?? "-").toString(),
+                              style: ClanChurnTypography.font14600.copyWith(
+                                  color: Theme.of(ctx).colorScheme.onSecondary),
+                              textAlign: TextAlign.center,
+                            ),
+                          )),
+                          DataCell(ConstrainedBox(
+                            constraints: const BoxConstraints(
+                              minWidth: 60,
+                              maxWidth: 80,
+                            ),
+                            child: Text(
+                              (value["unique"] ?? "-").toString(),
+                              style: ClanChurnTypography.font14600.copyWith(
+                                  color: Theme.of(ctx).colorScheme.onSecondary),
+                              textAlign: TextAlign.center,
+                            ),
+                          )),
+                          DataCell(ConstrainedBox(
+                            constraints: const BoxConstraints(
+                              minWidth: 60,
+                              maxWidth: 80,
+                            ),
+                            child: Text(
+                              (value["freq"] ?? "-").toString(),
+                              style: ClanChurnTypography.font14600.copyWith(
+                                  color: Theme.of(ctx).colorScheme.onSecondary),
+                              textAlign: TextAlign.center,
+                            ),
+                          )),
+                          DataCell(ConstrainedBox(
+                            constraints: const BoxConstraints(
+                              minWidth: 60,
+                              maxWidth: 80,
+                            ),
+                            child: Text(
+                              (value["mean"] ?? "-").toString(),
+                              style: ClanChurnTypography.font14600.copyWith(
+                                  color: Theme.of(ctx).colorScheme.onSecondary),
+                              textAlign: TextAlign.center,
+                            ),
+                          )),
+                          DataCell(ConstrainedBox(
+                            constraints: const BoxConstraints(
+                              minWidth: 60,
+                              maxWidth: 80,
+                            ),
+                            child: Text(
+                              (value["min"] ?? "-").toString(),
+                              style: ClanChurnTypography.font14600.copyWith(
+                                  color: Theme.of(ctx).colorScheme.onSecondary),
+                              textAlign: TextAlign.center,
+                            ),
+                          )),
+                          DataCell(ConstrainedBox(
+                            constraints: const BoxConstraints(
+                              minWidth: 60,
+                              maxWidth: 80,
+                            ),
+                            child: Text(
+                              (value["25%"] ?? "-").toString(),
+                              style: ClanChurnTypography.font14600.copyWith(
+                                  color: Theme.of(ctx).colorScheme.onSecondary),
+                              textAlign: TextAlign.center,
+                            ),
+                          )),
+                          DataCell(ConstrainedBox(
+                            constraints: const BoxConstraints(
+                              minWidth: 60,
+                              maxWidth: 80,
+                            ),
+                            child: Text(
+                              (value["50%"] ?? "-").toString(),
+                              style: ClanChurnTypography.font14600.copyWith(
+                                  color: Theme.of(ctx).colorScheme.onSecondary),
+                              textAlign: TextAlign.center,
+                            ),
+                          )),
+                          DataCell(ConstrainedBox(
+                            constraints: const BoxConstraints(
+                              minWidth: 60,
+                              maxWidth: 80,
+                            ),
+                            child: Text(
+                              (value["75%"] ?? "-").toString(),
+                              style: ClanChurnTypography.font14600.copyWith(
+                                  color: Theme.of(ctx).colorScheme.onSecondary),
+                              textAlign: TextAlign.center,
+                            ),
+                          )),
+                          DataCell(ConstrainedBox(
+                            constraints: const BoxConstraints(
+                              minWidth: 60,
+                              maxWidth: 80,
+                            ),
+                            child: Text(
+                              (value["max"] ?? "-").toString(),
+                              style: ClanChurnTypography.font14600.copyWith(
+                                  color: Theme.of(ctx).colorScheme.onSecondary),
+                              textAlign: TextAlign.center,
+                            ),
+                          )),
+                          DataCell(ConstrainedBox(
+                            constraints: const BoxConstraints(
+                              minWidth: 60,
+                              maxWidth: 80,
+                            ),
+                            child: Text(
+                              (value["std"] ?? "-").toString(),
+                              style: ClanChurnTypography.font14600.copyWith(
+                                  color: Theme.of(ctx).colorScheme.onSecondary),
+                              textAlign: TextAlign.center,
+                            ),
+                          )),
+                          DataCell(ConstrainedBox(
+                            constraints: const BoxConstraints(
+                              minWidth: 60,
+                              maxWidth: 80,
+                            ),
+                            child: Text(
+                              (value["blankCount"] ?? "-").toString(),
+                              style: ClanChurnTypography.font14600.copyWith(
+                                  color: Theme.of(ctx).colorScheme.onSecondary),
+                              textAlign: TextAlign.center,
+                            ),
+                          )),
+                        ]);
+                  }).toList(),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        BasicDialogAction(
+          title: const Text("Close"),
+          onPressed: () {
+            Navigator.pop(ctx);
+          },
+        ),
+      ],
+    ),
+  );
 }

@@ -108,6 +108,7 @@ class ClanChurnApp extends StatelessWidget {
             primary: const Color.fromRGBO(108, 63, 235, 1),
             secondary: const Color.fromRGBO(56, 56, 56, 1),
             onSecondary: const Color.fromRGBO(125, 125, 125, 1),
+            tertiary: const Color.fromRGBO(199, 199, 199, 1),
             background: const Color(0xffFFFFFF),
             shadow: const Color.fromRGBO(0, 0, 0, 0.15),
           ),
