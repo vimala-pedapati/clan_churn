@@ -7,7 +7,6 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_dialogs/flutter_dialogs.dart';
 
 class UploadedExcelSummaryReport extends StatefulWidget {
   const UploadedExcelSummaryReport(
@@ -1250,17 +1249,44 @@ void showPopup(
                 ),
               ),
             ),
+            ClanChurnSpacing.h20,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 50,
+                  width: 130,
+                  child: OutlinedButton(
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.all(0),
+                      side: BorderSide(
+                          color: Theme.of(ctx).colorScheme.primary, width: 1.5),
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(8), // Adjust the border radius
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        const Icon(Icons.cancel_outlined),
+                        Text(
+                          "Close",
+                          style: ClanChurnTypography.font18600
+                              .copyWith(color: Theme.of(ctx).colorScheme.primary),
+                        ),
+                      ],
+                    ),
+                    onPressed: () {
+                      Navigator.pop(ctx);
+                    },
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),
-      actions: <Widget>[
-        BasicDialogAction(
-          title: const Text("Close"),
-          onPressed: () {
-            Navigator.pop(ctx);
-          },
-        ),
-      ],
     ),
   );
 }
