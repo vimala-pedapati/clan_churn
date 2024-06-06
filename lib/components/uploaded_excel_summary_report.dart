@@ -346,19 +346,55 @@ class _UploadedExcelSummaryReportState
         : SingleChildScrollView(
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              // header - upload data, history button
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  IconButton(
-                    icon: Icon(
-                      Icons.keyboard_backspace,
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                    onPressed: widget.onPressed,
+                  Row(
+                    children: [
+                      IconButton(
+                        icon: Icon(
+                          Icons.keyboard_backspace,
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                        onPressed: widget.onPressed,
+                      ),
+                      ClanChurnSpacing.w10,
+                      SelectableText(
+                        "Upload Data",
+                        style: ClanChurnTypography.font18600,
+                      ),
+                    ],
                   ),
-                  ClanChurnSpacing.w10,
-                  SelectableText(
-                    "Upload Data",
-                    style: ClanChurnTypography.font18600,
+                  SizedBox(
+                    height: 45,
+                    width: 130,
+                    child: OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        padding: const EdgeInsets.all(0),
+                        side: BorderSide(
+                            color: Theme.of(context).colorScheme.primary,
+                            width: 1.5),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                              8), // Adjust the border radius
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          const Icon(Icons.history),
+                          Text(
+                            "History",
+                            style: ClanChurnTypography.font18600.copyWith(
+                                color: Theme.of(context).colorScheme.primary),
+                          ),
+                        ],
+                      ),
+                      onPressed: () {
+                        showHistory(context);
+                      },
+                    ),
                   ),
                 ],
               ),
@@ -744,7 +780,8 @@ class _UploadedExcelSummaryReportState
                             icon: Icons.remove_red_eye_outlined,
                             title: "Excel Summary",
                             onPressed: () {
-                              showPopup(context, jsonObject!, selectedSheet!);
+                              showErrorReport(
+                                  context, jsonObject!, selectedSheet!);
                             },
                           ),
                           OutlinedButtonTemplate(
@@ -946,7 +983,7 @@ class _GetPublishButtonState extends State<GetPublishButton> {
   }
 }
 
-void showPopup(
+void showErrorReport(
     BuildContext ctx, Map<String, dynamic> jsonData, String selectedSheet) {
   final sheetData =
       json.decode(jsonData[selectedSheet]) as Map<String, dynamic>;
@@ -1262,8 +1299,8 @@ void showPopup(
                       side: BorderSide(
                           color: Theme.of(ctx).colorScheme.primary, width: 1.5),
                       shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(8), // Adjust the border radius
+                        borderRadius: BorderRadius.circular(
+                            8), // Adjust the border radius
                       ),
                     ),
                     child: Row(
@@ -1272,8 +1309,8 @@ void showPopup(
                         const Icon(Icons.cancel_outlined),
                         Text(
                           "Close",
-                          style: ClanChurnTypography.font18600
-                              .copyWith(color: Theme.of(ctx).colorScheme.primary),
+                          style: ClanChurnTypography.font18600.copyWith(
+                              color: Theme.of(ctx).colorScheme.primary),
                         ),
                       ],
                     ),
@@ -1284,6 +1321,136 @@ void showPopup(
                 ),
               ],
             ),
+          ],
+        ),
+      ),
+    ),
+  );
+}
+
+void showHistory(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (_) => AlertDialog(
+      backgroundColor: Theme.of(context).colorScheme.background,
+      surfaceTintColor: Colors.transparent,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(08),
+      ),
+      content: Container(
+        decoration: const BoxDecoration(
+            borderRadius: BorderRadius.all(
+          Radius.circular(0.0),
+        )),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    IconButton(
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(),
+                      icon: Icon(
+                        Icons.keyboard_backspace,
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                    ClanChurnSpacing.w10,
+                    SelectableText(
+                      "History",
+                      style: ClanChurnTypography.font24600,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            ClanChurnSpacing.h20,
+            Container(
+              height: 500,
+              width: 900,
+              child: ListView.builder(
+                  itemCount: 4,
+                  // shrinkWrap: true,
+                  // physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return Container(
+                      padding: const EdgeInsets.only(
+                          left: 10, right: 10, top: 5, bottom: 5),
+                      margin: const EdgeInsets.only(bottom: 10),
+                      decoration: BoxDecoration(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .primary
+                              .withOpacity(0.12),
+                          borderRadius: BorderRadius.circular(05)),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                CircleAvatar(
+                                  radius: 20,
+                                  backgroundColor: Theme.of(context)
+                                      .colorScheme
+                                      .primary
+                                      .withOpacity(0.1),
+                                  child: Icon(
+                                    Icons.person,
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                  ),
+                                ),
+                                ClanChurnSpacing.w20,
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Vishal Sharma",
+                                      style: ClanChurnTypography.font18600
+                                          .copyWith(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSecondary),
+                                    ),
+                                    Text(
+                                      "Piramal Project Lead",
+                                      style: ClanChurnTypography.font14500
+                                          .copyWith(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSecondary),
+                                    )
+                                  ],
+                                ),
+                                ClanChurnSpacing.w100,
+                                Text(
+                                  "Vishal Sharma",
+                                  style: ClanChurnTypography.font18600.copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .primary),
+                                ),
+                              ],
+                            ),
+                            Text(
+                              "20/02/2024  12:11 P.M.",
+                              style: ClanChurnTypography.font18600.copyWith(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onSecondary),
+                            ),
+                          ]),
+                    );
+                  }),
+            )
           ],
         ),
       ),
