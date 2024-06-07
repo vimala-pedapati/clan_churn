@@ -13,7 +13,8 @@ class ProjectArchitectState extends Equatable {
             customerColumnNames: const [],
             uploadingFile: false,
             errorReport: null,
-            uploadNewSheetRequested: false);
+            uploadNewSheetRequested: false, 
+            projectHistory : const []);
 
   final List<ClientDetails> clientList;
   final bool isExpanded;
@@ -26,6 +27,7 @@ class ProjectArchitectState extends Equatable {
   final bool uploadingFile;
   final String? errorReport;
   final bool uploadNewSheetRequested;
+  final List<ProjectHistoryModel> projectHistory;
   const ProjectArchitectState(
       {required this.clientList,
       required this.isExpanded,
@@ -37,7 +39,8 @@ class ProjectArchitectState extends Equatable {
       required this.customerColumnNames,
       required this.uploadingFile,
       required this.errorReport,
-      required this.uploadNewSheetRequested});
+      required this.uploadNewSheetRequested,
+      required this.projectHistory});
 
   ProjectArchitectState copyWith(
       {List<ClientDetails>? clientList,
@@ -50,7 +53,8 @@ class ProjectArchitectState extends Equatable {
       List<TextEditingController>? customerColumnNames,
       bool? uploadingFile,
       String? errorReport,
-      bool? uploadNewSheetRequested}) {
+      bool? uploadNewSheetRequested,
+      List<ProjectHistoryModel>? projectHistory}) {
     return ProjectArchitectState(
         clientList: clientList ?? this.clientList,
         isExpanded: isExpanded ?? this.isExpanded,
@@ -62,7 +66,9 @@ class ProjectArchitectState extends Equatable {
         customerColumnNames: customerColumnNames ?? this.customerColumnNames,
         uploadingFile: uploadingFile ?? this.uploadingFile,
         errorReport: errorReport ?? this.errorReport,
-        uploadNewSheetRequested : uploadNewSheetRequested?? this.uploadNewSheetRequested);
+        uploadNewSheetRequested:
+            uploadNewSheetRequested ?? this.uploadNewSheetRequested,
+        projectHistory : projectHistory ?? this.projectHistory);
   }
 
   @override
@@ -77,6 +83,7 @@ class ProjectArchitectState extends Equatable {
         customerColumnNames,
         uploadingFile,
         errorReport,
-        uploadNewSheetRequested
+        uploadNewSheetRequested,
+        projectHistory
       ];
 }

@@ -6,15 +6,14 @@ class BaseUrl {
 }
 
 class ApiEndpoints {
-
-  // User 
+  // User
   static String signIn = '/sign_in';
   static String getUserDetails = '/user/get_user_details';
 
   // client
   static String clientsList = '/client/client_list';
 
-  // Project 
+  // Project
   static String getAllProjects = '/project/get_all_projects';
   static String addProject = '/project/add';
   static String getAllColumns = '/project/get_all_columns';
@@ -25,4 +24,5 @@ class ApiEndpoints {
   static String getErrorReport = "/project/get_error_report_for_input";
   static String updateProjectName = "/project/update";
   static String getInputExcelSummary = "/project/get_input_excel_summary";
+  static String projectInputHistory = "/project/project_input_history";
 }

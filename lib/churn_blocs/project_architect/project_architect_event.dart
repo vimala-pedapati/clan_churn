@@ -124,3 +124,12 @@ class UploadNewSheetRequestedEvent extends ProjectArchitectEvent {
   final bool uploadNewSheetRequested;
   const UploadNewSheetRequestedEvent({required  this.uploadNewSheetRequested});
 }
+
+
+class ProjectInputHistoryEvent extends ProjectArchitectEvent{
+   final String projectId;
+  final OnErrorCallback onErrorCallback;
+  final OnSuccessCallback onSuccessCallback;
+
+  const ProjectInputHistoryEvent({required this.projectId, required this.onErrorCallback, required this.onSuccessCallback}); 
+}

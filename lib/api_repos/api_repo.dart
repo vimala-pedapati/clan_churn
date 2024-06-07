@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:clan_churn/api_repos/models/column_model.dart';
+import 'package:clan_churn/api_repos/models/project_history_model.dart';
 import 'package:clan_churn/api_repos/models/project_model.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -514,13 +515,12 @@ class ApiRepository {
       }
 
       http.Response response = await http.post(
-        Uri.parse(
-            "${BaseUrl.baseUrl}${ApiEndpoints.getInputExcelSummary}?input_id=$inputId"),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ${authCredentials.accessToken}',
-        },
-      );
+          Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.getInputExcelSummary}"),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ${authCredentials.accessToken}',
+          },
+          body: json.encode(inputId));
 
       if (response.statusCode == 200) {
         onSuccessCallback(response);
@@ -531,6 +531,42 @@ class ApiRepository {
     } catch (e) {
       log("get summary report: $e");
     }
+  }
+
+  Future<List<ProjectHistoryModel>?> getProjectHistoryDetails(
+      {required String projectId,
+      required OnErrorCallback onErrorCallback,
+      required OnSuccessCallback onSuccessCallback}) async {
+    try {
+      final AuthCredentials authCredentials =
+          await AuthRepository().getTokens();
+
+      if (authCredentials.accessToken.isEmpty) {
+        log('Access token is empty');
+        onErrorCallback('Access token is empty', 0);
+        return null;
+      }
+
+      http.Response response = await http.post(
+          Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.projectInputHistory}"),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ${authCredentials.accessToken}',
+          },
+          body: json.encode(projectId));
+      if (response.statusCode == 200) {
+        onSuccessCallback(response);
+        List<ProjectHistoryModel> history =
+            projectHistoryModelFromJson(response.body);
+        return history;
+      } else {
+        _handleStatusCode(
+            response.statusCode, response.reasonPhrase, onErrorCallback);
+      }
+    } catch (e) {
+      log("Project Input History: $e");
+    }
+    return null;
   }
 
   void _handleStatusCode(

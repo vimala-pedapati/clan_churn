@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:clan_churn/api_repos/api_repo.dart';
 import 'package:clan_churn/api_repos/models/column_model.dart';
+import 'package:clan_churn/api_repos/models/project_history_model.dart';
 import 'package:clan_churn/api_repos/models/project_model.dart';
 import 'package:clan_churn/api_repos/models/user_model.dart';
 import 'package:clan_churn/components/dialogs.dart';
@@ -34,6 +35,7 @@ class ProjectArchitectBloc
     on<GetInputExcelSummaryEvent>(_onGetInputExcelSummaryEvent);
     on<DownloadErrorReportEvent>(_onDownloadErrorReportEvent);
     on<UploadNewSheetRequestedEvent>(_onUploadNewSheetRequestedEvent);
+    on<ProjectInputHistoryEvent>(_onProjectInputHistoryEvent);
   }
 
   _onClientsEvent(
@@ -237,7 +239,10 @@ class ProjectArchitectBloc
         onErrorCallback: event.onErrorCallback);
     log("upload file result: $result");
     if (result != null) {
-      emit(state.copyWith(uploadingFile: false, createdProject: result, uploadNewSheetRequested: false));
+      emit(state.copyWith(
+          uploadingFile: false,
+          createdProject: result,
+          uploadNewSheetRequested: false));
       // ignore: use_build_context_synchronously
       Navigator.pop(event.context);
     } else {
@@ -246,7 +251,10 @@ class ProjectArchitectBloc
       Navigator.pop(event.context);
       // ignore: use_build_context_synchronously
       GetDialog.failedErrorReport(event.context);
-      emit(state.copyWith(uploadingFile: false, errorReport: null, uploadNewSheetRequested: false));
+      emit(state.copyWith(
+          uploadingFile: false,
+          errorReport: null,
+          uploadNewSheetRequested: false));
     }
   }
 
@@ -288,6 +296,20 @@ class ProjectArchitectBloc
 
   _onUploadNewSheetRequestedEvent(
       UploadNewSheetRequestedEvent event, Emitter<ProjectArchitectState> emit) {
-    emit(state.copyWith(uploadNewSheetRequested: event.uploadNewSheetRequested));
+    emit(
+        state.copyWith(uploadNewSheetRequested: event.uploadNewSheetRequested));
+  }
+
+  _onProjectInputHistoryEvent(ProjectInputHistoryEvent event,
+      Emitter<ProjectArchitectState> emit) async {
+    final result = await apiRepository.getProjectHistoryDetails(
+        projectId: event.projectId,
+        onSuccessCallback: event.onSuccessCallback,
+        onErrorCallback: event.onErrorCallback);
+    if (result != null) {
+      emit(state.copyWith(projectHistory: result));
+    } else {
+      emit(state.copyWith(projectHistory: []));
+    }
   }
 }
