@@ -69,7 +69,7 @@ class Project extends Equatable {
           ? null
           : List<String>.from(json["all_inputs"].map((x) => x)),
       latestInput: json["latest_input"],
-      latestInputModel: LatestInputModel.fromJson(json["latest_input_model"]));
+      latestInputModel:json["latest_input_model"] == null ? null: LatestInputModel.fromJson(json["latest_input_model"]));
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -371,8 +371,8 @@ String latestInputModelToJson(LatestInputModel data) =>
 
 class LatestInputModel extends Equatable {
   final String id;
-  final String inputSheetUplodedTime;
-  final LatestInputStatus inputStatus;
+  final String? inputSheetUplodedTime;
+  final LatestInputStatus? inputStatus;
   final String? errorSheetUrl;
   final String? martsSheetUrl;
   final User? createdBy;
@@ -400,7 +400,7 @@ class LatestInputModel extends Equatable {
   Map<String, dynamic> toJson() => {
         "id": id,
         "input_sheet_uploded_time": inputSheetUplodedTime,
-        "input_status": inputStatus.value,
+        "input_status": inputStatus?.value ,
         "created_by": createdBy!.toJson(),
       };
 
@@ -460,7 +460,7 @@ extension InputStatusExtension on LatestInputStatus {
       case "uploded_data_data_marts_connot_be_genrated":
         return LatestInputStatus.uploadedDataDataMartsCannotBeGenerated;
       default:
-        throw Exception("Unknown InputStatus value: $value");
+        throw  LatestInputStatus.unknown;
     }
   }
 }
