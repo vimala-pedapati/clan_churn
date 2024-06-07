@@ -829,6 +829,7 @@ class _UploadedExcelSummaryReportState
                                   context
                                       .read<ProjectArchitectBloc>()
                                       .add(DownloadErrorReportEvent(
+                                        context: context,
                                         inputId: context
                                                 .read<ProjectArchitectBloc>()
                                                 .state

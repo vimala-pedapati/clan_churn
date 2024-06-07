@@ -112,11 +112,13 @@ class GetInputExcelSummaryEvent extends ProjectArchitectEvent {
 
 class DownloadErrorReportEvent extends ProjectArchitectEvent {
   final String inputId;
+  final BuildContext context;
 
   final OnErrorCallback onErrorCallback;
   final OnSuccessCallback onSuccessCallback;
   const DownloadErrorReportEvent(
       {required this.inputId,
+      required this.context,
       required this.onErrorCallback,
       required this.onSuccessCallback});
 }

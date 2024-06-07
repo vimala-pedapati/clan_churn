@@ -273,7 +273,28 @@ class ProjectArchitectBloc
     );
     if (res != null) {
       Project pro = state.createdProject!.copyWith(latestInputModel: res);
-      launchURL(pro.latestInputModel!.errorSheetUrl!);
+      if (pro.latestInputModel!.errorSheetUrl != null) {
+        launchURL(pro.latestInputModel!.errorSheetUrl!);
+      } else {
+        // ignore: use_build_context_synchronously
+        showDialog(
+          context: event.context,
+          builder: (context) {
+            return AlertDialog(
+              backgroundColor: Theme.of(context).colorScheme.background,
+              surfaceTintColor: Colors.transparent,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(08),
+              ),
+              title: Text(pro.latestInputModel?.inputStatus ==
+                      LatestInputStatus.uploadedDataHasNoErrors
+                  ? "No errors in the uploaded data ready to publish"
+                  : "something went wrong to download"),
+            );
+          },
+        );
+      }
+
       emit(state.copyWith(createdProject: pro));
     }
   }
@@ -326,9 +347,13 @@ class ProjectArchitectBloc
       onSuccessCallback: event.onSuccessCallback,
     );
     if (res != null) {
-      Project pro = state.createdProject!.copyWith(latestInputModel: res);
-      launchURL(pro.latestInputModel!.martsSheetUrl!);
-      emit(state.copyWith(createdProject: pro));
+      launchURL(res);
+      // Project pro = state.createdProject!.copyWith(latestInputModel: res);
+      // if (kDebugMode) {
+      //   print("${pro.latestInputModel!.martsSheetUrl!}");
+      // }
+      // launchURL(pro.latestInputModel!.martsSheetUrl!);
+      // emit(state.copyWith(createdProject: pro));
     }
   }
 }

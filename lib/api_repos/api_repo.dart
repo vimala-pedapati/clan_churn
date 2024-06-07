@@ -569,7 +569,7 @@ class ApiRepository {
   }
 
   // Get error report for a specific input
-  Future<LatestInputModel?> generateMarts(
+  Future<String?> generateMarts(
       {required String inputId,
       required OnErrorCallback onErrorCallback,
       required OnSuccessCallback onSuccessCallback}) async {
@@ -594,19 +594,20 @@ class ApiRepository {
           },
           body: json.encode(inputId));
 
-      log("${ApiEndpoints.generateMarts} api response : $response");
+      log("${ApiEndpoints.generateMarts} api response : ${response}");
       if (response.statusCode == 200) {
-        LatestInputModel res = LatestInputModel.fromJson(json.decode(response.body));
-        log("${ApiEndpoints.getErrorReport} response : $res");
+      log("${ApiEndpoints.generateMarts} api response : ${response.body}");
+        // LatestInputModel res = LatestInputModel.fromJson(json.decode(response.body));
+        // print("${ApiEndpoints.getErrorReport} response : ${res}");
         onSuccessCallback(response);
-        return res;
+        return json.decode(response.body);
       } else {
         _handleStatusCode(
             response.statusCode, response.reasonPhrase, onErrorCallback);
         return null;
       }
     } catch (e) {
-      log('${ApiEndpoints.generateMarts}:  Network Error: $e');
+      print('${ApiEndpoints.generateMarts}:  Network Error: $e');
     }
     return null;
   }

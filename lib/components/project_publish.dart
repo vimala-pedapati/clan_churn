@@ -1,3 +1,4 @@
+import 'package:clan_churn/api_repos/models/project_model.dart';
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/components/dialogs.dart';
 import 'package:clan_churn/utils/spacing.dart';
@@ -39,9 +40,10 @@ class _GetPublishButtonState extends State<GetPublishButton> {
               ],
             ),
             ClanChurnSpacing.h20,
-            Container(
-                width: 900,
-                child: SelectableText("${state.createdProject!.latestInputModel}")),
+            // Container(
+            //     width: 900,
+            //     child: SelectableText(
+            //         "${state.createdProject!.latestInputModel}")),
             Row(
               children: [
                 SizedBox(
@@ -49,22 +51,44 @@ class _GetPublishButtonState extends State<GetPublishButton> {
                   child: ElevatedButton(
                     onPressed: value
                         ? () {
-                            context
-                                .read<ProjectArchitectBloc>()
-                                .add(GenerateMartsEvent(
-                                  inputId: context
-                                          .read<ProjectArchitectBloc>()
-                                          .state
-                                          .createdProject!
-                                          .latestInput ??
-                                      "",
-                                  onSuccessCallback: (message) {},
-                                  onErrorCallback: (errorMessage, errorCode) {
-                                    print(
-                                        " Marts Report...${state.createdProject!.latestInput}..$errorMessage $errorCode");
-                                    GetDialog.failedErrorReport(context);
-                                  },
-                                ));
+                            if (state.createdProject?.latestInputModel
+                                    ?.inputStatus ==
+                                LatestInputStatus.uploadedDataHasErrors) {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    backgroundColor: Theme.of(context)
+                                        .colorScheme
+                                        .background,
+                                    surfaceTintColor: Colors.transparent,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(08),
+                                    ),
+                                    title: const Text(
+                                        "Upload sheet has errors......."),
+                                  );
+                                },
+                              );
+                            } else if (state.createdProject?.latestInputModel
+                                    ?.inputStatus ==
+                                LatestInputStatus.uploadedDataHasNoErrors) {
+                              context
+                                  .read<ProjectArchitectBloc>()
+                                  .add(GenerateMartsEvent(
+                                    inputId: context
+                                            .read<ProjectArchitectBloc>()
+                                            .state
+                                            .createdProject!
+                                            .latestInput ??
+                                        "",
+                                    onSuccessCallback: (message) {},
+                                    onErrorCallback: (errorMessage, errorCode) {
+                                      print(" Marts Report...${state.createdProject!.latestInput}..$errorMessage $errorCode");
+                                      GetDialog.failedErrorReport(context);
+                                    },
+                                  ));
+                            }
                           }
                         : null,
                     child: Row(
