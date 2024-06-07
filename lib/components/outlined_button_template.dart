@@ -7,10 +7,12 @@ class OutlinedButtonTemplate extends StatefulWidget {
       {super.key,
       required this.icon,
       required this.title,
-      required this.onPressed});
+      required this.onPressed,
+      this.onHoverTextChange});
   final IconData icon;
   final String title;
   final VoidCallback onPressed;
+  final String? onHoverTextChange;
 
   @override
   State<OutlinedButtonTemplate> createState() => _OutlinedButtonTemplateState();
@@ -58,7 +60,7 @@ class _OutlinedButtonTemplateState extends State<OutlinedButtonTemplate> {
               ),
               ClanChurnSpacing.w10,
               Text(
-                widget.title,
+               hovered? widget.onHoverTextChange ?? widget.title :  widget.title,
                 style: ClanChurnTypography.font18600, // Custom text style
               ),
             ],

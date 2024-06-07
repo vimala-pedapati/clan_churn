@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:js_util';
 
 import 'package:clan_churn/api_repos/models/project_model.dart';
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
@@ -243,10 +244,9 @@ class _GetInputFieldsState extends State<GetInputFields> {
     }
   }
 
-  
-
   @override
   void initState() {
+    context.read<ProjectArchitectBloc>().add(const UploadNewSheetRequestedEvent(uploadNewSheetRequested: false));
     if (context.read<ProjectArchitectBloc>().state.selectedClient != null) {
       setState(() {
         customerNameController.text =
@@ -1314,7 +1314,9 @@ class _GetInputFieldsState extends State<GetInputFields> {
                         goToPreviousPage();
                       },
                       uploadNewSheetRequested: () {
-                        context.read<ProjectArchitectBloc>().add(const UploadNewSheetRequestedEvent(uploadNewSheetRequested: true));
+                        context.read<ProjectArchitectBloc>().add(
+                            const UploadNewSheetRequestedEvent(
+                                uploadNewSheetRequested: true));
                       },
                     )
             ],

@@ -13,8 +13,8 @@ class ProjectArchitectState extends Equatable {
             customerColumnNames: const [],
             uploadingFile: false,
             errorReport: null,
-            uploadNewSheetRequested: false, 
-            projectHistory : const []);
+            uploadNewSheetRequested: false,
+            projectHistory: const []);
 
   final List<ClientDetails> clientList;
   final bool isExpanded;
@@ -55,6 +55,9 @@ class ProjectArchitectState extends Equatable {
       String? errorReport,
       bool? uploadNewSheetRequested,
       List<ProjectHistoryModel>? projectHistory}) {
+    if (kDebugMode) {
+      print("${createdProject?.latestInputModel}");
+    }
     return ProjectArchitectState(
         clientList: clientList ?? this.clientList,
         isExpanded: isExpanded ?? this.isExpanded,
@@ -68,7 +71,7 @@ class ProjectArchitectState extends Equatable {
         errorReport: errorReport ?? this.errorReport,
         uploadNewSheetRequested:
             uploadNewSheetRequested ?? this.uploadNewSheetRequested,
-        projectHistory : projectHistory ?? this.projectHistory);
+        projectHistory: projectHistory ?? this.projectHistory);
   }
 
   @override

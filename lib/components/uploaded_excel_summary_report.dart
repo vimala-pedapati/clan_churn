@@ -1,11 +1,14 @@
 import 'dart:convert';
 
+import 'package:clan_churn/api_repos/api_repo.dart';
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
+import 'package:clan_churn/components/dialogs.dart';
 import 'package:clan_churn/components/outlined_button_template.dart';
 import 'package:clan_churn/components/project_input_history.dart';
 import 'package:clan_churn/components/project_publish.dart';
 import 'package:clan_churn/components/summary_card.dart';
 import 'package:clan_churn/components/view_error_report.dart';
+import 'package:clan_churn/pages/new_project_components.dart';
 import 'package:clan_churn/utils/spacing.dart';
 import 'package:clan_churn/utils/typography.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
@@ -274,9 +277,9 @@ class _UploadedExcelSummaryReportState
                   .latestInput!,
               onErrorCallback: (errorMessage, errorCode) {
                 if (kDebugMode) {
-                    print(
-                        "Get Input Excel Summary Report error call back: $errorMessage $errorCode");
-                  }
+                  print(
+                      "Get Input Excel Summary Report error call back: $errorMessage $errorCode");
+                }
               },
               onSuccessCallback: (message) {
                 if (message != null) {
@@ -797,12 +800,54 @@ class _UploadedExcelSummaryReportState
                           OutlinedButtonTemplate(
                             icon: Icons.list_alt_outlined,
                             title: "Group Categorization",
-                            onPressed: () {},
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    backgroundColor: Theme.of(context)
+                                        .colorScheme
+                                        .background,
+                                    surfaceTintColor: Colors.transparent,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(08),
+                                    ),
+                                    title: const Text("Coming Soon!..."),
+                                  );
+                                },
+                              );
+                            },
                           ),
-                          OutlinedButtonTemplate(
-                            icon: Icons.sim_card_download_outlined,
-                            title: "View Error Report",
-                            onPressed: () {},
+                          BlocBuilder<ProjectArchitectBloc,
+                              ProjectArchitectState>(
+                            builder: (context, state) {
+                              return OutlinedButtonTemplate(
+                                icon: Icons.sim_card_download_outlined,
+                                title: "View Error Report",
+                                onHoverTextChange: "Download Error Report",
+                                onPressed: () {
+                                  context
+                                      .read<ProjectArchitectBloc>()
+                                      .add(DownloadErrorReportEvent(
+                                        inputId: context
+                                                .read<ProjectArchitectBloc>()
+                                                .state
+                                                .createdProject!
+                                                .latestInput ??
+                                            "",
+                                        onSuccessCallback: (message) {
+                                          
+                                        },
+                                        onErrorCallback:
+                                            (errorMessage, errorCode) {
+                                          print(
+                                              "Download Error Report...${state.createdProject!.latestInput}..$errorMessage $errorCode");
+                                          GetDialog.failedErrorReport(context);
+                                        },
+                                      ));
+                                },
+                              );
+                            },
                           ),
                           OutlinedButtonTemplate(
                             icon: Icons.upload_file_outlined,
@@ -827,6 +872,3 @@ class _UploadedExcelSummaryReportState
           );
   }
 }
-
-
-

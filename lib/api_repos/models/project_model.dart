@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:clan_churn/api_repos/models/user_model.dart';
 import 'package:equatable/equatable.dart';
 
 List<Project> projectFromJson(String str) =>
@@ -16,35 +17,59 @@ class Project extends Equatable {
   final ProjectDetails? projectDetails;
   final List<String>? allInputs;
   final String? latestInput;
+  final LatestInputModel? latestInputModel;
 
-  const Project({
-    required this.id,
-    required this.name,
-    required this.inputColumns,
-    required this.projectStatus,
-    required this.inputSheet,
-    required this.projectDetails,
-    required this.allInputs,
-    required this.latestInput
-  });
+  const Project(
+      {required this.id,
+      required this.name,
+      required this.inputColumns,
+      required this.projectStatus,
+      required this.inputSheet,
+      required this.projectDetails,
+      required this.allInputs,
+      required this.latestInput,
+      required this.latestInputModel});
 
+  Project copyWith({
+    String? id,
+    String? name,
+    List<InputColumn>? inputColumns,
+    String? projectStatus,
+    String? inputSheet,
+    ProjectDetails? projectDetails,
+    List<String>? allInputs,
+    String? latestInput,
+    LatestInputModel? latestInputModel,
+  }) {
+    return Project(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      inputColumns: inputColumns ?? this.inputColumns,
+      projectStatus: projectStatus ?? this.projectStatus,
+      inputSheet: inputSheet ?? this.inputSheet,
+      projectDetails: projectDetails ?? this.projectDetails,
+      allInputs: allInputs ?? this.allInputs,
+      latestInput: latestInput ?? this.latestInput,
+      latestInputModel: latestInputModel ?? this.latestInputModel,
+    );
+  }
   factory Project.fromJson(Map<String, dynamic> json) => Project(
-        id: json["id"],
-        name: json["name"],
-        inputColumns: json["input_columns"] == null
-            ? null
-            : List<InputColumn>.from(
-                json["input_columns"].map((x) => InputColumn.fromJson(x))),
-        projectStatus: json["project_status"],
-        inputSheet: json["input_sheet"],
-        projectDetails: json["project_details"] == null
-            ? null
-            : ProjectDetails.fromJson(json["project_details"]),
-        allInputs: json["all_inputs"] == null
-            ? null
-            : List<String>.from(json["all_inputs"].map((x) => x)),
-        latestInput:  json["latest_input"] 
-      );
+      id: json["id"],
+      name: json["name"],
+      inputColumns: json["input_columns"] == null
+          ? null
+          : List<InputColumn>.from(
+              json["input_columns"].map((x) => InputColumn.fromJson(x))),
+      projectStatus: json["project_status"],
+      inputSheet: json["input_sheet"],
+      projectDetails: json["project_details"] == null
+          ? null
+          : ProjectDetails.fromJson(json["project_details"]),
+      allInputs: json["all_inputs"] == null
+          ? null
+          : List<String>.from(json["all_inputs"].map((x) => x)),
+      latestInput: json["latest_input"],
+      latestInputModel: LatestInputModel.fromJson(json["latest_input_model"]));
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -56,12 +81,21 @@ class Project extends Equatable {
         "project_details":
             projectDetails == null ? null : projectDetails!.toJson(),
         "all_inputs": List<dynamic>.from((allInputs ?? []).map((x) => x)),
-        "latest_input": latestInput
+        "latest_input": latestInput,
+        "latest_input_model": latestInputModel!.toJson()
       };
 
-  @override 
-  List<Object?> get props =>
-      [id, name, inputColumns, projectStatus, projectDetails, allInputs, latestInput];
+  @override
+  List<Object?> get props => [
+        id,
+        name,
+        inputColumns,
+        projectStatus,
+        projectDetails,
+        allInputs,
+        latestInput,
+        latestInputModel
+      ];
 }
 
 class InputColumn extends Equatable {
@@ -95,7 +129,7 @@ class InputColumn extends Equatable {
         "client_column_name": clientColumnName,
       };
 
-  @override 
+  @override
   List<Object?> get props =>
       [id, sheetName, columnName, isMandatory, clientColumnName];
 }
@@ -327,4 +361,106 @@ class ProjectDetails extends Equatable {
         projectTopOutlierRankForMaximumMonthlyIncentive,
         projectBottomOutlierRankForMaximumMonthlyIncentive,
       ];
+}
+
+LatestInputModel latestInputModelFromJson(String str) =>
+    LatestInputModel.fromJson(json.decode(str));
+
+String latestInputModelToJson(LatestInputModel data) =>
+    json.encode(data.toJson());
+
+class LatestInputModel extends Equatable {
+  final String id;
+  final String inputSheetUplodedTime;
+  final LatestInputStatus inputStatus;
+  final String? errorSheetUrl;
+  final String? martsSheetUrl;
+  final User? createdBy;
+
+  const LatestInputModel(
+      {required this.id,
+      required this.inputSheetUplodedTime,
+      required this.inputStatus,
+      required this.createdBy,
+      required this.errorSheetUrl,
+      required this.martsSheetUrl});
+
+  factory LatestInputModel.fromJson(Map<String, dynamic> json) =>
+      LatestInputModel(
+        id: json["id"],
+        inputSheetUplodedTime: json["input_sheet_uploded_time"],
+        inputStatus: InputStatusExtension.fromString(json["input_status"]),
+        errorSheetUrl: json["error_sheet_url"],
+        martsSheetUrl: json["marts_sheet_url"],
+        createdBy: json["created_by"] == null
+            ? null
+            : User.fromJson(json["created_by"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "input_sheet_uploded_time": inputSheetUplodedTime,
+        "input_status": inputStatus.value,
+        "created_by": createdBy!.toJson(),
+      };
+
+  @override
+  List<Object?> get props => [
+        id,
+        inputSheetUplodedTime,
+        inputStatus,
+        errorSheetUrl,
+        martsSheetUrl,
+        createdBy
+      ];
+}
+
+enum LatestInputStatus {
+  unknown,
+  uploadedDataSuccessful,
+  uploadedDataUnsuccessful,
+  uploadedDataHasErrors,
+  uploadedDataHasNoErrors,
+  uploadedDataDataMartsGenerated,
+  uploadedDataDataMartsCannotBeGenerated,
+}
+
+extension InputStatusExtension on LatestInputStatus {
+  String get value {
+    switch (this) {
+      case LatestInputStatus.uploadedDataSuccessful:
+        return "uploded_data_successfull";
+      case LatestInputStatus.uploadedDataUnsuccessful:
+        return "uploded_data_unsucessfull";
+      case LatestInputStatus.uploadedDataHasErrors:
+        return "uploded_data_has_errors";
+      case LatestInputStatus.uploadedDataHasNoErrors:
+        return "uploded_data_has_no_errors";
+      case LatestInputStatus.uploadedDataDataMartsGenerated:
+        return "uploded_data_data_marts_generated";
+      case LatestInputStatus.uploadedDataDataMartsCannotBeGenerated:
+        return "uploded_data_data_marts_connot_be_genrated";
+      default:
+        return "unknown";
+    }
+  }
+
+  static LatestInputStatus fromString(String value) {
+    switch (value) {
+      case "uploded_data_successfull":
+        return LatestInputStatus.uploadedDataSuccessful;
+      case "uploded_data_unsucessfull":
+        return LatestInputStatus.uploadedDataUnsuccessful;
+      case "uploded_data_has_errors":
+        return LatestInputStatus.uploadedDataHasErrors;
+      case "uploded_data_has_no_errors":
+        return LatestInputStatus.uploadedDataHasNoErrors;
+      case "uploded_data_data_marts_generated":
+        return LatestInputStatus.uploadedDataDataMartsGenerated;
+      case "uploded_data_data_marts_connot_be_genrated":
+        return LatestInputStatus.uploadedDataDataMartsCannotBeGenerated;
+      default:
+        throw Exception("Unknown InputStatus value: $value");
+    }
+  }
 }

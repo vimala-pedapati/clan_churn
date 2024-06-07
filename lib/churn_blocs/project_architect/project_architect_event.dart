@@ -112,6 +112,7 @@ class GetInputExcelSummaryEvent extends ProjectArchitectEvent {
 
 class DownloadErrorReportEvent extends ProjectArchitectEvent {
   final String inputId;
+
   final OnErrorCallback onErrorCallback;
   final OnSuccessCallback onSuccessCallback;
   const DownloadErrorReportEvent(
@@ -122,14 +123,27 @@ class DownloadErrorReportEvent extends ProjectArchitectEvent {
 
 class UploadNewSheetRequestedEvent extends ProjectArchitectEvent {
   final bool uploadNewSheetRequested;
-  const UploadNewSheetRequestedEvent({required  this.uploadNewSheetRequested});
+  const UploadNewSheetRequestedEvent({required this.uploadNewSheetRequested});
 }
 
-
-class ProjectInputHistoryEvent extends ProjectArchitectEvent{
-   final String projectId;
+class ProjectInputHistoryEvent extends ProjectArchitectEvent {
+  final String projectId;
   final OnErrorCallback onErrorCallback;
   final OnSuccessCallback onSuccessCallback;
 
-  const ProjectInputHistoryEvent({required this.projectId, required this.onErrorCallback, required this.onSuccessCallback}); 
+  const ProjectInputHistoryEvent(
+      {required this.projectId,
+      required this.onErrorCallback,
+      required this.onSuccessCallback});
+}
+
+class GenerateMartsEvent extends ProjectArchitectEvent {
+  final String inputId;
+
+  final OnErrorCallback onErrorCallback;
+  final OnSuccessCallback onSuccessCallback;
+  const GenerateMartsEvent(
+      {required this.inputId,
+      required this.onErrorCallback,
+      required this.onSuccessCallback});
 }

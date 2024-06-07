@@ -1,5 +1,3 @@
- 
-
 import 'package:clan_churn/api_repos/api_repo.dart';
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/pages/new_project_components.dart';
@@ -75,8 +73,11 @@ class _UploadNewDataState extends State<UploadNewData> {
                                         .createdProject!
                                         .id,
                                     onErrorCallback: (message, errorCode) {
+                                      print(" file upload error call back, error message: $message , error code: $errorCode ");
                                       ApiRepository().handleWarningMessage(
-                                          message, context, errorCode);
+                                          "$message unable to upload file, something went wrong ",
+                                          context,
+                                          errorCode);
                                     },
                                     onSuccessCallBack: (message) {
                                       ApiRepository().handleSuccessMessage(

@@ -7,8 +7,10 @@ import 'package:clan_churn/api_repos/models/project_history_model.dart';
 import 'package:clan_churn/api_repos/models/project_model.dart';
 import 'package:clan_churn/api_repos/models/user_model.dart';
 import 'package:clan_churn/components/dialogs.dart';
+import 'package:clan_churn/pages/new_project_components.dart';
 import 'package:equatable/equatable.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 part 'project_architect_event.dart';
 part 'project_architect_state.dart';
@@ -36,6 +38,7 @@ class ProjectArchitectBloc
     on<DownloadErrorReportEvent>(_onDownloadErrorReportEvent);
     on<UploadNewSheetRequestedEvent>(_onUploadNewSheetRequestedEvent);
     on<ProjectInputHistoryEvent>(_onProjectInputHistoryEvent);
+    on<GenerateMartsEvent>(_onGenerateMartsEvent);
   }
 
   _onClientsEvent(
@@ -66,7 +69,7 @@ class ProjectArchitectBloc
     final result = await apiRepository.getAllProjectDetails(
         clientId: event.clientId,
         onErrorCallback: (String message, int errorCode) {
-          log(" $message");
+          log(" getAllProjectDetails error call back: error message: $message error code: $errorCode");
         });
     if (result != null) {
       emit(state.copyWith(projectsList: result));
@@ -121,7 +124,8 @@ class ProjectArchitectBloc
               inputSheet: null,
               projectDetails: null,
               allInputs: null,
-              latestInput: null)));
+              latestInput: null,
+              latestInputModel: null)));
     }
   }
 
@@ -136,7 +140,8 @@ class ProjectArchitectBloc
             inputSheet: null,
             projectDetails: null,
             allInputs: null,
-            latestInput: null)));
+            latestInput: null,
+            latestInputModel: null)));
   }
 
   _onReplaceColumnsEvent(
@@ -198,7 +203,8 @@ class ProjectArchitectBloc
               inputSheet: null,
               projectDetails: null,
               allInputs: null,
-              latestInput: null)));
+              latestInput: null,
+              latestInputModel: null)));
     }
   }
 
@@ -224,7 +230,8 @@ class ProjectArchitectBloc
               inputSheet: null,
               projectDetails: null,
               allInputs: null,
-              latestInput: null)));
+              latestInput: null,
+              latestInputModel: null)));
     }
   }
 
@@ -249,8 +256,7 @@ class ProjectArchitectBloc
       log("upload file result else case: $result");
       // ignore: use_build_context_synchronously
       Navigator.pop(event.context);
-      // ignore: use_build_context_synchronously
-      GetDialog.failedErrorReport(event.context);
+
       emit(state.copyWith(
           uploadingFile: false,
           errorReport: null,
@@ -266,10 +272,9 @@ class ProjectArchitectBloc
       onSuccessCallback: event.onSuccessCallback,
     );
     if (res != null) {
-      emit(state.copyWith(errorReport: res.replaceAll('"', "")));
-      return;
-    } else {
-      emit(state.copyWith(errorReport: null));
+      Project pro = state.createdProject!.copyWith(latestInputModel: res);
+      launchURL(pro.latestInputModel!.errorSheetUrl!);
+      emit(state.copyWith(createdProject: pro));
     }
   }
 
@@ -310,6 +315,20 @@ class ProjectArchitectBloc
       emit(state.copyWith(projectHistory: result));
     } else {
       emit(state.copyWith(projectHistory: []));
+    }
+  }
+
+  _onGenerateMartsEvent(
+      GenerateMartsEvent event, Emitter<ProjectArchitectState> emit) async {
+    final res = await apiRepository.generateMarts(
+      inputId: event.inputId,
+      onErrorCallback: event.onErrorCallback,
+      onSuccessCallback: event.onSuccessCallback,
+    );
+    if (res != null) {
+      Project pro = state.createdProject!.copyWith(latestInputModel: res);
+      launchURL(pro.latestInputModel!.martsSheetUrl!);
+      emit(state.copyWith(createdProject: pro));
     }
   }
 }

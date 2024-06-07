@@ -86,7 +86,7 @@ class ApiRepository {
       if (response.statusCode == 200) {
         List<ClientDetails> clientDetails =
             clientDetailsFromJson(response.body);
-        log("Clients:..... $clientDetails");
+        print("Clients:..... $clientDetails");
         return clientDetails;
       } else {
         _handleStatusCode(
@@ -140,7 +140,7 @@ class ApiRepository {
   }
 
   // Get error report for a specific input
-  Future<String?> getErrorReportForInput(
+  Future<LatestInputModel?> getErrorReportForInput(
       {required String inputId,
       required OnErrorCallback onErrorCallback,
       required OnSuccessCallback onSuccessCallback}) async {
@@ -158,17 +158,16 @@ class ApiRepository {
 
       // Make API call with access token
       http.Response response = await http.post(
-        Uri.parse(
-            '${BaseUrl.baseUrl}${ApiEndpoints.getErrorReport}?input_id=$inputId'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ${authCredentials.accessToken}',
-        },
-      );
+          Uri.parse('${BaseUrl.baseUrl}${ApiEndpoints.getErrorReport}'),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ${authCredentials.accessToken}',
+          },
+          body: json.encode(inputId));
 
       log("${ApiEndpoints.getErrorReport} api response : $response");
       if (response.statusCode == 200) {
-        String res = response.body;
+        LatestInputModel res = LatestInputModel.fromJson(json.decode(response.body));
         log("${ApiEndpoints.getErrorReport} response : $res");
         onSuccessCallback(response);
         return res;
@@ -565,6 +564,49 @@ class ApiRepository {
       }
     } catch (e) {
       log("Project Input History: $e");
+    }
+    return null;
+  }
+
+  // Get error report for a specific input
+  Future<LatestInputModel?> generateMarts(
+      {required String inputId,
+      required OnErrorCallback onErrorCallback,
+      required OnSuccessCallback onSuccessCallback}) async {
+    log("......get error report $inputId");
+    try {
+      // Fetch auth credentials
+      final AuthCredentials authCredentials =
+          await AuthRepository().getTokens();
+
+      // Check if auth credentials are null
+      if (authCredentials.accessToken.isEmpty) {
+        log('Access token is empty');
+        return null;
+      }
+
+      // Make API call with access token
+      http.Response response = await http.post(
+          Uri.parse('${BaseUrl.baseUrl}${ApiEndpoints.generateMarts}'),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ${authCredentials.accessToken}',
+          },
+          body: json.encode(inputId));
+
+      log("${ApiEndpoints.generateMarts} api response : $response");
+      if (response.statusCode == 200) {
+        LatestInputModel res = LatestInputModel.fromJson(json.decode(response.body));
+        log("${ApiEndpoints.getErrorReport} response : $res");
+        onSuccessCallback(response);
+        return res;
+      } else {
+        _handleStatusCode(
+            response.statusCode, response.reasonPhrase, onErrorCallback);
+        return null;
+      }
+    } catch (e) {
+      log('${ApiEndpoints.generateMarts}:  Network Error: $e');
     }
     return null;
   }

@@ -7,8 +7,8 @@ User userFromJson(String str) => User.fromJson(json.decode(str));
 String userToJson(User data) => json.encode(data.toJson());
 
 class User extends Equatable {
-  final ClientDetails clientDetails;
-  final String firstName;
+  final ClientDetails? clientDetails;
+  final String? firstName;
   final String lastName;
   final String email;
   final String userId;
@@ -24,7 +24,7 @@ class User extends Equatable {
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
-        clientDetails: ClientDetails.fromJson(json["client_details"]),
+        clientDetails:json["client_details"] == null ? null:  ClientDetails.fromJson(json["client_details"]),
         firstName: json["first_name"],
         lastName: json["last_name"],
         email: json["email"],
@@ -33,7 +33,7 @@ class User extends Equatable {
       );
 
   Map<String, dynamic> toJson() => {
-        "client_details": clientDetails.toJson(),
+        "client_details": clientDetails!.toJson(),
         "first_name": firstName,
         "last_name": lastName,
         "email": email,
@@ -105,6 +105,7 @@ class ClientDetails extends Equatable {
 
   @override
   List<Object?> get props => [
+        id,
         name,
         role,
         pocMailId,

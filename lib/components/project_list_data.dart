@@ -97,24 +97,28 @@ class _ProjectsListDataState extends State<ProjectsListData> {
                   ],
                 ),
                 ClanChurnSpacing.h20,
-                SingleChildScrollView(
-                  child: GridView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: GetDeviceType.getCount(
-                            context: context, isExpanded: state.isExpanded),
-                        childAspectRatio: 1,
-                        crossAxisSpacing: 15,
-                        mainAxisSpacing: 15),
-                    itemCount: state.projectsList.length,
-                    itemBuilder: (context, index) {
-                      return ProjectCard(
-                        index: index,
-                      );
-                    },
-                  ),
-                )
+                state.projectsList.isEmpty
+                    ? Text("No projects are created yet")
+                    : SingleChildScrollView(
+                        child: GridView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: GetDeviceType.getCount(
+                                      context: context,
+                                      isExpanded: state.isExpanded),
+                                  childAspectRatio: 1,
+                                  crossAxisSpacing: 15,
+                                  mainAxisSpacing: 15),
+                          itemCount: state.projectsList.length,
+                          itemBuilder: (context, index) {
+                            return ProjectCard(
+                              index: index,
+                            );
+                          },
+                        ),
+                      )
               ],
             ));
       },

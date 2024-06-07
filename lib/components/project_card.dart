@@ -1,5 +1,4 @@
-
-import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart'; 
+import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/pages/new_project_components.dart';
 import 'package:clan_churn/pages/project_input_fields_sheet.dart';
 import 'package:clan_churn/utils/routes.dart';
@@ -28,10 +27,13 @@ class ProjectCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CircleAvatar(
-                  radius: state.isExpanded? 35: 40,
+                  radius: state.isExpanded ? 35 : 40,
                   backgroundColor: Theme.of(context).colorScheme.background,
-                  child:   Icon(Icons.person, color: Theme.of(context).colorScheme.primary,
-                    size: state.isExpanded? 35: 40,),
+                  child: Icon(
+                    Icons.person,
+                    color: Theme.of(context).colorScheme.primary,
+                    size: state.isExpanded ? 35 : 40,
+                  ),
                 ),
                 Column(
                   children: [
@@ -56,8 +58,9 @@ class ProjectCard extends StatelessWidget {
                       style: ClanChurnTypography.font15600,
                     ),
                     onPressed: () {
-                      context.read<ProjectArchitectBloc>().add(SetCreatedProjectEvent(
-                          createdProject: state.projectsList[index]));
+                      context.read<ProjectArchitectBloc>().add(
+                          SetCreatedProjectEvent(
+                              createdProject: state.projectsList[index]));
                       if (state.projectsList[index].inputSheet == null) {
                         Navigator.push(
                             context,
@@ -68,7 +71,6 @@ class ProjectCard extends StatelessWidget {
                             context,
                             customPageRouteForNavigation(
                                 const ProjectInputFieldsPage()));
-                        
                       }
                     },
                   ),
