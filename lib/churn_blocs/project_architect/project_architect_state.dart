@@ -4,7 +4,7 @@ class ProjectArchitectState extends Equatable {
   const ProjectArchitectState.initial()
       : this(
             clientList: const [],
-            isExpanded: false,
+            isNotExpanded: false,
             selectedClient: null,
             projectsList: const [],
             columnsList: const [],
@@ -17,7 +17,7 @@ class ProjectArchitectState extends Equatable {
             projectHistory: const []);
 
   final List<ClientDetails> clientList;
-  final bool isExpanded;
+  final bool isNotExpanded;
   final ClientDetails? selectedClient;
   final List<Project> projectsList;
   final List<ColumnDetails> columnsList;
@@ -30,7 +30,7 @@ class ProjectArchitectState extends Equatable {
   final List<ProjectHistoryModel> projectHistory;
   const ProjectArchitectState(
       {required this.clientList,
-      required this.isExpanded,
+      required this.isNotExpanded,
       required this.selectedClient,
       required this.projectsList,
       required this.columnsList,
@@ -44,7 +44,7 @@ class ProjectArchitectState extends Equatable {
 
   ProjectArchitectState copyWith(
       {List<ClientDetails>? clientList,
-      bool? isExpanded,
+      bool? isNotExpanded,
       ClientDetails? selectedClient,
       List<Project>? projectsList,
       List<ColumnDetails>? columnsList,
@@ -60,7 +60,7 @@ class ProjectArchitectState extends Equatable {
     }
     return ProjectArchitectState(
         clientList: clientList ?? this.clientList,
-        isExpanded: isExpanded ?? this.isExpanded,
+        isNotExpanded: isNotExpanded ?? this.isNotExpanded,
         selectedClient: selectedClient ?? this.selectedClient,
         projectsList: projectsList ?? this.projectsList,
         columnsList: columnsList ?? this.columnsList,
@@ -77,7 +77,7 @@ class ProjectArchitectState extends Equatable {
   @override
   List<Object?> get props => [
         clientList,
-        isExpanded,
+        isNotExpanded,
         selectedClient,
         projectsList,
         columnsList,

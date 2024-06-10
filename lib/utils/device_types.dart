@@ -12,22 +12,22 @@ enum DeviceType { mobile, tablet, desktopSmall, deskTopMedium, desktopLarge }
 
 class GetDeviceType {
   static int getCount(
-      {required BuildContext context, required bool isExpanded}) {
+      {required BuildContext context, required bool isNotExpanded}) {
     double h = MediaQuery.of(context).size.height;
     if (h >= 900) {
-      if (isExpanded) {
+      if (isNotExpanded) {
         return 7;
       } else {
         return 6;
       }
     } else if (h >= 700) {
-      if (isExpanded) {
+      if (isNotExpanded) {
         return 6;
       } else {
         return 5;
       }
     } else {
-      if (isExpanded) {
+      if (isNotExpanded) {
         return 5;
       } else {
         return 4;

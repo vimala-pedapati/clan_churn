@@ -16,7 +16,7 @@ class ProfileWidget extends StatefulWidget {
 
 class _ProfileWidgetState extends State<ProfileWidget>
     with SingleTickerProviderStateMixin {
-  bool isExpanded = false;
+  bool isNotExpanded = false;
 
   double rotationAngle = 0;
 
@@ -43,7 +43,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                   ClanChurnSpacing.w10,
                   AnimatedContainer(
                     duration: const Duration(milliseconds: 300),
-                    height: isExpanded ? 120 : 60,
+                    height: isNotExpanded ? 120 : 60,
                     padding: const EdgeInsets.only(
                         left: 10, right: 10, top: 10, bottom: 10),
                     decoration: BoxDecoration(
@@ -52,7 +52,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                             .primary
                             .withOpacity(0.1),
                         borderRadius:
-                            BorderRadius.circular(isExpanded ? 30 : 30)),
+                            BorderRadius.circular(isNotExpanded ? 30 : 30)),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -62,8 +62,8 @@ class _ProfileWidgetState extends State<ProfileWidget>
                             child: IconButton(
                                 onPressed: () {
                                   setState(() {
-                                    isExpanded = !isExpanded;
-                                    if (isExpanded) {
+                                    isNotExpanded = !isNotExpanded;
+                                    if (isNotExpanded) {
                                       rotationAngle += 180;
                                     } else {
                                       rotationAngle -= 180;
@@ -116,7 +116,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                             ),
                           )
                         ]),
-                        isExpanded
+                        isNotExpanded
                             ? InkWell(
                                 onTap: () {
                                   context
@@ -202,7 +202,7 @@ class MyDrawer extends StatelessWidget {
                         children: [
                           const Icon(Icons.logout_outlined, color: Colors.red),
                           ClanChurnSpacing.w10,
-                          state.isExpanded
+                          state.isNotExpanded
                               ? Container()
                               : AnimatedContainer(
                                   duration: const Duration(seconds: 1),

@@ -52,7 +52,7 @@ class GetInputFieldsComponent extends StatelessWidget {
     return BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
       builder: (context, state) {
         return AnimatedContainer(
-          width: state.isExpanded ? w * 0.89 : w * 0.8,
+          width: state.isNotExpanded ? w * 0.89 : w * 0.8,
           height: h * 0.83,
           padding:
               const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 10),

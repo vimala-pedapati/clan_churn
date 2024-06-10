@@ -72,7 +72,7 @@ class _ProjectsViewComponentState extends State<ProjectsViewComponent>  {
                       AnimatedContainer(
                         duration: const Duration(seconds: 1),
                         height: h * 0.8,
-                        width:state.isExpanded? w* 0.89 : w * 0.82,
+                        width:state.isNotExpanded? w* 0.89 : w * 0.82,
                         // width: MediaQuery.of(context).size.width,
                         padding: const EdgeInsets.only(
                             left: 20, right: 20, top: 20, bottom: 10),

@@ -27,12 +27,12 @@ class ProjectCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CircleAvatar(
-                  radius: state.isExpanded ? 35 : 40,
+                  radius: state.isNotExpanded ? 35 : 40,
                   backgroundColor: Theme.of(context).colorScheme.background,
                   child: Icon(
                     Icons.person,
                     color: Theme.of(context).colorScheme.primary,
-                    size: state.isExpanded ? 35 : 40,
+                    size: state.isNotExpanded ? 35 : 40,
                   ),
                 ),
                 Column(

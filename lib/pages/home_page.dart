@@ -20,7 +20,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     context.read<UserBloc>().add(GetUserDetailsEvent());
     context.read<ProjectArchitectBloc>().add(GetClientsEvent());
-    context .read<ProjectArchitectBloc>().add(const SideBarExpandedEvent(isExpanded: false));
+    context .read<ProjectArchitectBloc>().add(const SideBarExpandedEvent(isNotExpanded: false));
     super.initState();
   }
 

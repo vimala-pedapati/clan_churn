@@ -18,7 +18,7 @@ class SideBar extends StatefulWidget {
 
 class _SideBarState extends State<SideBar> {
   double rotationAngle = 0;
-  bool isExpanded = false;
+  bool isNotExpanded = false;
   @override
   Widget build(BuildContext context) {
     final h = MediaQuery.of(context).size.height;
@@ -28,15 +28,15 @@ class _SideBarState extends State<SideBar> {
         return AnimatedContainer(
           duration: const Duration(seconds: 1),
           // height: h * 0.89,
-          // width: state.isExpanded ? w * 0.05 : w * 0.15,
+          // width: state.isNotExpanded ? w * 0.05 : w * 0.15,
           height: h * 0.88,
-          width: state.isExpanded ? 90 : 220,
+          width: state.isNotExpanded ? 90 : 220,
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.background,
           ),
           child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Column(
                   children: [
@@ -45,10 +45,10 @@ class _SideBarState extends State<SideBar> {
                       onTap: () {
                         context.read<ProjectArchitectBloc>().add(
                             SideBarExpandedEvent(
-                                isExpanded: !state.isExpanded));
+                                isNotExpanded: !state.isNotExpanded));
                         setState(() {
-                          isExpanded = !isExpanded;
-                          if (isExpanded) {
+                          isNotExpanded = !isNotExpanded;
+                          if (isNotExpanded) {
                             rotationAngle += 180;
                           } else {
                             rotationAngle -= 180;
@@ -71,7 +71,7 @@ class _SideBarState extends State<SideBar> {
                                       Theme.of(context).colorScheme.secondary,
                                 )),
                             ClanChurnSpacing.w10,
-                            state.isExpanded
+                            state.isNotExpanded
                                 ? Container()
                                 : AnimatedContainer(
                                     duration: const Duration(seconds: 1),
@@ -111,7 +111,7 @@ class _SideBarState extends State<SideBar> {
                                   : Theme.of(context).colorScheme.secondary,
                             ),
                             ClanChurnSpacing.w10,
-                            state.isExpanded
+                            state.isNotExpanded
                                 ? Container()
                                 : AnimatedContainer(
                                     duration: const Duration(seconds: 1),
@@ -156,12 +156,13 @@ class _SideBarState extends State<SideBar> {
                           children: [
                             Icon(
                               Icons.save,
-                              color: widget.selectedRoute == SelectedRoute.savedReports
+                              color: widget.selectedRoute ==
+                                      SelectedRoute.savedReports
                                   ? null
                                   : Theme.of(context).colorScheme.secondary,
                             ),
                             ClanChurnSpacing.w10,
-                            state.isExpanded
+                            state.isNotExpanded
                                 ? Container()
                                 : AnimatedContainer(
                                     duration: const Duration(seconds: 1),
@@ -183,6 +184,12 @@ class _SideBarState extends State<SideBar> {
                     ),
                   ],
                 ),
+                state.isNotExpanded
+                    ? Container()
+                    : Text(
+                        "powered by TMI Group",
+                        style: ClanChurnTypography.font14400,
+                      ),
                 // logout
                 // InkWell(
                 //   onTap: () {
@@ -200,7 +207,7 @@ class _SideBarState extends State<SideBar> {
                 //       children: [
                 //         const Icon(Icons.logout_outlined, color: Colors.red),
                 //         ClanChurnSpacing.w10,
-                //         state.isExpanded
+                //         state.isNotExpanded
                 //             ? Container()
                 //             : AnimatedContainer(
                 //                 duration: const Duration(seconds: 1),

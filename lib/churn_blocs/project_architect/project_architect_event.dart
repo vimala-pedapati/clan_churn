@@ -10,8 +10,8 @@ class ProjectArchitectEvent extends Equatable {
 class GetClientsEvent extends ProjectArchitectEvent {}
 
 class SideBarExpandedEvent extends ProjectArchitectEvent {
-  final bool isExpanded;
-  const SideBarExpandedEvent({required this.isExpanded});
+  final bool isNotExpanded;
+  const SideBarExpandedEvent({required this.isNotExpanded});
 }
 
 class SetSelectedClientEvent extends ProjectArchitectEvent {

@@ -107,7 +107,7 @@ class _ProjectsListDataState extends State<ProjectsListData> {
                               SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: GetDeviceType.getCount(
                                       context: context,
-                                      isExpanded: state.isExpanded),
+                                      isNotExpanded: state.isNotExpanded),
                                   childAspectRatio: 1,
                                   crossAxisSpacing: 15,
                                   mainAxisSpacing: 15),

@@ -56,7 +56,7 @@ class ProjectArchitectBloc
 
   _onSideBarExpandedEvent(
       SideBarExpandedEvent event, Emitter<ProjectArchitectState> emit) {
-    emit(state.copyWith(isExpanded: event.isExpanded));
+    emit(state.copyWith(isNotExpanded: event.isNotExpanded));
   }
 
   _onSetSelectedClientEvent(

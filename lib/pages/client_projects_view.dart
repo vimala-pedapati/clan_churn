@@ -38,7 +38,7 @@ class _ClientProjectsViewState extends State<ClientProjectsView> {
                         selectedRoute: SelectedRoute.home,
                       ),
                       ProjectsViewComponent(
-                        width: state.isExpanded ? w * 0.89 : w * 0.8,
+                        width: state.isNotExpanded ? w * 0.89 : w * 0.8,
                       )
                     ],
                   ),
