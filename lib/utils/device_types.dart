@@ -36,10 +36,19 @@ class GetDeviceType {
   }
 
   static DeviceType getDeviceType({required BuildContext context}) {
-    double h = MediaQuery.of(context).size.height;
-    if (h >= 900) {
+    double w = MediaQuery.of(context).size.width;
+    // w - 1920, 1024 - 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900
+    //  1000, 1200, 1400, 1600, 1800
+    // 1000, 1300, 1600, 1900
+
+
+  //  if(){
+
+  //  }
+  
+    if (w >= 900) {
       return DeviceType.desktopLarge;
-    } else if (h >= 700) {
+    } else if (w >= 700) {
       return DeviceType.deskTopMedium;
     } else {
       return DeviceType.desktopSmall;
