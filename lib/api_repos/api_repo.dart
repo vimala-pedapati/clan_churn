@@ -167,7 +167,8 @@ class ApiRepository {
 
       log("${ApiEndpoints.getErrorReport} api response : $response");
       if (response.statusCode == 200) {
-        LatestInputModel res = LatestInputModel.fromJson(json.decode(response.body));
+        LatestInputModel res =
+            LatestInputModel.fromJson(json.decode(response.body));
         log("${ApiEndpoints.getErrorReport} response : $res");
         onSuccessCallback(response);
         return res;
@@ -594,9 +595,9 @@ class ApiRepository {
           },
           body: json.encode(inputId));
 
-      log("${ApiEndpoints.generateMarts} api response : ${response}");
+      log("${ApiEndpoints.generateMarts} api response : $response");
       if (response.statusCode == 200) {
-      log("${ApiEndpoints.generateMarts} api response : ${response.body}");
+        log("${ApiEndpoints.generateMarts} api response : ${response.body}");
         // LatestInputModel res = LatestInputModel.fromJson(json.decode(response.body));
         // print("${ApiEndpoints.getErrorReport} response : ${res}");
         onSuccessCallback(response);
