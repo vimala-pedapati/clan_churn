@@ -186,10 +186,13 @@ class _SideBarState extends State<SideBar> {
                 ),
                 state.isNotExpanded
                     ? Container()
-                    : Text(
-                        "powered by TMI Group",
-                        style: ClanChurnTypography.font14400,
-                      ),
+                    : Padding(
+                      padding: const EdgeInsets.only(bottom: 10),
+                      child: Text(
+                          "powered by TMI Group",
+                          style: ClanChurnTypography.font14400,
+                        ),
+                    ),
                 // logout
                 // InkWell(
                 //   onTap: () {
