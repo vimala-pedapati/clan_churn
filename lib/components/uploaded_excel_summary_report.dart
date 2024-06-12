@@ -464,20 +464,18 @@ class _UploadedExcelSummaryReportState
                               selectedItemBuilder: (BuildContext context) {
                                 return sheets.map((String item) {
                                   return Center(
-                                    child: Expanded(
-                                      child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(item,
-                                              style: ClanChurnTypography
-                                                  .font18500
-                                                  .copyWith(
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .secondary)),
-                                        ],
-                                      ),
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(item,
+                                            style: ClanChurnTypography
+                                                .font18500
+                                                .copyWith(
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .secondary)),
+                                      ],
                                     ),
                                   );
                                 }).toList();
@@ -582,20 +580,18 @@ class _UploadedExcelSummaryReportState
                               selectedItemBuilder: (BuildContext context) {
                                 return columns.map((String item) {
                                   return Center(
-                                    child: Expanded(
-                                      child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(item,
-                                              style: ClanChurnTypography
-                                                  .font18500
-                                                  .copyWith(
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .secondary)),
-                                        ],
-                                      ),
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(item,
+                                            style: ClanChurnTypography
+                                                .font18500
+                                                .copyWith(
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .secondary)),
+                                      ],
                                     ),
                                   );
                                 }).toList();
