@@ -75,14 +75,24 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
     });
 
     if (context.read<ProjectArchitectBloc>().state.createdProject != null) {
-      if (context.read<ProjectArchitectBloc>().state.createdProject!.id.isNotEmpty) {
+      if (context
+          .read<ProjectArchitectBloc>()
+          .state
+          .createdProject!
+          .id
+          .isNotEmpty) {
         isProjectCreated = true;
       }
       setState(() {
         projectController.text =
-            context.read<ProjectArchitectBloc>().state.createdProject!.name ?? '';
-        projectName = context.read<ProjectArchitectBloc>().state.createdProject!.name ?? '';
-        previousName = context.read<ProjectArchitectBloc>().state.createdProject!.name ?? '';
+            context.read<ProjectArchitectBloc>().state.createdProject!.name ??
+                '';
+        projectName =
+            context.read<ProjectArchitectBloc>().state.createdProject!.name ??
+                '';
+        previousName =
+            context.read<ProjectArchitectBloc>().state.createdProject!.name ??
+                '';
       });
     }
     context.read<ProjectArchitectBloc>().add(const GetColumnsEvent());
@@ -246,7 +256,8 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                         ),
                         ElevatedButton(
                           onPressed: (projectName.isEmpty ||
-                                  state.columnsList.isEmpty || projectName == previousName)
+                                  state.columnsList.isEmpty ||
+                                  projectName == previousName)
                               ? null
                               : () {
                                   if (isProjectCreated) {
@@ -261,10 +272,11 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                                                   context);
                                             },
                                             warningMessageCallback:
-                                                (String message, int errorCode) {
+                                                (String message,
+                                                    int errorCode) {
                                               ApiRepository()
-                                                  .handleWarningMessage(
-                                                      message, context, errorCode);
+                                                  .handleWarningMessage(message,
+                                                      context, errorCode);
                                             }));
                                   } else {
                                     context
@@ -276,14 +288,15 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                                             setState(() {
                                               isProjectCreated = true;
                                             });
-                                            ApiRepository()
-                                                .handleSuccessMessage(
-                                                     "Project created successfully!......", context);
+                                            ApiRepository().handleSuccessMessage(
+                                                "Project created successfully!......",
+                                                context);
                                           },
-                                          onErrorCallback: (message, errorCode) {
-                                            ApiRepository().handleWarningMessage(
-                                               message,
-                                                context, errorCode);
+                                          onErrorCallback:
+                                              (message, errorCode) {
+                                            ApiRepository()
+                                                .handleWarningMessage(message,
+                                                    context, errorCode);
                                           },
                                         ));
                                   }
@@ -312,91 +325,94 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                               : (state.createdProject!.id.isEmpty)
                                   ? 0.4
                                   : 1.0,
-                      child: SingleChildScrollView(
-                        child: Wrap(
-                          spacing: 0, // Horizontal spacing
-                          runSpacing: 0, // Vertical spacing
-                          children:
-                              List.generate(state.columnsList.length, (index) {
-                            return Row(
-                              children: [
-                                Checkbox(
-                                  value:
-                                      state.columnsList[index].isUserCheckedIn,
-                                  onChanged: state
-                                          .columnsList[index].isMandatory
-                                      ? null
-                                      : (value) {
-                                          ColumnDetails a = state
-                                              .columnsList[index]
-                                              .copyWith(isUserCheckedIn: value);
-                                          List<ColumnDetails> b =
-                                              state.columnsList.toList();
-                                          b[index] = a;
-                                          context.read<ProjectArchitectBloc>().add(
-                                              ReplaceColumnsEvent(
-                                                  columns: b, index: index));
-                                        },
-                                ),
-                                Expanded(
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        state.columnsList[index].columnName,
-                                        overflow: TextOverflow.visible,
-                                      ),
-                                      SizedBox(
-                                          height: 30,
-                                          width: 300,
-                                          child: TextFormField(
-                                            controller: state
-                                                .customerColumnNames[index],
-                                            cursorHeight: 15,
-                                            onChanged: (value) {
-                                              // Create a copy of the list of controllers
-                                              List<TextEditingController>
-                                                  controllers = List.from(state
-                                                      .customerColumnNames);
+                      child: ColumnDetailsWidget(
+                          columnsList: state.columnsList,
+                          customerColumnNames: state.customerColumnNames),
+                      // child: SingleChildScrollView(
+                      //   child: Wrap(
+                      //     spacing: 0, // Horizontal spacing
+                      //     runSpacing: 0, // Vertical spacing
+                      //     children:
+                      //         List.generate(state.columnsList.length, (index) {
+                      //       return Row(
+                      //         children: [
+                      //           Checkbox(
+                      //             value:
+                      //                 state.columnsList[index].isUserCheckedIn,
+                      //             onChanged: state
+                      //                     .columnsList[index].isMandatory
+                      //                 ? null
+                      //                 : (value) {
+                      //                     ColumnDetails a = state
+                      //                         .columnsList[index]
+                      //                         .copyWith(isUserCheckedIn: value);
+                      //                     List<ColumnDetails> b =
+                      //                         state.columnsList.toList();
+                      //                     b[index] = a;
+                      //                     context.read<ProjectArchitectBloc>().add(
+                      //                         ReplaceColumnsEvent(
+                      //                             columns: b, index: index));
+                      //                   },
+                      //           ),
+                      //           Expanded(
+                      //             child: Row(
+                      //               mainAxisAlignment:
+                      //                   MainAxisAlignment.spaceBetween,
+                      //               crossAxisAlignment:
+                      //                   CrossAxisAlignment.center,
+                      //               children: [
+                      //                 Text(
+                      //                   state.columnsList[index].columnName,
+                      //                   overflow: TextOverflow.visible,
+                      //                 ),
+                      //                 SizedBox(
+                      //                     height: 30,
+                      //                     width: 300,
+                      //                     child: TextFormField(
+                      //                       controller: state
+                      //                           .customerColumnNames[index],
+                      //                       cursorHeight: 15,
+                      //                       onChanged: (value) {
+                      //                         // Create a copy of the list of controllers
+                      //                         List<TextEditingController>
+                      //                             controllers = List.from(state
+                      //                                 .customerColumnNames);
 
-                                              // Update the text of the controller at the specified index
-                                              controllers[index].text = value;
+                      //                         // Update the text of the controller at the specified index
+                      //                         controllers[index].text = value;
 
-                                              // Get the current cursor position
-                                              int cursorPosition = value.length;
+                      //                         // Get the current cursor position
+                      //                         int cursorPosition = value.length;
 
-                                              // Update the selection of the controller at the specified index
-                                              controllers[index].selection =
-                                                  TextSelection.collapsed(
-                                                      offset: cursorPosition
-                                                      //   TextSelection.fromPosition(
-                                                      // TextPosition(
-                                                      //     offset: cursorPosition),
-                                                      );
+                      //                         // Update the selection of the controller at the specified index
+                      //                         controllers[index].selection =
+                      //                             TextSelection.collapsed(
+                      //                                 offset: cursorPosition
+                      //                                 //   TextSelection.fromPosition(
+                      //                                 // TextPosition(
+                      //                                 //     offset: cursorPosition),
+                      //                                 );
 
-                                              // Dispatch an event to update the state with the modified list of controllers
-                                              context.read<ProjectArchitectBloc>().add(
-                                                    CustomerColumnNamesEvent(
-                                                        customerColumnNames:
-                                                            controllers),
-                                                  );
-                                            },
-                                            decoration: const InputDecoration(
-                                                contentPadding: EdgeInsets.only(
-                                                    left: 10, right: 10),
-                                                border: OutlineInputBorder()),
-                                          ))
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            );
-                          }),
-                        ),
-                      ),
+                      //                         // Dispatch an event to update the state with the modified list of controllers
+                      //                         context.read<ProjectArchitectBloc>().add(
+                      //                               CustomerColumnNamesEvent(
+                      //                                   customerColumnNames:
+                      //                                       controllers),
+                      //                             );
+                      //                       },
+                      //                       decoration: const InputDecoration(
+                      //                           contentPadding: EdgeInsets.only(
+                      //                               left: 10, right: 10),
+                      //                           border: OutlineInputBorder()),
+                      //                     ))
+                      //               ],
+                      //             ),
+                      //           ),
+                      //         ],
+                      //       );
+                      //     }),
+                      //   ),
+                      // ),
                     ),
                   ),
                 ),
@@ -411,7 +427,10 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                               : (state.createdProject!.id.isEmpty)
                                   ? null
                                   : () {
-                                      // log("${state.customerColumnNames}");
+                                      // for (var i in state.customerColumnNames) {
+                                      //   print("${i.text}");
+                                      // }
+
                                       context
                                           .read<ProjectArchitectBloc>()
                                           .add(AddColumnsToProjectEvent());
@@ -472,5 +491,129 @@ void downloadFile(String url, BuildContext context) async {
 //     }
 //   }
 
-    
-  
+class ColumnDetailsWidget extends StatelessWidget {
+  final List<ColumnDetails> columnsList;
+  final List<TextEditingController> customerColumnNames;
+
+  const ColumnDetailsWidget({
+    Key? key,
+    required this.columnsList,
+    required this.customerColumnNames,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    // Grouping the columns by sheetName
+    Map<String, List<ColumnDetails>> groupedColumns =
+        groupBySheetName(columnsList);
+
+    return SingleChildScrollView(
+      child: Column(
+        children: groupedColumns.entries.map((entry) {
+          String sheetName = entry.key;
+          List<ColumnDetails> columns = entry.value;
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Text(
+                  "\n $sheetName",
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              ),
+              Wrap(
+                spacing: 0,
+                runSpacing: 0,
+                children: List.generate(columns.length, (index) {
+                  ColumnDetails column = columns[index];
+                  int globalIndex = columnsList.indexOf(column);
+                  return Row(
+                    children: [
+                      Checkbox(
+                        value: column.isUserCheckedIn,
+                        onChanged: column.isMandatory
+                            ? null
+                            : (value) {
+                                ColumnDetails updatedColumn =
+                                    column.copyWith(isUserCheckedIn: value);
+                                List<ColumnDetails> updatedList =
+                                    columnsList.toList();
+                                updatedList[globalIndex] = updatedColumn;
+                                context.read<ProjectArchitectBloc>().add(
+                                    ReplaceColumnsEvent(
+                                        columns: updatedList,
+                                        index: globalIndex));
+                              },
+                      ),
+                      Expanded(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              column.columnName,
+                              overflow: TextOverflow.visible,
+                            ),
+                            SizedBox(
+                              height: 30,
+                              width: 300,
+                              child: TextFormField(
+                                // controller: customerColumnNames[globalIndex],
+                                enabled: column.isUserCheckedIn,
+                                cursorHeight: 15,
+                                onChanged: (value) {
+                                  // Update the text of the controller
+                                  customerColumnNames[globalIndex].text = value;
+
+                                  // Get the current cursor position
+                                  int cursorPosition = value.length;
+
+                                  // Update the selection of the controller
+                                  customerColumnNames[globalIndex].selection =
+                                      TextSelection.collapsed(
+                                          offset: cursorPosition);
+
+                                  // Dispatch an event to update the state with the modified list of controllers
+                                  context.read<ProjectArchitectBloc>().add(
+                                        CustomerColumnNamesEvent(
+                                            customerColumnNames:
+                                                customerColumnNames),
+                                      );
+                                },
+                                decoration: InputDecoration(
+                                    hintText: column.columnName,
+                                    contentPadding: const EdgeInsets.only(
+                                        left: 10, right: 10),
+                                    border: const OutlineInputBorder()),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  );
+                }),
+              ),
+            ],
+          );
+        }).toList(),
+      ),
+    );
+  }
+
+  // Function to group ColumnDetails by sheetName
+  Map<String, List<ColumnDetails>> groupBySheetName(
+      List<ColumnDetails> columns) {
+    Map<String, List<ColumnDetails>> groupedColumns = {};
+    for (var column in columns) {
+      if (!groupedColumns.containsKey(column.sheetName)) {
+        groupedColumns[column.sheetName] = [];
+      }
+      groupedColumns[column.sheetName]?.add(column);
+    }
+    return groupedColumns;
+  }
+}

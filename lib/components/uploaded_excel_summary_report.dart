@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:clan_churn/api_repos/api_repo.dart';
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/components/dialogs.dart';
 import 'package:clan_churn/components/outlined_button_template.dart';
@@ -8,7 +7,6 @@ import 'package:clan_churn/components/project_input_history.dart';
 import 'package:clan_churn/components/project_publish.dart';
 import 'package:clan_churn/components/summary_card.dart';
 import 'package:clan_churn/components/view_error_report.dart';
-import 'package:clan_churn/pages/new_project_components.dart';
 import 'package:clan_churn/utils/spacing.dart';
 import 'package:clan_churn/utils/typography.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
@@ -469,8 +467,7 @@ class _UploadedExcelSummaryReportState
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(item,
-                                            style: ClanChurnTypography
-                                                .font18500
+                                            style: ClanChurnTypography.font18500
                                                 .copyWith(
                                                     color: Theme.of(context)
                                                         .colorScheme
@@ -585,8 +582,7 @@ class _UploadedExcelSummaryReportState
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(item,
-                                            style: ClanChurnTypography
-                                                .font18500
+                                            style: ClanChurnTypography.font18500
                                                 .copyWith(
                                                     color: Theme.of(context)
                                                         .colorScheme
@@ -832,9 +828,7 @@ class _UploadedExcelSummaryReportState
                                                 .createdProject!
                                                 .latestInput ??
                                             "",
-                                        onSuccessCallback: (message) {
-                                          
-                                        },
+                                        onSuccessCallback: (message) {},
                                         onErrorCallback:
                                             (errorMessage, errorCode) {
                                           print(

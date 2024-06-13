@@ -164,7 +164,7 @@ class ProjectArchitectBloc
         });
         // }
       }
-      // log(a);
+      // print(a);
       final result = await apiRepository.addColumnsToProject(
           columnsToAdd: a,
           onErrorCallback: (String message, int errorCode) {
