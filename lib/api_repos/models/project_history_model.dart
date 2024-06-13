@@ -1,5 +1,8 @@
 import 'dart:convert';
 
+import 'package:clan_churn/api_repos/models/project_model.dart';
+import 'package:equatable/equatable.dart';
+
 List<ProjectHistoryModel> projectHistoryModelFromJson(String str) =>
     List<ProjectHistoryModel>.from(
         json.decode(str).map((x) => ProjectHistoryModel.fromJson(x)));
@@ -7,13 +10,13 @@ List<ProjectHistoryModel> projectHistoryModelFromJson(String str) =>
 String projectHistoryModelToJson(List<ProjectHistoryModel> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class ProjectHistoryModel {
-  String id;
-  DateTime? inputSheetUplodedTime;
-  String? inputStatus;
-  CreatedBy? createdBy;
+class ProjectHistoryModel extends Equatable {
+  final String id;
+  final DateTime? inputSheetUplodedTime;
+  final InputStatus? inputStatus;
+  final CreatedBy? createdBy;
 
-  ProjectHistoryModel({
+  const ProjectHistoryModel({
     required this.id,
     required this.inputSheetUplodedTime,
     required this.inputStatus,
@@ -21,15 +24,12 @@ class ProjectHistoryModel {
   });
 
   factory ProjectHistoryModel.fromJson(Map<String, dynamic> json) {
-    print("\n ................$json");
     return ProjectHistoryModel(
       id: json["id"],
       inputSheetUplodedTime: json["input_sheet_uploded_time"] == null
           ? json["input_sheet_uploded_time"]
           : DateTime.parse(json["input_sheet_uploded_time"]),
-      inputStatus: json["input_status"] == null
-          ? json["input_status"]
-          :  json["input_status"],
+      inputStatus: InputStatusExtension.fromString(json["input_status"]),
       createdBy: json["created_by"] == null
           ? null
           : CreatedBy.fromJson(json["created_by"]),
@@ -41,9 +41,13 @@ class ProjectHistoryModel {
         "input_sheet_uploded_time": inputSheetUplodedTime == null
             ? inputSheetUplodedTime
             : inputSheetUplodedTime!.toIso8601String(),
-        "input_status": inputStatusValues.reverse[inputStatus],
+        "input_status": inputStatus,
         "created_by": createdBy?.toJson(),
       };
+
+  @override
+  List<Object?> get props =>
+      [id, inputSheetUplodedTime, inputStatus, createdBy];
 }
 
 class CreatedBy {
@@ -80,21 +84,4 @@ class CreatedBy {
         "user_id": userId,
         "user_type": userType,
       };
-}
-
-enum InputStatus { UPLODED_DATA_UNSUCESSFULL }
-
-final inputStatusValues = EnumValues(
-    {"uploded_data_unsucessfull": InputStatus.UPLODED_DATA_UNSUCESSFULL});
-
-class EnumValues<T> {
-  Map<String, T> map;
-  late Map<T, String> reverseMap;
-
-  EnumValues(this.map);
-
-  Map<T, String> get reverse {
-    reverseMap = map.map((k, v) => MapEntry(v, k));
-    return reverseMap;
-  }
 }

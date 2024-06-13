@@ -287,7 +287,7 @@ class ProjectArchitectBloc
                 borderRadius: BorderRadius.circular(08),
               ),
               title: Text(pro.latestInputModel?.inputStatus ==
-                      LatestInputStatus.uploadedDataHasNoErrors
+                      InputStatus.uploadedDataHasNoErrors
                   ? "No errors in the uploaded data ready to publish"
                   : "something went wrong to download"),
             );

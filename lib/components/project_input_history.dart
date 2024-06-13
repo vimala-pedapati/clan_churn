@@ -1,3 +1,4 @@
+import 'package:clan_churn/api_repos/models/project_model.dart';
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/utils/spacing.dart';
 import 'package:clan_churn/utils/typography.dart';
@@ -151,7 +152,7 @@ class _HistoryBodyState extends State<HistoryBody> {
                             ),
                             ClanChurnSpacing.w100,
                             Text(
-                              "Data Uploaded",
+                              "${state.projectHistory[index].inputStatus?.properValue}",
                               style: ClanChurnTypography.font18600.copyWith(
                                   color: Theme.of(context).colorScheme.primary),
                             ),

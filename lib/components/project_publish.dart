@@ -53,7 +53,7 @@ class _GetPublishButtonState extends State<GetPublishButton> {
                         ? () {
                             if (state.createdProject?.latestInputModel
                                     ?.inputStatus ==
-                                LatestInputStatus.uploadedDataHasErrors) {
+                                InputStatus.uploadedDataHasErrors) {
                               showDialog(
                                 context: context,
                                 builder: (context) {
@@ -72,7 +72,7 @@ class _GetPublishButtonState extends State<GetPublishButton> {
                               );
                             } else if (state.createdProject?.latestInputModel
                                     ?.inputStatus ==
-                                LatestInputStatus.uploadedDataHasNoErrors) {
+                                InputStatus.uploadedDataHasNoErrors) {
                               context
                                   .read<ProjectArchitectBloc>()
                                   .add(GenerateMartsEvent(

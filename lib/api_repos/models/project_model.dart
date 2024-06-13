@@ -53,6 +53,7 @@ class Project extends Equatable {
       latestInputModel: latestInputModel ?? this.latestInputModel,
     );
   }
+
   factory Project.fromJson(Map<String, dynamic> json) => Project(
       id: json["id"],
       name: json["name"],
@@ -69,7 +70,9 @@ class Project extends Equatable {
           ? null
           : List<String>.from(json["all_inputs"].map((x) => x)),
       latestInput: json["latest_input"],
-      latestInputModel:json["latest_input_model"] == null ? null: LatestInputModel.fromJson(json["latest_input_model"]));
+      latestInputModel: json["latest_input_model"] == null
+          ? null
+          : LatestInputModel.fromJson(json["latest_input_model"]));
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -372,7 +375,7 @@ String latestInputModelToJson(LatestInputModel data) =>
 class LatestInputModel extends Equatable {
   final String id;
   final String? inputSheetUplodedTime;
-  final LatestInputStatus? inputStatus;
+  final InputStatus? inputStatus;
   final String? errorSheetUrl;
   final String? martsSheetUrl;
   final User? createdBy;
@@ -400,7 +403,7 @@ class LatestInputModel extends Equatable {
   Map<String, dynamic> toJson() => {
         "id": id,
         "input_sheet_uploded_time": inputSheetUplodedTime,
-        "input_status": inputStatus?.value ,
+        "input_status": inputStatus?.value,
         "created_by": createdBy!.toJson(),
       };
 
@@ -415,7 +418,7 @@ class LatestInputModel extends Equatable {
       ];
 }
 
-enum LatestInputStatus {
+enum InputStatus {
   unknown,
   uploadedDataSuccessful,
   uploadedDataUnsuccessful,
@@ -425,42 +428,61 @@ enum LatestInputStatus {
   uploadedDataDataMartsCannotBeGenerated,
 }
 
-extension InputStatusExtension on LatestInputStatus {
+extension InputStatusExtension on InputStatus {
   String get value {
     switch (this) {
-      case LatestInputStatus.uploadedDataSuccessful:
+      case InputStatus.uploadedDataSuccessful:
         return "uploded_data_successfull";
-      case LatestInputStatus.uploadedDataUnsuccessful:
+      case InputStatus.uploadedDataUnsuccessful:
         return "uploded_data_unsucessfull";
-      case LatestInputStatus.uploadedDataHasErrors:
+      case InputStatus.uploadedDataHasErrors:
         return "uploded_data_has_errors";
-      case LatestInputStatus.uploadedDataHasNoErrors:
+      case InputStatus.uploadedDataHasNoErrors:
         return "uploded_data_has_no_errors";
-      case LatestInputStatus.uploadedDataDataMartsGenerated:
+      case InputStatus.uploadedDataDataMartsGenerated:
         return "uploded_data_data_marts_generated";
-      case LatestInputStatus.uploadedDataDataMartsCannotBeGenerated:
+      case InputStatus.uploadedDataDataMartsCannotBeGenerated:
         return "uploded_data_data_marts_connot_be_genrated";
       default:
         return "unknown";
     }
   }
 
-  static LatestInputStatus fromString(String value) {
+  String get properValue {
+    switch (this) {
+      case InputStatus.uploadedDataSuccessful:
+        return "uploded data successfull";
+      case InputStatus.uploadedDataUnsuccessful:
+        return "uploded data unsucessfull";
+      case InputStatus.uploadedDataHasErrors:
+        return "uploded data has errors";
+      case InputStatus.uploadedDataHasNoErrors:
+        return "uploded data has no errors";
+      case InputStatus.uploadedDataDataMartsGenerated:
+        return "uploded data data marts generated";
+      case InputStatus.uploadedDataDataMartsCannotBeGenerated:
+        return "uploded data data marts connot be genrated";
+      default:
+        return "unknown";
+    }
+  }
+
+  static InputStatus fromString(String value) {
     switch (value) {
       case "uploded_data_successfull":
-        return LatestInputStatus.uploadedDataSuccessful;
+        return InputStatus.uploadedDataSuccessful;
       case "uploded_data_unsucessfull":
-        return LatestInputStatus.uploadedDataUnsuccessful;
+        return InputStatus.uploadedDataUnsuccessful;
       case "uploded_data_has_errors":
-        return LatestInputStatus.uploadedDataHasErrors;
+        return InputStatus.uploadedDataHasErrors;
       case "uploded_data_has_no_errors":
-        return LatestInputStatus.uploadedDataHasNoErrors;
+        return InputStatus.uploadedDataHasNoErrors;
       case "uploded_data_data_marts_generated":
-        return LatestInputStatus.uploadedDataDataMartsGenerated;
+        return InputStatus.uploadedDataDataMartsGenerated;
       case "uploded_data_data_marts_connot_be_genrated":
-        return LatestInputStatus.uploadedDataDataMartsCannotBeGenerated;
+        return InputStatus.uploadedDataDataMartsCannotBeGenerated;
       default:
-        throw  LatestInputStatus.unknown;
+        throw InputStatus.unknown;
     }
   }
 }
