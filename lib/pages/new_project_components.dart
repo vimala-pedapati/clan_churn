@@ -561,30 +561,43 @@ class ColumnDetailsWidget extends StatelessWidget {
                               height: 30,
                               width: 300,
                               child: TextFormField(
-                                // controller: customerColumnNames[globalIndex],
+                                controller: customerColumnNames[globalIndex],
                                 enabled: column.isUserCheckedIn,
                                 cursorHeight: 15,
                                 onChanged: (value) {
                                   // Update the text of the controller
-                                  customerColumnNames[globalIndex].text = value;
+                                  // customerColumnNames[globalIndex].text = value;
 
                                   // Get the current cursor position
-                                  int cursorPosition = value.length;
+                                  // int cursorPosition = value.length;
 
                                   // Update the selection of the controller
-                                  customerColumnNames[globalIndex].selection =
-                                      TextSelection.collapsed(
-                                          offset: cursorPosition);
+                                  // customerColumnNames[globalIndex].selection =
+                                  //     TextSelection.collapsed(
+                                  //         offset: cursorPosition);
 
                                   // Dispatch an event to update the state with the modified list of controllers
-                                  context.read<ProjectArchitectBloc>().add(
-                                        CustomerColumnNamesEvent(
-                                            customerColumnNames:
-                                                customerColumnNames),
-                                      );
+                                  customerColumnNames.replaceRange(
+                                      globalIndex,
+                                      globalIndex+1,
+                                      [TextEditingController(text: value)]);
+                                   for (var i in customerColumnNames) {
+                                    print(i);
+                                  }
+
+                                  // context.read<ProjectArchitectBloc>().add(
+                                  //       CustomerColumnNamesEvent(
+                                  //           customerColumnNames:
+                                  //               customerColumnNames),
+                                  //     );
+                                },
+                                onEditingComplete: () { 
+                                  for (var i in customerColumnNames) {
+                                    print(i);
+                                  }
                                 },
                                 decoration: InputDecoration(
-                                    hintText: column.columnName,
+                                    hintText: "$globalIndex ${column.id}",
                                     contentPadding: const EdgeInsets.only(
                                         left: 10, right: 10),
                                     border: const OutlineInputBorder()),
