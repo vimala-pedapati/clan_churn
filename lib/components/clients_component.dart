@@ -49,7 +49,7 @@ class _ClientsComponentState extends State<ClientsComponent> {
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount:  GetDeviceType.getCount(context: context, isNotExpanded: state.isNotExpanded),
+                      crossAxisCount:  ResponsiveUi.getCount(context: context, isNotExpanded: state.isNotExpanded),
                       childAspectRatio: 1,
                       crossAxisSpacing: 15,
                       mainAxisSpacing: 15),

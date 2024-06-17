@@ -38,16 +38,19 @@ class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
     final background = Theme.of(context).colorScheme.background;
     final secondary2 = Theme.of(context).colorScheme.onSecondary;
     return ResponsiveBuilder(builder: (context, sizingInformation) {
-      Widget a = ShowUpAnimation(
-        delayStart: const Duration(seconds: 0),
-        animationDuration: const Duration(seconds: 2),
-        curve: Curves.easeInOutCubicEmphasized,
-        direction: Direction.horizontal,
-        offset: -0.9,
-        child: Image.asset(
-          "assets/sign_in.png",
-          width: w * 0.3,
-          // scale: 3,
+      Widget a = Container(
+        // color: Colors.amber,
+        child: ShowUpAnimation(
+          delayStart: const Duration(seconds: 0),
+          animationDuration: const Duration(seconds: 2),
+          curve: Curves.easeInOutCubicEmphasized,
+          direction: Direction.horizontal,
+          offset: -0.9,
+          child: Image.asset(
+            "assets/sign_in.png",
+            width: SignInRespUi.respValSignImage(context),
+            // scale: 3,
+          ),
         ),
       );
       Widget b = Form(
@@ -55,26 +58,27 @@ class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
         autovalidateMode: AutovalidateMode.onUserInteraction, //
         child: Center(
           child: FittedBox(
-            child: Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Text("${MediaQuery.of(context).size}"),
-                  // logo
-                  ShowUpAnimation(
-                    delayStart: const Duration(seconds: 0),
-                    animationDuration: const Duration(seconds: 2),
-                    curve: Curves.easeInOutCubicEmphasized,
-                    direction: Direction.horizontal,
-                    offset: 0.9,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Text("${MediaQuery.of(context).size}"),
+                // logo
+                ShowUpAnimation(
+                  delayStart: const Duration(seconds: 0),
+                  animationDuration: const Duration(seconds: 2),
+                  curve: Curves.easeInOutCubicEmphasized,
+                  direction: Direction.horizontal,
+                  offset: 0.9,
+                  child: Container(
+                    width: w * 0.3,
                     child: IntrinsicHeight(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Image.asset(
                             "assets/clan_logo.png",
-                            width: w * 0.1,
+                            width: SignInRespUi.respValSignImageLogo(context),
                             // scale: 1.5,
                           ),
                           const Padding(
@@ -87,216 +91,240 @@ class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
                           Image.asset(
                             "assets/churn_logo.png",
                             // scale: 1.5,
-                            width: w * 0.1,
+                            width: SignInRespUi.respValSignImageLogo(context),
                           )
                         ],
                       ),
                     ),
                   ),
-                  // welcome
-                  ShowUpAnimation(
-                    delayStart: const Duration(milliseconds: 500),
-                    animationDuration: const Duration(seconds: 2),
-                    curve: Curves.easeInOutCubicEmphasized,
-                    direction: Direction.horizontal,
-                    offset: 0.9,
-                    child: Container(
-                      width: w * 0.3,
-                      padding: EdgeInsets.only(top: h * 0.05, bottom: h * 0.05),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            "Welcome",
-                            style: ClanChurnTypography.font48400,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  // email text
-                  ShowUpAnimation(
-                    delayStart: const Duration(milliseconds: 1000),
-                    animationDuration: const Duration(seconds: 2),
-                    curve: Curves.easeInOutCubicEmphasized,
-                    direction: Direction.horizontal,
-                    offset: 0.9,
-                    child: Text(
-                      "Login ID",
-                      style: ClanChurnTypography.font18500,
-                    ),
-                  ),
-                  // email input field
-                  ShowUpAnimation(
-                    delayStart: const Duration(milliseconds: 1000),
-                    animationDuration: const Duration(seconds: 2),
-                    curve: Curves.easeInOutCubicEmphasized,
-                    direction: Direction.horizontal,
-                    offset: 0.9,
-                    child: Container(
-                      width: w * 0.3,
-                      // height: h * 0.05,
-                      decoration: BoxDecoration(
-                          // color: const Color.fromRGBO(56, 56, 56, 0.1),
-                          borderRadius: BorderRadius.circular(8.0)),
-                      margin: const EdgeInsets.only(top: 5, bottom: 20),
-                      child: TextFormField(
-                        controller: emailController,
-                        keyboardType: TextInputType.emailAddress,
-                        autofocus: false,
-                        textInputAction: TextInputAction.next,
-                        decoration: InputDecoration(
-                          hintText: 'Enter Login ID',
-                          hintStyle: ClanChurnTypography.font18500
-                              .copyWith(color: secondary2),
-                          contentPadding: const EdgeInsets.only(
-                              top: 10, left: 10, right: 10),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8.0)),
+                ),
+                // welcome
+                ShowUpAnimation(
+                  delayStart: const Duration(milliseconds: 500),
+                  animationDuration: const Duration(seconds: 2),
+                  curve: Curves.easeInOutCubicEmphasized,
+                  direction: Direction.horizontal,
+                  offset: 0.9,
+                  child: Container(
+                    width: w * 0.3,
+                    padding: EdgeInsets.only(top: h * 0.05, bottom: h * 0.05),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Welcome",
+                          style: ClanChurnTypography.font48400,
                         ),
-                        onChanged: (value) {
-                          setState(() {
-                            email = value;
-                          });
-                        },
-                        validator: (String? val) {
-                          if (val == null || val.isEmpty) {
-                            return 'Please enter an email';
-                          }
-                          if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
-                              .hasMatch(val)) {
-                            return 'Please enter a valid email';
-                          }
-                          return null;
-                        },
-                        onSaved: (String? val) {},
+                      ],
+                    ),
+                  ),
+                ),
+                // email text
+                ShowUpAnimation(
+                  delayStart: const Duration(milliseconds: 1000),
+                  animationDuration: const Duration(seconds: 2),
+                  curve: Curves.easeInOutCubicEmphasized,
+                  direction: Direction.horizontal,
+                  offset: 0.9,
+                  child: Text(
+                    "Login ID",
+                    style: ClanChurnTypography.font18500.copyWith(
+                        fontSize: SignInRespUi.respSignFont(context, 18)),
+                  ),
+                ),
+                // email input field
+                ShowUpAnimation(
+                  delayStart: const Duration(milliseconds: 1000),
+                  animationDuration: const Duration(seconds: 2),
+                  curve: Curves.easeInOutCubicEmphasized,
+                  direction: Direction.horizontal,
+                  offset: 0.9,
+                  child: Container(
+                    width: w * 0.3,
+                    // height: h * 0.05,
+                    decoration: BoxDecoration(
+                        // color: const Color.fromRGBO(56, 56, 56, 0.1),
+                        borderRadius: BorderRadius.circular(8.0)),
+                    margin: const EdgeInsets.only(top: 5, bottom: 20),
+                    child: TextFormField(
+                      controller: emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      autofocus: false,
+                      textInputAction: TextInputAction.next,
+                      style: ClanChurnTypography.font18500.copyWith(
+                          fontSize: SignInRespUi.respSignFont(context, 18)),
+                      decoration: InputDecoration(
+                        hintText: 'Enter Login ID',
+                        hintStyle: ClanChurnTypography.font18500
+                            .copyWith(color: secondary2),
+                        contentPadding:
+                            const EdgeInsets.only(top: 10, left: 10, right: 10),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.0)),
                       ),
+                      onChanged: (value) {
+                        setState(() {
+                          email = value;
+                        });
+                      },
+                      validator: (String? val) {
+                        // if (val == null || val.isEmpty) {
+                        //   return 'Please enter an email';
+                        // }
+                        // if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                        //     .hasMatch(val)) {
+                        //   return 'Please enter a valid email';
+                        // }
+                        // return null;
+                      },
+                      onSaved: (String? val) {},
                     ),
                   ),
-                  // password text
-                  ShowUpAnimation(
-                    delayStart: const Duration(milliseconds: 1500),
-                    animationDuration: const Duration(seconds: 2),
-                    curve: Curves.easeInOutCubicEmphasized,
-                    direction: Direction.horizontal,
-                    offset: 0.9,
-                    child: Text(
-                      "Password",
-                      style: ClanChurnTypography.font18500,
+                ),
+                // password text
+                ShowUpAnimation(
+                  delayStart: const Duration(milliseconds: 1500),
+                  animationDuration: const Duration(seconds: 2),
+                  curve: Curves.easeInOutCubicEmphasized,
+                  direction: Direction.horizontal,
+                  offset: 0.9,
+                  child: Text(
+                    "Password",
+                    style: ClanChurnTypography.font18500.copyWith(
+                        fontSize: SignInRespUi.respSignFont(context, 18)),
+                  ),
+                ),
+                // password input field
+                ShowUpAnimation(
+                  delayStart: const Duration(milliseconds: 1500),
+                  animationDuration: const Duration(seconds: 2),
+                  curve: Curves.easeInOutCubicEmphasized,
+                  direction: Direction.horizontal,
+                  offset: 0.9,
+                  child: Container(
+                    width: w * 0.3,
+                    // height: h * 0.05,
+                    decoration: BoxDecoration(
+                        // color: const Color.fromRGBO(56, 56, 56, 0.1),
+                        borderRadius: BorderRadius.circular(8.0)),
+                    margin: const EdgeInsets.only(top: 5, bottom: 25),
+                    child: TextFormField(
+                      controller: passwordController,
+                      keyboardType: TextInputType.emailAddress,
+                      autofocus: false,
+                      obscureText: true,
+                      textInputAction: TextInputAction.next,
+                      obscuringCharacter: '*',
+                      style: ClanChurnTypography.font18500.copyWith(
+                          fontSize: SignInRespUi.respSignFont(context, 18)),
+                      decoration: InputDecoration(
+                        hintText: 'Enter Password',
+                        hintStyle: ClanChurnTypography.font18500
+                            .copyWith(color: secondary2),
+                        contentPadding:
+                            const EdgeInsets.only(top: 10, left: 10, right: 10),
+                        errorBorder: OutlineInputBorder(
+                            gapPadding: 0,
+                            borderRadius: BorderRadius.circular(8.0)),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.0)),
+                      ),
+                      onChanged: (value) {
+                        setState(() {
+                          password = value;
+                        });
+                      },
+                      validator: (String? val) {
+                        // if (val == null || val.isEmpty) {
+                        //   return "Password shouldn't be empty";
+                        // }
+                        // return null;
+                      },
+                      onSaved: (String? val) {
+                        // You can add functionality here if needed
+                      },
                     ),
                   ),
-                  // password input field
-                  ShowUpAnimation(
-                    delayStart: const Duration(milliseconds: 1500),
-                    animationDuration: const Duration(seconds: 2),
-                    curve: Curves.easeInOutCubicEmphasized,
-                    direction: Direction.horizontal,
-                    offset: 0.9,
-                    child: Container(
+                ),
+                // submit
+                ShowUpAnimation(
+                  delayStart: const Duration(milliseconds: 2000),
+                  animationDuration: const Duration(seconds: 2),
+                  curve: Curves.easeInOutCubicEmphasized,
+                  direction: Direction.horizontal,
+                  offset: 0.9,
+                  child: SizedBox(
                       width: w * 0.3,
-                      // height: h * 0.05,
-                      decoration: BoxDecoration(
-                          // color: const Color.fromRGBO(56, 56, 56, 0.1),
-                          borderRadius: BorderRadius.circular(8.0)),
-                      margin: const EdgeInsets.only(top: 5, bottom: 25),
-                      child: TextFormField(
-                        controller: passwordController,
-                        keyboardType: TextInputType.emailAddress,
-                        autofocus: false,
-                        obscureText: true,
-                        textInputAction: TextInputAction.next,
-                        obscuringCharacter: '*',
-                        decoration: InputDecoration(
-                          hintText: 'Enter Password',
-                          hintStyle: ClanChurnTypography.font18500
-                              .copyWith(color: secondary2),
-                          contentPadding: const EdgeInsets.only(
-                              top: 10, left: 10, right: 10),
-                          errorBorder: OutlineInputBorder(
-                              gapPadding: 0,
-                              borderRadius: BorderRadius.circular(8.0)),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8.0)),
-                        ),
-                        onChanged: (value) {
-                          setState(() {
-                            password = value;
-                          });
-                        },
-                        validator: (String? val) {
-                          if (val == null || val.isEmpty) {
-                            return "Password shouldn't be empty";
-                          }
-                          return null;
-                        },
-                        onSaved: (String? val) {
-                          // You can add functionality here if needed
-                        },
-                      ),
-                    ),
-                  ),
-                  // submit
-                  ShowUpAnimation(
-                    delayStart: const Duration(milliseconds: 2000),
-                    animationDuration: const Duration(seconds: 2),
-                    curve: Curves.easeInOutCubicEmphasized,
-                    direction: Direction.horizontal,
-                    offset: 0.9,
-                    child: SizedBox(
-                        width: w * 0.3,
-                        height: 50,
-                        child: MouseRegion(
-                          onEnter: (_) => _onHover(true),
-                          onExit: (_) => _onHover(false),
-                          child: ElevatedButton(
-                            style: ButtonStyle(
-                              shape: MaterialStateProperty.all<
-                                  RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                      _isHovered ? 30.0 : 8.0),
-                                ),
+                      height: 50,
+                      child: MouseRegion(
+                        onEnter: (_) => _onHover(true),
+                        onExit: (_) => _onHover(false),
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(
+                                    _isHovered ? 30.0 : 8.0),
                               ),
                             ),
-                            onPressed: () {
-                              if (_formKey.currentState!.validate()) {
-                                log("$email, $password");
-                                context.read<SignInBloc>().add(SignInEvent(
-                                    email: email,
-                                    password: password,
-                                    context: context));
-                              }
-                            },
-                            child: Text(
-                              "Submit",
-                              style: ClanChurnTypography.font18600,
-                            ),
                           ),
-                        )),
-                  ),
-                  ClanChurnSpacing.h20,
-                  ShowUpAnimation(
-                    delayStart: const Duration(milliseconds: 2500),
-                    animationDuration: const Duration(seconds: 2),
-                    curve: Curves.easeInOutCubicEmphasized,
-                    direction: Direction.horizontal,
-                    offset: 0.9,
-                    child: SizedBox(
-                      width: w * 0.3,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text("Forgot Password?",
-                              style: ClanChurnTypography.font18500.copyWith(
-                                  color:
-                                      Theme.of(context).colorScheme.primary)),
-                        ],
-                      ),
+                          onPressed: () {
+                            //  email
+                            //       if (val == null || val.isEmpty) {
+                            //   return 'Please enter an email';
+                            // }
+                            // if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                            //     .hasMatch(val)) {
+                            //   return 'Please enter a valid email';
+                            // }
+
+                            // return null;
+                            // password
+                            //   if (val == null || val.isEmpty) {
+                            //   return "Password shouldn't be empty";
+                            // }
+                            // return null;
+                            if (_formKey.currentState!.validate()) {
+                              log("$email, $password");
+                              context.read<SignInBloc>().add(SignInEvent(
+                                  email: email,
+                                  password: password,
+                                  context: context));
+                            }
+                          },
+                          child: Text(
+                            "Submit",
+                            style: ClanChurnTypography.font18600.copyWith(
+                                fontSize:
+                                    SignInRespUi.respSignFont(context, 18)),
+                          ),
+                        ),
+                      )),
+                ),
+                ClanChurnSpacing.h20,
+                ShowUpAnimation(
+                  delayStart: const Duration(milliseconds: 2500),
+                  animationDuration: const Duration(seconds: 2),
+                  curve: Curves.easeInOutCubicEmphasized,
+                  direction: Direction.horizontal,
+                  offset: 0.9,
+                  child: SizedBox(
+                    width: w * 0.3,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("Forgot Password?",
+                            style: ClanChurnTypography.font18500.copyWith(
+                                fontSize:
+                                    SignInRespUi.respSignFont(context, 18),
+                                color: Theme.of(context).colorScheme.primary)),
+                      ],
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
@@ -313,10 +341,10 @@ class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
               height: h * 0.78,
               width: w * 0.8,
               padding: EdgeInsets.only(
-                  left: w * 0.05,
-                  right: w * 0.05,
-                  top: w * 0.05,
-                  bottom: w * 0.05),
+                  left: SignInRespUi().respValSignPadding(context, 0.05),
+                  right: SignInRespUi().respValSignPadding(context, 0.05),
+                  top: SignInRespUi().respValSignPadding(context, 0.05),
+                  bottom: SignInRespUi().respValSignPadding(context, 0.05)),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   boxShadow: [
@@ -326,6 +354,7 @@ class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
                         spreadRadius: 2,
                         offset: const Offset(0, 2))
                   ],
+                  // color: Colors.cyan,
                   color: background),
               child:
                   sizingInformation.deviceScreenType == DeviceScreenType.mobile
