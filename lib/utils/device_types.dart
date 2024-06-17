@@ -71,7 +71,7 @@ class ResponsiveUi {
       return (w * percent);
     } else if (type == DeviceType.tablet) {
       log("Desktop large:  ${w * percent}");
-      return (w * percent) ;
+      return (w * percent);
     } else {
       return w * percent;
     }
@@ -119,6 +119,21 @@ class ResponsiveUi {
       return w * 0.1;
     } else {
       return w * 0.1;
+    }
+  }
+
+ static double respSignFont(BuildContext context, double fontSize) {
+    DeviceType type = ResponsiveUi.getDeviceType(context);
+    if (type == DeviceType.desktopLarge) {
+      return fontSize;
+    } else if (type == DeviceType.deskTopMedium) {
+      return fontSize + 1;
+    } else if (type == DeviceType.desktopSmall) {
+      return fontSize + 2;
+    } else if (type == DeviceType.tablet) {
+      return fontSize + 3;
+    } else {
+      return fontSize + 3;
     }
   }
 }

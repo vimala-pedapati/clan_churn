@@ -58,9 +58,13 @@ Future<void> signInFail(
   return showDialog<void>(
     context: context,
     barrierDismissible: false, // user must tap button!
+
     builder: (BuildContext context) {
       return AlertDialog(
         title: Text(message1),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(08),
+        ),
         content: SingleChildScrollView(
           child: ListBody(
             children: <Widget>[

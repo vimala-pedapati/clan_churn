@@ -129,7 +129,8 @@ class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
                   offset: 0.9,
                   child: Text(
                     "Login ID",
-                    style: ClanChurnTypography.font18500,
+                    style: ClanChurnTypography.font18500.copyWith(
+                        fontSize: ResponsiveUi.respSignFont(context, 18)),
                   ),
                 ),
                 // email input field
@@ -151,13 +152,14 @@ class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
                       keyboardType: TextInputType.emailAddress,
                       autofocus: false,
                       textInputAction: TextInputAction.next,
-                      style:  ClanChurnTypography.font18500,
+                      style: ClanChurnTypography.font18500.copyWith(
+                          fontSize: ResponsiveUi.respSignFont(context, 18)),
                       decoration: InputDecoration(
                         hintText: 'Enter Login ID',
                         hintStyle: ClanChurnTypography.font18500
                             .copyWith(color: secondary2),
-                        contentPadding: const EdgeInsets.only(
-                            top: 10, left: 10, right: 10),
+                        contentPadding:
+                            const EdgeInsets.only(top: 10, left: 10, right: 10),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8.0)),
                       ),
@@ -189,7 +191,8 @@ class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
                   offset: 0.9,
                   child: Text(
                     "Password",
-                    style: ClanChurnTypography.font18500,
+                    style: ClanChurnTypography.font18500.copyWith(
+                        fontSize: ResponsiveUi.respSignFont(context, 18)),
                   ),
                 ),
                 // password input field
@@ -213,13 +216,14 @@ class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
                       obscureText: true,
                       textInputAction: TextInputAction.next,
                       obscuringCharacter: '*',
-                       style: ClanChurnTypography.font18500,
+                      style: ClanChurnTypography.font18500.copyWith(
+                          fontSize: ResponsiveUi.respSignFont(context, 18)),
                       decoration: InputDecoration(
                         hintText: 'Enter Password',
                         hintStyle: ClanChurnTypography.font18500
                             .copyWith(color: secondary2),
-                        contentPadding: const EdgeInsets.only(
-                            top: 10, left: 10, right: 10),
+                        contentPadding:
+                            const EdgeInsets.only(top: 10, left: 10, right: 10),
                         errorBorder: OutlineInputBorder(
                             gapPadding: 0,
                             borderRadius: BorderRadius.circular(8.0)),
@@ -292,7 +296,9 @@ class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
                           },
                           child: Text(
                             "Submit",
-                            style: ClanChurnTypography.font18600,
+                            style: ClanChurnTypography.font18600.copyWith(
+                                fontSize:
+                                    ResponsiveUi.respSignFont(context, 18)),
                           ),
                         ),
                       )),
@@ -311,8 +317,9 @@ class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
                       children: [
                         Text("Forgot Password?",
                             style: ClanChurnTypography.font18500.copyWith(
-                                color:
-                                    Theme.of(context).colorScheme.primary)),
+                                fontSize:
+                                    ResponsiveUi.respSignFont(context, 18),
+                                color: Theme.of(context).colorScheme.primary)),
                       ],
                     ),
                   ),
