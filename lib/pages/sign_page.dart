@@ -72,28 +72,31 @@ class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
                     curve: Curves.easeInOutCubicEmphasized,
                     direction: Direction.horizontal,
                     offset: 0.9,
-                    child: IntrinsicHeight(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            "assets/clan_logo.png",
-                            width: w * 0.1,
-                            // scale: 1.5,
-                          ),
-                          const Padding(
-                            padding: EdgeInsets.only(left: 10, right: 10),
-                            child: VerticalDivider(
-                              color: Color.fromRGBO(175, 175, 175, 1),
-                              thickness: 1,
+                    child: Container(
+                        width: w * 0.3,
+                      child: IntrinsicHeight(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              "assets/clan_logo.png",
+                              width: ResponsiveUi.respValSignImageLogo(context),
+                              // scale: 1.5,
                             ),
-                          ),
-                          Image.asset(
-                            "assets/churn_logo.png",
-                            // scale: 1.5,
-                            width: w * 0.1,
-                          )
-                        ],
+                            const Padding(
+                              padding: EdgeInsets.only(left: 10, right: 10),
+                              child: VerticalDivider(
+                                color: Color.fromRGBO(175, 175, 175, 1),
+                                thickness: 1,
+                              ),
+                            ),
+                            Image.asset(
+                              "assets/churn_logo.png",
+                              // scale: 1.5,
+                              width: ResponsiveUi.respValSignImageLogo(context),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),

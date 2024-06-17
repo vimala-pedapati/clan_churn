@@ -77,7 +77,7 @@ class ResponsiveUi {
     return w * percent;
   }
 
- static  double respValSignImage(BuildContext context,
+  static double respValSignImage(BuildContext context,
       {bool respNotRequired = false}) {
     DeviceType type = ResponsiveUi.getDeviceType(context);
     final w = MediaQuery.of(context).size.width;
@@ -96,9 +96,29 @@ class ResponsiveUi {
       return (w * 0.38);
     } else if (type == DeviceType.tablet) {
       log("Desktop large:  ${w * 0.3}");
+      return w * 0.33;
     } else {
       return w * 0.33;
     }
-    return w * 0.33;
+  }
+
+  static double respValSignImageLogo(BuildContext context,
+      {bool respNotRequired = false}) {
+    DeviceType type = ResponsiveUi.getDeviceType(context);
+    final w = MediaQuery.of(context).size.width;
+    if (respNotRequired) {
+      return w * 0.13;
+    }
+    if (type == DeviceType.desktopLarge) {
+      return w * 0.1;
+    } else if (type == DeviceType.deskTopMedium) {
+      return (w * 0.1);
+    } else if (type == DeviceType.desktopSmall) {
+      return (w * 0.13);
+    } else if (type == DeviceType.tablet) {
+      return w * 0.13;
+    } else {
+      return w * 0.1;
+    }
   }
 }
