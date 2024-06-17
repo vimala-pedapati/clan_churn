@@ -105,7 +105,7 @@ class _ProjectsListDataState extends State<ProjectsListData> {
                           shrinkWrap: true,
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: GetDeviceType.getCount(
+                                  crossAxisCount: ResponsiveUi.getCount(
                                       context: context,
                                       isNotExpanded: state.isNotExpanded),
                                   childAspectRatio: 1,

@@ -38,16 +38,19 @@ class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
     final background = Theme.of(context).colorScheme.background;
     final secondary2 = Theme.of(context).colorScheme.onSecondary;
     return ResponsiveBuilder(builder: (context, sizingInformation) {
-      Widget a = ShowUpAnimation(
-        delayStart: const Duration(seconds: 0),
-        animationDuration: const Duration(seconds: 2),
-        curve: Curves.easeInOutCubicEmphasized,
-        direction: Direction.horizontal,
-        offset: -0.9,
-        child: Image.asset(
-          "assets/sign_in.png",
-          width: w * 0.3,
-          // scale: 3,
+      Widget a = Container(
+        // color: Colors.amber,
+        child: ShowUpAnimation(
+          delayStart: const Duration(seconds: 0),
+          animationDuration: const Duration(seconds: 2),
+          curve: Curves.easeInOutCubicEmphasized,
+          direction: Direction.horizontal,
+          offset: -0.9,
+          child: Image.asset(
+            "assets/sign_in.png",
+            width:  ResponsiveUi.respValSignImage(context),
+            // scale: 3,
+          ),
         ),
       );
       Widget b = Form(
@@ -56,6 +59,7 @@ class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
         child: Center(
           child: FittedBox(
             child: Container(
+              // color: Colors.amber,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -313,10 +317,10 @@ class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
               height: h * 0.78,
               width: w * 0.8,
               padding: EdgeInsets.only(
-                  left: w * 0.05,
-                  right: w * 0.05,
-                  top: w * 0.05,
-                  bottom: w * 0.05),
+                  left: ResponsiveUi().respValSignPadding(context, 0.05),
+                  right: ResponsiveUi().respValSignPadding(context, 0.05),
+                  top: ResponsiveUi().respValSignPadding(context, 0.05),
+                  bottom: ResponsiveUi().respValSignPadding(context, 0.05)),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   boxShadow: [
@@ -326,6 +330,7 @@ class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
                         spreadRadius: 2,
                         offset: const Offset(0, 2))
                   ],
+                  // color: Colors.cyan,
                   color: background),
               child:
                   sizingInformation.deviceScreenType == DeviceScreenType.mobile
