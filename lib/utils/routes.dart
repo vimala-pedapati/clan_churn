@@ -7,6 +7,8 @@ class AppRoutes {
   static const signIn = "/signIn";
   static const savedProjects = "/savedProjects";
   static const clientProjects = "/clientProjects";
+  static const forgotPassword = "/forgotPassword";
+  static const resetPassword = "/resetPassword";
 }
 
 CustomTransitionPage customPageRouteForGoRouter<T>({

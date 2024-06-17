@@ -4,10 +4,12 @@ import 'package:clan_churn/animation/show_up_animation/enums.dart';
 import 'package:clan_churn/animation/show_up_animation/show_up.dart';
 import 'package:clan_churn/churn_blocs/sign_in_bloc/sign_in_bloc.dart';
 import 'package:clan_churn/utils/device_types.dart';
+import 'package:clan_churn/utils/routes.dart';
 import 'package:clan_churn/utils/spacing.dart';
 import 'package:clan_churn/utils/typography.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 class ClanChurnSignInPage extends StatefulWidget {
@@ -315,11 +317,16 @@ class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("Forgot Password?",
-                            style: ClanChurnTypography.font18500.copyWith(
-                                fontSize:
-                                    SignInRespUi.respSignFont(context, 18),
-                                color: Theme.of(context).colorScheme.primary)),
+                        InkWell(
+                          onTap: (){
+                              GoRouter.of(context).go(AppRoutes.forgotPassword);
+                          },
+                          child: Text("Forgot Password?",
+                              style: ClanChurnTypography.font18500.copyWith(
+                                  fontSize:
+                                      SignInRespUi.respSignFont(context, 18),
+                                  color: Theme.of(context).colorScheme.primary)),
+                        ),
                       ],
                     ),
                   ),
