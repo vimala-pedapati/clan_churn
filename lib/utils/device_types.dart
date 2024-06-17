@@ -65,13 +65,13 @@ class ResponsiveUi {
       return w * percent;
     } else if (type == DeviceType.deskTopMedium) {
       log("Desktop Medium:  ${(w * percent) / 2}");
-      return (w * percent) ;
+      return (w * percent);
     } else if (type == DeviceType.desktopSmall) {
       log("Desktop Small:  ${(w * percent) / 3}");
       return (w * percent);
     } else if (type == DeviceType.tablet) {
       log("Desktop large:  ${w * percent}");
-      return (w * percent) / 1.8;
+      return (w * percent) ;
     } else {
       return w * percent;
     }
@@ -96,7 +96,7 @@ class ResponsiveUi {
       return (w * 0.38);
     } else if (type == DeviceType.tablet) {
       log("Desktop large:  ${w * 0.3}");
-      return w * 0.35;
+      return w * 0.3;
     } else {
       return w * 0.3;
     }
@@ -107,16 +107,16 @@ class ResponsiveUi {
     DeviceType type = ResponsiveUi.getDeviceType(context);
     final w = MediaQuery.of(context).size.width;
     if (respNotRequired) {
-      return w * 0.13;
+      return w * 0.1;
     }
     if (type == DeviceType.desktopLarge) {
-      return w * 0.1;
+      return w * 0.07;
     } else if (type == DeviceType.deskTopMedium) {
-      return (w * 0.1);
+      return (w * 0.08);
     } else if (type == DeviceType.desktopSmall) {
-      return (w * 0.13);
+      return (w * 0.09);
     } else if (type == DeviceType.tablet) {
-      return w * 0.13;
+      return w * 0.1;
     } else {
       return w * 0.1;
     }

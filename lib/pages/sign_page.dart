@@ -151,6 +151,7 @@ class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
                       keyboardType: TextInputType.emailAddress,
                       autofocus: false,
                       textInputAction: TextInputAction.next,
+                      style:  ClanChurnTypography.font18500,
                       decoration: InputDecoration(
                         hintText: 'Enter Login ID',
                         hintStyle: ClanChurnTypography.font18500
@@ -212,6 +213,7 @@ class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
                       obscureText: true,
                       textInputAction: TextInputAction.next,
                       obscuringCharacter: '*',
+                       style: ClanChurnTypography.font18500,
                       decoration: InputDecoration(
                         hintText: 'Enter Password',
                         hintStyle: ClanChurnTypography.font18500
