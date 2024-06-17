@@ -48,7 +48,7 @@ class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
           offset: -0.9,
           child: Image.asset(
             "assets/sign_in.png",
-            width: ResponsiveUi.respValSignImage(context),
+            width: SignInRespUi.respValSignImage(context),
             // scale: 3,
           ),
         ),
@@ -78,7 +78,7 @@ class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
                         children: [
                           Image.asset(
                             "assets/clan_logo.png",
-                            width: ResponsiveUi.respValSignImageLogo(context),
+                            width: SignInRespUi.respValSignImageLogo(context),
                             // scale: 1.5,
                           ),
                           const Padding(
@@ -91,7 +91,7 @@ class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
                           Image.asset(
                             "assets/churn_logo.png",
                             // scale: 1.5,
-                            width: ResponsiveUi.respValSignImageLogo(context),
+                            width: SignInRespUi.respValSignImageLogo(context),
                           )
                         ],
                       ),
@@ -130,7 +130,7 @@ class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
                   child: Text(
                     "Login ID",
                     style: ClanChurnTypography.font18500.copyWith(
-                        fontSize: ResponsiveUi.respSignFont(context, 18)),
+                        fontSize: SignInRespUi.respSignFont(context, 18)),
                   ),
                 ),
                 // email input field
@@ -153,7 +153,7 @@ class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
                       autofocus: false,
                       textInputAction: TextInputAction.next,
                       style: ClanChurnTypography.font18500.copyWith(
-                          fontSize: ResponsiveUi.respSignFont(context, 18)),
+                          fontSize: SignInRespUi.respSignFont(context, 18)),
                       decoration: InputDecoration(
                         hintText: 'Enter Login ID',
                         hintStyle: ClanChurnTypography.font18500
@@ -192,7 +192,7 @@ class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
                   child: Text(
                     "Password",
                     style: ClanChurnTypography.font18500.copyWith(
-                        fontSize: ResponsiveUi.respSignFont(context, 18)),
+                        fontSize: SignInRespUi.respSignFont(context, 18)),
                   ),
                 ),
                 // password input field
@@ -217,7 +217,7 @@ class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
                       textInputAction: TextInputAction.next,
                       obscuringCharacter: '*',
                       style: ClanChurnTypography.font18500.copyWith(
-                          fontSize: ResponsiveUi.respSignFont(context, 18)),
+                          fontSize: SignInRespUi.respSignFont(context, 18)),
                       decoration: InputDecoration(
                         hintText: 'Enter Password',
                         hintStyle: ClanChurnTypography.font18500
@@ -298,7 +298,7 @@ class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
                             "Submit",
                             style: ClanChurnTypography.font18600.copyWith(
                                 fontSize:
-                                    ResponsiveUi.respSignFont(context, 18)),
+                                    SignInRespUi.respSignFont(context, 18)),
                           ),
                         ),
                       )),
@@ -318,7 +318,7 @@ class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
                         Text("Forgot Password?",
                             style: ClanChurnTypography.font18500.copyWith(
                                 fontSize:
-                                    ResponsiveUi.respSignFont(context, 18),
+                                    SignInRespUi.respSignFont(context, 18),
                                 color: Theme.of(context).colorScheme.primary)),
                       ],
                     ),
@@ -341,10 +341,10 @@ class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
               height: h * 0.78,
               width: w * 0.8,
               padding: EdgeInsets.only(
-                  left: ResponsiveUi().respValSignPadding(context, 0.05),
-                  right: ResponsiveUi().respValSignPadding(context, 0.05),
-                  top: ResponsiveUi().respValSignPadding(context, 0.05),
-                  bottom: ResponsiveUi().respValSignPadding(context, 0.05)),
+                  left: SignInRespUi().respValSignPadding(context, 0.05),
+                  right: SignInRespUi().respValSignPadding(context, 0.05),
+                  top: SignInRespUi().respValSignPadding(context, 0.05),
+                  bottom: SignInRespUi().respValSignPadding(context, 0.05)),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   boxShadow: [

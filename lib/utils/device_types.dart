@@ -51,7 +51,9 @@ class ResponsiveUi {
       return DeviceType.mobile;
     }
   }
+}
 
+class SignInRespUi {
   double respValSignPadding(BuildContext context, double percent,
       {bool respNotRequired = false}) {
     DeviceType type = ResponsiveUi.getDeviceType(context);
@@ -122,7 +124,7 @@ class ResponsiveUi {
     }
   }
 
- static double respSignFont(BuildContext context, double fontSize) {
+  static double respSignFont(BuildContext context, double fontSize) {
     DeviceType type = ResponsiveUi.getDeviceType(context);
     if (type == DeviceType.desktopLarge) {
       return fontSize;
