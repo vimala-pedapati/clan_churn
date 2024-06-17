@@ -65,16 +65,16 @@ class ResponsiveUi {
       return w * percent;
     } else if (type == DeviceType.deskTopMedium) {
       log("Desktop Medium:  ${(w * percent) / 2}");
-      return (w * percent) / 1.5;
+      return (w * percent) ;
     } else if (type == DeviceType.desktopSmall) {
       log("Desktop Small:  ${(w * percent) / 3}");
       return (w * percent);
     } else if (type == DeviceType.tablet) {
       log("Desktop large:  ${w * percent}");
+      return (w * percent) / 1.8;
     } else {
       return w * percent;
     }
-    return w * percent;
   }
 
   static double respValSignImage(BuildContext context,
@@ -87,7 +87,7 @@ class ResponsiveUi {
 
     if (type == DeviceType.desktopLarge) {
       log("Desktop Large:  ${w * 0.33}");
-      return w * 0.33;
+      return w * 0.35;
     } else if (type == DeviceType.deskTopMedium) {
       log("Desktop Medium:  ${(w * 0.35)}");
       return (w * 0.35);
@@ -96,9 +96,9 @@ class ResponsiveUi {
       return (w * 0.38);
     } else if (type == DeviceType.tablet) {
       log("Desktop large:  ${w * 0.3}");
-      return w * 0.33;
+      return w * 0.35;
     } else {
-      return w * 0.33;
+      return w * 0.3;
     }
   }
 
