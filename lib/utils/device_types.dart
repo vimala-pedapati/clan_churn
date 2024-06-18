@@ -63,16 +63,16 @@ class SignInRespUi {
     }
 
     if (type == DeviceType.desktopLarge) {
-      log("Desktop Large:  ${w * percent}");
+      // log("Desktop Large:  ${w * percent}");
       return w * percent;
     } else if (type == DeviceType.deskTopMedium) {
-      log("Desktop Medium:  ${(w * percent) / 2}");
+      // log("Desktop Medium:  ${(w * percent) / 2}");
       return (w * percent);
     } else if (type == DeviceType.desktopSmall) {
-      log("Desktop Small:  ${(w * percent) / 3}");
+      // log("Desktop Small:  ${(w * percent) / 3}");
       return (w * percent);
     } else if (type == DeviceType.tablet) {
-      log("Desktop large:  ${w * percent}");
+      // log("Desktop large:  ${w * percent}");
       return (w * percent);
     } else {
       return w * percent;
@@ -88,16 +88,16 @@ class SignInRespUi {
     }
 
     if (type == DeviceType.desktopLarge) {
-      log("Desktop Large:  ${w * 0.33}");
+      // log("Desktop Large:  ${w * 0.33}");
       return w * 0.35;
     } else if (type == DeviceType.deskTopMedium) {
-      log("Desktop Medium:  ${(w * 0.35)}");
+      // log("Desktop Medium:  ${(w * 0.35)}");
       return (w * 0.35);
     } else if (type == DeviceType.desktopSmall) {
-      log("Desktop Small:  ${(w * 0.38)}");
+      // log("Desktop Small:  ${(w * 0.38)}");
       return (w * 0.38);
     } else if (type == DeviceType.tablet) {
-      log("Desktop large:  ${w * 0.3}");
+      // log("Desktop large:  ${w * 0.3}");
       return w * 0.3;
     } else {
       return w * 0.3;
