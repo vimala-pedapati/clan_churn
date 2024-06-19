@@ -1,4 +1,5 @@
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
+import 'package:clan_churn/components/project_card.dart';
 import 'package:clan_churn/pages/client_projects_view.dart';
 import 'package:clan_churn/utils/typography.dart';
 import 'package:flutter/material.dart';
@@ -25,14 +26,31 @@ class ClientsCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CircleAvatar(
-                  radius: state.isNotExpanded? 35: 40,
+                  radius: state.isNotExpanded ? 40 : 35,
                   backgroundColor: Theme.of(context).colorScheme.background,
-                  child: Icon(
-                    Icons.person,
-                    color: Theme.of(context).colorScheme.primary,
-                    size: state.isNotExpanded? 35: 40,
+                  child: Image.network(
+                    "${state.selectedClient?.image}",
+                    loadingBuilder: ((context, child, loadingProgress) {
+                      return const CircularProgressIndicator();
+                    }),
+                    errorBuilder: (context, error, stackTrace) {
+                      return ClipOval(
+                          child: Image.network(
+                        image,
+                        scale: 2,
+                      ));
+                    },
                   ),
                 ),
+                // CircleAvatar(
+                //   radius: state.isNotExpanded? 35: 40,
+                //   backgroundColor: Theme.of(context).colorScheme.background,
+                //   child: Icon(
+                //     Icons.person,
+                //     color: Theme.of(context).colorScheme.primary,
+                //     size: state.isNotExpanded? 35: 40,
+                //   ),
+                // ),
                 Column(
                   children: [
                     Text(

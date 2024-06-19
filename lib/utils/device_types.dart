@@ -10,36 +10,21 @@ import 'package:flutter/material.dart';
  - 1366 * 641 
  */
 
-enum DeviceType { mobile, tablet, desktopSmall, deskTopMedium, desktopLarge }
+enum DeviceType {
+  mobile,
+  tablet,
+  desktopSmall,
+  deskTopMedium,
+  desktopLarge,
+  desktopLarge1
+}
 
 class ResponsiveUi {
-  static int getCount(
-      {required BuildContext context, required bool isNotExpanded}) {
-    double h = MediaQuery.of(context).size.height;
-    if (h >= 900) {
-      if (isNotExpanded) {
-        return 7;
-      } else {
-        return 6;
-      }
-    } else if (h >= 700) {
-      if (isNotExpanded) {
-        return 6;
-      } else {
-        return 5;
-      }
-    } else {
-      if (isNotExpanded) {
-        return 5;
-      } else {
-        return 4;
-      }
-    }
-  }
-
   static DeviceType getDeviceType(BuildContext context) {
     final w = MediaQuery.of(context).size.width;
-    if (w > 1500) {
+    if (w > 1650) {
+      return DeviceType.desktopLarge1;
+    } else if (w > 1500) {
       return DeviceType.desktopLarge;
     } else if (w > 1400 && w < 1500) {
       return DeviceType.deskTopMedium;
@@ -136,6 +121,65 @@ class SignInRespUi {
       return fontSize + 3;
     } else {
       return fontSize + 3;
+    }
+  }
+}
+
+class HomePageRespUi {
+  static int getCount(
+      {required BuildContext context,
+      required bool isNotExpanded,
+      bool respNotRequired = false}) {
+    DeviceType type = ResponsiveUi.getDeviceType(context);
+    // final w = MediaQuery.of(context).size.width;
+    if (respNotRequired) {
+      return 5;
+    }
+    // log("Desktop Medium:  ${(w * percent) / 2}");
+    if (type == DeviceType.desktopLarge1) {
+      // log("Desktop Large:  ${w * percent}");
+      return 6;
+    } else if (type == DeviceType.desktopLarge) {
+      // log("Desktop Large:  ${w * percent}");
+      return 5;
+    } else if (type == DeviceType.deskTopMedium) {
+      return 5;
+    } else if (type == DeviceType.desktopSmall) {
+      // log("Desktop Small:  ${(w * percent) / 3}");
+      return 5;
+    } else if (type == DeviceType.tablet) {
+      // log("Desktop large:  ${w * percent}");
+      return 4;
+    } else {
+      return 4;
+    }
+  }
+
+  static int getCount1(
+      {required BuildContext context,
+      required bool isNotExpanded,
+      bool respNotRequired = false}) {
+    DeviceType type = ResponsiveUi.getDeviceType(context);
+    // final w = MediaQuery.of(context).size.width;
+    if (respNotRequired) {
+      return 5;
+    }
+    if (type == DeviceType.desktopLarge1) {
+      // log("Desktop Large:  ${w * percent}");
+      return 6;
+    } else if (type == DeviceType.desktopLarge) {
+      // log("Desktop Large:  ${w * percent}");
+      return 5;
+    } else if (type == DeviceType.deskTopMedium) {
+      return 5;
+    } else if (type == DeviceType.desktopSmall) {
+      // log("Desktop Small:  ${(w * percent) / 3}");
+      return 5;
+    } else if (type == DeviceType.tablet) {
+      // log("Desktop large:  ${w * percent}");
+      return 4;
+    } else {
+      return 4;
     }
   }
 }

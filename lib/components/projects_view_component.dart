@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart'; 
+import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/pages/new_project_components.dart';
 import 'package:clan_churn/components/project_list_data.dart';
 import 'package:clan_churn/components/search.dart';
@@ -12,18 +12,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProjectsViewComponent extends StatefulWidget {
-  final double width;
-  const ProjectsViewComponent({super.key, required this.width});
+  // final double width;
+  const ProjectsViewComponent({
+    super.key,
+  });
 
   @override
   State<ProjectsViewComponent> createState() => _ProjectsViewComponentState();
 }
 
-class _ProjectsViewComponentState extends State<ProjectsViewComponent>  {
+class _ProjectsViewComponentState extends State<ProjectsViewComponent> {
   @override
   void initState() {
     if (context.read<ProjectArchitectBloc>().state.selectedClient != null) {
-      context.read<ProjectArchitectBloc>().add(GetProjectsListEvent(clientId: context.read<ProjectArchitectBloc>().state.selectedClient!.id));
+      context.read<ProjectArchitectBloc>().add(GetProjectsListEvent(
+          clientId:
+              context.read<ProjectArchitectBloc>().state.selectedClient!.id));
     }
     super.initState();
   }
@@ -37,6 +41,7 @@ class _ProjectsViewComponentState extends State<ProjectsViewComponent>  {
       // width: widget.width,
       // height: h * 0.83,
       //  width: MediaQuery.of(context).size.width,
+      // color: Colors.amber,
       margin: EdgeInsets.only(
           left: w * 0.025, right: w * 0.025, top: 10, bottom: 20),
       child: BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
@@ -44,7 +49,7 @@ class _ProjectsViewComponentState extends State<ProjectsViewComponent>  {
           return state.selectedClient == null
               ? Container()
               : SingleChildScrollView(
-                child: Column(
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -59,8 +64,9 @@ class _ProjectsViewComponentState extends State<ProjectsViewComponent>  {
                                 TextSpan(
                                   text: state.selectedClient!.name,
                                   style: ClanChurnTypography.font12600.copyWith(
-                                      color:
-                                          Theme.of(context).colorScheme.primary),
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .primary),
                                 ),
                               ],
                             ),
@@ -72,7 +78,7 @@ class _ProjectsViewComponentState extends State<ProjectsViewComponent>  {
                       AnimatedContainer(
                         duration: const Duration(seconds: 1),
                         height: h * 0.8,
-                        width:state.isNotExpanded? w* 0.89 : w * 0.82,
+                        width: state.isNotExpanded ? w * 0.89 : w * 0.8,
                         // width: MediaQuery.of(context).size.width,
                         padding: const EdgeInsets.only(
                             left: 20, right: 20, top: 20, bottom: 10),
@@ -84,7 +90,8 @@ class _ProjectsViewComponentState extends State<ProjectsViewComponent>  {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Row(
                                       children: [
@@ -143,7 +150,7 @@ class _ProjectsViewComponentState extends State<ProjectsViewComponent>  {
                       ),
                     ],
                   ),
-              );
+                );
         },
       ),
     );

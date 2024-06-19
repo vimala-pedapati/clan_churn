@@ -1,4 +1,4 @@
-import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart'; 
+import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/components/projects_view_component.dart';
 import 'package:clan_churn/components/nav_bar.dart';
 import 'package:clan_churn/components/side_bar.dart';
@@ -30,16 +30,14 @@ class _ClientProjectsViewState extends State<ClientProjectsView> {
                   const NavBar(),
                   SizedBox(height: h * 0.01),
                   // Text("${MediaQuery.of(context).size}"),
-                  Row(
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SideBar(
                         selectedRoute: SelectedRoute.home,
                       ),
-                      ProjectsViewComponent(
-                        width: state.isNotExpanded ? w * 0.89 : w * 0.8,
-                      )
+                      ProjectsViewComponent()
                     ],
                   ),
                 ]),

@@ -8,8 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ClientsComponent extends StatefulWidget {
- 
-  const ClientsComponent({super.key });
+  const ClientsComponent({super.key});
 
   @override
   State<ClientsComponent> createState() => _ClientsComponentState();
@@ -27,7 +26,7 @@ class _ClientsComponentState extends State<ClientsComponent> {
           duration: const Duration(seconds: 1),
           // height: h * 0.82,
           // width: widget.width,
-          height: MediaQuery.of(context).size.height *0.83,
+          height: MediaQuery.of(context).size.height * 0.83,
           width: MediaQuery.of(context).size.width,
           margin: EdgeInsets.only(
               left: w * 0.025, right: w * 0.025, top: 20, bottom: 20),
@@ -48,8 +47,9 @@ class _ClientsComponentState extends State<ClientsComponent> {
                 child: GridView.builder(
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-                  gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount:  ResponsiveUi.getCount(context: context, isNotExpanded: state.isNotExpanded),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: HomePageRespUi.getCount(
+                          context: context, isNotExpanded: state.isNotExpanded),
                       childAspectRatio: 1,
                       crossAxisSpacing: 15,
                       mainAxisSpacing: 15),

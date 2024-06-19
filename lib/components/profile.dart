@@ -1,6 +1,7 @@
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/churn_blocs/sign_in_bloc/sign_in_bloc.dart';
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
+import 'package:clan_churn/components/project_card.dart';
 import 'package:clan_churn/utils/spacing.dart';
 import 'package:clan_churn/utils/typography.dart';
 import 'package:flutter/material.dart';
@@ -106,15 +107,23 @@ class _ProfileWidgetState extends State<ProfileWidget>
                           ClanChurnSpacing.w5,
                           CircleAvatar(
                             radius: 18,
-                            backgroundColor: Theme.of(context)
-                                .colorScheme
-                                .primary
-                                .withOpacity(0.1),
-                            child: Icon(
-                              Icons.person,
-                              color: Theme.of(context).colorScheme.primary,
+                            backgroundColor:
+                                Theme.of(context).colorScheme.background,
+                            child: Image.network(
+                              "${state.user!.image}",
+                              loadingBuilder:
+                                  ((context, child, loadingProgress) {
+                                return const CircularProgressIndicator();
+                              }),
+                              errorBuilder: (context, error, stackTrace) {
+                                return ClipOval(
+                                    child: Image.network(
+                                  image,
+                                  scale: 2,
+                                ));
+                              },
                             ),
-                          )
+                          ),
                         ]),
                         isNotExpanded
                             ? InkWell(
@@ -136,17 +145,16 @@ class _ProfileWidgetState extends State<ProfileWidget>
                                           const Icon(Icons.logout_outlined,
                                               color: Colors.red),
                                           ClanChurnSpacing.w10,
-                                           AnimatedContainer(
-                                                  duration: const Duration(
-                                                      seconds: 1),
-                                                  child: Text(
-                                                    "Log Out",
-                                                    style: ClanChurnTypography
-                                                        .font18600
-                                                        .copyWith(
-                                                            color: Colors.red),
-                                                  ),
-                                                )
+                                          AnimatedContainer(
+                                            duration:
+                                                const Duration(seconds: 1),
+                                            child: Text(
+                                              "Log Out",
+                                              style: ClanChurnTypography
+                                                  .font18600
+                                                  .copyWith(color: Colors.red),
+                                            ),
+                                          )
                                         ],
                                       ),
                                     );

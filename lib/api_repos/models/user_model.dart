@@ -13,6 +13,7 @@ class User extends Equatable {
   final String email;
   final String userId;
   final String userType;
+  final String? image;
 
   const User({
     required this.clientDetails,
@@ -21,15 +22,19 @@ class User extends Equatable {
     required this.email,
     required this.userId,
     required this.userType,
+    required this.image
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
-        clientDetails:json["client_details"] == null ? null:  ClientDetails.fromJson(json["client_details"]),
+        clientDetails: json["client_details"] == null
+            ? null
+            : ClientDetails.fromJson(json["client_details"]),
         firstName: json["first_name"],
         lastName: json["last_name"],
         email: json["email"],
         userId: json["user_id"],
         userType: json["user_type"],
+        image: json["image"]
       );
 
   Map<String, dynamic> toJson() => {
@@ -39,6 +44,7 @@ class User extends Equatable {
         "email": email,
         "user_id": userId,
         "user_type": userType,
+        "image": image
       };
 
   @override
@@ -46,6 +52,7 @@ class User extends Equatable {
         firstName,
         email,
         userType,
+        image
       ];
 }
 
