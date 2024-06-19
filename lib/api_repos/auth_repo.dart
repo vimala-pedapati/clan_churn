@@ -26,7 +26,9 @@ class AuthCredentials extends Equatable {
 }
 
 class AuthRepository {
-  final String apiUrl = BaseUrl.baseUrl + ApiEndpoints.signIn;
+  final String signIn = BaseUrl.baseUrl + ApiEndpoints.signIn;
+  final String forgotPass = BaseUrl.baseUrl + ApiEndpoints.signIn;
+  final String resetPass = BaseUrl.baseUrl + ApiEndpoints.signIn;
 
   Future<void> storeTokens(
       {required String accessToken, required String refreshToken}) async {
@@ -75,7 +77,7 @@ class AuthRepository {
     };
     try {
       final http.Response response = await http.post(
-        Uri.parse(apiUrl),
+        Uri.parse(signIn),
         headers: BaseUrl.headers,
         body: json.encode(requestBody),
       );
@@ -104,6 +106,66 @@ class AuthRepository {
     } catch (e) {
       log('Network Error: $e');
       return AuthenticationStatus.exception;
+    }
+  }
+
+  Future forgotPassword({required email}) async {
+    final Map<String, dynamic> requestBody = {
+      "email": email,
+    };
+    try {
+      final http.Response response = await http.post(
+        Uri.parse(forgotPass),
+        headers: BaseUrl.headers,
+        body: json.encode(requestBody),
+      );
+      log("forgot password response: $response");
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = json.decode(response.body);
+      } else {
+        log('Status Code: ${response.statusCode}');
+        if (response.statusCode == 401) {
+          log('Unauthorized - Please check your credentials');
+        } else if (response.statusCode == 404) {
+          log('API endpoint not found');
+        } else {
+          log('Unexpected Error');
+        }
+      }
+      // return AuthenticationStatus.unauthenticated;
+    } catch (e) {
+      log('Network Error: $e');
+    }
+  }
+
+  Future resetPassword(
+      {required String token, required String password}) async {
+    final Map<String, dynamic> requestBody = {
+      "token": token,
+      "password": password
+    };
+    try {
+      final http.Response response = await http.post(
+        Uri.parse(resetPass),
+        headers: BaseUrl.headers,
+        body: json.encode(requestBody),
+      );
+      log("reset password response: $response");
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = json.decode(response.body);
+      } else {
+        log('Status Code: ${response.statusCode}');
+        if (response.statusCode == 401) {
+          log('Unauthorized - Please check your credentials');
+        } else if (response.statusCode == 404) {
+          log('API endpoint not found');
+        } else {
+          log('Unexpected Error');
+        }
+      }
+      // return AuthenticationStatus.unauthenticated;
+    } catch (e) {
+      log('Network Error: $e');
     }
   }
 }
