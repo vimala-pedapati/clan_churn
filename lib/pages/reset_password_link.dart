@@ -1,11 +1,13 @@
 import 'dart:convert';
 
+import 'package:clan_churn/utils/typography.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+
 class ResetPasswordScreen extends StatefulWidget {
   final String? token;
 
-  ResetPasswordScreen(this.token);
+  const ResetPasswordScreen(this.token);
 
   @override
   _ResetPasswordScreenState createState() => _ResetPasswordScreenState();
@@ -13,22 +15,17 @@ class ResetPasswordScreen extends StatefulWidget {
 
 class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmController = TextEditingController();
   bool _isLoading = false;
+  final GlobalKey _formKey = GlobalKey<FormState>();
 
   void _resetPassword() async {
-    if (_passwordController.text != _confirmPasswordController.text) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Passwords do not match'))
-      );
-      return;
-    }
-
     setState(() {
       _isLoading = true;
     });
 
-    bool success = await _sendResetPasswordRequest(widget.token!, _passwordController.text);
+    bool success = await _sendResetPasswordRequest(
+        widget.token!, _passwordController.text);
 
     setState(() {
       _isLoading = false;
@@ -36,17 +33,16 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
     if (success) {
       ScaffoldMessenger.of(context).showSnackBar(
-       const SnackBar(content: Text('Password reset successful!'))
-      );
+          const SnackBar(content: Text('Password reset successful!')));
       Navigator.of(context).pop(); // Navigate back to login screen
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Failed to reset password.'))
-      );
+          const SnackBar(content: Text('Failed to reset password.')));
     }
   }
 
-  Future<bool> _sendResetPasswordRequest(String token, String newPassword) async {
+  Future<bool> _sendResetPasswordRequest(
+      String token, String newPassword) async {
     // Send request to backend
     try {
       final response = await http.post(
@@ -69,30 +65,161 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Reset Password')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Text("${widget.token}"),
-            TextField(
-              controller: _passwordController,
-              decoration: const InputDecoration(labelText: 'New Password'),
-              obscureText: true,
-            ),
-            TextField(
-              controller: _confirmPasswordController,
-              decoration: const InputDecoration(labelText: 'Confirm Password'),
-              obscureText: true,
-            ),
-            const SizedBox(height: 20),
-            _isLoading
-                ? const CircularProgressIndicator()
-                : ElevatedButton(
-                    onPressed: _resetPassword,
-                    child: const Text('Reset Password'),
+      backgroundColor: Theme.of(context).colorScheme.secondary.withOpacity(1.0),
+      body: Center(
+        child: Container(
+          // height: MediaQuery.of(context).size.height * 0.45,
+          width: MediaQuery.of(context).size.width * 0.3,
+          padding: const EdgeInsets.all(30.0),
+          decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.background,
+              borderRadius: BorderRadius.circular(20)),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Image.asset(
+                  "assets/churn_logo.png",
+                  width: MediaQuery.of(context).size.width * 0.07,
+                ),
+                const SizedBox(height: 40),
+                Text(
+                  'Set your password',
+                  style: ClanChurnTypography.font18600,
+                ),
+                const SizedBox(height: 15),
+                Text(
+                  "Your password is reset!",
+                  style:
+                      ClanChurnTypography.font12600.copyWith(color: Colors.red),
+                ),
+                Text(
+                  "Choose a new one to complete the process",
+                  style:
+                      ClanChurnTypography.font12600.copyWith(color: Colors.red),
+                ),
+                // Text("${widget.token}"),
+                const SizedBox(height: 15),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Password",
+                      style: ClanChurnTypography.font14600,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 5),
+                // password
+                TextFormField(
+                  obscureText: true,
+                  obscuringCharacter: "⦿",
+                  // textAlign: TextAlign.center,
+                  textAlignVertical: TextAlignVertical.center,
+                  textInputAction: TextInputAction.next,
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.only(top: 30),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30)),
+                    hintText: 'Password',
+                    prefixIcon: Container(
+                      // width: 36,
+                      // height: 36,
+                      margin: const EdgeInsets.only(left: 10.0),
+                      padding: const EdgeInsets.all(10.0),
+                      decoration: const BoxDecoration(
+                        // color: Colors.amber,
+                        border: Border(
+                            // right: BorderSide(
+                            //   width: 1.0,
+                            //   color: Theme.of(context).colorScheme.secondary,
+                            // ),
+                            ),
+                      ),
+                      child: Icon(
+                        Icons.lock_open,
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                    ),
+
+                    // suffixIcon: Icon(Icons.remove_red_eye_sharp)
                   ),
-          ],
+                  validator: (String? value) {
+                    if (value != null) {
+                      if (value.length < 8) {
+                        return 'Password must be at least 8 characters long.';
+                      }
+                    }
+
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 10),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Confirm Password",
+                      style: ClanChurnTypography.font14600,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 5),
+                // confirm password
+                TextFormField(
+                  obscureText: true,
+                  obscuringCharacter: "⦿",
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.zero,
+                    focusColor: Theme.of(context).colorScheme.secondary,
+                    hoverColor: Theme.of(context).colorScheme.secondary,
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30.0)),
+                    hintText: 'Confirm Password',
+                    prefixIcon: Container(
+                      margin: const EdgeInsets.only(left: 10.0),
+                      padding: const EdgeInsets.all(10.0),
+                      child: Icon(
+                        Icons.lock_open,
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                    ),
+                  ),
+                  validator: (String? value) {
+                    if (value != null) {
+                      if (value.length < 8) {
+                        return 'Password must be at least 8 characters long.';
+                      }
+                    }
+
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 40),
+
+                //  set new password button
+                _isLoading
+                    ? CircularProgressIndicator(
+                        color: Theme.of(context).colorScheme.secondary,
+                      )
+                    : SizedBox(
+                        height: 40,
+                        width: MediaQuery.of(context).size.width * 0.25,
+                        child: ElevatedButton(
+                          onPressed: _resetPassword,
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Theme.of(context)
+                                  .colorScheme
+                                  .secondary
+                                  .withOpacity(1.0)),
+                          child: const Text('Set new password'),
+                        ),
+                      ),
+                const SizedBox(height: 10),
+              ],
+            ),
+          ),
         ),
       ),
     );
