@@ -22,4 +22,5 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       emit(state.copyWith(user: result));
     } else {}
   }
+  
 }

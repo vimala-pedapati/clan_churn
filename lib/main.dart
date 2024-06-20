@@ -133,6 +133,8 @@ class ClanChurnApp extends StatelessWidget {
             tertiary: const Color.fromRGBO(199, 199, 199, 1),
             background: const Color(0xffFFFFFF),
             shadow: const Color.fromRGBO(0, 0, 0, 0.15),
+            onBackground: Colors.black
+
           ),
           elevatedButtonTheme: ElevatedButtonThemeData(
             style: ElevatedButton.styleFrom(
