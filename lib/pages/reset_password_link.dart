@@ -13,11 +13,31 @@ class ResetPasswordScreen extends StatefulWidget {
   _ResetPasswordScreenState createState() => _ResetPasswordScreenState();
 }
 
-class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
+class _ResetPasswordScreenState extends State<ResetPasswordScreen>
+    with SingleTickerProviderStateMixin {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmController = TextEditingController();
   bool _isLoading = false;
   final GlobalKey _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+
+    _passwordController.addListener(_validateForm);
+    _confirmController.addListener(_validateForm);
+  }
+
+  void _validateForm() {
+    setState(() {}); // Trigger rebuild to update button state
+  }
+
+  @override
+  void dispose() {
+    _passwordController.dispose();
+    _confirmController.dispose();
+    super.dispose();
+  }
 
   void _resetPassword() async {
     setState(() {
@@ -114,10 +134,17 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 // password
                 TextFormField(
                   obscureText: true,
-                  obscuringCharacter: "⦿",
+                  // obscuringCharacter: "⦿",
+                  obscuringCharacter: "♦",
+                  controller: _passwordController,
                   // textAlign: TextAlign.center,
                   textAlignVertical: TextAlignVertical.center,
                   textInputAction: TextInputAction.next,
+                  onChanged: (value) {
+                    // setState(() {
+                    // _passwordController.text = value;
+                    // });
+                  },
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.only(top: 30),
                     border: OutlineInputBorder(
@@ -168,8 +195,20 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 const SizedBox(height: 5),
                 // confirm password
                 TextFormField(
+                  controller: _confirmController,
                   obscureText: true,
-                  obscuringCharacter: "⦿",
+                  obscuringCharacter: "♦",
+                  // obscuringCharacter: "⚫",
+                  // obscuringCharacter: "•",
+                  // obscuringCharacter: "🔒",
+                  // obscuringCharacter: "●",
+                  // obscuringCharacter: "🤨",
+                  // obscuringCharacter: "🙈",
+                  onChanged: (value) {
+                    // setState(() {
+                    // _confirmController.text = value;
+                    // });
+                  },
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.zero,
                     focusColor: Theme.of(context).colorScheme.secondary,
@@ -207,7 +246,13 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         height: 40,
                         width: MediaQuery.of(context).size.width * 0.25,
                         child: ElevatedButton(
-                          onPressed: _resetPassword,
+                          onPressed: _confirmController.text.isEmpty ||
+                                  _passwordController.text.isEmpty ||
+                                  _passwordController.text.length < 6 ||
+                                  _confirmController.text.trim() !=
+                                      _passwordController.text.trim()
+                              ? null
+                              : _resetPassword,
                           style: ElevatedButton.styleFrom(
                               backgroundColor: Theme.of(context)
                                   .colorScheme
@@ -216,6 +261,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                           child: const Text('Set new password'),
                         ),
                       ),
+                // Text("${_confirmController.text} ${_passwordController.text} ${_confirmController.text == _passwordController.text}"),
                 const SizedBox(height: 10),
               ],
             ),
