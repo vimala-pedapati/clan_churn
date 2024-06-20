@@ -1,7 +1,14 @@
 import 'dart:convert';
+import 'dart:developer';
 
+import 'package:clan_churn/pages/new_project_components.dart';
+import 'package:clan_churn/utils/api_endpoins.dart';
+import 'package:clan_churn/utils/routes.dart';
+import 'package:clan_churn/utils/typography.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
+
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
 
@@ -11,74 +18,283 @@ class ForgotPasswordScreen extends StatefulWidget {
 
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final TextEditingController _emailController = TextEditingController();
-  bool _isLoading = false;
+  bool isMailSent = false;
+  final String forgotPass = BaseUrl.baseUrl + ApiEndpoints.signIn;
 
-  void _sendPasswordResetEmail() async {
-    setState(() {
-      _isLoading = true;
-    });
-
-    // Assume _sendResetRequest is a function that sends the request to your backend
-    bool success = await _sendResetRequest(_emailController.text);
-    
-    setState(() {
-      _isLoading = false;
-    });
-
-    if (success) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Password reset email sent!'))
+  Future forgotPassword({required email}) async {
+    final Map<String, dynamic> requestBody = {
+      "email": email,
+    };
+    try {
+      final http.Response response = await http.post(
+        Uri.parse(forgotPass),
+        headers: BaseUrl.headers,
+        body: json.encode(requestBody),
       );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to send password reset email.'))
-      );
+      log("forgot password response: $response");
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = json.decode(response.body);
+        setState(() {
+          isMailSent = true;
+        });
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Mail sent to your mail id to rest your password')));
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Failed to send mail.')));
+        log('Status Code: ${response.statusCode}');
+        if (response.statusCode == 401) {
+          log('Unauthorized - Please check your credentials');
+        } else if (response.statusCode == 404) {
+          log('API endpoint not found');
+        } else {
+          log('Unexpected Error');
+        }
+      }
+    } catch (e) {
+      log('Network Error: $e');
     }
   }
 
-  Future<bool> _sendResetRequest(String email) async {
-    // Send request to backend
-    // Use an HTTP client like http or dio package
-    try {
-      final response = await http.post(
-        Uri.parse('https://your-backend.com/api/forgot-password'),
-        body: json.encode({'email': email}),
-        headers: {'Content-Type': 'application/json'},
-      );
+  @override
+  void initState() {
+    _emailController.addListener(_validateForm);
+    super.initState();
+  }
 
-      if (response.statusCode == 200) {
-        return true;
-      } else {
-        return false;
-      }
-    } catch (e) {
-      print(e);
-      return false;
-    }
+  void _validateForm() {
+    setState(() {});
+  }
+
+  bool isValidEmail(String email) {
+    // Regular expression for validating an email address
+    final RegExp emailRegex = RegExp(
+        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9]+(?:\.[a-zA-Z0-9-]+)*$");
+    return emailRegex.hasMatch(email);
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Forgot Password')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: _emailController,
-              decoration: InputDecoration(labelText: 'Email'),
-            ),
-            SizedBox(height: 20),
-            _isLoading
-                ? CircularProgressIndicator()
-                : ElevatedButton(
-                    onPressed: _sendPasswordResetEmail,
-                    child: Text('Send Reset Email'),
-                  ),
-          ],
+      backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.4),
+      body: Center(
+        child: Container(
+          width: MediaQuery.of(context).size.width * 0.3,
+          padding: const EdgeInsets.all(30.0),
+          decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.background,
+              borderRadius: BorderRadius.circular(20)),
+          child: isMailSent
+              ? SentMailSuccessfully(
+                  email: _emailController.text,
+                )
+              : Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      "Reset your password!",
+                      style: ClanChurnTypography.font20600,
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    Text(
+                      "Enter your email, and we'll help you reset it in a snap",
+                      style: ClanChurnTypography.font15400,
+                    ),
+                    Text(
+                      "Security made simple",
+                      style: ClanChurnTypography.font15400,
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Email",
+                          style: ClanChurnTypography.font14600,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 5),
+                    // email
+                    TextFormField(
+                      // obscureText: true,
+                      // obscuringCharacter: "⦿",
+                      // obscuringCharacter: "♦",
+                      controller: _emailController,
+                      // textAlign: TextAlign.center,
+                      textAlignVertical: TextAlignVertical.center,
+                      textInputAction: TextInputAction.next,
+                      onChanged: (value) {
+                        // setState(() {
+                        // _passwordController.text = value;
+                        // });
+                      },
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.only(top: 30),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30)),
+                        hintText: 'example@gmail.com',
+                        prefixIcon: Container(
+                          // width: 36,
+                          // height: 36,
+                          margin: const EdgeInsets.only(left: 10.0),
+                          padding: const EdgeInsets.all(10.0),
+                          decoration: const BoxDecoration(
+                            // color: Colors.amber,
+                            border: Border(
+                                // right: BorderSide(
+                                //   width: 1.0,
+                                //   color: Theme.of(context).colorScheme.primary,
+                                // ),
+                                ),
+                          ),
+                          child: Icon(
+                            Icons.mail_outline_outlined,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
+
+                        // suffixIcon: Icon(Icons.remove_red_eye_sharp)
+                      ),
+                      validator: (String? value) {
+                        if (value != null) {
+                          if (value.length < 8) {
+                            return 'Password must be at least 8 characters long.';
+                          }
+                        }
+
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 40),
+
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Theme.of(context)
+                                .colorScheme
+                                .primary
+                                .withOpacity(1.0)),
+                        onPressed: _emailController.text.trim().isEmpty
+                            ? null
+                            : isValidEmail(_emailController.text.trim()) ==
+                                    false
+                                ? null
+                                : () {
+                                    forgotPassword(
+                                        email: _emailController.text.trim());
+                                  },
+                        child: const Text("Continue"),
+                      ),
+                    ),
+                  ],
+                ),
         ),
       ),
+    );
+  }
+}
+
+class SentMailSuccessfully extends StatelessWidget {
+  final String email;
+  const SentMailSuccessfully({super.key, required this.email});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        CircleAvatar(
+          radius: 30,
+          child: Icon(
+            Icons.mail_outline_outlined,
+            color: Theme.of(context).colorScheme.primary,
+          ),
+        ),
+        const SizedBox(
+          height: 40,
+        ),
+        Text(
+          "Check your email",
+          style: ClanChurnTypography.font20600,
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        Text(
+          "We have sent password reset link to",
+          style: ClanChurnTypography.font15400,
+        ),
+        const SizedBox(
+          height: 5,
+        ),
+        Text(
+          email.isEmpty ? "vimalapedapati@tminetwork.com" : email,
+          style: ClanChurnTypography.font14400,
+        ),
+        const SizedBox(
+          height: 30,
+        ),
+        SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                backgroundColor:
+                    Theme.of(context).colorScheme.primary.withOpacity(1.0)),
+            child: const Text("Open email app"),
+            onPressed: () {
+              launchURL("https://mail.google.com/mail/u/0/#inbox");
+            },
+          ),
+        ),
+        const SizedBox(
+          height: 30,
+        ),
+        Text.rich(
+          TextSpan(
+            children: [
+              TextSpan(
+                text: "Didn't receive the email? ",
+                style: ClanChurnTypography.font14400,
+              ),
+              TextSpan(
+                text: ' Click to resend',
+                style: ClanChurnTypography.font14400
+                    .copyWith(color: Theme.of(context).colorScheme.primary),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(
+          height: 30,
+        ),
+        InkWell(
+          onTap: () {
+            GoRouter.of(context).go(AppRoutes.intial);
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.arrow_back_outlined),
+              Text(
+                " Back to login",
+                style: ClanChurnTypography.font15600,
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

@@ -27,13 +27,12 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen>
   @override
   void initState() {
     super.initState();
-
     _passwordController.addListener(_validateForm);
     _confirmController.addListener(_validateForm);
   }
 
   void _validateForm() {
-    setState(() {}); // Trigger rebuild to update button state
+    setState(() {});  
   }
 
   @override
@@ -49,7 +48,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen>
       "token": token,
       "password": password
     };
-     
+
     try {
       final http.Response response = await http.post(
         Uri.parse(resetPass),
@@ -89,7 +88,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen>
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
           // gradient: LinearGradient(
           //       colors: [
           //         Theme.of(context).colorScheme.background,
@@ -99,7 +98,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen>
           //       end: const FractionalOffset(1.0, 0.0),
           //       stops: [0,1],
           //       tileMode: TileMode.clamp),
-      ),
+          ),
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.4),
         body: Center(
@@ -108,8 +107,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen>
             width: MediaQuery.of(context).size.width * 0.3,
             padding: const EdgeInsets.all(30.0),
             decoration: BoxDecoration(
-              
-        
                 color: Theme.of(context).colorScheme.background,
                 borderRadius: BorderRadius.circular(20)),
             child: Form(
@@ -189,7 +186,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen>
                                 color: Theme.of(context).colorScheme.primary,
                               ),
                             ),
-    
+
                             // suffixIcon: Icon(Icons.remove_red_eye_sharp)
                           ),
                           validator: (String? value) {
@@ -198,7 +195,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen>
                                 return 'Password must be at least 8 characters long.';
                               }
                             }
-    
+
                             return null;
                           },
                         ),
@@ -251,12 +248,12 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen>
                                 return 'Password must be at least 8 characters long.';
                               }
                             }
-    
+
                             return null;
                           },
                         ),
                         const SizedBox(height: 40),
-    
+
                         //  set new password button
                         SizedBox(
                           height: 40,
