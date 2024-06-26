@@ -87,7 +87,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                               BlocBuilder<UserBloc, UserState>(
                                 builder: (context, state) {
                                   return Text(
-                                    "${state.user!.firstName} ${state.user!.lastName}",
+                                    "${state.user?.firstName} ${state.user?.lastName}",
                                     style: ClanChurnTypography.font15600
                                         .copyWith(
                                             color: Theme.of(context)
@@ -97,7 +97,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                                 },
                               ),
                               Text(
-                                "${state.user!.userType} - ${state.user!.clientDetails!.name}",
+                                "${state.user?.userType} - ${state.user!.clientDetails?.name}",
                                 style: ClanChurnTypography.font10600.copyWith(
                                     color:
                                         Theme.of(context).colorScheme.primary),
