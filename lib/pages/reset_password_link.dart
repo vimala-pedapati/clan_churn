@@ -43,7 +43,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen>
   }
 
   resetPassword({required String token, required String password}) async {
-    final String resetPass = BaseUrl.baseUrl + ApiEndpoints.signIn;
+    final String resetPass = BaseUrl.baseUrl + ApiEndpoints.resetPassword;
     final Map<String, dynamic> requestBody = {
       "token": token,
       "password": password

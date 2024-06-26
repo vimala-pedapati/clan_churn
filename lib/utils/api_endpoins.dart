@@ -9,8 +9,8 @@ class ApiEndpoints {
   // User
   static String signIn = '/sign_in';
   static String forgotPasword = '/forgot_password_email';
-  static String resetPassword = '/sign_in';
-  static String getUserDetails = '/reset_password';
+  static String resetPassword = '/reset_password';
+  static String getUserDetails = '/user/get_user_details';
 
   // client
   static String clientsList = '/client/client_list';

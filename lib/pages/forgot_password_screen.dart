@@ -19,7 +19,7 @@ class ForgotPasswordScreen extends StatefulWidget {
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final TextEditingController _emailController = TextEditingController();
   bool isMailSent = false;
-  final String forgotPass = BaseUrl.baseUrl + ApiEndpoints.signIn;
+  final String forgotPass = BaseUrl.baseUrl + ApiEndpoints.forgotPasword;
 
   Future forgotPassword({required email}) async {
     final Map<String, dynamic> requestBody = {
