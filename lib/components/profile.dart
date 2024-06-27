@@ -109,19 +109,22 @@ class _ProfileWidgetState extends State<ProfileWidget>
                             radius: 18,
                             backgroundColor:
                                 Theme.of(context).colorScheme.background,
-                            child: Image.network(
-                              "${state.user!.image}",
-                              loadingBuilder:
-                                  ((context, child, loadingProgress) {
-                                return const CircularProgressIndicator();
-                              }),
-                              errorBuilder: (context, error, stackTrace) {
-                                return ClipOval(
-                                    child: Image.network(
-                                  image,
-                                  scale: 2,
-                                ));
-                              },
+                            child: Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: Image.network(
+                                "${state.user!.image}",
+                                // loadingBuilder:
+                                //     ((context, child, loadingProgress) {
+                                //   return const CircularProgressIndicator();
+                                // }),
+                                errorBuilder: (context, error, stackTrace) {
+                                  return ClipOval(
+                                      child: Image.network(
+                                    image,
+                                    scale: 2,
+                                  ));
+                                },
+                              ),
                             ),
                           ),
                         ]),

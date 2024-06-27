@@ -34,9 +34,9 @@ class ProjectCard extends StatelessWidget {
                   backgroundColor: Theme.of(context).colorScheme.background,
                   child: Image.network(
                     state.selectedClient!.image!,
-                    loadingBuilder: ((context, child, loadingProgress) {
-                      return const CircularProgressIndicator();
-                    }),
+                    // loadingBuilder: ((context, child, loadingProgress) {
+                    //   return const CircularProgressIndicator();
+                    // }),
                     errorBuilder: (context, error, stackTrace) {
                       return ClipOval(
                           child: Image.network(

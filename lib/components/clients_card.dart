@@ -28,18 +28,21 @@ class ClientsCard extends StatelessWidget {
                 CircleAvatar(
                   radius: state.isNotExpanded ? 40 : 35,
                   backgroundColor: Theme.of(context).colorScheme.background,
-                  child: Image.network(
-                    "${state.selectedClient?.image}",
-                    loadingBuilder: ((context, child, loadingProgress) {
-                      return const CircularProgressIndicator();
-                    }),
-                    errorBuilder: (context, error, stackTrace) {
-                      return ClipOval(
-                          child: Image.network(
-                        image,
-                        scale: 2,
-                      ));
-                    },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Image.network(
+                      "${state.clientList[index].image}",
+                      // loadingBuilder: ((context, child, loadingProgress) {
+                      //   return const CircularProgressIndicator();
+                      // }),
+                      errorBuilder: (context, error, stackTrace) {
+                        return ClipOval(
+                            child: Image.network(
+                          image,
+                          scale: 2,
+                        ));
+                      },
+                    ),
                   ),
                 ),
                 // CircleAvatar(

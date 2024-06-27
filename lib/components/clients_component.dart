@@ -37,7 +37,7 @@ class _ClientsComponentState extends State<ClientsComponent> {
               borderRadius: BorderRadius.circular(30)),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(
+            SelectableText(
               "Clients",
               style: ClanChurnTypography.font24600,
             ),
