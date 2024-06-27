@@ -1,5 +1,7 @@
+import 'package:clan_churn/components/nav_bar.dart';
+import 'package:clan_churn/components/side_bar.dart';
+import 'package:clan_churn/components/wrap_profile.dart';
 import 'package:clan_churn/utils/typography.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 
 final sheetRawData = {
@@ -265,122 +267,6 @@ double parseValue(dynamic value) {
   }
 }
 
-// Dropdown and Checkbox widgets
-class MonthSelector extends StatelessWidget {
-  final List<String> months;
-  final List<String> selectedMonths;
-  final Function(String) onMonthSelected;
-  final Function(String) onToggleMonth;
-
-  MonthSelector({
-    required this.months,
-    required this.selectedMonths,
-    required this.onMonthSelected,
-    required this.onToggleMonth,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 400,
-      child: DropdownButtonHideUnderline(
-        child: DropdownButton2<String>(
-          isExpanded: true,
-          hint: Text(
-            'Select Months',
-            style: ClanChurnTypography.font18500,
-            overflow: TextOverflow.ellipsis,
-          ),
-          items: months
-              .map((String item) => DropdownMenuItem<String>(
-                    value: item,
-                    child: Row(
-                      children: [
-                        SizedBox(
-                          height: 20,
-                          width: 20,
-                          child: Checkbox(
-                            value: selectedMonths.contains(item),
-                            side: BorderSide(
-                              color: Theme.of(context).colorScheme.background,
-                              width: 2,
-                            ),
-                            onChanged: (value) => onToggleMonth(item),
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        Text(
-                          item,
-                          style: ClanChurnTypography.font18500.copyWith(
-                            color: Theme.of(context).colorScheme.background,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ],
-                    ),
-                  ))
-              .toList(),
-          value: selectedMonths.isNotEmpty ? selectedMonths[0] : null,
-          onChanged: (value) => onMonthSelected(value!),
-          selectedItemBuilder: (BuildContext context) =>
-              months.map((String item) {
-            return Center(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    item,
-                    style: ClanChurnTypography.font18500.copyWith(
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                  ),
-                ],
-              ),
-            );
-          }).toList(),
-          buttonStyleData: ButtonStyleData(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(
-                color: Theme.of(context).colorScheme.primary.withOpacity(0.6),
-                width: 2,
-              ),
-              color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
-            ),
-            elevation: 0,
-          ),
-          iconStyleData: IconStyleData(
-            icon: const Icon(Icons.keyboard_arrow_down),
-            iconSize: 25,
-            iconEnabledColor: Theme.of(context).colorScheme.secondary,
-            iconDisabledColor: Colors.grey,
-          ),
-          dropdownStyleData: DropdownStyleData(
-            elevation: 0,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(
-                color: Theme.of(context).colorScheme.primary.withOpacity(0.6),
-                width: 2,
-              ),
-              color: Theme.of(context).colorScheme.primary.withOpacity(1.0),
-            ),
-            scrollbarTheme: ScrollbarThemeData(
-              radius: const Radius.circular(40),
-              thickness: MaterialStateProperty.all(6),
-              thumbVisibility: MaterialStateProperty.all(true),
-            ),
-          ),
-          menuItemStyleData: const MenuItemStyleData(
-            height: 40,
-            padding: EdgeInsets.only(left: 14, right: 14),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
 // DataTable widget
 class PerformanceDataTable extends StatelessWidget {
   final List<String> metrics;
@@ -550,22 +436,34 @@ class _PerformanceReportState extends State<PerformanceReport> {
 
   @override
   Widget build(BuildContext context) {
+    final h = MediaQuery.of(context).size.height;
+    final w = MediaQuery.of(context).size.width;
     return Scaffold(
-      body: Center(
-        child: SizedBox(
-          width: MediaQuery.of(context).size.width,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                children: [
-                  // MonthSelector(
-                  //   months: sheetData['MonthlyPerformance']!.keys.toList(),
-                  //   selectedMonths: selectedMonths,
-                  //   onMonthSelected: onMonthSelected,
-                  //   onToggleMonth: onToggleMonth,
-                  // ),
-                  PerformanceDataTable(
+      backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.05),
+      body: WrapProfile(
+        child: Column(
+          children: [
+            const NavBar(),
+            SizedBox(height: h * 0.01),
+            Row(
+              children: [
+                const SideBar(
+                  selectedRoute: SelectedRoute.savedReports,
+                ),
+                AnimatedContainer(
+                  duration: const Duration(seconds: 1),
+                  // height: h * 0.82,
+                  // width: widget.width,
+                  height: MediaQuery.of(context).size.height * 0.83,
+                  width: MediaQuery.of(context).size.width*0.8,
+                  margin: EdgeInsets.only(
+                      left: w * 0.025, right: w * 0.025, top: 20, bottom: 20),
+                  padding: const EdgeInsets.only(
+                      left: 20, right: 20, top: 20, bottom: 10),
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.background,
+                      borderRadius: BorderRadius.circular(30)),
+                  child: PerformanceDataTable(
                     metrics: metrics,
                     months: selectedMonths,
                     data: data,
@@ -574,11 +472,11 @@ class _PerformanceReportState extends State<PerformanceReport> {
                     onHeaderSort: onHeaderSort,
                     onColumnsSort: onColumnsSort,
                   ),
-                ],
-              ),
-              const Filter()
-            ],
-          ),
+                ),
+                const Filter()
+              ],
+            ),
+          ],
         ),
       ),
       endDrawer: Drawer(
@@ -608,7 +506,7 @@ class Filter extends StatelessWidget {
         Scaffold.of(context).openEndDrawer();
       },
       child: Container(
-        height: MediaQuery.of(context).size.height,
+        // height: MediaQuery.of(context).size.height,
         width: 38,
         padding: const EdgeInsets.all(5),
         decoration: BoxDecoration(

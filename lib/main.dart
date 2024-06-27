@@ -3,6 +3,7 @@ import 'package:clan_churn/api_repos/auth_repo.dart';
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/churn_blocs/sign_in_bloc/sign_in_bloc.dart';
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
+import 'package:clan_churn/components/reports.dart';
 import 'package:clan_churn/components/step_tracker.dart';
 import 'package:clan_churn/pages/forgot_password_screen.dart';
 import 'package:clan_churn/pages/home_page.dart';
@@ -70,10 +71,15 @@ class ClanChurnApp extends StatelessWidget {
           pageBuilder: (context, state) => customPageRouteForGoRouter<void>(
               context: context, state: state, child: const HomePage()),
         ),
+        // GoRoute(
+        //   path: AppRoutes.savedProjects,
+        //   pageBuilder: (context, state) => customPageRouteForGoRouter<void>(
+        //       context: context, state: state, child: const PerformanceReport()),
+        // ),
         GoRoute(
           path: AppRoutes.savedProjects,
           pageBuilder: (context, state) => customPageRouteForGoRouter<void>(
-              context: context, state: state, child: const SavedProjects()),
+              context: context, state: state, child: const DataTablePage()),
         ),
         GoRoute(
           path: AppRoutes.clientProjects,
