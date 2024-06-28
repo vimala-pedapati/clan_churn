@@ -350,65 +350,78 @@ class _UploadedExcelSummaryReportState
   Widget build(BuildContext context) {
     // final h = MediaQuery.of(context).size.height;
     // final w = MediaQuery.of(context).size.width;
-    return jsonObject == null
-        ? const Center(
-            child: Text("Fetching summary report!........"),
-          )
-        : SingleChildScrollView(
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              // header - upload data, history button
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      // header - upload data, history button
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            children: [
+              IconButton(
+                icon: Icon(
+                  Icons.keyboard_backspace,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+                onPressed: widget.onPressed,
+              ),
+              ClanChurnSpacing.w10,
+              SelectableText(
+                "Upload Data",
+                style: ClanChurnTypography.font18600,
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 45,
+            width: 130,
+            child: OutlinedButton(
+              style: OutlinedButton.styleFrom(
+                padding: const EdgeInsets.all(0),
+                side: BorderSide(
+                    color: Theme.of(context).colorScheme.primary, width: 1.5),
+                shape: RoundedRectangleBorder(
+                  borderRadius:
+                      BorderRadius.circular(8), // Adjust the border radius
+                ),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Row(
-                    children: [
-                      IconButton(
-                        icon: Icon(
-                          Icons.keyboard_backspace,
-                          color: Theme.of(context).colorScheme.secondary,
-                        ),
-                        onPressed: widget.onPressed,
-                      ),
-                      ClanChurnSpacing.w10,
-                      SelectableText(
-                        "Upload Data",
-                        style: ClanChurnTypography.font18600,
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 45,
-                    width: 130,
-                    child: OutlinedButton(
-                      style: OutlinedButton.styleFrom(
-                        padding: const EdgeInsets.all(0),
-                        side: BorderSide(
-                            color: Theme.of(context).colorScheme.primary,
-                            width: 1.5),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                              8), // Adjust the border radius
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          const Icon(Icons.history),
-                          Text(
-                            "History",
-                            style: ClanChurnTypography.font18600.copyWith(
-                                color: Theme.of(context).colorScheme.primary),
-                          ),
-                        ],
-                      ),
-                      onPressed: () {
-                        showHistory(context);
-                      },
-                    ),
+                  const Icon(Icons.history),
+                  Text(
+                    "History",
+                    style: ClanChurnTypography.font18600.copyWith(
+                        color: Theme.of(context).colorScheme.primary),
                   ),
                 ],
               ),
+              onPressed: () {
+                showHistory(context);
+              },
+            ),
+          ),
+        ],
+      ),
+      jsonObject == null
+          ? Expanded(
+            child: Center(
+                child: Image.asset(
+                  "assets/loading.gif",
+                  width: 30,
+                ),
+                // Column(
+                //   children: [
+                //     // Image.asset("assets/loading.gif", width: 40,),
+                //     // Image.asset("assets/loading1.gif", width: 100,),
+                //     // Image.asset("assets/loading2.gif", width: 100,),
+                //     // Image.asset("assets/loading3.gif", width: 100,),
+            
+                //   ],
+                // ),
+              ),
+          )
+          : SingleChildScrollView(
+            child: Column(children: [
               Padding(
                 padding: const EdgeInsets.only(
                     left: 0, right: 50, top: 10, bottom: 30),
@@ -531,9 +544,9 @@ class _UploadedExcelSummaryReportState
                         ),
                       ],
                     ),
-
+                
                     ClanChurnSpacing.w50,
-
+                
                     // Column DropDown
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -655,211 +668,213 @@ class _UploadedExcelSummaryReportState
                   ],
                 ),
               ),
-              // (selectedSheet != null)
-              //     ? (selectedColumn != null)
-              //         ? Column(
-              //             children: [
-              //               Container(
-              //                   // width: 00,
-              //                   child: Text(
-              //                       "${jsonObject[selectedSheet][selectedColumn]}")),
-              //               Row(
-              //                 children: [...widgets],
-              //               ),
-              //             ],
-              //           )
-              //         : Container()
-              //     : Container(),
-              ClanChurnSpacing.h20,
-              Padding(
-                padding: const EdgeInsets.only(left: 0, right: 0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  // (selectedSheet != null)
+                  //     ? (selectedColumn != null)
+                  //         ? Column(
+                  //             children: [
+                  //               Container(
+                  //                   // width: 00,
+                  //                   child: Text(
+                  //                       "${jsonObject[selectedSheet][selectedColumn]}")),
+                  //               Row(
+                  //                 children: [...widgets],
+                  //               ),
+                  //             ],
+                  //           )
+                  //         : Container()
+                  //     : Container(),
+                  ClanChurnSpacing.h20,
+                  Padding(
+                    padding: const EdgeInsets.only(left: 0, right: 0),
+                    child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Text("${jsonObject.runtimeType}"),
+              // Text("${jsonObject!.keys.toList()}"),
+              // Text("\n ${jsonObject![jsonObject!.keys.toList()[0]]}"),
+              // Text("${jsonObject![jsonObject!.keys.toList()[0]].runtimeType}"),
+              // Text("\n ${json.decode(jsonObject!.values.toList()[0]).runtimeType}"),
+              // Text("${jsonObject!.values.toList()[1].runtimeType}"),
+              // Text("${jsonObject!.values.toList()[2].runtimeType}"),
+              // SelectableText("\n${jsonObject}"),
+              // Text("${ (json.decode(jsonObject![selectedSheet]))}"),
+              // Text("${selectedColumn}"),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SummaryCard(
+                    value: (json.decode(
+                                jsonObject![selectedSheet]))[selectedColumn]
+                            ["count"]
+                        .toString(),
+                    header: "Total Rows",
+                    isDisabled: (json.decode(
+                                    jsonObject![selectedSheet]))[selectedColumn]
+                                ["count"] ==
+                            null
+                        ? true
+                        : false,
+                  ),
+                  const SummaryCard(
+                    value: "--",
+                    header: "Total Zeros",
+                    isDisabled: true,
+                  ),
+                  const SummaryCard(
+                    value: "--",
+                    header: "Total Blanks",
+                    isDisabled: true,
+                  ),
+                  const SummaryCard(
+                    value: "--",
+                    header: 'Total "NA" values',
+                    isDisabled: true,
+                  ),
+                ],
+              ),
+                
+              ClanChurnSpacing.h30,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SummaryCard(
+                    value: (json.decode(
+                            jsonObject![selectedSheet]))[selectedColumn]["max"]
+                        .toString(),
+                    header: "Maximum Value",
+                    isDisabled: (json.decode(
+                                    jsonObject![selectedSheet]))[selectedColumn]
+                                ["max"] ==
+                            null
+                        ? true
+                        : false,
+                  ),
+                  SummaryCard(
+                    value: (json.decode(
+                            jsonObject![selectedSheet]))[selectedColumn]["min"]
+                        .toString(),
+                    header: "Minimum Value",
+                    isDisabled: (json.decode(
+                                    jsonObject![selectedSheet]))[selectedColumn]
+                                ["min"] ==
+                            null
+                        ? true
+                        : false,
+                  ),
+                  const SummaryCard(
+                    value: "--",
+                    header: "Total Negative Values",
+                    isDisabled: true,
+                  ),
+                  SummaryCard(
+                    value: (json.decode(
+                            jsonObject![selectedSheet]))[selectedColumn]["50%"]
+                        .toString(),
+                    header: "Median Value",
+                    isDisabled: (json.decode(
+                                    jsonObject![selectedSheet]))[selectedColumn]
+                                ["50%"] ==
+                            null
+                        ? true
+                        : false,
+                  ),
+                ],
+              ),
+                
+              ClanChurnSpacing.h30,
+              SummaryCard(
+                value: (json.decode(jsonObject![selectedSheet]))[selectedColumn]
+                        ["mean"]
+                    .toString(),
+                header: "Average Value",
+                isDisabled:
+                    (json.decode(jsonObject![selectedSheet]))[selectedColumn]
+                                ["mean"] ==
+                            null
+                        ? true
+                        : false,
+              ),
+              ClanChurnSpacing.h50,
+              Builder(builder: (ctx) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    // Text("${jsonObject.runtimeType}"),
-                    // Text("${jsonObject!.keys.toList()}"),
-                    // Text("\n ${jsonObject![jsonObject!.keys.toList()[0]]}"),
-                    // Text("${jsonObject![jsonObject!.keys.toList()[0]].runtimeType}"),
-                    // Text("\n ${json.decode(jsonObject!.values.toList()[0]).runtimeType}"),
-                    // Text("${jsonObject!.values.toList()[1].runtimeType}"),
-                    // Text("${jsonObject!.values.toList()[2].runtimeType}"),
-                    // SelectableText("\n${jsonObject}"),
-                    // Text("${ (json.decode(jsonObject![selectedSheet]))}"),
-                    // Text("${selectedColumn}"),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SummaryCard(
-                          value: (json.decode(jsonObject![selectedSheet]))[
-                                  selectedColumn]["count"]
-                              .toString(),
-                          header: "Total Rows",
-                          isDisabled: (json.decode(jsonObject![selectedSheet]))[
-                                      selectedColumn]["count"] ==
-                                  null
-                              ? true
-                              : false,
-                        ),
-                        const SummaryCard(
-                          value: "--",
-                          header: "Total Zeros",
-                          isDisabled: true,
-                        ),
-                        const SummaryCard(
-                          value: "--",
-                          header: "Total Blanks",
-                          isDisabled: true,
-                        ),
-                        const SummaryCard(
-                          value: "--",
-                          header: 'Total "NA" values',
-                          isDisabled: true,
-                        ),
-                      ],
+                    OutlinedButtonTemplate(
+                      icon: Icons.remove_red_eye_outlined,
+                      title: "Excel Summary",
+                      onPressed: () {
+                        viewErrorReport(context, jsonObject!, selectedSheet!);
+                      },
                     ),
-
-                    ClanChurnSpacing.h30,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SummaryCard(
-                          value: (json.decode(jsonObject![selectedSheet]))[
-                                  selectedColumn]["max"]
-                              .toString(),
-                          header: "Maximum Value",
-                          isDisabled: (json.decode(jsonObject![selectedSheet]))[
-                                      selectedColumn]["max"] ==
-                                  null
-                              ? true
-                              : false,
-                        ),
-                        SummaryCard(
-                          value: (json.decode(jsonObject![selectedSheet]))[
-                                  selectedColumn]["min"]
-                              .toString(),
-                          header: "Minimum Value",
-                          isDisabled: (json.decode(jsonObject![selectedSheet]))[
-                                      selectedColumn]["min"] ==
-                                  null
-                              ? true
-                              : false,
-                        ),
-                        const SummaryCard(
-                          value: "--",
-                          header: "Total Negative Values",
-                          isDisabled: true,
-                        ),
-                        SummaryCard(
-                          value: (json.decode(jsonObject![selectedSheet]))[
-                                  selectedColumn]["50%"]
-                              .toString(),
-                          header: "Median Value",
-                          isDisabled: (json.decode(jsonObject![selectedSheet]))[
-                                      selectedColumn]["50%"] ==
-                                  null
-                              ? true
-                              : false,
-                        ),
-                      ],
+                    OutlinedButtonTemplate(
+                      icon: Icons.list_alt_outlined,
+                      title: "Group Categorization",
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.background,
+                              surfaceTintColor: Colors.transparent,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(08),
+                              ),
+                              title: const Text("Coming Soon!..."),
+                            );
+                          },
+                        );
+                      },
                     ),
-
-                    ClanChurnSpacing.h30,
-                    SummaryCard(
-                      value: (json.decode(
-                                  jsonObject![selectedSheet]))[selectedColumn]
-                              ["mean"]
-                          .toString(),
-                      header: "Average Value",
-                      isDisabled: (json.decode(jsonObject![selectedSheet]))[
-                                  selectedColumn]["mean"] ==
-                              null
-                          ? true
-                          : false,
+                    BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
+                      builder: (context, state) {
+                        return OutlinedButtonTemplate(
+                          icon: Icons.sim_card_download_outlined,
+                          title: "View Error Report",
+                          onHoverTextChange: "Download Error Report",
+                          onPressed: () {
+                            context
+                                .read<ProjectArchitectBloc>()
+                                .add(DownloadErrorReportEvent(
+                                  context: context,
+                                  inputId: context
+                                          .read<ProjectArchitectBloc>()
+                                          .state
+                                          .createdProject!
+                                          .latestInput ??
+                                      "",
+                                  onSuccessCallback: (message) {},
+                                  onErrorCallback: (errorMessage, errorCode) {
+                                    print(
+                                        "Download Error Report...${state.createdProject!.latestInput}..$errorMessage $errorCode");
+                                    GetDialog.failedErrorReport(context);
+                                  },
+                                ));
+                          },
+                        );
+                      },
                     ),
-                    ClanChurnSpacing.h50,
-                    Builder(builder: (ctx) {
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          OutlinedButtonTemplate(
-                            icon: Icons.remove_red_eye_outlined,
-                            title: "Excel Summary",
-                            onPressed: () {
-                              viewErrorReport(
-                                  context, jsonObject!, selectedSheet!);
-                            },
-                          ),
-                          OutlinedButtonTemplate(
-                            icon: Icons.list_alt_outlined,
-                            title: "Group Categorization",
-                            onPressed: () {
-                              showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    backgroundColor: Theme.of(context)
-                                        .colorScheme
-                                        .background,
-                                    surfaceTintColor: Colors.transparent,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(08),
-                                    ),
-                                    title: const Text("Coming Soon!..."),
-                                  );
-                                },
-                              );
-                            },
-                          ),
-                          BlocBuilder<ProjectArchitectBloc,
-                              ProjectArchitectState>(
-                            builder: (context, state) {
-                              return OutlinedButtonTemplate(
-                                icon: Icons.sim_card_download_outlined,
-                                title: "View Error Report",
-                                onHoverTextChange: "Download Error Report",
-                                onPressed: () {
-                                  context
-                                      .read<ProjectArchitectBloc>()
-                                      .add(DownloadErrorReportEvent(
-                                        context: context,
-                                        inputId: context
-                                                .read<ProjectArchitectBloc>()
-                                                .state
-                                                .createdProject!
-                                                .latestInput ??
-                                            "",
-                                        onSuccessCallback: (message) {},
-                                        onErrorCallback:
-                                            (errorMessage, errorCode) {
-                                          print(
-                                              "Download Error Report...${state.createdProject!.latestInput}..$errorMessage $errorCode");
-                                          GetDialog.failedErrorReport(context);
-                                        },
-                                      ));
-                                },
-                              );
-                            },
-                          ),
-                          OutlinedButtonTemplate(
-                            icon: Icons.upload_file_outlined,
-                            title: "Upload New Sheet",
-                            onPressed: widget.uploadNewSheetRequested,
-                          ),
-                        ],
-                      );
-                    }),
-                    ClanChurnSpacing.h50,
-                    const Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        GetPublishButton(),
-                      ],
-                    )
+                    OutlinedButtonTemplate(
+                      icon: Icons.upload_file_outlined,
+                      title: "Upload New Sheet",
+                      onPressed: widget.uploadNewSheetRequested,
+                    ),
                   ],
-                ),
+                );
+              }),
+              ClanChurnSpacing.h50,
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  GetPublishButton(),
+                ],
               )
-            ]),
-          );
+            ],
+                    ),
+                  )
+                     
+            ],),
+          ) ]);
   }
 }
