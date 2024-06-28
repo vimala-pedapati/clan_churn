@@ -321,12 +321,14 @@ class CustomDataTableState<T> extends State<CustomDataTable<T>> {
           ),
           Row(
             children: [
+              /// frezed table
               SingleChildScrollView(
                 controller: _columnController,
                 scrollDirection: Axis.vertical,
                 physics: const NeverScrollableScrollPhysics(),
                 child: _buildFixedCol(),
               ),
+              /// scrollable data table
               Flexible(
                 child: SingleChildScrollView(
                   physics: const ClampingScrollPhysics(),

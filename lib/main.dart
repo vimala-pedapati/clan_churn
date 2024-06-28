@@ -71,16 +71,16 @@ class ClanChurnApp extends StatelessWidget {
           pageBuilder: (context, state) => customPageRouteForGoRouter<void>(
               context: context, state: state, child: const HomePage()),
         ),
-        // GoRoute(
-        //   path: AppRoutes.savedProjects,
-        //   pageBuilder: (context, state) => customPageRouteForGoRouter<void>(
-        //       context: context, state: state, child: const PerformanceReport()),
-        // ),
         GoRoute(
           path: AppRoutes.savedProjects,
           pageBuilder: (context, state) => customPageRouteForGoRouter<void>(
-              context: context, state: state, child: const DataTablePage()),
+              context: context, state: state, child: const PerformanceReport()),
         ),
+        // GoRoute(
+        //   path: AppRoutes.savedProjects,
+        //   pageBuilder: (context, state) => customPageRouteForGoRouter<void>(
+        //       context: context, state: state, child: const DataTablePage()),
+        // ),
         GoRoute(
           path: AppRoutes.clientProjects,
           pageBuilder: (context, state) => customPageRouteForGoRouter<void>(
