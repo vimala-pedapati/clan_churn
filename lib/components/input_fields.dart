@@ -1302,16 +1302,12 @@ class _GetInputFieldsState extends State<GetInputFields> {
                   ],
                 ),
               ),
-              (state.createdProject!.latestInput == null ||
-                      state.uploadNewSheetRequested)
+              (state.createdProject!.latestInput == null || state.uploadNewSheetRequested)
                   ? UploadNewData(
-                      onPressed: () {
-                        goToPreviousPage();
-                      },
+                      onPressed: () { goToPreviousPage(); },
                     )
                   : UploadedExcelSummaryReport(
-                      onPressed: () {
-                        goToPreviousPage();
+                      onPressed: () { goToPreviousPage();
                       },
                       uploadNewSheetRequested: () {
                         context.read<ProjectArchitectBloc>().add(

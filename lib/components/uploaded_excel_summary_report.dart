@@ -1,35 +1,391 @@
-import 'dart:convert';
+// import 'dart:convert';
 
-import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
-import 'package:clan_churn/components/dialogs.dart';
-import 'package:clan_churn/components/outlined_button_template.dart';
-import 'package:clan_churn/components/project_input_history.dart';
-import 'package:clan_churn/components/project_publish.dart';
-import 'package:clan_churn/components/summary_card.dart';
-import 'package:clan_churn/components/view_error_report.dart';
-import 'package:clan_churn/utils/spacing.dart';
-import 'package:clan_churn/utils/typography.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+// import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
+// import 'package:clan_churn/components/dialogs.dart';
+// import 'package:clan_churn/components/outlined_button_template.dart';
+// import 'package:clan_churn/components/project_input_history.dart';
+// import 'package:clan_churn/components/project_publish.dart';
+// import 'package:clan_churn/components/summary_card.dart';
+// import 'package:clan_churn/components/view_error_report.dart';
+// import 'package:clan_churn/utils/spacing.dart';
+// import 'package:clan_churn/utils/typography.dart';
+// import 'package:dropdown_button2/dropdown_button2.dart';
+// import 'package:flutter/foundation.dart';
+// import 'package:flutter/material.dart';
+// import 'package:flutter_bloc/flutter_bloc.dart';
 
-class UploadedExcelSummaryReport extends StatefulWidget {
-  const UploadedExcelSummaryReport(
-      {super.key,
-      required this.onPressed,
-      required this.uploadNewSheetRequested});
-  final Function() onPressed;
-  final VoidCallback uploadNewSheetRequested;
+// class UploadedExcelSummaryReport extends StatefulWidget {
+//   const UploadedExcelSummaryReport(  {super.key, required this.onPressed,  required this.uploadNewSheetRequested});
+//   final Function() onPressed;  final VoidCallback uploadNewSheetRequested;
+//   @override
+//   State<UploadedExcelSummaryReport> createState() =>  _UploadedExcelSummaryReportState();}
 
-  @override
-  State<UploadedExcelSummaryReport> createState() =>
-      _UploadedExcelSummaryReportState();
-}
+// class _UploadedExcelSummaryReportState extends State<UploadedExcelSummaryReport> {
+//   Map<String, dynamic>? jsonObject;
+//   String? selectedSheet; String? selectedColumn; List<String> sheets = []; List<String> columns = []; List<Widget> widgets = [];
+//   @override
+//   void initState() {
+//     if (context.read<ProjectArchitectBloc>().state.createdProject != null) {
+//       if (context .read<ProjectArchitectBloc>().state.createdProject!.latestInput != null) {
+//         context.read<ProjectArchitectBloc>().add(GetInputExcelSummaryEvent(inputId: context.read<ProjectArchitectBloc>().state.createdProject!.latestInput!,
+//               onErrorCallback: (errorMessage, errorCode) { if (kDebugMode) {  print( "Get Input Excel Summary Report error call back: $errorMessage $errorCode");}},
+//               onSuccessCallback: (message) {
+//                 if (message != null) {
+//                   if (kDebugMode) { print( "Get Input Excel Summary Report: ${json.decode(message.body)}"); }
+//                   setState(() {  jsonObject = json.decode(message.body); });
+//                   updateSelectedSheet(data: jsonObject!);
+//                 }
+//               },
+//             ));
+//       }
+//     }
+//     super.initState();
+//   }
+//   void updateSelectedSheet({required Map<String, dynamic> data, String? selectedSheet}) {
+//     if (selectedSheet == null) {
+//       setState(() {
+//         sheets = data.keys.toList();
+//         if (sheets.isNotEmpty) { selectedSheet = sheets[0]; updatedSelectedSheetColumns(data: data, selectedSheetKey: selectedSheet!); }
+//       });
+//     } else {
+//       updatedSelectedSheetColumns(data: data, selectedSheetKey: selectedSheet);
+//     }
+//   }
+//   void updatedSelectedSheetColumns( {required Map<String, dynamic> data, required String selectedSheetKey}) {
+//     setState(() {
+//       selectedSheet = selectedSheetKey;
+//       columns = json.decode(data[selectedSheetKey]).keys.toList();
+//       if (columns.isNotEmpty) { selectedColumn = columns[0];}
+//       updatedSelectedSheetColumnWidgets(selectedCol: selectedColumn!, selectedShe: selectedSheetKey);
+//     });
+//   }
+//   void updatedSelectedSheetColumnWidgets(
+//       {required String selectedShe, required String selectedCol}) {
+//     setState(() {
+//       selectedColumn = selectedCol;
+//       widgets = [];
+//       ((json.decode(jsonObject![selectedSheet]))[selectedColumn] as Map<String, dynamic>).map(
+//         (key, value) {
+//           setState(() { widgets.add(Row(children: [Text("$key : "), Text("$value")],));});
+//           return MapEntry(key, value);
+//         },
+//       );
+//     });
+//   }
 
-class _UploadedExcelSummaryReportState
-    extends State<UploadedExcelSummaryReport> {
-  Map<String, dynamic>? jsonObject;
+//   @override
+//   Widget build(BuildContext context) {
+//     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+//       // header - upload data, history button
+//       Row(
+//         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//         children: [
+//           Row(
+//             children: [
+//               IconButton(
+//                 icon: Icon(
+//                   Icons.keyboard_backspace,
+//                   color: Theme.of(context).colorScheme.secondary,
+//                 ),
+//                 onPressed: widget.onPressed,
+//               ),
+//               ClanChurnSpacing.w10,
+//               SelectableText(
+//                 "Upload Data",
+//                 style: ClanChurnTypography.font18600,
+//               ),
+//             ],
+//           ),
+//           SizedBox(
+//             height: 45,
+//             width: 130,
+//             child: OutlinedButton(
+//               style: OutlinedButton.styleFrom(
+//                 padding: const EdgeInsets.all(0),
+//                 side: BorderSide(
+//                     color: Theme.of(context).colorScheme.primary, width: 1.5),
+//                 shape: RoundedRectangleBorder(
+//                   borderRadius:
+//                       BorderRadius.circular(8), // Adjust the border radius
+//                 ),
+//               ),
+//               child: Row(
+//                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//                 children: [
+//                   const Icon(Icons.history),
+//                   Text(
+//                     "History",
+//                     style: ClanChurnTypography.font18600
+//                         .copyWith(color: Theme.of(context).colorScheme.primary),
+//                   ),
+//                 ],
+//               ),
+//               onPressed: () {
+//                 showHistory(context);
+//               },
+//             ),
+//           ),
+//         ],
+//       ),
+//       jsonObject == null
+//           ? Expanded( child: Center( child: Image.asset( "assets/loading.gif", width: 30) ))
+//           : SingleChildScrollView(
+//               child: Container(
+//                 color: Colors.amber,
+//                 child: Column(
+//                   children: [
+//                     Padding(
+//                       padding: const EdgeInsets.only(left: 0, right: 50, top: 10, bottom: 30),
+//                       child: Row(
+//                         children: [
+//                           // Sheets Dropdown
+//                           Column(
+//                             crossAxisAlignment: CrossAxisAlignment.start,
+//                             mainAxisAlignment: MainAxisAlignment.start,
+//                             children: [
+//                               Text(  "Select Sheet", style: ClanChurnTypography.font18500,),
+//                               ClanChurnSpacing.h10,
+//                               SizedBox(
+//                                 width: 400,
+//                                 child: DropdownButtonHideUnderline(
+//                                   child: DropdownButton2<String>(
+//                                     isExpanded: true,
+//                                     hint: Row(children: [Text('Select Sheet',style: ClanChurnTypography.font18500,overflow: TextOverflow.ellipsis)]),
+//                                     items: sheets.map((String item) =>  DropdownMenuItem<String>( value: item, child: Text( item,style: ClanChurnTypography .font18500 .copyWith(color: Theme.of(context).colorScheme.background),overflow: TextOverflow.ellipsis, ),)).toList(),
+//                                     value: selectedSheet,
+//                                     onChanged: (value) { updateSelectedSheet( data: jsonObject!, selectedSheet: value);},
+//                                     selectedItemBuilder: (BuildContext context) { return sheets.map((String item) { return Center( child: Row( crossAxisAlignment:  CrossAxisAlignment.start, children: [Text(item, style: ClanChurnTypography.font18500.copyWith( color:  Theme.of(context) .colorScheme.secondary)),],),); }).toList();},
+//                                     buttonStyleData: ButtonStyleData(
+//                                       decoration: BoxDecoration(
+//                                         borderRadius: BorderRadius.circular(8),
+//                                         border: Border.all(color: Theme.of(context).colorScheme.primary.withOpacity(0.6)),
+//                                         color: Theme.of(context).colorScheme.primary.withOpacity(0.2)),
+//                                       elevation: 0,
+//                                     ),
+//                                     iconStyleData: IconStyleData(
+//                                       icon: const Icon(Icons.keyboard_arrow_down),
+//                                       iconSize: 25,
+//                                       iconEnabledColor: Theme.of(context).colorScheme.secondary,
+//                                       iconDisabledColor: Colors.grey,
+//                                     ),
+//                                     dropdownStyleData: DropdownStyleData(
+//                                       elevation: 0,
+//                                       decoration: BoxDecoration(
+//                                         borderRadius: BorderRadius.circular(8),
+//                                         border: Border.all(color: Theme.of(context).colorScheme.primary.withOpacity(0.6)),
+//                                         color: Theme.of(context).colorScheme.primary.withOpacity(1.0),
+//                                       ),
+//                                       scrollbarTheme: ScrollbarThemeData(
+//                                         radius: const Radius.circular(40),
+//                                         thickness: MaterialStateProperty.all(6),
+//                                         thumbVisibility: MaterialStateProperty.all(true),
+//                                       ),
+//                                     ),
+//                                     menuItemStyleData: const MenuItemStyleData(height: 40, padding:  EdgeInsets.only(left: 14, right: 14),),
+//                                   ),
+//                                 ),
+//                               ),
+//                             ],
+//                           ),
+//                           ClanChurnSpacing.w50, 
+//                           // Column DropDown
+//                           Column(
+//                             crossAxisAlignment: CrossAxisAlignment.start,
+//                             mainAxisAlignment: MainAxisAlignment.start,
+//                             children: [
+//                               Text(  "Select Column",  style: ClanChurnTypography.font18500, ),
+//                               ClanChurnSpacing.h10,
+//                               SizedBox(
+//                                 width: 400,
+//                                 child: DropdownButtonHideUnderline(
+//                                   child: DropdownButton2<String>(
+//                                     isExpanded: true,
+//                                     hint: Row(
+//                                       children: [
+//                                         Text('Select Column', style: ClanChurnTypography.font18500, overflow: TextOverflow.ellipsis, ),
+//                                       ],
+//                                     ),
+//                                     items: columns .map((String item) =>  DropdownMenuItem<String>(  value: item, child: Text(item,style: ClanChurnTypography.font18500.copyWith( color: Theme.of(context).colorScheme.background),overflow: TextOverflow.ellipsis),)).toList(),
+//                                     selectedItemBuilder: (BuildContext context) {return columns.map((String item) {return Center( child: Row(crossAxisAlignment:  CrossAxisAlignment.start, children: [ Text(item, style: ClanChurnTypography .font18500 .copyWith(  color:  Theme.of(context) .colorScheme .secondary)),],),);}).toList(); },
+//                                     value: selectedColumn,
+//                                     onChanged: (value) {updatedSelectedSheetColumnWidgets(selectedShe: selectedSheet!, selectedCol: value!);},
+//                                     buttonStyleData: ButtonStyleData(
+//                                       decoration: BoxDecoration(
+//                                         borderRadius: BorderRadius.circular(8),
+//                                         border: Border.all(color: Theme.of(context).colorScheme.primary.withOpacity(0.6)),
+//                                         color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
+//                                       ),
+//                                       elevation: 0,
+//                                     ),
+//                                     iconStyleData: IconStyleData(
+//                                       icon: const Icon(Icons.keyboard_arrow_down ),
+//                                       iconSize: 25,
+//                                       iconEnabledColor: Theme.of(context).colorScheme.secondary,
+//                                       iconDisabledColor: Colors.grey,
+//                                     ),
+//                                     dropdownStyleData: DropdownStyleData(
+//                                       elevation: 0,
+//                                       decoration: BoxDecoration(
+//                                         borderRadius: BorderRadius.circular(8),
+//                                         border: Border.all(color: Theme.of(context).colorScheme.primary.withOpacity(0.6)),
+//                                         color: Theme.of(context).colorScheme.primary.withOpacity(1.0),
+//                                       ),
+//                                       scrollbarTheme: ScrollbarThemeData(
+//                                         radius: const Radius.circular(40),
+//                                         thickness: MaterialStateProperty.all(6),
+//                                         thumbVisibility: MaterialStateProperty.all(true),
+//                                       ),
+//                                     ),
+//                                     menuItemStyleData: const MenuItemStyleData( height: 40,  padding: EdgeInsets.only(left: 14, right: 14)),
+//                                   ),
+//                                 ),
+//                               ),
+//                             ],
+//                           ),
+//                         ],
+//                       ),
+//                     ),
+//                     // (selectedSheet != null)
+//                     //     ? (selectedColumn != null)
+//                     //         ? Column(
+//                     //             children: [
+//                     //               Container(
+//                     //                   // width: 00,
+//                     //                   child: Text(
+//                     //                       "${jsonObject[selectedSheet][selectedColumn]}")),
+//                     //               Row(
+//                     //                 children: [...widgets],
+//                     //               ),
+//                     //             ],
+//                     //           )
+//                     //         : Container()
+//                     //     : Container(),
+//                     ClanChurnSpacing.h20,
+//                     // summary details
+//                     Padding(
+//                       padding: const EdgeInsets.only(left: 0, right: 0),
+//                       child: Column(
+//                         crossAxisAlignment: CrossAxisAlignment.start,
+//                         children: [ 
+//                           Row(
+//                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                             children: [
+//                               SummaryCard(
+//                                 value:  (json.decode(jsonObject![selectedSheet]))[  selectedColumn]["count"].toString(),
+//                                 header: "Total Rows",
+//                                 isDisabled: (json.decode(jsonObject![selectedSheet]))[selectedColumn]["count"] == null ? true : false,
+//                               ),
+//                               const SummaryCard( value: "--", header: "Total Zeros", isDisabled: true,),
+//                               const SummaryCard( value: "--", header: "Total Blanks",isDisabled: true,),
+//                               const SummaryCard( value: "--", header: 'Total "NA" values',  isDisabled: true,),
+//                             ],
+//                           ),
+//                           ClanChurnSpacing.h30,
+//                           Row(
+//                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                             children: [
+//                               SummaryCard(
+//                                 value: (json.decode(jsonObject![selectedSheet]))[ selectedColumn]["max"].toString(),
+//                                 header: "Maximum Value",
+//                                 isDisabled: (json.decode(jsonObject![selectedSheet]))[  selectedColumn]["max"] ==  null  ? true : false,
+//                               ),
+//                               SummaryCard(
+//                                 value: (json.decode(jsonObject![selectedSheet]))[selectedColumn]["min"].toString(),
+//                                 header: "Minimum Value",
+//                                 isDisabled: (json.decode(jsonObject![selectedSheet]))[ selectedColumn]["min"] == null ? true : false,
+//                               ),
+//                               const SummaryCard(  value: "--", header: "Total Negative Values",  isDisabled: true,),
+//                               SummaryCard(
+//                                 value: (json.decode(jsonObject![selectedSheet]))[ selectedColumn]["50%"].toString(),
+//                                 header: "Median Value",
+//                                 isDisabled: (json.decode(jsonObject![selectedSheet]))[  selectedColumn]["50%"] ==  null ? true : false,
+//                               ),
+//                             ],
+//                           ),
+//                           ClanChurnSpacing.h30,
+//                           SummaryCard(
+//                             value: (json.decode(jsonObject![selectedSheet]))[selectedColumn]["mean"].toString(),
+//                             header: "Average Value",
+//                             isDisabled:  (json.decode(jsonObject![selectedSheet]))[selectedColumn]["mean"] ==  null  ? true : false,
+//                           ),
+//                           ClanChurnSpacing.h50,
+//                           Builder(builder: (ctx) {
+//                             return Row(
+//                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                               children: [
+//                                 OutlinedButtonTemplate(
+//                                   icon: Icons.remove_red_eye_outlined,
+//                                   title: "Excel Summary",
+//                                   onPressed: () {viewErrorReport( context, jsonObject!, selectedSheet!); },
+//                                 ),
+//                                 OutlinedButtonTemplate(
+//                                   icon: Icons.list_alt_outlined,
+//                                   title: "Group Categorization",
+//                                   onPressed: () {
+//                                     showDialog(
+//                                       context: context,
+//                                       builder: (context) {
+//                                         return AlertDialog(
+//                                           backgroundColor: Theme.of(context).colorScheme.background,
+//                                           surfaceTintColor: Colors.transparent,
+//                                           shape: RoundedRectangleBorder(  borderRadius: BorderRadius.circular(08),),
+//                                           title: const Text("Coming Soon!..."),
+//                                         );
+//                                       },
+//                                     );
+//                                   },
+//                                 ),
+//                                 BlocBuilder<ProjectArchitectBloc,
+//                                     ProjectArchitectState>(
+//                                   builder: (context, state) {
+//                                     return OutlinedButtonTemplate(
+//                                       icon: Icons.sim_card_download_outlined,
+//                                       title: "View Error Report",
+//                                       onHoverTextChange: "Download Error Report",
+//                                       onPressed: () {
+//                                         context .read<ProjectArchitectBloc>()
+//                                             .add(DownloadErrorReportEvent(
+//                                               context: context,
+//                                               inputId: context .read<ProjectArchitectBloc>().state.createdProject!.latestInput ?? "",
+//                                               onSuccessCallback: (message) {},
+//                                               onErrorCallback:  (errorMessage, errorCode) {
+//                                                 print(  "Download Error Report...${state.createdProject!.latestInput}..$errorMessage $errorCode");
+//                                                 GetDialog.failedErrorReport( context);
+//                                               },
+//                                             ));
+//                                       },
+//                                     );
+//                                   },
+//                                 ),
+//                                 OutlinedButtonTemplate(
+//                                   icon: Icons.upload_file_outlined,
+//                                   title: "Upload New Sheet",
+//                                   onPressed: widget.uploadNewSheetRequested,
+//                                 ),
+//                               ],
+//                             );
+//                           }),
+//                           ClanChurnSpacing.h50,
+//                           const Row(
+//                             mainAxisAlignment: MainAxisAlignment.center,
+//                             crossAxisAlignment: CrossAxisAlignment.center,
+//                             children: [
+//                               GetPublishButton(),
+//                             ],
+//                           )
+//                         ],
+//                       ),
+//                     )
+//                   ],
+//                 ),
+//               ),
+//             )
+//     ]);
+//   }
+// }
+
+
+
   // = {
   //   "Customer Basic Data": {
   //     "Employee ID": {
@@ -252,26 +608,67 @@ class _UploadedExcelSummaryReportState
   //     }
   //   }
   // };
+  
+
+  import 'dart:convert';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/foundation.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
+import 'package:clan_churn/components/dialogs.dart';
+import 'package:clan_churn/components/outlined_button_template.dart';
+import 'package:clan_churn/components/project_input_history.dart';
+import 'package:clan_churn/components/project_publish.dart';
+import 'package:clan_churn/components/summary_card.dart';
+import 'package:clan_churn/components/view_error_report.dart';
+import 'package:clan_churn/utils/spacing.dart';
+import 'package:clan_churn/utils/typography.dart';
+
+// Define the UploadedExcelSummaryReport widget
+class UploadedExcelSummaryReport extends StatefulWidget {
+  const UploadedExcelSummaryReport({
+    Key? key,
+    required this.onPressed,
+    required this.uploadNewSheetRequested,
+  }) : super(key: key);
+
+  final Function() onPressed;
+  final VoidCallback uploadNewSheetRequested;
+
+  @override
+  State<UploadedExcelSummaryReport> createState() =>
+      _UploadedExcelSummaryReportState();
+}
+
+// State class for UploadedExcelSummaryReport widget
+class _UploadedExcelSummaryReportState
+    extends State<UploadedExcelSummaryReport> {
+  // Properties
+  Map<String, dynamic>? jsonObject;
   String? selectedSheet;
   String? selectedColumn;
   List<String> sheets = [];
   List<String> columns = [];
   List<Widget> widgets = [];
 
+  // Initialization logic
   @override
   void initState() {
+    super.initState();
+    initializeData();
+  }
+
+  // Method to initialize data
+  void initializeData() {
     if (context.read<ProjectArchitectBloc>().state.createdProject != null) {
-      if (context
-              .read<ProjectArchitectBloc>()
-              .state
-              .createdProject!
-              .latestInput !=
+      if (context.read<ProjectArchitectBloc>()
+              .state.createdProject!.latestInput !=
           null) {
         context.read<ProjectArchitectBloc>().add(GetInputExcelSummaryEvent(
               inputId: context
                   .read<ProjectArchitectBloc>()
-                  .state
-                  .createdProject!
+                  .state.createdProject!
                   .latestInput!,
               onErrorCallback: (errorMessage, errorCode) {
                 if (kDebugMode) {
@@ -294,11 +691,10 @@ class _UploadedExcelSummaryReportState
             ));
       }
     }
-    super.initState();
   }
 
-  void updateSelectedSheet(
-      {required Map<String, dynamic> data, String? selectedSheet}) {
+  // Method to update selected sheet
+  void updateSelectedSheet({required Map<String, dynamic> data, String? selectedSheet}) {
     if (selectedSheet == null) {
       setState(() {
         sheets = data.keys.toList();
@@ -309,10 +705,12 @@ class _UploadedExcelSummaryReportState
         }
       });
     } else {
-      updatedSelectedSheetColumns(data: data, selectedSheetKey: selectedSheet);
+      updatedSelectedSheetColumns(
+          data: data, selectedSheetKey: selectedSheet);
     }
   }
 
+  // Method to update selected sheet columns
   void updatedSelectedSheetColumns(
       {required Map<String, dynamic> data, required String selectedSheetKey}) {
     setState(() {
@@ -322,10 +720,11 @@ class _UploadedExcelSummaryReportState
         selectedColumn = columns[0];
       }
       updatedSelectedSheetColumnWidgets(
-          selectedCol: selectedColumn!, selectedShe: selectedSheetKey);
+          selectedShe: selectedSheetKey, selectedCol: selectedColumn!);
     });
   }
 
+  // Method to update selected sheet column widgets
   void updatedSelectedSheetColumnWidgets(
       {required String selectedShe, required String selectedCol}) {
     setState(() {
@@ -333,548 +732,549 @@ class _UploadedExcelSummaryReportState
       widgets = [];
       ((json.decode(jsonObject![selectedSheet]))[selectedColumn]
               as Map<String, dynamic>)
-          .map(
-        (key, value) {
-          setState(() {
-            widgets.add(Row(
-              children: [Text("$key : "), Text("$value")],
-            ));
-          });
-          return MapEntry(key, value);
-        },
-      );
+          .forEach((key, value) {
+        setState(() {
+          widgets.add(Row(
+            children: [
+              Text("$key : "),
+              Text("$value"),
+            ],
+          ));
+        });
+      });
     });
   }
 
+  // Build method for the widget
   @override
   Widget build(BuildContext context) {
-    // final h = MediaQuery.of(context).size.height;
-    // final w = MediaQuery.of(context).size.width;
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      // header - upload data, history button
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              IconButton(
-                icon: Icon(
-                  Icons.keyboard_backspace,
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-                onPressed: widget.onPressed,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Header section
+        buildHeader(),
+        // Display either loading indicator or data view
+        jsonObject == null
+            ? buildLoadingIndicator()
+            : buildDataView(),
+      ],
+    );
+  }
+
+  // Header section UI
+  Widget buildHeader() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: [
+            IconButton(
+              icon: Icon(
+                Icons.keyboard_backspace,
+                color: Theme.of(context).colorScheme.secondary,
               ),
-              ClanChurnSpacing.w10,
-              SelectableText(
-                "Upload Data",
-                style: ClanChurnTypography.font18600,
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 45,
-            width: 130,
-            child: OutlinedButton(
-              style: OutlinedButton.styleFrom(
-                padding: const EdgeInsets.all(0),
-                side: BorderSide(
-                    color: Theme.of(context).colorScheme.primary, width: 1.5),
-                shape: RoundedRectangleBorder(
-                  borderRadius:
-                      BorderRadius.circular(8), // Adjust the border radius
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  const Icon(Icons.history),
-                  Text(
-                    "History",
-                    style: ClanChurnTypography.font18600.copyWith(
-                        color: Theme.of(context).colorScheme.primary),
-                  ),
-                ],
-              ),
-              onPressed: () {
-                showHistory(context);
-              },
+              onPressed: widget.onPressed,
             ),
+            ClanChurnSpacing.w10,
+            SelectableText(
+              "Upload Data",
+              style: ClanChurnTypography.font18600,
+            ),
+          ],
+        ),
+        buildHistoryButton(),
+      ],
+    );
+  }
+
+  // Widget for history button
+  Widget buildHistoryButton() {
+    return SizedBox(
+      height: 45,
+      width: 130,
+      child: OutlinedButton(
+        style: OutlinedButton.styleFrom(
+          padding: const EdgeInsets.all(0),
+          side: BorderSide(
+              color: Theme.of(context).colorScheme.primary, width: 1.5),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
           ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            const Icon(Icons.history),
+            Text(
+              "History",
+              style: ClanChurnTypography.font18600.copyWith(
+                  color: Theme.of(context).colorScheme.primary),
+            ),
+          ],
+        ),
+        onPressed: () {
+          showHistory(context);
+        },
+      ),
+    );
+  }
+
+  // Loading indicator UI
+  Widget buildLoadingIndicator() {
+    return Expanded(
+      child: Center(
+        child: Image.asset("assets/loading.gif", width: 30),
+      ),
+    );
+  }
+
+  // Data view UI
+  Widget buildDataView() {
+    return Expanded(
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            buildSheetsAndColumnsDropdowns(),
+            buildSummaryDetails(),
+            buildActionButtons(),
+            ClanChurnSpacing.h50,
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                GetPublishButton(),
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  // Widgets for sheets and columns dropdowns
+  Widget buildSheetsAndColumnsDropdowns() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 0, right: 50, top: 10, bottom: 30),
+      child: Row(
+        children: [
+          // Sheets Dropdown
+          buildSheetsDropdown(),
+          ClanChurnSpacing.w50,
+          // Columns Dropdown
+          buildColumnsDropdown(),
         ],
       ),
-      jsonObject == null
-          ? Expanded(
-            child: Center(
-                child: Image.asset(
-                  "assets/loading.gif",
-                  width: 30,
-                ),
-                // Column(
-                //   children: [
-                //     // Image.asset("assets/loading.gif", width: 40,),
-                //     // Image.asset("assets/loading1.gif", width: 100,),
-                //     // Image.asset("assets/loading2.gif", width: 100,),
-                //     // Image.asset("assets/loading3.gif", width: 100,),
-            
-                //   ],
-                // ),
-              ),
-          )
-          : SingleChildScrollView(
-            child: Column(children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                    left: 0, right: 50, top: 10, bottom: 30),
-                child: Row(
+    );
+  }
+
+  // Widget for sheets dropdown
+  Widget buildSheetsDropdown() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Text(
+          "Select Sheet",
+          style: ClanChurnTypography.font18500,
+        ),
+        ClanChurnSpacing.h10,
+        SizedBox(
+          width: 400,
+          child: DropdownButtonHideUnderline(
+            child: DropdownButton2<String>(
+              isExpanded: true,
+              hint: Row(
                   children: [
-                    // Sheets Dropdown
-                    Column(
+                    Text(
+                      'Select Sheet',
+                      style: ClanChurnTypography.font18500,
+                      overflow: TextOverflow.ellipsis,
+                    )
+                  ]),
+              items: sheets.map((String item) =>
+                  DropdownMenuItem<String>(
+                    value: item,
+                    child: Text(
+                      item,
+                      style: ClanChurnTypography.font18500.copyWith(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .background),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  )).toList(),
+              value: selectedSheet,
+              onChanged: (value) {
+                updateSelectedSheet(data: jsonObject!, selectedSheet: value);
+              },
+              selectedItemBuilder: (BuildContext context) {
+                return sheets.map((String item) {
+                  return Center(
+                    child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
-                          "Select Sheet",
-                          style: ClanChurnTypography.font18500,
-                        ),
-                        ClanChurnSpacing.h10,
-                        SizedBox(
-                          width: 400,
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton2<String>(
-                              isExpanded: true,
-                              hint: Row(
-                                children: [
-                                  Text(
-                                    'Select Sheet',
-                                    style: ClanChurnTypography.font18500,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ],
-                              ),
-                              items: sheets
-                                  .map(
-                                      (String item) => DropdownMenuItem<String>(
-                                            value: item,
-                                            child: Text(
-                                              item,
-                                              style: ClanChurnTypography
-                                                  .font18500
-                                                  .copyWith(
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .background),
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ))
-                                  .toList(),
-                              value: selectedSheet,
-                              onChanged: (value) {
-                                updateSelectedSheet(
-                                    data: jsonObject!, selectedSheet: value);
-                              },
-                              selectedItemBuilder: (BuildContext context) {
-                                return sheets.map((String item) {
-                                  return Center(
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(item,
-                                            style: ClanChurnTypography.font18500
-                                                .copyWith(
-                                                    color: Theme.of(context)
-                                                        .colorScheme
-                                                        .secondary)),
-                                      ],
-                                    ),
-                                  );
-                                }).toList();
-                              },
-                              buttonStyleData: ButtonStyleData(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8),
-                                  border: Border.all(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .primary
-                                          .withOpacity(0.6)),
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .primary
-                                      .withOpacity(0.2),
-                                ),
-                                elevation: 0,
-                              ),
-                              iconStyleData: IconStyleData(
-                                icon: const Icon(
-                                  Icons.keyboard_arrow_down,
-                                ),
-                                iconSize: 25,
-                                iconEnabledColor:
-                                    Theme.of(context).colorScheme.secondary,
-                                iconDisabledColor: Colors.grey,
-                              ),
-                              dropdownStyleData: DropdownStyleData(
-                                elevation: 0,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8),
-                                  border: Border.all(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .primary
-                                          .withOpacity(0.6)),
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .primary
-                                      .withOpacity(1.0),
-                                ),
-                                scrollbarTheme: ScrollbarThemeData(
-                                  radius: const Radius.circular(40),
-                                  thickness: MaterialStateProperty.all(6),
-                                  thumbVisibility:
-                                      MaterialStateProperty.all(true),
-                                ),
-                              ),
-                              menuItemStyleData: const MenuItemStyleData(
-                                height: 40,
-                                padding: EdgeInsets.only(left: 14, right: 14),
-                              ),
-                            ),
-                          ),
+                          item,
+                          style: ClanChurnTypography.font18500.copyWith(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .secondary),
                         ),
                       ],
                     ),
-                
-                    ClanChurnSpacing.w50,
-                
-                    // Column DropDown
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Select Column",
-                          style: ClanChurnTypography.font18500,
-                        ),
-                        ClanChurnSpacing.h10,
-                        SizedBox(
-                          width: 400,
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton2<String>(
-                              isExpanded: true,
-                              hint: Row(
-                                children: [
-                                  Text(
-                                    'Select Column',
-                                    style: ClanChurnTypography.font18500,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ],
-                              ),
-                              items: columns
-                                  .map(
-                                      (String item) => DropdownMenuItem<String>(
-                                            value: item,
-                                            child: Text(
-                                              item,
-                                              style: ClanChurnTypography
-                                                  .font18500
-                                                  .copyWith(
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .background),
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ))
-                                  .toList(),
-                              selectedItemBuilder: (BuildContext context) {
-                                return columns.map((String item) {
-                                  return Center(
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(item,
-                                            style: ClanChurnTypography.font18500
-                                                .copyWith(
-                                                    color: Theme.of(context)
-                                                        .colorScheme
-                                                        .secondary)),
-                                      ],
-                                    ),
-                                  );
-                                }).toList();
-                              },
-                              value: selectedColumn,
-                              onChanged: (value) {
-                                updatedSelectedSheetColumnWidgets(
-                                    selectedShe: selectedSheet!,
-                                    selectedCol: value!);
-                              },
-                              buttonStyleData: ButtonStyleData(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8),
-                                  border: Border.all(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .primary
-                                          .withOpacity(0.6)),
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .primary
-                                      .withOpacity(0.2),
-                                ),
-                                elevation: 0,
-                              ),
-                              iconStyleData: IconStyleData(
-                                icon: const Icon(
-                                  Icons.keyboard_arrow_down,
-                                ),
-                                iconSize: 25,
-                                iconEnabledColor:
-                                    Theme.of(context).colorScheme.secondary,
-                                iconDisabledColor: Colors.grey,
-                              ),
-                              dropdownStyleData: DropdownStyleData(
-                                elevation: 0,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8),
-                                  border: Border.all(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .primary
-                                          .withOpacity(0.6)),
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .primary
-                                      .withOpacity(1.0),
-                                ),
-                                scrollbarTheme: ScrollbarThemeData(
-                                  radius: const Radius.circular(40),
-                                  thickness: MaterialStateProperty.all(6),
-                                  thumbVisibility:
-                                      MaterialStateProperty.all(true),
-                                ),
-                              ),
-                              menuItemStyleData: const MenuItemStyleData(
-                                height: 40,
-                                padding: EdgeInsets.only(left: 14, right: 14),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+                  );
+                }).toList();
+              },
+              buttonStyleData: ButtonStyleData(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .primary
+                          .withOpacity(0.6)),
+                  color: Theme.of(context)
+                      .colorScheme
+                      .primary
+                      .withOpacity(0.2),
+                ),
+                elevation: 0,
+              ),
+              iconStyleData: IconStyleData(
+                icon: const Icon(Icons.keyboard_arrow_down),
+                iconSize: 25,
+                iconEnabledColor:
+                Theme.of(context).colorScheme.secondary,
+                iconDisabledColor: Colors.grey,
+              ),
+              dropdownStyleData: DropdownStyleData(
+                elevation: 0,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .primary
+                          .withOpacity(0.6)),
+                  color: Theme.of(context)
+                      .colorScheme
+                      .primary
+                      .withOpacity(1.0),
+                ),
+                scrollbarTheme: ScrollbarThemeData(
+                  radius: const Radius.circular(40),
+                  thickness: MaterialStateProperty.all(6),
+                  thumbVisibility: MaterialStateProperty.all(true),
                 ),
               ),
-                  // (selectedSheet != null)
-                  //     ? (selectedColumn != null)
-                  //         ? Column(
-                  //             children: [
-                  //               Container(
-                  //                   // width: 00,
-                  //                   child: Text(
-                  //                       "${jsonObject[selectedSheet][selectedColumn]}")),
-                  //               Row(
-                  //                 children: [...widgets],
-                  //               ),
-                  //             ],
-                  //           )
-                  //         : Container()
-                  //     : Container(),
-                  ClanChurnSpacing.h20,
-                  Padding(
-                    padding: const EdgeInsets.only(left: 0, right: 0),
-                    child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+              menuItemStyleData: const MenuItemStyleData(
+                height: 40,
+                padding: EdgeInsets.only(left: 14, right: 14),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  // Widget for columns dropdown
+  Widget buildColumnsDropdown() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Text(
+          "Select Column",
+          style: ClanChurnTypography.font18500,
+        ),
+        ClanChurnSpacing.h10,
+        SizedBox(
+          width: 400,
+          child: DropdownButtonHideUnderline(
+            child: DropdownButton2<String>(
+              isExpanded: true,
+              hint: Row(
+                children: [
+                  Text(
+                    'Select Column',
+                    style: ClanChurnTypography.font18500,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+              items: columns.map((String item) =>
+                  DropdownMenuItem<String>(
+                    value: item,
+                    child: Text(
+                      item,
+                      style: ClanChurnTypography.font18500.copyWith(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .background),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  )).toList(),
+              selectedItemBuilder: (BuildContext context) {
+                return columns.map((String item) {
+                  return Center(
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          item,
+                          style: ClanChurnTypography.font18500.copyWith(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .secondary),
+                        ),
+                      ],
+                    ),
+                  );
+                }).toList();
+              },
+              value: selectedColumn,
+              onChanged: (value) {
+                updatedSelectedSheetColumnWidgets(
+                    selectedShe: selectedSheet!,
+                    selectedCol: value!);
+              },
+              buttonStyleData: ButtonStyleData(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .primary
+                          .withOpacity(0.6)),
+                  color: Theme.of(context)
+                      .colorScheme
+                      .primary
+                      .withOpacity(0.2),
+                ),
+                elevation: 0,
+              ),
+              iconStyleData: IconStyleData(
+                icon: const Icon(Icons.keyboard_arrow_down),
+                iconSize: 25,
+                iconEnabledColor:
+                Theme.of(context).colorScheme.secondary,
+                iconDisabledColor: Colors.grey,
+              ),
+              dropdownStyleData: DropdownStyleData(
+                elevation: 0,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .primary
+                          .withOpacity(0.6)),
+                  color: Theme.of(context)
+                      .colorScheme
+                      .primary
+                      .withOpacity(1.0),
+                ),
+                scrollbarTheme: ScrollbarThemeData(
+                  radius: const Radius.circular(40),
+                  thickness: MaterialStateProperty.all(6),
+                  thumbVisibility: MaterialStateProperty.all(true),
+                ),
+              ),
+              menuItemStyleData: const MenuItemStyleData(
+                height: 40,
+                padding: EdgeInsets.only(left: 14, right: 14),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  // Widget for summary details
+  Widget buildSummaryDetails() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 0, right: 0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              // Text("${jsonObject.runtimeType}"),
-              // Text("${jsonObject!.keys.toList()}"),
-              // Text("\n ${jsonObject![jsonObject!.keys.toList()[0]]}"),
-              // Text("${jsonObject![jsonObject!.keys.toList()[0]].runtimeType}"),
-              // Text("\n ${json.decode(jsonObject!.values.toList()[0]).runtimeType}"),
-              // Text("${jsonObject!.values.toList()[1].runtimeType}"),
-              // Text("${jsonObject!.values.toList()[2].runtimeType}"),
-              // SelectableText("\n${jsonObject}"),
-              // Text("${ (json.decode(jsonObject![selectedSheet]))}"),
-              // Text("${selectedColumn}"),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SummaryCard(
-                    value: (json.decode(
-                                jsonObject![selectedSheet]))[selectedColumn]
-                            ["count"]
-                        .toString(),
-                    header: "Total Rows",
-                    isDisabled: (json.decode(
-                                    jsonObject![selectedSheet]))[selectedColumn]
-                                ["count"] ==
-                            null
-                        ? true
-                        : false,
-                  ),
-                  const SummaryCard(
-                    value: "--",
-                    header: "Total Zeros",
-                    isDisabled: true,
-                  ),
-                  const SummaryCard(
-                    value: "--",
-                    header: "Total Blanks",
-                    isDisabled: true,
-                  ),
-                  const SummaryCard(
-                    value: "--",
-                    header: 'Total "NA" values',
-                    isDisabled: true,
-                  ),
-                ],
-              ),
-                
-              ClanChurnSpacing.h30,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SummaryCard(
-                    value: (json.decode(
-                            jsonObject![selectedSheet]))[selectedColumn]["max"]
-                        .toString(),
-                    header: "Maximum Value",
-                    isDisabled: (json.decode(
-                                    jsonObject![selectedSheet]))[selectedColumn]
-                                ["max"] ==
-                            null
-                        ? true
-                        : false,
-                  ),
-                  SummaryCard(
-                    value: (json.decode(
-                            jsonObject![selectedSheet]))[selectedColumn]["min"]
-                        .toString(),
-                    header: "Minimum Value",
-                    isDisabled: (json.decode(
-                                    jsonObject![selectedSheet]))[selectedColumn]
-                                ["min"] ==
-                            null
-                        ? true
-                        : false,
-                  ),
-                  const SummaryCard(
-                    value: "--",
-                    header: "Total Negative Values",
-                    isDisabled: true,
-                  ),
-                  SummaryCard(
-                    value: (json.decode(
-                            jsonObject![selectedSheet]))[selectedColumn]["50%"]
-                        .toString(),
-                    header: "Median Value",
-                    isDisabled: (json.decode(
-                                    jsonObject![selectedSheet]))[selectedColumn]
-                                ["50%"] ==
-                            null
-                        ? true
-                        : false,
-                  ),
-                ],
-              ),
-                
-              ClanChurnSpacing.h30,
-              SummaryCard(
-                value: (json.decode(jsonObject![selectedSheet]))[selectedColumn]
-                        ["mean"]
+              buildSummaryCard(
+                value: (json.decode(jsonObject![selectedSheet]))
+                [selectedColumn]["count"]
                     .toString(),
-                header: "Average Value",
+                header: "Total Rows",
                 isDisabled:
-                    (json.decode(jsonObject![selectedSheet]))[selectedColumn]
-                                ["mean"] ==
-                            null
-                        ? true
-                        : false,
+                (json.decode(jsonObject![selectedSheet]))
+                [selectedColumn]["count"] ==
+                    null
+                    ? true
+                    : false,
               ),
-              ClanChurnSpacing.h50,
-              Builder(builder: (ctx) {
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    OutlinedButtonTemplate(
-                      icon: Icons.remove_red_eye_outlined,
-                      title: "Excel Summary",
-                      onPressed: () {
-                        viewErrorReport(context, jsonObject!, selectedSheet!);
-                      },
-                    ),
-                    OutlinedButtonTemplate(
-                      icon: Icons.list_alt_outlined,
-                      title: "Group Categorization",
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              backgroundColor:
-                                  Theme.of(context).colorScheme.background,
-                              surfaceTintColor: Colors.transparent,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(08),
-                              ),
-                              title: const Text("Coming Soon!..."),
-                            );
-                          },
-                        );
-                      },
-                    ),
-                    BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
-                      builder: (context, state) {
-                        return OutlinedButtonTemplate(
-                          icon: Icons.sim_card_download_outlined,
-                          title: "View Error Report",
-                          onHoverTextChange: "Download Error Report",
-                          onPressed: () {
-                            context
-                                .read<ProjectArchitectBloc>()
-                                .add(DownloadErrorReportEvent(
-                                  context: context,
-                                  inputId: context
-                                          .read<ProjectArchitectBloc>()
-                                          .state
-                                          .createdProject!
-                                          .latestInput ??
-                                      "",
-                                  onSuccessCallback: (message) {},
-                                  onErrorCallback: (errorMessage, errorCode) {
-                                    print(
-                                        "Download Error Report...${state.createdProject!.latestInput}..$errorMessage $errorCode");
-                                    GetDialog.failedErrorReport(context);
-                                  },
-                                ));
-                          },
-                        );
-                      },
-                    ),
-                    OutlinedButtonTemplate(
-                      icon: Icons.upload_file_outlined,
-                      title: "Upload New Sheet",
-                      onPressed: widget.uploadNewSheetRequested,
-                    ),
-                  ],
-                );
-              }),
-              ClanChurnSpacing.h50,
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  GetPublishButton(),
-                ],
-              )
+              const SummaryCard(
+                value: "--",
+                header: "Total Zeros",
+                isDisabled: true,
+              ),
+              const SummaryCard(
+                value: "--",
+                header: "Total Blanks",
+                isDisabled: true,
+              ),
+              const SummaryCard(
+                value: '--',
+                header: 'Total "NA" values',
+                isDisabled: true,
+              ),
             ],
+          ),
+          ClanChurnSpacing.h30,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              buildSummaryCard(
+                value: (json.decode(jsonObject![selectedSheet]))
+                [selectedColumn]["max"]
+                    .toString(),
+                header: "Maximum Value",
+                isDisabled:
+                (json.decode(jsonObject![selectedSheet]))
+                [selectedColumn]["max"] ==
+                    null
+                    ? true
+                    : false,
+              ),
+              buildSummaryCard(
+                value: (json.decode(jsonObject![selectedSheet]))
+                [selectedColumn]["min"]
+                    .toString(),
+                header: "Minimum Value",
+                isDisabled:
+                (json.decode(jsonObject![selectedSheet]))
+                [selectedColumn]["min"] ==
+                    null
+                    ? true
+                    : false,
+              ),
+              const SummaryCard(
+                value: "--",
+                header: "Total Negative Values",
+                isDisabled: true,
+              ),
+              buildSummaryCard(
+                value: (json.decode(jsonObject![selectedSheet]))
+                [selectedColumn]["50%"]
+                    .toString(),
+                header: "Median Value",
+                isDisabled:
+                (json.decode(jsonObject![selectedSheet]))
+                [selectedColumn]["50%"] ==
+                    null
+                    ? true
+                    : false,
+              ),
+            ],
+          ),
+          ClanChurnSpacing.h30,
+          buildSummaryCard(
+            value: (json.decode(jsonObject![selectedSheet]))
+            [selectedColumn]["mean"]
+                .toString(),
+            header: "Average Value",
+            isDisabled:
+            (json.decode(jsonObject![selectedSheet]))
+            [selectedColumn]["mean"] ==
+                null
+                ? true
+                : false,
+          ),
+          ClanChurnSpacing.h50,
+        ],
+      ),
+    );
+  }
+
+  // Widget for summary card
+  Widget buildSummaryCard({
+    required String value,
+    required String header,
+    required bool isDisabled,
+  }) {
+    return SummaryCard(
+      value: value,
+      header: header,
+      isDisabled: isDisabled,
+    );
+  }
+
+  // Widget for action buttons
+  Widget buildActionButtons() {
+    return Builder(builder: (ctx) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          OutlinedButtonTemplate(
+            icon: Icons.remove_red_eye_outlined,
+            title: "Excel Summary",
+            onPressed: () {
+              viewErrorReport(context, jsonObject!, selectedSheet!);
+            },
+          ),
+          OutlinedButtonTemplate(
+            icon: Icons.list_alt_outlined,
+            title: "Group Categorization",
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    backgroundColor:
+                    Theme.of(context).colorScheme.background,
+                    surfaceTintColor: Colors.transparent,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(08),
                     ),
-                  )
-                     
-            ],),
-          ) ]);
+                    title: const Text("Coming Soon!..."),
+                  );
+                },
+              );
+            },
+          ),
+          BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
+            builder: (context, state) {
+              return OutlinedButtonTemplate(
+                icon: Icons.sim_card_download_outlined,
+                title: "View Error Report",
+                onHoverTextChange: "Download Error Report",
+                onPressed: () {
+                  context
+                      .read<ProjectArchitectBloc>()
+                      .add(DownloadErrorReportEvent(
+                    context: context,
+                    inputId: context
+                        .read<ProjectArchitectBloc>()
+                        .state.createdProject!.latestInput ?? "",
+                    onSuccessCallback: (message) {},
+                    onErrorCallback: (errorMessage, errorCode) {
+                      print(
+                          "Download Error Report...${state.createdProject!.latestInput}..$errorMessage $errorCode");
+                      GetDialog.failedErrorReport(context);
+                    },
+                  ));
+                },
+              );
+            },
+          ),
+          OutlinedButtonTemplate(
+            icon: Icons.upload_file_outlined,
+            title: "Upload New Sheet",
+            onPressed: widget.uploadNewSheetRequested,
+          ),
+        ],
+      );
+    });
   }
 }
