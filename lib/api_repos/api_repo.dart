@@ -613,7 +613,7 @@ class ApiRepository {
     return null;
   }
 
-  Future getReportData(
+  Future<String?> getReportData(
       {required String reportname,
       required String inputId,
       required OnErrorCallback onErrorCallback,
@@ -627,16 +627,29 @@ class ApiRepository {
       return null;
     }
 
-    // Make API call with access token
-    http.Response response = await http.post(
-        Uri.parse('${BaseUrl.baseUrl}${ApiEndpoints.getReportData}'),
+    try {
+      // Make API call with access token
+      http.Response response = await http.post(
+        Uri.parse(
+            '${BaseUrl.baseUrl}${ApiEndpoints.getReportData}?report_name=$reportname&input_id=$inputId'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ${authCredentials.accessToken}',
         },
-        body: json.encode(
-            {"report_name": "", "input_id": "666ad1898a6200fad12f7ae3"}));
-    print("$response");
+      );
+      if (response.statusCode == 200) {
+        onSuccessCallback(response);
+        // print("${response.body}");
+        return json.decode(response.body);
+      } else {
+        _handleStatusCode(
+            response.statusCode, response.reasonPhrase, onErrorCallback);
+        return null;
+      }
+    } catch (e) {
+      print(e);
+      return null;
+    }
   }
 
   void _handleStatusCode(

@@ -359,8 +359,8 @@ class ProjectArchitectBloc
   }
 
   _onGetReportDataEvent(
-      GetReportDataEvent event, Emitter<ProjectArchitectState> emit) {
-    apiRepository.getReportData(
+      GetReportDataEvent event, Emitter<ProjectArchitectState> emit) async {
+    await apiRepository.getReportData(
         inputId: event.inputId,
         reportname: event.reportName,
         onErrorCallback: event.onErrorCallback,

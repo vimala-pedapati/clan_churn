@@ -112,6 +112,8 @@
 //   }
 // }
 
+import 'dart:convert';
+
 import 'package:clan_churn/api_repos/models/project_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -198,9 +200,11 @@ class _GetPublishButtonState extends State<GetPublishButton> {
                         context: context,
                         builder: (context) => buildErrorDialog(context),
                       );
-                    } else if (state
-                            .createdProject?.latestInputModel?.inputStatus ==
-                        InputStatus.uploadedDataHasNoErrors) {
+                    } else if (state.createdProject?.latestInputModel
+                                ?.inputStatus ==
+                            InputStatus.uploadedDataHasNoErrors ||
+                        state.createdProject?.latestInputModel?.inputStatus ==
+                            InputStatus.uploadedDataDataMartsGenerated) {
                       // Generate Marts event for successful case
                       context.read<ProjectArchitectBloc>().add(
                             GenerateMartsEvent(
@@ -236,6 +240,7 @@ class _GetPublishButtonState extends State<GetPublishButton> {
           child: ElevatedButton(
             onPressed: value
                 ? () {
+                    // print("report ..........${state.createdProject?.latestInputModel?.inputStatus}");
                     // Check input status and perform actions accordingly
                     if (state.createdProject?.latestInputModel?.inputStatus ==
                         InputStatus.uploadedDataHasErrors) {
@@ -244,7 +249,26 @@ class _GetPublishButtonState extends State<GetPublishButton> {
                         context: context,
                         builder: (context) => buildErrorDialog(context),
                       );
-                    } else if (state.createdProject?.latestInputModel?.inputStatus == InputStatus.uploadedDataHasNoErrors) {}
+                    } else if (state.createdProject?.latestInputModel
+                                ?.inputStatus ==
+                            InputStatus.uploadedDataHasNoErrors ||
+                        state.createdProject?.latestInputModel?.inputStatus ==
+                            InputStatus.uploadedDataDataMartsGenerated) {
+                      context
+                          .read<ProjectArchitectBloc>()
+                          .add(GetReportDataEvent(
+                              inputId: "666ad1898a6200fad12f7ae3",
+                              reportName: "sample",
+                              onErrorCallback: (errorMessage, errorCode) {
+                                print(" on error $errorCode, $errorMessage");
+                              },
+                              onSuccessCallback: (message) {
+                                if (message != null) {
+                                  print(
+                                      "get report data: ${json.decode(message.body)}");
+                                }
+                              }));
+                    }
                   }
                 : null,
             child: Row(
@@ -252,7 +276,7 @@ class _GetPublishButtonState extends State<GetPublishButton> {
                 Text(
                   "Reports",
                   style: ClanChurnTypography.font18600,
-                ), 
+                ),
               ],
             ),
           ),
