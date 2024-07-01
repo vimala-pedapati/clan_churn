@@ -9,6 +9,7 @@ import 'package:clan_churn/pages/forgot_password_screen.dart';
 import 'package:clan_churn/pages/home_page.dart';
 import 'package:clan_churn/pages/client_projects_view.dart';
 import 'package:clan_churn/pages/reset_password_link.dart';
+import 'package:clan_churn/pages/saved_projects.dart';
 import 'package:clan_churn/pages/sign_page.dart';
 import 'package:clan_churn/utils/routes.dart';
 import 'package:flutter/material.dart';
@@ -70,16 +71,17 @@ class ClanChurnApp extends StatelessWidget {
           pageBuilder: (context, state) => customPageRouteForGoRouter<void>(
               context: context, state: state, child: const HomePage()),
         ),
-        GoRoute(
-          path: AppRoutes.savedProjects,
-          pageBuilder: (context, state) => customPageRouteForGoRouter<void>(
-              context: context, state: state, child: const PerformanceReport()),
-        ),
+
         // GoRoute(
         //   path: AppRoutes.savedProjects,
         //   pageBuilder: (context, state) => customPageRouteForGoRouter<void>(
-        //       context: context, state: state, child: const DataTablePage()),
+        //       context: context, state: state, child: const PerformanceReport()),
         // ),
+        GoRoute(
+          path: AppRoutes.savedProjects,
+          pageBuilder: (context, state) => customPageRouteForGoRouter<void>(
+              context: context, state: state, child: const DataTablePage()),
+        ),
         GoRoute(
           path: AppRoutes.clientProjects,
           pageBuilder: (context, state) => customPageRouteForGoRouter<void>(
@@ -131,16 +133,14 @@ class ClanChurnApp extends StatelessWidget {
           canvasColor: Colors.grey,
           textTheme: GoogleFonts.montserratTextTheme().copyWith(),
           colorScheme: ColorScheme.fromSeed(
-            seedColor: const Color.fromRGBO(108, 63, 235, 1),
-            primary: const Color.fromRGBO(108, 63, 235, 1),
-            secondary: const Color.fromRGBO(56, 56, 56, 1),
-            onSecondary: const Color.fromRGBO(125, 125, 125, 1),
-            tertiary: const Color.fromRGBO(199, 199, 199, 1),
-            background: const Color(0xffFFFFFF),
-            shadow: const Color.fromRGBO(0, 0, 0, 0.15),
-            onBackground: Colors.black
-
-          ),
+              seedColor: const Color.fromRGBO(108, 63, 235, 1),
+              primary: const Color.fromRGBO(108, 63, 235, 1),
+              secondary: const Color.fromRGBO(56, 56, 56, 1),
+              onSecondary: const Color.fromRGBO(125, 125, 125, 1),
+              tertiary: const Color.fromRGBO(199, 199, 199, 1),
+              background: const Color(0xffFFFFFF),
+              shadow: const Color.fromRGBO(0, 0, 0, 0.15),
+              onBackground: Colors.black),
           elevatedButtonTheme: ElevatedButtonThemeData(
             style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(

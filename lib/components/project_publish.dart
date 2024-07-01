@@ -115,6 +115,7 @@
 import 'dart:convert';
 
 import 'package:clan_churn/api_repos/models/project_model.dart';
+import 'package:clan_churn/components/reports.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
@@ -125,7 +126,6 @@ import 'package:clan_churn/utils/typography.dart';
 /// Widget representing a Publish Button with stateful behavior.
 class GetPublishButton extends StatefulWidget {
   const GetPublishButton({Key? key}) : super(key: key);
-
   @override
   State<GetPublishButton> createState() => _GetPublishButtonState();
 }
@@ -254,20 +254,14 @@ class _GetPublishButtonState extends State<GetPublishButton> {
                             InputStatus.uploadedDataHasNoErrors ||
                         state.createdProject?.latestInputModel?.inputStatus ==
                             InputStatus.uploadedDataDataMartsGenerated) {
-                      context
-                          .read<ProjectArchitectBloc>()
-                          .add(GetReportDataEvent(
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const PerformanceReport(
                               inputId: "666ad1898a6200fad12f7ae3",
                               reportName: "sample",
-                              onErrorCallback: (errorMessage, errorCode) {
-                                print(" on error $errorCode, $errorMessage");
-                              },
-                              onSuccessCallback: (message) {
-                                if (message != null) {
-                                  print(
-                                      "get report data: ${json.decode(message.body)}");
-                                }
-                              }));
+                            ),
+                          ));
                     }
                   }
                 : null,

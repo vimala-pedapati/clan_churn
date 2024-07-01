@@ -26,7 +26,7 @@ class ProjectInputFieldsPage extends StatelessWidget {
                 const NavBar(),
                 SizedBox(height: h * 0.01),
                 const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SideBar(
@@ -59,8 +59,7 @@ class GetInputFieldsComponent extends StatelessWidget {
           decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.background,
               borderRadius: BorderRadius.circular(30)),
-          margin: EdgeInsets.only(
-              left: w * 0.025, right: w * 0.025, top: 10, bottom: 20),
+          margin: EdgeInsets.only(left: w * 0.01, top: 10, bottom: 20),
           duration: const Duration(seconds: 1),
           child: const Column(children: [
             // Row(

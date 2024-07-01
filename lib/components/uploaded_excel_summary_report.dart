@@ -608,6 +608,7 @@
 // };
 
 import 'dart:convert';
+import 'package:clan_churn/components/reports.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/foundation.dart';
@@ -658,27 +659,27 @@ class _UploadedExcelSummaryReportState
     initializeData();
   }
 
-  void goToNextPage() {
-    if (currentPage < 3) {
-      currentPage++;
-      pageController.animateToPage(
-        currentPage,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeInOut,
-      );
-    }
-  }
+  // void goToNextPage() {
+  //   if (currentPage < 3) {
+  //     currentPage++;
+  //     pageController.animateToPage(
+  //       currentPage,
+  //       duration: const Duration(milliseconds: 300),
+  //       curve: Curves.easeInOut,
+  //     );
+  //   }
+  // }
 
-  void goToPreviousPage() {
-    if (currentPage > 0) {
-      currentPage--;
-      pageController.animateToPage(
-        currentPage,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeInOut,
-      );
-    }
-  }
+  // void goToPreviousPage() {
+  //   if (currentPage > 0) {
+  //     currentPage--;
+  //     pageController.animateToPage(
+  //       currentPage,
+  //       duration: const Duration(milliseconds: 300),
+  //       curve: Curves.easeInOut,
+  //     );
+  //   }
+  // }
 
   // Method to initialize data
   void initializeData() {
@@ -774,13 +775,13 @@ class _UploadedExcelSummaryReportState
   @override
   Widget build(BuildContext context) {
     return PageView(
-      physics : const NeverScrollableScrollPhysics(),
-       controller: pageController,
-            onPageChanged: (int page) {
-              setState(() {
-                currentPage = page;
-              });
-            },
+      // physics : const NeverScrollableScrollPhysics(),
+      //  controller: pageController,
+      //       onPageChanged: (int page) {
+      //         setState(() {
+      //           currentPage = page;
+      //         });
+      //       },
       children: [
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -791,7 +792,7 @@ class _UploadedExcelSummaryReportState
             jsonObject == null ? buildLoadingIndicator() : buildDataView(),
           ],
         ),
-        Text("$currentPage")
+          // PerformanceReport()
       ],
     );
   }
