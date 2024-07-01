@@ -149,3 +149,16 @@ class GenerateMartsEvent extends ProjectArchitectEvent {
       required this.onErrorCallback,
       required this.onSuccessCallback});
 }
+
+class GetReportDataEvent extends ProjectArchitectEvent {
+  final String reportName;
+  final String inputId;
+  final OnErrorCallback onErrorCallback;
+  final OnSuccessCallback onSuccessCallback;
+  const GetReportDataEvent({
+    required this.reportName,
+    required this.inputId,
+    required this.onErrorCallback,
+    required this.onSuccessCallback,
+  });
+}
