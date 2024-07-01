@@ -9,7 +9,6 @@ import 'package:clan_churn/pages/forgot_password_screen.dart';
 import 'package:clan_churn/pages/home_page.dart';
 import 'package:clan_churn/pages/client_projects_view.dart';
 import 'package:clan_churn/pages/reset_password_link.dart';
-import 'package:clan_churn/pages/saved_projects.dart';
 import 'package:clan_churn/pages/sign_page.dart';
 import 'package:clan_churn/utils/routes.dart';
 import 'package:flutter/material.dart';

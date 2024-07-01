@@ -187,7 +187,7 @@
 //                               ),
 //                             ],
 //                           ),
-//                           ClanChurnSpacing.w50, 
+//                           ClanChurnSpacing.w50,
 //                           // Column DropDown
 //                           Column(
 //                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -266,7 +266,7 @@
 //                       padding: const EdgeInsets.only(left: 0, right: 0),
 //                       child: Column(
 //                         crossAxisAlignment: CrossAxisAlignment.start,
-//                         children: [ 
+//                         children: [
 //                           Row(
 //                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
 //                             children: [
@@ -384,233 +384,230 @@
 //   }
 // }
 
+// = {
+//   "Customer Basic Data": {
+//     "Employee ID": {
+//       "count": 1.0,
+//       "unique": null,
+//       "top": null,
+//       "freq": null,
+//       "mean": 12345.0,
+//       "std": null,
+//       "min": 12345.0,
+//       "25%": 12345.0,
+//       "50%": 12345.0,
+//       "75%": 12345.0,
+//       "max": 12345.0
+//     },
+//     "Gender": {
+//       "count": 1,
+//       "unique": 1,
+//       "top": "Male",
+//       "freq": 1,
+//       "mean": null,
+//       "std": null,
+//       "min": null,
+//       "25%": null,
+//       "50%": null,
+//       "75%": null,
+//       "max": null
+//     },
+//     "Date of Birth": {
+//       "count": 0.0,
+//       "unique": null,
+//       "top": null,
+//       "freq": null,
+//       "mean": null,
+//       "std": null,
+//       "min": null,
+//       "25%": null,
+//       "50%": null,
+//       "75%": null,
+//       "max": null
+//     }
+//   },
+//   "Customer Work Data": {
+//     "Employee ID": {
+//       "count": 1.0,
+//       "mean": 12345.0,
+//       "min": 12345.0,
+//       "25%": 12345.0,
+//       "50%": 12345.0,
+//       "75%": 12345.0,
+//       "max": 12345.0,
+//       "std": null
+//     },
+//     "Date of joining the client": {
+//       "count": 1,
+//       "mean": 1694304000000,
+//       "min": 1694304000000,
+//       "25%": 1694304000000,
+//       "50%": 1694304000000,
+//       "75%": 1694304000000,
+//       "max": 1694304000000,
+//       "std": null
+//     },
+//     "Date of Joining the Role": {
+//       "count": 0.0,
+//       "mean": null,
+//       "min": null,
+//       "25%": null,
+//       "50%": null,
+//       "75%": null,
+//       "max": null,
+//       "std": null
+//     },
+//     "On Roll /Consultant": {
+//       "count": 0.0,
+//       "mean": null,
+//       "min": null,
+//       "25%": null,
+//       "50%": null,
+//       "75%": null,
+//       "max": null,
+//       "std": null
+//     },
+//     "Last working date in Client For Attritted Employees": {
+//       "count": 0.0,
+//       "mean": null,
+//       "min": null,
+//       "25%": null,
+//       "50%": null,
+//       "75%": null,
+//       "max": null,
+//       "std": null
+//     },
+//     "Designation on the beginning of the study": {
+//       "count": 0.0,
+//       "mean": null,
+//       "min": null,
+//       "25%": null,
+//       "50%": null,
+//       "75%": null,
+//       "max": null,
+//       "std": null
+//     },
+//     "Branch name or branch code": {
+//       "count": 0.0,
+//       "mean": null,
+//       "min": null,
+//       "25%": null,
+//       "50%": null,
+//       "75%": null,
+//       "max": null,
+//       "std": null
+//     },
+//     "Current City": {
+//       "count": 0.0,
+//       "mean": null,
+//       "min": null,
+//       "25%": null,
+//       "50%": null,
+//       "75%": null,
+//       "max": null,
+//       "std": null
+//     },
+//     "State": {
+//       "count": 0.0,
+//       "mean": null,
+//       "min": null,
+//       "25%": null,
+//       "50%": null,
+//       "75%": null,
+//       "max": null,
+//       "std": null
+//     },
+//     "Region": {
+//       "count": 0.0,
+//       "mean": null,
+//       "min": null,
+//       "25%": null,
+//       "50%": null,
+//       "75%": null,
+//       "max": null,
+//       "std": null
+//     },
+//     "Zone": {
+//       "count": 0.0,
+//       "mean": null,
+//       "min": null,
+//       "25%": null,
+//       "50%": null,
+//       "75%": null,
+//       "max": null,
+//       "std": null
+//     },
+//     "Employee ID of Immediate Supervisor in the role": {
+//       "count": 0.0,
+//       "mean": null,
+//       "min": null,
+//       "25%": null,
+//       "50%": null,
+//       "75%": null,
+//       "max": null,
+//       "std": null
+//     }
+//   },
+//   "Customer Performance Data": {
+//     "Employee ID": {"count": 0, "unique": 0, "top": null, "freq": null},
+//     "Performance calendar Month-Year (e.g. 01-05-23)": {
+//       "count": 0,
+//       "unique": 0,
+//       "top": null,
+//       "freq": null
+//     },
+//     "Product department": {
+//       "count": 0,
+//       "unique": 0,
+//       "top": null,
+//       "freq": null
+//     },
+//     "Performance value target": {
+//       "count": 0,
+//       "unique": 0,
+//       "top": null,
+//       "freq": null
+//     },
+//     "Actual performance value": {
+//       "count": 0,
+//       "unique": 0,
+//       "top": null,
+//       "freq": null
+//     },
+//     "Peformance quantity Target": {
+//       "count": 0,
+//       "unique": 0,
+//       "top": null,
+//       "freq": null
+//     },
+//     "Actual performance quantity": {
+//       "count": 0,
+//       "unique": 0,
+//       "top": null,
+//       "freq": null
+//     },
+//     "Over all performance achievement % as per client": {
+//       "count": 0,
+//       "unique": 0,
+//       "top": null,
+//       "freq": null
+//     },
+//     "Fixed CTC salary INDEX for the month": {
+//       "count": 0,
+//       "unique": 0,
+//       "top": null,
+//       "freq": null
+//     },
+//     "Total incentive paid in Rs in the month": {
+//       "count": 0,
+//       "unique": 0,
+//       "top": null,
+//       "freq": null
+//     }
+//   }
+// };
 
-
-  // = {
-  //   "Customer Basic Data": {
-  //     "Employee ID": {
-  //       "count": 1.0,
-  //       "unique": null,
-  //       "top": null,
-  //       "freq": null,
-  //       "mean": 12345.0,
-  //       "std": null,
-  //       "min": 12345.0,
-  //       "25%": 12345.0,
-  //       "50%": 12345.0,
-  //       "75%": 12345.0,
-  //       "max": 12345.0
-  //     },
-  //     "Gender": {
-  //       "count": 1,
-  //       "unique": 1,
-  //       "top": "Male",
-  //       "freq": 1,
-  //       "mean": null,
-  //       "std": null,
-  //       "min": null,
-  //       "25%": null,
-  //       "50%": null,
-  //       "75%": null,
-  //       "max": null
-  //     },
-  //     "Date of Birth": {
-  //       "count": 0.0,
-  //       "unique": null,
-  //       "top": null,
-  //       "freq": null,
-  //       "mean": null,
-  //       "std": null,
-  //       "min": null,
-  //       "25%": null,
-  //       "50%": null,
-  //       "75%": null,
-  //       "max": null
-  //     }
-  //   },
-  //   "Customer Work Data": {
-  //     "Employee ID": {
-  //       "count": 1.0,
-  //       "mean": 12345.0,
-  //       "min": 12345.0,
-  //       "25%": 12345.0,
-  //       "50%": 12345.0,
-  //       "75%": 12345.0,
-  //       "max": 12345.0,
-  //       "std": null
-  //     },
-  //     "Date of joining the client": {
-  //       "count": 1,
-  //       "mean": 1694304000000,
-  //       "min": 1694304000000,
-  //       "25%": 1694304000000,
-  //       "50%": 1694304000000,
-  //       "75%": 1694304000000,
-  //       "max": 1694304000000,
-  //       "std": null
-  //     },
-  //     "Date of Joining the Role": {
-  //       "count": 0.0,
-  //       "mean": null,
-  //       "min": null,
-  //       "25%": null,
-  //       "50%": null,
-  //       "75%": null,
-  //       "max": null,
-  //       "std": null
-  //     },
-  //     "On Roll /Consultant": {
-  //       "count": 0.0,
-  //       "mean": null,
-  //       "min": null,
-  //       "25%": null,
-  //       "50%": null,
-  //       "75%": null,
-  //       "max": null,
-  //       "std": null
-  //     },
-  //     "Last working date in Client For Attritted Employees": {
-  //       "count": 0.0,
-  //       "mean": null,
-  //       "min": null,
-  //       "25%": null,
-  //       "50%": null,
-  //       "75%": null,
-  //       "max": null,
-  //       "std": null
-  //     },
-  //     "Designation on the beginning of the study": {
-  //       "count": 0.0,
-  //       "mean": null,
-  //       "min": null,
-  //       "25%": null,
-  //       "50%": null,
-  //       "75%": null,
-  //       "max": null,
-  //       "std": null
-  //     },
-  //     "Branch name or branch code": {
-  //       "count": 0.0,
-  //       "mean": null,
-  //       "min": null,
-  //       "25%": null,
-  //       "50%": null,
-  //       "75%": null,
-  //       "max": null,
-  //       "std": null
-  //     },
-  //     "Current City": {
-  //       "count": 0.0,
-  //       "mean": null,
-  //       "min": null,
-  //       "25%": null,
-  //       "50%": null,
-  //       "75%": null,
-  //       "max": null,
-  //       "std": null
-  //     },
-  //     "State": {
-  //       "count": 0.0,
-  //       "mean": null,
-  //       "min": null,
-  //       "25%": null,
-  //       "50%": null,
-  //       "75%": null,
-  //       "max": null,
-  //       "std": null
-  //     },
-  //     "Region": {
-  //       "count": 0.0,
-  //       "mean": null,
-  //       "min": null,
-  //       "25%": null,
-  //       "50%": null,
-  //       "75%": null,
-  //       "max": null,
-  //       "std": null
-  //     },
-  //     "Zone": {
-  //       "count": 0.0,
-  //       "mean": null,
-  //       "min": null,
-  //       "25%": null,
-  //       "50%": null,
-  //       "75%": null,
-  //       "max": null,
-  //       "std": null
-  //     },
-  //     "Employee ID of Immediate Supervisor in the role": {
-  //       "count": 0.0,
-  //       "mean": null,
-  //       "min": null,
-  //       "25%": null,
-  //       "50%": null,
-  //       "75%": null,
-  //       "max": null,
-  //       "std": null
-  //     }
-  //   },
-  //   "Customer Performance Data": {
-  //     "Employee ID": {"count": 0, "unique": 0, "top": null, "freq": null},
-  //     "Performance calendar Month-Year (e.g. 01-05-23)": {
-  //       "count": 0,
-  //       "unique": 0,
-  //       "top": null,
-  //       "freq": null
-  //     },
-  //     "Product department": {
-  //       "count": 0,
-  //       "unique": 0,
-  //       "top": null,
-  //       "freq": null
-  //     },
-  //     "Performance value target": {
-  //       "count": 0,
-  //       "unique": 0,
-  //       "top": null,
-  //       "freq": null
-  //     },
-  //     "Actual performance value": {
-  //       "count": 0,
-  //       "unique": 0,
-  //       "top": null,
-  //       "freq": null
-  //     },
-  //     "Peformance quantity Target": {
-  //       "count": 0,
-  //       "unique": 0,
-  //       "top": null,
-  //       "freq": null
-  //     },
-  //     "Actual performance quantity": {
-  //       "count": 0,
-  //       "unique": 0,
-  //       "top": null,
-  //       "freq": null
-  //     },
-  //     "Over all performance achievement % as per client": {
-  //       "count": 0,
-  //       "unique": 0,
-  //       "top": null,
-  //       "freq": null
-  //     },
-  //     "Fixed CTC salary INDEX for the month": {
-  //       "count": 0,
-  //       "unique": 0,
-  //       "top": null,
-  //       "freq": null
-  //     },
-  //     "Total incentive paid in Rs in the month": {
-  //       "count": 0,
-  //       "unique": 0,
-  //       "top": null,
-  //       "freq": null
-  //     }
-  //   }
-  // };
-  
-
-  import 'dart:convert';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/foundation.dart';
@@ -651,6 +648,8 @@ class _UploadedExcelSummaryReportState
   List<String> sheets = [];
   List<String> columns = [];
   List<Widget> widgets = [];
+  final PageController pageController = PageController();
+  int currentPage = 0;
 
   // Initialization logic
   @override
@@ -659,16 +658,42 @@ class _UploadedExcelSummaryReportState
     initializeData();
   }
 
+  void goToNextPage() {
+    if (currentPage < 3) {
+      currentPage++;
+      pageController.animateToPage(
+        currentPage,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
+  void goToPreviousPage() {
+    if (currentPage > 0) {
+      currentPage--;
+      pageController.animateToPage(
+        currentPage,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
   // Method to initialize data
   void initializeData() {
     if (context.read<ProjectArchitectBloc>().state.createdProject != null) {
-      if (context.read<ProjectArchitectBloc>()
-              .state.createdProject!.latestInput !=
+      if (context
+              .read<ProjectArchitectBloc>()
+              .state
+              .createdProject!
+              .latestInput !=
           null) {
         context.read<ProjectArchitectBloc>().add(GetInputExcelSummaryEvent(
               inputId: context
                   .read<ProjectArchitectBloc>()
-                  .state.createdProject!
+                  .state
+                  .createdProject!
                   .latestInput!,
               onErrorCallback: (errorMessage, errorCode) {
                 if (kDebugMode) {
@@ -694,7 +719,8 @@ class _UploadedExcelSummaryReportState
   }
 
   // Method to update selected sheet
-  void updateSelectedSheet({required Map<String, dynamic> data, String? selectedSheet}) {
+  void updateSelectedSheet(
+      {required Map<String, dynamic> data, String? selectedSheet}) {
     if (selectedSheet == null) {
       setState(() {
         sheets = data.keys.toList();
@@ -705,8 +731,7 @@ class _UploadedExcelSummaryReportState
         }
       });
     } else {
-      updatedSelectedSheetColumns(
-          data: data, selectedSheetKey: selectedSheet);
+      updatedSelectedSheetColumns(data: data, selectedSheetKey: selectedSheet);
     }
   }
 
@@ -748,15 +773,25 @@ class _UploadedExcelSummaryReportState
   // Build method for the widget
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return PageView(
+      physics : const NeverScrollableScrollPhysics(),
+       controller: pageController,
+            onPageChanged: (int page) {
+              setState(() {
+                currentPage = page;
+              });
+            },
       children: [
-        // Header section
-        buildHeader(),
-        // Display either loading indicator or data view
-        jsonObject == null
-            ? buildLoadingIndicator()
-            : buildDataView(),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Header section
+            buildHeader(),
+            // Display either loading indicator or data view
+            jsonObject == null ? buildLoadingIndicator() : buildDataView(),
+          ],
+        ),
+        Text("$currentPage")
       ],
     );
   }
@@ -807,8 +842,8 @@ class _UploadedExcelSummaryReportState
             const Icon(Icons.history),
             Text(
               "History",
-              style: ClanChurnTypography.font18600.copyWith(
-                  color: Theme.of(context).colorScheme.primary),
+              style: ClanChurnTypography.font18600
+                  .copyWith(color: Theme.of(context).colorScheme.primary),
             ),
           ],
         ),
@@ -883,26 +918,24 @@ class _UploadedExcelSummaryReportState
           child: DropdownButtonHideUnderline(
             child: DropdownButton2<String>(
               isExpanded: true,
-              hint: Row(
-                  children: [
-                    Text(
-                      'Select Sheet',
-                      style: ClanChurnTypography.font18500,
-                      overflow: TextOverflow.ellipsis,
-                    )
-                  ]),
-              items: sheets.map((String item) =>
-                  DropdownMenuItem<String>(
-                    value: item,
-                    child: Text(
-                      item,
-                      style: ClanChurnTypography.font18500.copyWith(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .background),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  )).toList(),
+              hint: Row(children: [
+                Text(
+                  'Select Sheet',
+                  style: ClanChurnTypography.font18500,
+                  overflow: TextOverflow.ellipsis,
+                )
+              ]),
+              items: sheets
+                  .map((String item) => DropdownMenuItem<String>(
+                        value: item,
+                        child: Text(
+                          item,
+                          style: ClanChurnTypography.font18500.copyWith(
+                              color: Theme.of(context).colorScheme.background),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ))
+                  .toList(),
               value: selectedSheet,
               onChanged: (value) {
                 updateSelectedSheet(data: jsonObject!, selectedSheet: value);
@@ -916,9 +949,7 @@ class _UploadedExcelSummaryReportState
                         Text(
                           item,
                           style: ClanChurnTypography.font18500.copyWith(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .secondary),
+                              color: Theme.of(context).colorScheme.secondary),
                         ),
                       ],
                     ),
@@ -933,18 +964,14 @@ class _UploadedExcelSummaryReportState
                           .colorScheme
                           .primary
                           .withOpacity(0.6)),
-                  color: Theme.of(context)
-                      .colorScheme
-                      .primary
-                      .withOpacity(0.2),
+                  color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
                 ),
                 elevation: 0,
               ),
               iconStyleData: IconStyleData(
                 icon: const Icon(Icons.keyboard_arrow_down),
                 iconSize: 25,
-                iconEnabledColor:
-                Theme.of(context).colorScheme.secondary,
+                iconEnabledColor: Theme.of(context).colorScheme.secondary,
                 iconDisabledColor: Colors.grey,
               ),
               dropdownStyleData: DropdownStyleData(
@@ -956,10 +983,7 @@ class _UploadedExcelSummaryReportState
                           .colorScheme
                           .primary
                           .withOpacity(0.6)),
-                  color: Theme.of(context)
-                      .colorScheme
-                      .primary
-                      .withOpacity(1.0),
+                  color: Theme.of(context).colorScheme.primary.withOpacity(1.0),
                 ),
                 scrollbarTheme: ScrollbarThemeData(
                   radius: const Radius.circular(40),
@@ -1003,18 +1027,17 @@ class _UploadedExcelSummaryReportState
                   ),
                 ],
               ),
-              items: columns.map((String item) =>
-                  DropdownMenuItem<String>(
-                    value: item,
-                    child: Text(
-                      item,
-                      style: ClanChurnTypography.font18500.copyWith(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .background),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  )).toList(),
+              items: columns
+                  .map((String item) => DropdownMenuItem<String>(
+                        value: item,
+                        child: Text(
+                          item,
+                          style: ClanChurnTypography.font18500.copyWith(
+                              color: Theme.of(context).colorScheme.background),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ))
+                  .toList(),
               selectedItemBuilder: (BuildContext context) {
                 return columns.map((String item) {
                   return Center(
@@ -1024,9 +1047,7 @@ class _UploadedExcelSummaryReportState
                         Text(
                           item,
                           style: ClanChurnTypography.font18500.copyWith(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .secondary),
+                              color: Theme.of(context).colorScheme.secondary),
                         ),
                       ],
                     ),
@@ -1036,8 +1057,7 @@ class _UploadedExcelSummaryReportState
               value: selectedColumn,
               onChanged: (value) {
                 updatedSelectedSheetColumnWidgets(
-                    selectedShe: selectedSheet!,
-                    selectedCol: value!);
+                    selectedShe: selectedSheet!, selectedCol: value!);
               },
               buttonStyleData: ButtonStyleData(
                 decoration: BoxDecoration(
@@ -1047,18 +1067,14 @@ class _UploadedExcelSummaryReportState
                           .colorScheme
                           .primary
                           .withOpacity(0.6)),
-                  color: Theme.of(context)
-                      .colorScheme
-                      .primary
-                      .withOpacity(0.2),
+                  color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
                 ),
                 elevation: 0,
               ),
               iconStyleData: IconStyleData(
                 icon: const Icon(Icons.keyboard_arrow_down),
                 iconSize: 25,
-                iconEnabledColor:
-                Theme.of(context).colorScheme.secondary,
+                iconEnabledColor: Theme.of(context).colorScheme.secondary,
                 iconDisabledColor: Colors.grey,
               ),
               dropdownStyleData: DropdownStyleData(
@@ -1070,10 +1086,7 @@ class _UploadedExcelSummaryReportState
                           .colorScheme
                           .primary
                           .withOpacity(0.6)),
-                  color: Theme.of(context)
-                      .colorScheme
-                      .primary
-                      .withOpacity(1.0),
+                  color: Theme.of(context).colorScheme.primary.withOpacity(1.0),
                 ),
                 scrollbarTheme: ScrollbarThemeData(
                   radius: const Radius.circular(40),
@@ -1103,16 +1116,16 @@ class _UploadedExcelSummaryReportState
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               buildSummaryCard(
-                value: (json.decode(jsonObject![selectedSheet]))
-                [selectedColumn]["count"]
+                value: (json.decode(jsonObject![selectedSheet]))[selectedColumn]
+                        ["count"]
                     .toString(),
                 header: "Total Rows",
                 isDisabled:
-                (json.decode(jsonObject![selectedSheet]))
-                [selectedColumn]["count"] ==
-                    null
-                    ? true
-                    : false,
+                    (json.decode(jsonObject![selectedSheet]))[selectedColumn]
+                                ["count"] ==
+                            null
+                        ? true
+                        : false,
               ),
               const SummaryCard(
                 value: "--",
@@ -1136,28 +1149,28 @@ class _UploadedExcelSummaryReportState
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               buildSummaryCard(
-                value: (json.decode(jsonObject![selectedSheet]))
-                [selectedColumn]["max"]
+                value: (json.decode(jsonObject![selectedSheet]))[selectedColumn]
+                        ["max"]
                     .toString(),
                 header: "Maximum Value",
                 isDisabled:
-                (json.decode(jsonObject![selectedSheet]))
-                [selectedColumn]["max"] ==
-                    null
-                    ? true
-                    : false,
+                    (json.decode(jsonObject![selectedSheet]))[selectedColumn]
+                                ["max"] ==
+                            null
+                        ? true
+                        : false,
               ),
               buildSummaryCard(
-                value: (json.decode(jsonObject![selectedSheet]))
-                [selectedColumn]["min"]
+                value: (json.decode(jsonObject![selectedSheet]))[selectedColumn]
+                        ["min"]
                     .toString(),
                 header: "Minimum Value",
                 isDisabled:
-                (json.decode(jsonObject![selectedSheet]))
-                [selectedColumn]["min"] ==
-                    null
-                    ? true
-                    : false,
+                    (json.decode(jsonObject![selectedSheet]))[selectedColumn]
+                                ["min"] ==
+                            null
+                        ? true
+                        : false,
               ),
               const SummaryCard(
                 value: "--",
@@ -1165,31 +1178,31 @@ class _UploadedExcelSummaryReportState
                 isDisabled: true,
               ),
               buildSummaryCard(
-                value: (json.decode(jsonObject![selectedSheet]))
-                [selectedColumn]["50%"]
+                value: (json.decode(jsonObject![selectedSheet]))[selectedColumn]
+                        ["50%"]
                     .toString(),
                 header: "Median Value",
                 isDisabled:
-                (json.decode(jsonObject![selectedSheet]))
-                [selectedColumn]["50%"] ==
-                    null
-                    ? true
-                    : false,
+                    (json.decode(jsonObject![selectedSheet]))[selectedColumn]
+                                ["50%"] ==
+                            null
+                        ? true
+                        : false,
               ),
             ],
           ),
           ClanChurnSpacing.h30,
           buildSummaryCard(
-            value: (json.decode(jsonObject![selectedSheet]))
-            [selectedColumn]["mean"]
+            value: (json.decode(jsonObject![selectedSheet]))[selectedColumn]
+                    ["mean"]
                 .toString(),
             header: "Average Value",
             isDisabled:
-            (json.decode(jsonObject![selectedSheet]))
-            [selectedColumn]["mean"] ==
-                null
-                ? true
-                : false,
+                (json.decode(jsonObject![selectedSheet]))[selectedColumn]
+                            ["mean"] ==
+                        null
+                    ? true
+                    : false,
           ),
           ClanChurnSpacing.h50,
         ],
@@ -1231,8 +1244,7 @@ class _UploadedExcelSummaryReportState
                 context: context,
                 builder: (context) {
                   return AlertDialog(
-                    backgroundColor:
-                    Theme.of(context).colorScheme.background,
+                    backgroundColor: Theme.of(context).colorScheme.background,
                     surfaceTintColor: Colors.transparent,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(08),
@@ -1253,17 +1265,20 @@ class _UploadedExcelSummaryReportState
                   context
                       .read<ProjectArchitectBloc>()
                       .add(DownloadErrorReportEvent(
-                    context: context,
-                    inputId: context
-                        .read<ProjectArchitectBloc>()
-                        .state.createdProject!.latestInput ?? "",
-                    onSuccessCallback: (message) {},
-                    onErrorCallback: (errorMessage, errorCode) {
-                      print(
-                          "Download Error Report...${state.createdProject!.latestInput}..$errorMessage $errorCode");
-                      GetDialog.failedErrorReport(context);
-                    },
-                  ));
+                        context: context,
+                        inputId: context
+                                .read<ProjectArchitectBloc>()
+                                .state
+                                .createdProject!
+                                .latestInput ??
+                            "",
+                        onSuccessCallback: (message) {},
+                        onErrorCallback: (errorMessage, errorCode) {
+                          print(
+                              "Download Error Report...${state.createdProject!.latestInput}..$errorMessage $errorCode");
+                          GetDialog.failedErrorReport(context);
+                        },
+                      ));
                 },
               );
             },

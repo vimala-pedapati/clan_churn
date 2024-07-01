@@ -112,8 +112,6 @@
 //   }
 // }
 
-
-
 import 'package:clan_churn/api_repos/models/project_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -200,14 +198,13 @@ class _GetPublishButtonState extends State<GetPublishButton> {
                         context: context,
                         builder: (context) => buildErrorDialog(context),
                       );
-                    } else if (state.createdProject?.latestInputModel
-                            ?.inputStatus ==
+                    } else if (state
+                            .createdProject?.latestInputModel?.inputStatus ==
                         InputStatus.uploadedDataHasNoErrors) {
                       // Generate Marts event for successful case
                       context.read<ProjectArchitectBloc>().add(
                             GenerateMartsEvent(
-                              inputId:
-                                  state.createdProject!.latestInput ?? "",
+                              inputId: state.createdProject!.latestInput ?? "",
                               onSuccessCallback: (message) {},
                               onErrorCallback: (errorMessage, errorCode) {
                                 print(
@@ -227,6 +224,35 @@ class _GetPublishButtonState extends State<GetPublishButton> {
                 ),
                 ClanChurnSpacing.w10,
                 const Icon(Icons.arrow_circle_right_outlined),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(
+          width: 50,
+        ),
+        SizedBox(
+          height: 50,
+          child: ElevatedButton(
+            onPressed: value
+                ? () {
+                    // Check input status and perform actions accordingly
+                    if (state.createdProject?.latestInputModel?.inputStatus ==
+                        InputStatus.uploadedDataHasErrors) {
+                      // Show dialog for error case
+                      showDialog(
+                        context: context,
+                        builder: (context) => buildErrorDialog(context),
+                      );
+                    } else if (state.createdProject?.latestInputModel?.inputStatus == InputStatus.uploadedDataHasNoErrors) {}
+                  }
+                : null,
+            child: Row(
+              children: [
+                Text(
+                  "Reports",
+                  style: ClanChurnTypography.font18600,
+                ), 
               ],
             ),
           ),
