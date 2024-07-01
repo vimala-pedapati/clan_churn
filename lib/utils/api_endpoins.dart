@@ -28,4 +28,5 @@ class ApiEndpoints {
   static String getInputExcelSummary = "/project/get_input_excel_summary";
   static String projectInputHistory = "/project/project_input_history";
   static String generateMarts = "/project/generate_marts";
+  static String getReportData = "/reports/get_report_data";
 }

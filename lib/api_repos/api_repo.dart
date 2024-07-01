@@ -613,6 +613,29 @@ class ApiRepository {
     return null;
   }
 
+  Future getReportData(
+      {required String reportname, required String inputId}) async {
+    // Fetch auth credentials
+    final AuthCredentials authCredentials = await AuthRepository().getTokens();
+
+    // Check if auth credentials are null
+    if (authCredentials.accessToken.isEmpty) {
+      log('Access token is empty');
+      return null;
+    }
+
+    // Make API call with access token
+    http.Response response = await http.post(
+        Uri.parse('${BaseUrl.baseUrl}${ApiEndpoints.getReportData}'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${authCredentials.accessToken}',
+        },
+        body: json.encode(
+            {"report_name": "", "input_id": "666ad1898a6200fad12f7ae3"}));
+    print("$response");
+  }
+
   void _handleStatusCode(
       int statusCode, String? reasonPhrase, OnErrorCallback onErrorCallback) {
     switch (statusCode) {
