@@ -39,6 +39,7 @@ class ProjectArchitectBloc
     on<UploadNewSheetRequestedEvent>(_onUploadNewSheetRequestedEvent);
     on<ProjectInputHistoryEvent>(_onProjectInputHistoryEvent);
     on<GenerateMartsEvent>(_onGenerateMartsEvent);
+    on<GetReportDataEvent>(_onGetReportDataEvent);
   }
 
   _onClientsEvent(
@@ -355,5 +356,14 @@ class ProjectArchitectBloc
       // launchURL(pro.latestInputModel!.martsSheetUrl!);
       // emit(state.copyWith(createdProject: pro));
     }
+  }
+
+  _onGetReportDataEvent(
+      GetReportDataEvent event, Emitter<ProjectArchitectState> emit) {
+    apiRepository.getReportData(
+        inputId: event.inputId,
+        reportname: event.reportName,
+        onErrorCallback: event.onErrorCallback,
+        onSuccessCallback: event.onSuccessCallback);
   }
 }

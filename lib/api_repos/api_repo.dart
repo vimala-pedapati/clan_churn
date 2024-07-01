@@ -614,7 +614,10 @@ class ApiRepository {
   }
 
   Future getReportData(
-      {required String reportname, required String inputId}) async {
+      {required String reportname,
+      required String inputId,
+      required OnErrorCallback onErrorCallback,
+      required OnSuccessCallback onSuccessCallback}) async {
     // Fetch auth credentials
     final AuthCredentials authCredentials = await AuthRepository().getTokens();
 
