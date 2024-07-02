@@ -54,6 +54,7 @@ class ApiRepository {
       } else {
         _handleStatusCode(
             response.statusCode, response.reasonPhrase, onErrorCallback);
+        onErrorCallback('${response.reasonPhrase}', response.statusCode);
         return null;
       }
     } catch (e) {

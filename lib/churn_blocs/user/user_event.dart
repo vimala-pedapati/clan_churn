@@ -6,6 +6,7 @@ class UserEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class GetUserDetailsEvent extends UserEvent {}
-
- 
+class GetUserDetailsEvent extends UserEvent {
+  final BuildContext context;
+  const GetUserDetailsEvent({required this.context});
+}
