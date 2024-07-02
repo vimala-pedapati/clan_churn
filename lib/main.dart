@@ -80,7 +80,7 @@ class ClanChurnApp extends StatelessWidget {
         GoRoute(
           path: AppRoutes.savedProjects,
           pageBuilder: (context, state) => customPageRouteForGoRouter<void>(
-              context: context, state: state, child: const DataTablePage()),
+              context: context, state: state, child: Container()),
         ),
         GoRoute(
           path: AppRoutes.clientProjects,

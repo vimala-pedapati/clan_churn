@@ -4,7 +4,9 @@
 // import 'package:flutter/material.dart';
 import 'dart:math';
 
+import 'package:clan_churn/components/nav_bar.dart';
 import 'package:clan_churn/components/reports.dart';
+import 'package:clan_churn/components/wrap_profile.dart';
 import 'package:clan_churn/utils/typography.dart';
 import 'package:flutter/material.dart';
 import 'package:horizontal_data_table/horizontal_data_table.dart';
@@ -437,8 +439,6 @@ final sheetRawData1 = {
   }
 };
 
-
-
 class DataTablePage extends StatefulWidget {
   const DataTablePage({Key? key}) : super(key: key);
 
@@ -605,9 +605,7 @@ class CustomDataTableState<T> extends State<CustomDataTable<T>> {
 
   Widget _buildFixedCol() => DataTable(
       border: _buildBorder(right: true, left: true, bottom: true),
-      columns: [
-        DataColumn(label: Text(""))
-        ],
+      columns: [DataColumn(label: Text(""))],
       rows: widget.fixedColCells
           .map((c) => DataRow(cells: [DataCell(_buildChild(c))]))
           .toList());
@@ -633,29 +631,27 @@ class CustomDataTableState<T> extends State<CustomDataTable<T>> {
 
   Widget _buildSubTable() => DataTable(
       border: _buildBorder(verticalInside: true, bottom: true, right: true),
-  columns: [
-            DataColumn(
-              label: Text(
-                'Metrics',
-                style: ClanChurnTypography.font13600.copyWith(
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-              ),
-              // onSort: (columnIndex, ascending) =>  onHeaderSort(columnIndex, ascending),
+      columns: [
+        DataColumn(
+          label: Text(
+            'Metrics',
+            style: ClanChurnTypography.font13600.copyWith(
+              color: Theme.of(context).colorScheme.secondary,
             ),
-            for (var month in widget.fixedRowCells)
-              DataColumn(
-                label: Text(
-                  "$month",
-                  style: ClanChurnTypography.font13600.copyWith(
-                    color: Theme.of(context).colorScheme.secondary,
-                  ),
-                ),
-                // onSort: (columnIndex, ascending) =>  onColumnsSort(columnIndex, ascending),
+          ),
+          // onSort: (columnIndex, ascending) =>  onHeaderSort(columnIndex, ascending),
+        ),
+        for (var month in widget.fixedRowCells)
+          DataColumn(
+            label: Text(
+              "$month",
+              style: ClanChurnTypography.font13600.copyWith(
+                color: Theme.of(context).colorScheme.secondary,
               ),
-          ],
-
-
+            ),
+            // onSort: (columnIndex, ascending) =>  onColumnsSort(columnIndex, ascending),
+          ),
+      ],
       rows: widget.fixedColCells.map((metric) {
         Map<String, Map<String, dynamic>> sheetData = {};
         Map<String, dynamic> data = {};
@@ -672,8 +668,8 @@ class CustomDataTableState<T> extends State<CustomDataTable<T>> {
             DataCell(Text("$metric")),
             for (var month in widget.fixedRowCells)
               DataCell(Text(
-                    (data[month]![metric] as dynamic)?.toString() ?? 'N/A',
-                  )),
+                (data[month]![metric] as dynamic)?.toString() ?? 'N/A',
+              )),
           ],
         );
       }).toList());
@@ -729,6 +725,7 @@ class CustomDataTableState<T> extends State<CustomDataTable<T>> {
                 physics: const NeverScrollableScrollPhysics(),
                 child: _buildFixedCol(),
               ),
+
               /// scrollable data table
               Flexible(
                 child: SingleChildScrollView(
@@ -790,7 +787,6 @@ class _SimpleTableSortPageState extends State<SimpleTableSortPage> {
   bool isAscending = true;
   int sortType = sortName;
 
-  @override
   void initState() {
     widget.user.initData(100);
     super.initState();
@@ -798,23 +794,33 @@ class _SimpleTableSortPageState extends State<SimpleTableSortPage> {
 
   @override
   Widget build(BuildContext context) {
+    final h = MediaQuery.of(context).size.height;
+    final w = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(title: const Text('Sortable Table')),
-      body: HorizontalDataTable(
-        leftHandSideColumnWidth: 100,
-        rightHandSideColumnWidth: 600,
-        isFixedHeader: true,
-        headerWidgets: _getTitleWidget(),
-        leftSideItemBuilder: _generateFirstColumnRow,
-        rightSideItemBuilder: _generateRightHandSideColumnRow,
-        itemCount: widget.user.userInfo.length,
-        rowSeparatorWidget: const Divider(
-          color: Colors.black54,
-          height: 1.0,
-          thickness: 0.0,
+      body: WrapProfile(
+        child: Column(
+          children: [
+            const NavBar(),
+            SizedBox(height: h * 0.01),
+            HorizontalDataTable(
+              leftHandSideColumnWidth: 100,
+              rightHandSideColumnWidth: 600,
+              isFixedHeader: true,
+              headerWidgets: _getTitleWidget(),
+              leftSideItemBuilder: _generateFirstColumnRow,
+              rightSideItemBuilder: _generateRightHandSideColumnRow,
+              itemCount: widget.user.userInfo.length,
+              rowSeparatorWidget: const Divider(
+                color: Colors.black54,
+                height: 1.0,
+                thickness: 0.0,
+              ),
+              leftHandSideColBackgroundColor: const Color(0xFFFFFFFF),
+              rightHandSideColBackgroundColor: const Color(0xFFFFFFFF),
+            ),
+          ],
         ),
-        leftHandSideColBackgroundColor: const Color(0xFFFFFFFF),
-        rightHandSideColBackgroundColor: const Color(0xFFFFFFFF),
       ),
     );
   }
