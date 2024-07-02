@@ -342,17 +342,16 @@ class _SideBarState extends State<SideBar> {
                 children: [
                   // Menu button
                   buildMenuButton(context, state),
-                  projectArchitectControls()
 
-                  // BlocBuilder<UserBloc, UserState>(
-                  //   builder: (context, state) {
-                  //     return state.user?.userType == UserType.projectArchitect
-                  //         ? projectArchitectControls()
-                  //         : state.user?.userType == UserType.admin
-                  //             ? adminControls()
-                  //             : Container();
-                  //   },
-                  // )
+                  BlocBuilder<UserBloc, UserState>(
+                    builder: (context, state) {
+                      return state.user?.userType == UserType.projectArchitect
+                          ? projectArchitectControls()
+                          : state.user?.userType == UserType.admin
+                              ? adminControls()
+                              : Container();
+                    },
+                  )
                 ],
               ),
               // Footer text
