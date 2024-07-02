@@ -98,7 +98,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                                 },
                               ),
                               Text(
-                                "${state.user?.userType.value} - ${state.user!.clientDetails?.name}",
+                                "${state.user?.userType.value}",
                                 style: ClanChurnTypography.font10600.copyWith(
                                     color:
                                         Theme.of(context).colorScheme.primary),

@@ -4,7 +4,7 @@ import 'package:equatable/equatable.dart';
 
 enum UserType {
   admin,
-  projectHead,
+  projectArchitect,
   clientHead,
   client,
 }
@@ -14,7 +14,7 @@ extension UserTypesExtension on UserType {
     switch (this) {
       case UserType.admin:
         return 'admin';
-      case UserType.projectHead:
+      case UserType.projectArchitect:
         return 'Project Architect';
       case UserType.clientHead:
         return 'client_head';
@@ -32,7 +32,7 @@ extension UserTypesParsing on String {
       case 'admin':
         return UserType.admin;
       case 'Project Architect':
-        return UserType.projectHead;
+        return UserType.projectArchitect;
       case 'client_head':
         return UserType.clientHead;
       case 'client':
