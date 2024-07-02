@@ -1,3 +1,4 @@
+import 'package:clan_churn/api_repos/models/user_model.dart';
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/churn_blocs/sign_in_bloc/sign_in_bloc.dart';
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
@@ -97,7 +98,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                                 },
                               ),
                               Text(
-                                "${state.user?.userType} - ${state.user!.clientDetails?.name}",
+                                "${state.user?.userType.value} - ${state.user!.clientDetails?.name}",
                                 style: ClanChurnTypography.font10600.copyWith(
                                     color:
                                         Theme.of(context).colorScheme.primary),

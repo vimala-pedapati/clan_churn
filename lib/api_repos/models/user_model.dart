@@ -2,6 +2,47 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 
+enum UserType {
+  admin,
+  projectHead,
+  clientHead,
+  client,
+}
+
+extension UserTypesExtension on UserType {
+  String get value {
+    switch (this) {
+      case UserType.admin:
+        return 'admin';
+      case UserType.projectHead:
+        return 'Project Architect';
+      case UserType.clientHead:
+        return 'client_head';
+      case UserType.client:
+        return 'client';
+      default:
+        return "";
+    }
+  }
+}
+
+extension UserTypesParsing on String {
+  UserType get toUserType {
+    switch (this) {
+      case 'admin':
+        return UserType.admin;
+      case 'Project Architect':
+        return UserType.projectHead;
+      case 'client_head':
+        return UserType.clientHead;
+      case 'client':
+        return UserType.client;
+      default:
+        throw ArgumentError('Invalid UserType string: $this');
+    }
+  }
+}
+
 User userFromJson(String str) => User.fromJson(json.decode(str));
 
 String userToJson(User data) => json.encode(data.toJson());
@@ -12,30 +53,28 @@ class User extends Equatable {
   final String lastName;
   final String email;
   final String userId;
-  final String userType;
+  final UserType userType;
   final String? image;
 
-  const User({
-    required this.clientDetails,
-    required this.firstName,
-    required this.lastName,
-    required this.email,
-    required this.userId,
-    required this.userType,
-    required this.image
-  });
+  const User(
+      {required this.clientDetails,
+      required this.firstName,
+      required this.lastName,
+      required this.email,
+      required this.userId,
+      required this.userType,
+      required this.image});
 
   factory User.fromJson(Map<String, dynamic> json) => User(
-        clientDetails: json["client_details"] == null
-            ? null
-            : ClientDetails.fromJson(json["client_details"]),
-        firstName: json["first_name"],
-        lastName: json["last_name"],
-        email: json["email"],
-        userId: json["user_id"],
-        userType: json["user_type"],
-        image: json["image"]
-      );
+      clientDetails: json["client_details"] == null
+          ? null
+          : ClientDetails.fromJson(json["client_details"]),
+      firstName: json["first_name"],
+      lastName: json["last_name"],
+      email: json["email"],
+      userId: json["user_id"],
+      userType: ((json["user_type"] ?? "") as String).toUserType,
+      image: json["image"]);
 
   Map<String, dynamic> toJson() => {
         "client_details": clientDetails!.toJson(),
@@ -48,12 +87,7 @@ class User extends Equatable {
       };
 
   @override
-  List<Object?> get props => [
-        firstName,
-        email,
-        userType,
-        image
-      ];
+  List<Object?> get props => [firstName, email, userType, image];
 }
 
 List<ClientDetails> clientDetailsFromJson(String str) =>
