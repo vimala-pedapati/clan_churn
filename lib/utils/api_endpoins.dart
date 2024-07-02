@@ -23,11 +23,14 @@ class ApiEndpoints {
   static String updateProjectDetails = "/project/update_project_details";
   static String getProjectDetails = "/project/get_project";
   static String uploadFile = "/project/upload_input_data";
-  static String getErrorReport = "/project/get_error_report_for_input";
   static String updateProjectName = "/project/update";
-  static String getInputExcelSummary = "/project/get_input_excel_summary";
   static String projectInputHistory = "/project/project_input_history";
-  static String generateMarts = "/project/generate_marts";
+
+
+  // Input
+  static String getInputExcelSummary = "/input/get_input_excel_summary";
+  static String generateMarts = "/input/generate_marts";
+  static String getErrorReport = "/input/get_error_report_for_input";
 
   // reports
   static String getReportData = "/reports/get_report_data";
