@@ -9,6 +9,7 @@ class AppRoutes {
   static const clientProjects = "/clientProjects";
   static const forgotPassword = "/forgotPassword";
   static const resetPassword = "/resetPassword";
+  static const createClient = "/createClient";
 }
 
 CustomTransitionPage customPageRouteForGoRouter<T>({

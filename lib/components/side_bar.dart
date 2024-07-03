@@ -9,7 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 // Enum to manage selected routes
-enum SelectedRoute { home, savedReports,  }
+enum SelectedRoute { home, savedReports, createClient }
 
 class SideBar extends StatefulWidget {
   final SelectedRoute selectedRoute;
@@ -67,10 +67,25 @@ class _SideBarState extends State<SideBar> {
 
   Widget adminControls() {
     return Column(
-      children: [
-        buildHomeButton(context)
-      ],
+      children: [buildHomeButton(context), buildCreateButton()],
     );
+  }
+
+  Widget buildCreateButton() {
+    return InkWell(
+        onTap: () {},
+        child: InkWell(
+          onTap: widget.selectedRoute == SelectedRoute.createClient
+              ? null
+              : () {
+                  GoRouter.of(context).go(AppRoutes.createClient);
+                },
+          child: buildButtonContainer(
+            icon: Icons.create_new_folder_outlined,
+            text: "Create",
+            isSelected: widget.selectedRoute == SelectedRoute.createClient,
+          ),
+        ));
   }
 
   Widget projectArchitectControls() {

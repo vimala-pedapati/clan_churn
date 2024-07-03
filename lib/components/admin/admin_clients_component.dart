@@ -1,5 +1,6 @@
 import 'package:clan_churn/api_repos/models/user_model.dart';
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
+import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
 import 'package:clan_churn/components/admin/admin_client_card.dart';
 import 'package:clan_churn/components/churn_continer.dart';
 import 'package:flutter/material.dart';
@@ -15,13 +16,13 @@ class AdminClientsComponet extends StatefulWidget {
 class _AdminClientsComponetState extends State<AdminClientsComponet> {
   bool clientsFetching = false;
   bool clientsFetchingError = false;
-  List<ClientDetails> a = [];
 
   @override
   void initState() {
     setState(() {
       clientsFetching = true;
     });
+     context.read<UserBloc>().add(GetUserDetailsEvent(context: context));
     context.read<ProjectArchitectBloc>().add(GetClientsEvent(
           onErrorCallback: ((errorMessage, errorCode) {
             setState(() {
@@ -32,12 +33,6 @@ class _AdminClientsComponetState extends State<AdminClientsComponet> {
           onSuccessCallback: (message) {
             setState(() {
               clientsFetching = false;
-            });
-
-            setState(() {
-              for (int i = 0; i < 100; i++) {
-                a.add(context.read<ProjectArchitectBloc>().state.clientList[0]);
-              }
             });
           },
         ));
@@ -55,12 +50,13 @@ class _AdminClientsComponetState extends State<AdminClientsComponet> {
                     child: Text("Unable to fetch data clients data"),
                   )
                 : SingleChildScrollView(
-                  child: BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
+                    child: BlocBuilder<ProjectArchitectBloc,
+                        ProjectArchitectState>(
                       builder: (context, state) {
                         return Wrap(
                           runSpacing: 10,
                           spacing: 10,
-                          children: a.map((c) {
+                          children: state.clientList.map((c) {
                             return AdminClientCard(
                               client: c,
                             );
@@ -68,6 +64,6 @@ class _AdminClientsComponetState extends State<AdminClientsComponet> {
                         );
                       },
                     ),
-                ));
+                  ));
   }
 }
