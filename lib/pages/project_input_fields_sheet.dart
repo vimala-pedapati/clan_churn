@@ -19,30 +19,28 @@ class ProjectInputFieldsPage extends StatelessWidget {
     return Scaffold(
         backgroundColor:
             Theme.of(context).colorScheme.primary.withOpacity(0.05),
-        body: Expanded(
-          child: BlocBuilder<UserBloc, UserState>(
-            builder: (context, state) {
-              return const WrapProfile(
-                child: Column(children: [
-                  // Nav bar
-                  NavBar(),
-                  SizedBox(height: 10),
-                  Expanded(
-                    child: Row(
-                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SideBar(
-                          selectedRoute: SelectedRoute.home,
-                        ),
-                        GetInputFieldsComponent()
-                      ],
-                    ),
+        body: BlocBuilder<UserBloc, UserState>(
+          builder: (context, state) {
+            return const WrapProfile(
+              child: Column(children: [
+                // Nav bar
+                NavBar(),
+                SizedBox(height: 10),
+                Expanded(
+                  child: Row(
+                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SideBar(
+                        selectedRoute: SelectedRoute.home,
+                      ),
+                      Expanded(child: GetInputFieldsComponent())
+                    ],
                   ),
-                ]),
-              );
-            },
-          ),
+                ),
+              ]),
+            );
+          },
         ));
   }
 }
@@ -56,56 +54,8 @@ class GetInputFieldsComponent extends StatelessWidget {
     final w = MediaQuery.of(context).size.width;
     return BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
       builder: (context, state) {
-        return const Expanded(
-          child: ChurnContainer(
-            // width: state.isNotExpanded ? w * 0.89 : w * 0.8,
-            // height: h * 0.83,
-            // padding:
-            //     const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 10),
-            // decoration: BoxDecoration(
-            //     color: Theme.of(context).colorScheme.background,
-            //     borderRadius: BorderRadius.circular(30)),
-            // margin: EdgeInsets.only(left: w * 0.01, top: 10, bottom: 20),
-            // duration: const Duration(seconds: 1),
-            child: SingleChildScrollView(
-              child: Column(children: [
-                // Row(
-                //   children: [
-                //     IconButton(
-                //       icon: Icon(
-                //         Icons.keyboard_backspace,
-                //         color: Theme.of(context).colorScheme.secondary,
-                //       ),
-                //       onPressed: () {
-                //         Navigator.pop(context);
-                //         // GoRouter.of(context).go(AppRoutes.home);
-                //       },
-                //     ),
-                //     ClanChurnSpacing.w10,
-                //     Text(
-                //       "Project Initialization",
-                //       style: ClanChurnTypography.font18600,
-                //     ),
-                //   ],
-                // ),
-                // Row(
-                //   children: [
-                //     Text(
-                //       "Select Initialization",
-                //       style: ClanChurnTypography.font14500,
-                //     ),
-                //     ClanChurnSpacing.w15,
-                //     // DropDown
-                //     const GetInitializationDropDown(),
-                //   ],
-                // ),
-                // ClanChurnSpacing.h10,
-
-                GetInputFields()
-                // Container(height: 200, child: const ProjectInitialization())
-              ]),
-            ),
-          ),
+        return const ChurnContainer(
+          child: GetInputFields(),
         );
       },
     );
