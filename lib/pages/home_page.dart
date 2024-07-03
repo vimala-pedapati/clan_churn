@@ -1,4 +1,3 @@
-
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
 import 'package:clan_churn/components/clients_component.dart';
@@ -20,7 +19,9 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     context.read<UserBloc>().add(GetUserDetailsEvent(context: context));
     context.read<ProjectArchitectBloc>().add(GetClientsEvent());
-    context .read<ProjectArchitectBloc>().add(const SideBarExpandedEvent(isNotExpanded: false));
+    context
+        .read<ProjectArchitectBloc>()
+        .add(const SideBarExpandedEvent(isNotExpanded: false));
     super.initState();
   }
 
@@ -35,14 +36,15 @@ class _HomePageState extends State<HomePage> {
       // endDrawer:  const MyDrawer(),
       body: BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
         builder: (context, state) {
-          return SingleChildScrollView(
-            child: WrapProfile(
-              child: Column(children: [
-                // Nav bar
-                const NavBar(),
-                SizedBox(height: h * 0.01),
-
-                 const  Row(
+          return const WrapProfile(
+            child: Column(children: [
+              // Nav bar
+              NavBar(),
+              SizedBox(
+                height: 10,
+              ),
+              Expanded(
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -52,11 +54,10 @@ class _HomePageState extends State<HomePage> {
                     Expanded(
                       child: ClientsComponent(),
                     )
-                   
                   ],
-                )
-              ]),
-            ),
+                ),
+              )
+            ]),
           );
         },
       ),

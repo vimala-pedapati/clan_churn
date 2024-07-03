@@ -329,35 +329,35 @@ class _SideBarState extends State<SideBar> {
       builder: (context, state) {
         return AnimatedContainer(
           duration: const Duration(seconds: 1),
-          height: h * 0.88,
           width: state.isNotExpanded ? 90 : 220,
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.background,
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Column(
-                children: [
-                  // Menu button
-                  buildMenuButton(context, state),
-                  projectArchitectControls()
+          child: Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Column(
+                  children: [
+                    // Menu button
+                    buildMenuButton(context, state),
 
-                  // BlocBuilder<UserBloc, UserState>(
-                  //   builder: (context, state) {
-                  //     return state.user?.userType == UserType.projectArchitect
-                  //         ? projectArchitectControls()
-                  //         : state.user?.userType == UserType.admin
-                  //             ? adminControls()
-                  //             : Container();
-                  //   },
-                  // )
-                ],
-              ),
-              // Footer text
-              state.isNotExpanded ? Container() : buildFooterText(),
-            ],
+                    BlocBuilder<UserBloc, UserState>(
+                      builder: (context, state) {
+                        return state.user?.userType == UserType.projectArchitect
+                            ? projectArchitectControls()
+                            : state.user?.userType == UserType.admin
+                                ? adminControls()
+                                : Container();
+                      },
+                    )
+                  ],
+                ),
+                // Footer text
+                state.isNotExpanded ? Container() : buildFooterText(),
+              ],
+            ),
           ),
         );
       },
