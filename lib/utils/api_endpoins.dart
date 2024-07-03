@@ -26,7 +26,6 @@ class ApiEndpoints {
   static String updateProjectName = "/project/update";
   static String projectInputHistory = "/project/project_input_history";
 
-
   // Input
   static String getInputExcelSummary = "/input/get_input_excel_summary";
   static String generateMarts = "/input/generate_marts";
