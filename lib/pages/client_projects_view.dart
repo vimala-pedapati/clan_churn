@@ -23,27 +23,25 @@ class _ClientProjectsViewState extends State<ClientProjectsView> {
             Theme.of(context).colorScheme.primary.withOpacity(0.05),
         body: BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
           builder: (context, state) {
-            return const Expanded(
-              child: WrapProfile(
-                child: Column(children: [
-                  // Nav bar
-                  NavBar(),
-                  SizedBox(height: 10),
-                  // Text("${MediaQuery.of(context).size}"),
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SideBar(
-                          selectedRoute: SelectedRoute.home,
-                        ),
-                        ProjectsViewComponent()
-                      ],
-                    ),
+            return const WrapProfile(
+              child: Column(children: [
+                // Nav bar
+                NavBar(),
+                SizedBox(height: 10),
+                // Text("${MediaQuery.of(context).size}"),
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SideBar(
+                        selectedRoute: SelectedRoute.home,
+                      ),
+                      Expanded(child: ProjectsViewComponent())
+                    ],
                   ),
-                ]),
-              ),
+                ),
+              ]),
             );
           },
         ));

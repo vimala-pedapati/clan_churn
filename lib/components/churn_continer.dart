@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
 class ChurnContainer extends StatelessWidget {
-  const ChurnContainer({super.key, required this.child, this.width});
+  const ChurnContainer({super.key, required this.child});
   final Widget child;
-  final double? width;
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +13,7 @@ class ChurnContainer extends StatelessWidget {
       // height: h * 0.82,
       // width: widget.width,
       height: MediaQuery.of(context).size.height * 0.83,
-      width: width,
+      // width: width,
       margin: const EdgeInsets.only(left: 40, right: 40, top: 20, bottom: 20),
       padding: const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 10),
       decoration: BoxDecoration(

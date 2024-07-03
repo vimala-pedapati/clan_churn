@@ -333,31 +333,30 @@ class _SideBarState extends State<SideBar> {
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.background,
           ),
-          child: Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Column(
-                  children: [
-                    // Menu button
-                    buildMenuButton(context, state),
-
-                    BlocBuilder<UserBloc, UserState>(
-                      builder: (context, state) {
-                        return state.user?.userType == UserType.projectArchitect
-                            ? projectArchitectControls()
-                            : state.user?.userType == UserType.admin
-                                ? adminControls()
-                                : Container();
-                      },
-                    )
-                  ],
-                ),
-                // Footer text
-                state.isNotExpanded ? Container() : buildFooterText(),
-              ],
-            ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Column(
+                children: [
+                  // Menu button
+                  buildMenuButton(context, state),
+                  projectArchitectControls()
+          
+                  // BlocBuilder<UserBloc, UserState>(
+                  //   builder: (context, state) {
+                  //     return state.user?.userType == UserType.projectArchitect
+                  //         ? projectArchitectControls()
+                  //         : state.user?.userType == UserType.admin
+                  //             ? adminControls()
+                  //             : Container();
+                  //   },
+                  // )
+                ],
+              ),
+              // Footer text
+              state.isNotExpanded ? Container() : buildFooterText(),
+            ],
           ),
         );
       },
