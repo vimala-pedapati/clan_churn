@@ -31,30 +31,28 @@ class CreateNewProject extends StatelessWidget {
     return Scaffold(
         backgroundColor:
             Theme.of(context).colorScheme.primary.withOpacity(0.05),
-        body: Expanded(
-          child: BlocBuilder<UserBloc, UserState>(
-            builder: (context, state) {
-              return const WrapProfile(
-                child: Column(children: [
-                  // Nav bar
-                  NavBar(),
-                  SizedBox(height: 10),
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SideBar(
-                          selectedRoute: SelectedRoute.home,
-                        ),
-                        Expanded(child: AddNewProjectComponent())
-                      ],
-                    ),
+        body: BlocBuilder<UserBloc, UserState>(
+          builder: (context, state) {
+            return const WrapProfile(
+              child: Column(children: [
+                // Nav bar
+                NavBar(),
+                SizedBox(height: 10),
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SideBar(
+                        selectedRoute: SelectedRoute.home,
+                      ),
+                      Expanded(child: AddNewProjectComponent())
+                    ],
                   ),
-                ]),
-              );
-            },
-          ),
+                ),
+              ]),
+            );
+          },
         ));
   }
 }
