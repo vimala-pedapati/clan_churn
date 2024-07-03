@@ -1,3 +1,4 @@
+import 'package:clan_churn/api_repos/models/user_model.dart';
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/components/project_card.dart';
 import 'package:clan_churn/pages/client_projects_view.dart';
@@ -6,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ClientsCard extends StatelessWidget {
-  const ClientsCard({super.key, required this.index});
-  final int index;
+  const ClientsCard({super.key, required this.client});
+  final ClientDetails client;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +32,7 @@ class ClientsCard extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Image.network(
-                      "${state.clientList[index].image}",
+                      "${client.image}",
                       // loadingBuilder: ((context, child, loadingProgress) {
                       //   return const CircularProgressIndicator();
                       // }),
@@ -48,7 +49,7 @@ class ClientsCard extends StatelessWidget {
                 Column(
                   children: [
                     Text(
-                      state.clientList[index].name,
+                       client.name,
                       style: ClanChurnTypography.font15600,
                     ),
                   ],
@@ -66,7 +67,7 @@ class ClientsCard extends StatelessWidget {
                     onPressed: () {
                       context.read<ProjectArchitectBloc>().add(
                           SetSelectedClientEvent(
-                              selectedClient: state.clientList[index]));
+                              selectedClient:client));
                       // GoRouter.of(context).go(AppRoutes.clientProjects);
                       Navigator.push(
                           context,
