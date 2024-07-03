@@ -1,4 +1,5 @@
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
+import 'package:clan_churn/components/churn_continer.dart';
 
 import 'package:clan_churn/components/clients_card.dart';
 import 'package:clan_churn/utils/device_types.dart';
@@ -22,19 +23,7 @@ class _ClientsComponentState extends State<ClientsComponent> {
 
     return BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
       builder: (context, state) {
-        return AnimatedContainer(
-          duration: const Duration(seconds: 1),
-          // height: h * 0.82,
-          // width: widget.width,
-          height: MediaQuery.of(context).size.height * 0.83,
-          width: MediaQuery.of(context).size.width,
-          margin: EdgeInsets.only(
-              left: w * 0.025, right: w * 0.025, top: 20, bottom: 20),
-          padding:
-              const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 10),
-          decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.background,
-              borderRadius: BorderRadius.circular(30)),
+        return ChurnContainer(
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             SelectableText(

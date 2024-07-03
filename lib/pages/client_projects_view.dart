@@ -21,29 +21,31 @@ class _ClientProjectsViewState extends State<ClientProjectsView> {
     return Scaffold(
         backgroundColor:
             Theme.of(context).colorScheme.primary.withOpacity(0.05),
-        body: SingleChildScrollView(
-          child: BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
-            builder: (context, state) {
-              return WrapProfile(
+        body: BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
+          builder: (context, state) {
+            return const Expanded(
+              child: WrapProfile(
                 child: Column(children: [
                   // Nav bar
-                  const NavBar(),
-                  SizedBox(height: h * 0.01),
+                  NavBar(),
+                  SizedBox(height: 10),
                   // Text("${MediaQuery.of(context).size}"),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SideBar(
-                        selectedRoute: SelectedRoute.home,
-                      ),
-                      ProjectsViewComponent()
-                    ],
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SideBar(
+                          selectedRoute: SelectedRoute.home,
+                        ),
+                        ProjectsViewComponent()
+                      ],
+                    ),
                   ),
                 ]),
-              );
-            },
-          ),
+              ),
+            );
+          },
         ));
   }
 }

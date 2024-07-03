@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
+import 'package:clan_churn/components/churn_continer.dart';
 import 'package:clan_churn/pages/new_project_components.dart';
 import 'package:clan_churn/components/project_list_data.dart';
 import 'package:clan_churn/components/search.dart';
@@ -36,14 +37,7 @@ class _ProjectsViewComponentState extends State<ProjectsViewComponent> {
   Widget build(BuildContext context) {
     final h = MediaQuery.of(context).size.height;
     final w = MediaQuery.of(context).size.width;
-    return AnimatedContainer(
-      duration: const Duration(seconds: 1),
-      // width: widget.width,
-      // height: h * 0.83,
-      //  width: MediaQuery.of(context).size.width,
-      // color: Colors.amber,
-      margin: EdgeInsets.only(
-          left: w * 0.025, right: w * 0.025, top: 10, bottom: 20),
+    return Expanded(
       child: BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
         builder: (context, state) {
           return state.selectedClient == null
@@ -74,17 +68,16 @@ class _ProjectsViewComponentState extends State<ProjectsViewComponent> {
                         ],
                       ),
                       ClanChurnSpacing.h10,
-                      // Text("${state.projectsList}"),
-                      AnimatedContainer(
-                        duration: const Duration(seconds: 1),
-                        height: h * 0.8,
+                      ChurnContainer(
+                        // duration: const Duration(seconds: 1),
+                        // height: h * 0.8,
                         width: state.isNotExpanded ? w * 0.89 : w * 0.8,
-                        // width: MediaQuery.of(context).size.width,
-                        padding: const EdgeInsets.only(
-                            left: 20, right: 20, top: 20, bottom: 10),
-                        decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.background,
-                            borderRadius: BorderRadius.circular(30)),
+                        // // width: MediaQuery.of(context).size.width,
+                        // padding: const EdgeInsets.only(
+                        //     left: 20, right: 20, top: 20, bottom: 10),
+                        // decoration: BoxDecoration(
+                        //     color: Theme.of(context).colorScheme.background,
+                        //     borderRadius: BorderRadius.circular(30)),
                         child: SingleChildScrollView(
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
