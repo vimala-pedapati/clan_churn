@@ -65,7 +65,8 @@ class ApiRepository {
   }
 
   Future<List<ClientDetails>?> getClientsList(
-      {required OnErrorCallback onErrorCallback}) async {
+      {required OnErrorCallback onErrorCallback,
+      required OnSuccessCallback onSuccessCallback}) async {
     try {
       final AuthCredentials authCredentials =
           await AuthRepository().getTokens();
@@ -88,6 +89,7 @@ class ApiRepository {
         List<ClientDetails> clientDetails =
             clientDetailsFromJson(response.body);
         print("Clients:..... $clientDetails");
+        onSuccessCallback(response);
         return clientDetails;
       } else {
         _handleStatusCode(

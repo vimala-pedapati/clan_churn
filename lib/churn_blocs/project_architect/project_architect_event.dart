@@ -7,7 +7,12 @@ class ProjectArchitectEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class GetClientsEvent extends ProjectArchitectEvent {}
+class GetClientsEvent extends ProjectArchitectEvent {
+ final OnErrorCallback onErrorCallback;
+  final OnSuccessCallback onSuccessCallback;
+
+  const GetClientsEvent({required this.onErrorCallback, required this.onSuccessCallback});
+}
 
 class SideBarExpandedEvent extends ProjectArchitectEvent {
   final bool isNotExpanded;

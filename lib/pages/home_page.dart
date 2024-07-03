@@ -18,7 +18,10 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     context.read<UserBloc>().add(GetUserDetailsEvent(context: context));
-    context.read<ProjectArchitectBloc>().add(GetClientsEvent());
+    context.read<ProjectArchitectBloc>().add(GetClientsEvent(
+          onErrorCallback: ((errorMessage, errorCode) {}),
+          onSuccessCallback: (message) {},
+        ));
     context
         .read<ProjectArchitectBloc>()
         .add(const SideBarExpandedEvent(isNotExpanded: false));

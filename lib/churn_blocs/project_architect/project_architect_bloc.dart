@@ -45,9 +45,7 @@ class ProjectArchitectBloc
   _onClientsEvent(
       GetClientsEvent event, Emitter<ProjectArchitectState> emit) async {
     final result = await apiRepository.getClientsList(
-        onErrorCallback: (String message, int errorCode) {
-      log(" $message");
-    });
+        onErrorCallback:event.onErrorCallback, onSuccessCallback:  event.onSuccessCallback);
     if (result != null) {
       emit(state.copyWith(clientList: result));
     } else {
