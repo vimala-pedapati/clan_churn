@@ -46,7 +46,8 @@ class ProjectArchitectBloc
   _onClientsEvent(
       GetClientsEvent event, Emitter<ProjectArchitectState> emit) async {
     final result = await apiRepository.getClientsList(
-        onErrorCallback:event.onErrorCallback, onSuccessCallback:  event.onSuccessCallback);
+        onErrorCallback: event.onErrorCallback,
+        onSuccessCallback: event.onSuccessCallback);
     if (result != null) {
       emit(state.copyWith(clientList: result));
     } else {
@@ -189,7 +190,7 @@ class ProjectArchitectBloc
         projectId: event.projectId,
         projectDetails: event.projectDetails,
         onErrorCallback: (String message, int errorCode) {
-          log(" $message");
+          print("unable tp update the project details: $message");
         });
     if (result != null) {
       emit(state.copyWith(createdProject: result));

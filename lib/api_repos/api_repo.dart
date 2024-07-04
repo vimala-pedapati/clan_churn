@@ -214,14 +214,14 @@ class ApiRepository {
         }),
       );
 
-      log(json.encode({
+      print(json.encode({
         "project_id": projectId,
         "project_details": projectDetails.toJson()
       }));
 
       if (response.statusCode == 200) {
         Project project = Project.fromJson(json.decode(response.body));
-        log("Updated project:..... $project");
+        print("Updated project:..... ${response.body}");
         return project;
       } else {
         _handleStatusCode(
@@ -1059,7 +1059,8 @@ class ApiRepository {
       }
 
       http.Response response = await http.post(
-        Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.deleteClient}?user_id=$userId"),
+        Uri.parse(
+            "${BaseUrl.baseUrl}${ApiEndpoints.deleteClient}?user_id=$userId"),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ${authCredentials.accessToken}',
