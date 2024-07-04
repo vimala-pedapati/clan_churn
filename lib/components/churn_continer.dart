@@ -7,7 +7,7 @@ class ChurnContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // final h = MediaQuery.of(context).size.height;
-    final w = MediaQuery.of(context).size.width;
+    // final w = MediaQuery.of(context).size.width;
     return AnimatedContainer(
       duration: const Duration(seconds: 1),
       // height: h * 0.82,
