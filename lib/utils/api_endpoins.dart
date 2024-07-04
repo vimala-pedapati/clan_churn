@@ -11,8 +11,8 @@ class ApiEndpoints {
   static String forgotPasword = '/forgot_password_email';
   static String resetPassword = '/reset_password';
   static String getUserDetails = '/user/get_user_details';
-  static String userAdd = '/user/add';
-  static String userUpdate = '/user/update';
+  static String addUser = '/user/add';
+  static String updateUser = '/user/update';
   static String updateUserStatus = '/user/update_user_status';
   static String uploadUserPic = '/user/upload_user_pic';
   static String getUserTypes = '/user/get_user_types';

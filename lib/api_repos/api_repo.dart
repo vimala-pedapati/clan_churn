@@ -504,164 +504,6 @@ class ApiRepository {
     return null;
   }
 
-  // Upload a file for a project
-  Future<String?> uploadClientLogo(
-      {required FilePickerResult filePickerResult,
-      required OnErrorCallback onErrorCallback,
-      required OnSuccessCallback onSuccessCallback}) async {
-    try {
-      // Fetch auth credentials
-      final AuthCredentials authCredentials =
-          await AuthRepository().getTokens();
-
-      // Check if auth credentials are null
-      if (authCredentials.accessToken.isEmpty) {
-        log('Access token is empty');
-        return null;
-      }
-
-      if (filePickerResult.files.isNotEmpty) {
-        PlatformFile file = filePickerResult.files.first;
-        var headers = {
-          'Authorization': 'Bearer ${authCredentials.accessToken}'
-        };
-        var request = http.MultipartRequest(
-          'POST',
-          Uri.parse('${BaseUrl.baseUrl}${ApiEndpoints.clientLogo}'),
-        );
-        // request.fields.addAll({'project_id': projectId});
-
-        if (file.bytes != null) {
-          request.files.add(http.MultipartFile.fromBytes(
-            'image',
-            file.bytes!,
-            filename: file.name,
-          ));
-        }
-        request.headers.addAll(headers);
-        http.StreamedResponse response = await request.send();
-        log(response.reasonPhrase ?? 'No Reason Phrase');
-        if (response.statusCode == 200) {
-          String responseString = await response.stream.bytesToString();
-          log(responseString);
-          String imageUrl = json.decode(responseString);
-          onSuccessCallback(null);
-          return imageUrl;
-        } else {
-          _handleStatusCode(
-              response.statusCode, response.reasonPhrase, onErrorCallback);
-          return null;
-        }
-      } else {
-        log('Client Logo Upload Canceled');
-      }
-    } catch (e) {
-      log('Network Error: $e');
-      onErrorCallback('Network Error: $e', 0);
-    }
-    return null;
-  }
-
-  Future createClient(
-      {required String clientName,
-      required String roleName,
-      required String address1,
-      required String address2,
-      required String pocName,
-      required String pocContactNumber,
-      required String pocMailId,
-      required String image,
-      required OnErrorCallback onErrorCallback,
-      required OnSuccessCallback onSuccessCallback}) async {
-    try {
-      final AuthCredentials authCredentials =
-          await AuthRepository().getTokens();
-
-      if (authCredentials.accessToken.isEmpty) {
-        log('Access token is empty');
-        onErrorCallback('Access token is empty', 0);
-        return null;
-      }
-
-      http.Response response = await http.post(
-          Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.clientCreate}"),
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ${authCredentials.accessToken}',
-          },
-          body: json.encode({
-            "name": clientName,
-            "role": roleName,
-            "address_1": address1,
-            "address_2": address2,
-            "poc_name": pocName,
-            "poc_contact_number": pocContactNumber,
-            "poc_mail_id": pocMailId,
-            "image": image
-          }));
-
-      if (response.statusCode == 200) {
-        onSuccessCallback(response);
-      } else {
-        _handleStatusCode(
-            response.statusCode, response.reasonPhrase, onErrorCallback);
-      }
-    } catch (e) {
-      log("get summary report: $e");
-    }
-  }
-
-  Future clientUpdate(
-      {required String clientId,
-      required String clientName,
-      required String roleName,
-      required String address1,
-      required String address2,
-      required String pocName,
-      required String pocContactNumber,
-      required String pocMailId,
-      required String image,
-      required OnErrorCallback onErrorCallback,
-      required OnSuccessCallback onSuccessCallback}) async {
-    try {
-      final AuthCredentials authCredentials =
-          await AuthRepository().getTokens();
-
-      if (authCredentials.accessToken.isEmpty) {
-        log('Access token is empty');
-        onErrorCallback('Access token is empty', 0);
-        return null;
-      }
-
-      http.Response response = await http.post(
-          Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.clientUpdate}"),
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ${authCredentials.accessToken}',
-          },
-          body: json.encode({
-            "client_id": clientId,
-            "name": clientName,
-            "role": roleName,
-            "address_1": address1,
-            "address_2": address2,
-            "poc_name": pocName,
-            "poc_contact_number": pocContactNumber,
-            "poc_mail_id": pocMailId,
-            "image": image
-          }));
-
-      if (response.statusCode == 200) {
-        onSuccessCallback(response);
-      } else {
-        _handleStatusCode(
-            response.statusCode, response.reasonPhrase, onErrorCallback);
-      }
-    } catch (e) {
-      log("get summary report: $e");
-    }
-  }
-
   Future getInputExcelSummaryReport(
       {required String inputId,
       required OnErrorCallback onErrorCallback,
@@ -801,8 +643,6 @@ class ApiRepository {
       );
 
       if (response.statusCode == 200) {
-        print("..........${response.body}");
-        print("...........${json.decode(response.body).runtimeType}");
         onSuccessCallback(response);
         return json.decode(response.body);
       } else {
@@ -814,6 +654,429 @@ class ApiRepository {
       print(e);
       return null;
     }
+  }
+
+  Future<ClientDetails?> clientCreate(
+      {required String clientName,
+      required String roleName,
+      required String address1,
+      required String address2,
+      required String pocName,
+      required String pocContactNumber,
+      required String pocMailId,
+      required String image,
+      required OnErrorCallback onErrorCallback,
+      required OnSuccessCallback onSuccessCallback}) async {
+    try {
+      final AuthCredentials authCredentials =
+          await AuthRepository().getTokens();
+
+      if (authCredentials.accessToken.isEmpty) {
+        log('Access token is empty');
+        onErrorCallback('Access token is empty', 0);
+        return null;
+      }
+
+      http.Response response = await http.post(
+          Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.clientCreate}"),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ${authCredentials.accessToken}',
+          },
+          body: json.encode({
+            "name": clientName,
+            "role": roleName,
+            "address_1": address1,
+            "address_2": address2,
+            "poc_name": pocName,
+            "poc_contact_number": pocContactNumber,
+            "poc_mail_id": pocMailId,
+            "image": image
+          }));
+
+      if (response.statusCode == 200) {
+        onSuccessCallback(response);
+        ClientDetails clientDetails =
+            ClientDetails.fromJson(json.decode(response.body));
+        return clientDetails;
+      } else {
+        _handleStatusCode(
+            response.statusCode, response.reasonPhrase, onErrorCallback);
+      }
+    } catch (e) {
+      log("get summary report: $e");
+    }
+    return null;
+  }
+
+  Future<ClientDetails?> clientUpdate(
+      {required String clientId,
+      required String clientName,
+      required String roleName,
+      required String address1,
+      required String address2,
+      required String pocName,
+      required String pocContactNumber,
+      required String pocMailId,
+      required String image,
+      required OnErrorCallback onErrorCallback,
+      required OnSuccessCallback onSuccessCallback}) async {
+    try {
+      final AuthCredentials authCredentials =
+          await AuthRepository().getTokens();
+
+      if (authCredentials.accessToken.isEmpty) {
+        log('Access token is empty');
+        onErrorCallback('Access token is empty', 0);
+        return null;
+      }
+
+      http.Response response = await http.post(
+          Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.clientUpdate}"),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ${authCredentials.accessToken}',
+          },
+          body: json.encode({
+            "client_id": clientId,
+            "name": clientName,
+            "role": roleName,
+            "address_1": address1,
+            "address_2": address2,
+            "poc_name": pocName,
+            "poc_contact_number": pocContactNumber,
+            "poc_mail_id": pocMailId,
+            "image": image
+          }));
+
+      if (response.statusCode == 200) {
+        onSuccessCallback(response);
+        ClientDetails clientDetails =
+            ClientDetails.fromJson(json.decode(response.body));
+        return clientDetails;
+      } else {
+        _handleStatusCode(
+            response.statusCode, response.reasonPhrase, onErrorCallback);
+      }
+    } catch (e) {
+      log("get summary report: $e");
+    }
+    return null;
+  }
+
+  Future<String?> uploadClientLogo(
+      {required FilePickerResult filePickerResult,
+      required OnErrorCallback onErrorCallback,
+      required OnSuccessCallback onSuccessCallback}) async {
+    try {
+      // Fetch auth credentials
+      final AuthCredentials authCredentials =
+          await AuthRepository().getTokens();
+
+      // Check if auth credentials are null
+      if (authCredentials.accessToken.isEmpty) {
+        log('Access token is empty');
+        return null;
+      }
+
+      if (filePickerResult.files.isNotEmpty) {
+        PlatformFile file = filePickerResult.files.first;
+        var headers = {
+          'Authorization': 'Bearer ${authCredentials.accessToken}'
+        };
+        var request = http.MultipartRequest(
+          'POST',
+          Uri.parse('${BaseUrl.baseUrl}${ApiEndpoints.clientLogo}'),
+        );
+        // request.fields.addAll({'project_id': projectId});
+
+        if (file.bytes != null) {
+          request.files.add(http.MultipartFile.fromBytes(
+            'image',
+            file.bytes!,
+            filename: file.name,
+          ));
+        }
+        request.headers.addAll(headers);
+        http.StreamedResponse response = await request.send();
+        log(response.reasonPhrase ?? 'No Reason Phrase');
+        if (response.statusCode == 200) {
+          String responseString = await response.stream.bytesToString();
+          log(responseString);
+          String imageUrl = json.decode(responseString);
+          onSuccessCallback(null);
+          return imageUrl;
+        } else {
+          _handleStatusCode(
+              response.statusCode, response.reasonPhrase, onErrorCallback);
+          return null;
+        }
+      } else {
+        log('Client Logo Upload Canceled');
+      }
+    } catch (e) {
+      log('Network Error: $e');
+      onErrorCallback('Network Error: $e', 0);
+    }
+    return null;
+  }
+
+  Future<bool?> deleteClient(
+      {required String clientId,
+      required OnErrorCallback onErrorCallback,
+      required OnSuccessCallback onSuccessCallback}) async {
+    try {
+      final AuthCredentials authCredentials =
+          await AuthRepository().getTokens();
+
+      if (authCredentials.accessToken.isEmpty) {
+        log('Access token is empty');
+        onErrorCallback('Access token is empty', 0);
+        return null;
+      }
+
+      http.Response response = await http.post(
+        Uri.parse(
+            "${BaseUrl.baseUrl}${ApiEndpoints.deleteClient}?client_id: $clientId"),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${authCredentials.accessToken}',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        onSuccessCallback(response);
+        return true;
+      } else {
+        _handleStatusCode(
+            response.statusCode, response.reasonPhrase, onErrorCallback);
+      }
+    } catch (e) {
+      log("get summary report: $e");
+    }
+    return false;
+  }
+
+  Future<bool?> addUser(
+      {required String clientId,
+      required String firstName,
+      required String lastName,
+      required String email,
+      required String password,
+      required String userType,
+      required OnErrorCallback onErrorCallback,
+      required OnSuccessCallback onSuccessCallback}) async {
+    try {
+      final AuthCredentials authCredentials =
+          await AuthRepository().getTokens();
+
+      if (authCredentials.accessToken.isEmpty) {
+        log('Access token is empty');
+        onErrorCallback('Access token is empty', 0);
+        return null;
+      }
+
+      http.Response response = await http.post(
+          Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.addUser}"),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ${authCredentials.accessToken}',
+          },
+          body: json.encode({
+            {
+              "client_id": clientId,
+              "first_name": firstName,
+              "last_name": lastName,
+              "email": email,
+              "password": password,
+              "user_type": userType
+            }
+          }));
+
+      if (response.statusCode == 200) {
+        onSuccessCallback(response);
+        return true;
+      } else {
+        _handleStatusCode(
+            response.statusCode, response.reasonPhrase, onErrorCallback);
+      }
+    } catch (e) {
+      log("get summary report: $e");
+    }
+    return false;
+  }
+
+  Future<bool?> updateUser(
+      {required String clientId,
+      required String firstName,
+      required String lastName,
+      required String userId,
+      required String password,
+      required String userType,
+      required OnErrorCallback onErrorCallback,
+      required OnSuccessCallback onSuccessCallback}) async {
+    try {
+      final AuthCredentials authCredentials =
+          await AuthRepository().getTokens();
+
+      if (authCredentials.accessToken.isEmpty) {
+        log('Access token is empty');
+        onErrorCallback('Access token is empty', 0);
+        return null;
+      }
+
+      http.Response response = await http.post(
+          Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.updateUser}"),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ${authCredentials.accessToken}',
+          },
+          body: json.encode({
+            {
+              "client_id": clientId,
+              "first_name": firstName,
+              "last_name": lastName,
+              "user_id": userId,
+              "password": password,
+              "user_type": userType
+            }
+          }));
+
+      if (response.statusCode == 200) {
+        onSuccessCallback(response);
+        return true;
+      } else {
+        _handleStatusCode(
+            response.statusCode, response.reasonPhrase, onErrorCallback);
+      }
+    } catch (e) {
+      log("get summary report: $e");
+    }
+    return false;
+  }
+
+  Future<String?> uploadUserPic(
+      {required FilePickerResult filePickerResult,
+      required OnErrorCallback onErrorCallback,
+      required OnSuccessCallback onSuccessCallback}) async {
+    try {
+      // Fetch auth credentials
+      final AuthCredentials authCredentials =
+          await AuthRepository().getTokens();
+
+      // Check if auth credentials are null
+      if (authCredentials.accessToken.isEmpty) {
+        log('Access token is empty');
+        return null;
+      }
+
+      if (filePickerResult.files.isNotEmpty) {
+        PlatformFile file = filePickerResult.files.first;
+        var headers = {
+          'Authorization': 'Bearer ${authCredentials.accessToken}'
+        };
+        var request = http.MultipartRequest(
+          'POST',
+          Uri.parse('${BaseUrl.baseUrl}${ApiEndpoints.uploadUserPic}'),
+        );
+        // request.fields.addAll({'project_id': projectId});
+
+        if (file.bytes != null) {
+          request.files.add(http.MultipartFile.fromBytes(
+            'image',
+            file.bytes!,
+            filename: file.name,
+          ));
+        }
+        request.headers.addAll(headers);
+        http.StreamedResponse response = await request.send();
+        log(response.reasonPhrase ?? 'No Reason Phrase');
+        if (response.statusCode == 200) {
+          String responseString = await response.stream.bytesToString();
+          log(responseString);
+          String imageUrl = json.decode(responseString);
+          onSuccessCallback(null);
+          return imageUrl;
+        } else {
+          _handleStatusCode(
+              response.statusCode, response.reasonPhrase, onErrorCallback);
+          return null;
+        }
+      } else {
+        log('Profile pic Upload Canceled');
+      }
+    } catch (e) {
+      log('Network Error: $e');
+      onErrorCallback('Network Error: $e', 0);
+    }
+    return null;
+  }
+
+  Future getUserTypes(
+      {required OnErrorCallback onErrorCallback,
+      required OnSuccessCallback onSuccessCallback}) async {
+    try {
+      final AuthCredentials authCredentials =
+          await AuthRepository().getTokens();
+
+      if (authCredentials.accessToken.isEmpty) {
+        log('Access token is empty');
+        onErrorCallback('Access token is empty', 0);
+        return null;
+      }
+
+      http.Response response = await http.post(
+        Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.getUserTypes}"),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${authCredentials.accessToken}',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        onSuccessCallback(response);
+      } else {
+        _handleStatusCode(
+            response.statusCode, response.reasonPhrase, onErrorCallback);
+      }
+    } catch (e) {
+      log("get summary report: $e");
+    }
+  }
+
+  Future<bool?> deleteUser(
+      {required String userId,
+      required OnErrorCallback onErrorCallback,
+      required OnSuccessCallback onSuccessCallback}) async {
+    try {
+      final AuthCredentials authCredentials =
+          await AuthRepository().getTokens();
+
+      if (authCredentials.accessToken.isEmpty) {
+        log('Access token is empty');
+        onErrorCallback('Access token is empty', 0);
+        return null;
+      }
+
+      http.Response response = await http.post(
+        Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.deleteClient}?user_id=$userId"),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${authCredentials.accessToken}',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        onSuccessCallback(response);
+        return true;
+      } else {
+        _handleStatusCode(
+            response.statusCode, response.reasonPhrase, onErrorCallback);
+      }
+    } catch (e) {
+      log("get summary report: $e");
+    }
+    return false;
   }
 
   void _handleStatusCode(
