@@ -45,7 +45,7 @@ class CreateNewClient extends StatelessWidget {
                     ),
                     const Expanded(
                         child: ChurnContainer(
-                            child: Expanded(child: NewClientForm()))),
+                            child: NewClientForm())),
                   ],
                 ),
               )
