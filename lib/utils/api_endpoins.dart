@@ -11,9 +11,19 @@ class ApiEndpoints {
   static String forgotPasword = '/forgot_password_email';
   static String resetPassword = '/reset_password';
   static String getUserDetails = '/user/get_user_details';
+  static String userAdd = '/user/add';
+  static String userUpdate = '/user/update';
+  static String updateUserStatus = '/user/update_user_status';
+  static String uploadUserPic = '/user/upload_user_pic';
+  static String getUserTypes = '/user/get_user_types';
+  static String deleteUser = '/user/delete_user';
 
   // client
   static String clientsList = '/client/client_list';
+  static String clientLogo = '/client/upload_client_logo';
+  static String clientCreate = '/client/create';
+  static String clientUpdate = '/client/update';
+  static String deleteClient = '/client/delete_client';
 
   // Project
   static String getAllProjects = '/project/get_all_projects';

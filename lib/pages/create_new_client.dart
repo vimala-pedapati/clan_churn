@@ -128,6 +128,7 @@ class _NewClientFormState extends State<NewClientForm> {
                           hintText: "Enter Client Name",
                           controller: clientName,
                           onChanged: (p0) {},
+                          textInputAction: TextInputAction.next,
                         )
                       ],
                     ),
@@ -142,6 +143,7 @@ class _NewClientFormState extends State<NewClientForm> {
                           hintText: "Enter Role Name",
                           controller: roleName,
                           onChanged: (p0) {},
+                          textInputAction: TextInputAction.next,
                         )
                       ],
                     )
@@ -161,11 +163,13 @@ class _NewClientFormState extends State<NewClientForm> {
                       hintText: "Address Line 1",
                       controller: address1,
                       onChanged: (p0) {},
+                      textInputAction: TextInputAction.next,
                     ),
                     CusTextEditingController(
                       hintText: "Address Line 2",
                       controller: address2,
                       onChanged: (p0) {},
+                      textInputAction: TextInputAction.next,
                     ),
                   ],
                 ),
@@ -185,6 +189,7 @@ class _NewClientFormState extends State<NewClientForm> {
                           hintText: "Enter POC Name",
                           controller: pocName,
                           onChanged: (p0) {},
+                          textInputAction: TextInputAction.next,
                         )
                       ],
                     ),
@@ -199,6 +204,7 @@ class _NewClientFormState extends State<NewClientForm> {
                           hintText: "Enter POC Contact",
                           controller: pocContactNumber,
                           onChanged: (p0) {},
+                          textInputAction: TextInputAction.next,
                         )
                       ],
                     ),
@@ -213,6 +219,7 @@ class _NewClientFormState extends State<NewClientForm> {
                           hintText: "Enter POC Mail ID",
                           controller: pocMailId,
                           onChanged: (p0) {},
+                          textInputAction: TextInputAction.next,
                         )
                       ],
                     ),
@@ -279,11 +286,13 @@ class CusTextEditingController extends StatelessWidget {
       this.width,
       required this.hintText,
       required this.controller,
-      required this.onChanged});
+      required this.onChanged,
+      required this.textInputAction});
   final double? width;
   final String hintText;
   final TextEditingController controller;
   final Function(String) onChanged;
+  final TextInputAction textInputAction;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -295,6 +304,7 @@ class CusTextEditingController extends StatelessWidget {
         margin: const EdgeInsets.only(right: 20, top: 10, bottom: 10),
         child: TextFormField(
           controller: TextEditingController(),
+          textInputAction: textInputAction,
           onChanged: onChanged,
           decoration: InputDecoration(
               hintText: hintText,

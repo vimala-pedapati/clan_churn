@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:clan_churn/api_repos/models/client_details.dart';
 import 'package:clan_churn/api_repos/models/column_model.dart';
 import 'package:clan_churn/api_repos/models/project_history_model.dart';
 import 'package:clan_churn/api_repos/models/project_model.dart';
@@ -501,6 +502,164 @@ class ApiRepository {
       onErrorCallback('Network Error: $e', 0);
     }
     return null;
+  }
+
+  // Upload a file for a project
+  Future<String?> uploadClientLogo(
+      {required FilePickerResult filePickerResult,
+      required OnErrorCallback onErrorCallback,
+      required OnSuccessCallback onSuccessCallback}) async {
+    try {
+      // Fetch auth credentials
+      final AuthCredentials authCredentials =
+          await AuthRepository().getTokens();
+
+      // Check if auth credentials are null
+      if (authCredentials.accessToken.isEmpty) {
+        log('Access token is empty');
+        return null;
+      }
+
+      if (filePickerResult.files.isNotEmpty) {
+        PlatformFile file = filePickerResult.files.first;
+        var headers = {
+          'Authorization': 'Bearer ${authCredentials.accessToken}'
+        };
+        var request = http.MultipartRequest(
+          'POST',
+          Uri.parse('${BaseUrl.baseUrl}${ApiEndpoints.clientLogo}'),
+        );
+        // request.fields.addAll({'project_id': projectId});
+
+        if (file.bytes != null) {
+          request.files.add(http.MultipartFile.fromBytes(
+            'image',
+            file.bytes!,
+            filename: file.name,
+          ));
+        }
+        request.headers.addAll(headers);
+        http.StreamedResponse response = await request.send();
+        log(response.reasonPhrase ?? 'No Reason Phrase');
+        if (response.statusCode == 200) {
+          String responseString = await response.stream.bytesToString();
+          log(responseString);
+          String imageUrl = json.decode(responseString);
+          onSuccessCallback(null);
+          return imageUrl;
+        } else {
+          _handleStatusCode(
+              response.statusCode, response.reasonPhrase, onErrorCallback);
+          return null;
+        }
+      } else {
+        log('Client Logo Upload Canceled');
+      }
+    } catch (e) {
+      log('Network Error: $e');
+      onErrorCallback('Network Error: $e', 0);
+    }
+    return null;
+  }
+
+  Future createClient(
+      {required String clientName,
+      required String roleName,
+      required String address1,
+      required String address2,
+      required String pocName,
+      required String pocContactNumber,
+      required String pocMailId,
+      required String image,
+      required OnErrorCallback onErrorCallback,
+      required OnSuccessCallback onSuccessCallback}) async {
+    try {
+      final AuthCredentials authCredentials =
+          await AuthRepository().getTokens();
+
+      if (authCredentials.accessToken.isEmpty) {
+        log('Access token is empty');
+        onErrorCallback('Access token is empty', 0);
+        return null;
+      }
+
+      http.Response response = await http.post(
+          Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.clientCreate}"),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ${authCredentials.accessToken}',
+          },
+          body: json.encode({
+            "name": clientName,
+            "role": roleName,
+            "address_1": address1,
+            "address_2": address2,
+            "poc_name": pocName,
+            "poc_contact_number": pocContactNumber,
+            "poc_mail_id": pocMailId,
+            "image": image
+          }));
+
+      if (response.statusCode == 200) {
+        onSuccessCallback(response);
+      } else {
+        _handleStatusCode(
+            response.statusCode, response.reasonPhrase, onErrorCallback);
+      }
+    } catch (e) {
+      log("get summary report: $e");
+    }
+  }
+
+  Future clientUpdate(
+      {required String clientId,
+      required String clientName,
+      required String roleName,
+      required String address1,
+      required String address2,
+      required String pocName,
+      required String pocContactNumber,
+      required String pocMailId,
+      required String image,
+      required OnErrorCallback onErrorCallback,
+      required OnSuccessCallback onSuccessCallback}) async {
+    try {
+      final AuthCredentials authCredentials =
+          await AuthRepository().getTokens();
+
+      if (authCredentials.accessToken.isEmpty) {
+        log('Access token is empty');
+        onErrorCallback('Access token is empty', 0);
+        return null;
+      }
+
+      http.Response response = await http.post(
+          Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.clientUpdate}"),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ${authCredentials.accessToken}',
+          },
+          body: json.encode({
+            "client_id": clientId,
+            "name": clientName,
+            "role": roleName,
+            "address_1": address1,
+            "address_2": address2,
+            "poc_name": pocName,
+            "poc_contact_number": pocContactNumber,
+            "poc_mail_id": pocMailId,
+            "image": image
+          }));
+
+      if (response.statusCode == 200) {
+        onSuccessCallback(response);
+      } else {
+        _handleStatusCode(
+            response.statusCode, response.reasonPhrase, onErrorCallback);
+      }
+    } catch (e) {
+      log("get summary report: $e");
+    }
   }
 
   Future getInputExcelSummaryReport(

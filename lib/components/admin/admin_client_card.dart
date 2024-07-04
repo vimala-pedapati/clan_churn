@@ -1,4 +1,4 @@
-import 'package:clan_churn/api_repos/models/user_model.dart';
+import 'package:clan_churn/api_repos/models/client_details.dart';
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/components/project_card.dart';
 import 'package:clan_churn/utils/typography.dart';
@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AdminClientCard extends StatelessWidget {
   const AdminClientCard({super.key, required this.client});
-  final ClientDetails  client;
+  final ClientDetails client;
 
   @override
   Widget build(BuildContext context) {
@@ -63,9 +63,7 @@ class AdminClientCard extends StatelessWidget {
                       "Edit",
                       style: ClanChurnTypography.font15600,
                     ),
-                    onPressed: () {
-                       
-                    },
+                    onPressed: () {},
                   ),
                 )
               ]),
