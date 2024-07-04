@@ -12,7 +12,7 @@ class ChurnContainer extends StatelessWidget {
       duration: const Duration(seconds: 1),
       // height: h * 0.82,
       // width: widget.width,
-      height: MediaQuery.of(context).size.height * 0.83,
+      // height: MediaQuery.of(context).size.height * 0.83,
       // width: width,
       margin: const EdgeInsets.only(left: 40, right: 40, top: 20, bottom: 20),
       padding: const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 10),
