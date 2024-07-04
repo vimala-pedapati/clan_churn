@@ -1,6 +1,7 @@
 import 'package:clan_churn/api_repos/api_repo.dart';
 import 'package:clan_churn/api_repos/auth_repo.dart';
 import 'package:clan_churn/api_repos/models/user_model.dart';
+import 'package:clan_churn/churn_blocs/client/client_bloc.dart';
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/churn_blocs/sign_in_bloc/sign_in_bloc.dart';
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
@@ -142,6 +143,9 @@ class ClanChurnApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (_) => ProjectArchitectBloc(apiRepository: apiRepository),
+        ),
+        BlocProvider(
+          create: (_) => ClientBloc(apiRepository: apiRepository),
         ),
       ],
       child: MaterialApp.router(
