@@ -24,6 +24,7 @@ class ApiEndpoints {
   static String clientCreate = '/client/create';
   static String clientUpdate = '/client/update';
   static String deleteClient = '/client/delete_client';
+  static String archiveProject = '/project/archive_project';
 
   // Project
   static String getAllProjects = '/project/get_all_projects';

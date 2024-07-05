@@ -81,5 +81,13 @@ class UploadClientLogo extends ClientEvent {
       required this.onSuccessCallback});
 }
 
+class ArchiveProjectEvent extends ClientEvent {
+  final String projectId;
+  final OnErrorCallback onErrorCallback;
+  final OnSuccessCallback onSuccessCallback;
 
-
+  const ArchiveProjectEvent(
+      {required this.projectId,
+      required this.onErrorCallback,
+      required this.onSuccessCallback});
+}

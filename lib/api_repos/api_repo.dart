@@ -838,12 +838,11 @@ class ApiRepository {
         log('Access token is empty');
         onErrorCallback('Access token is empty', 0);
         return null;
-      } 
+      }
 
       http.Response response = await http.delete(
         Uri.parse(
             "${BaseUrl.baseUrl}${ApiEndpoints.deleteClient}?client_id=$clientId"),
-    
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ${authCredentials.accessToken}',
@@ -1065,9 +1064,45 @@ class ApiRepository {
         return null;
       }
 
-      http.Response response = await http.post(
+      http.Response response = await http.delete(
         Uri.parse(
             "${BaseUrl.baseUrl}${ApiEndpoints.deleteClient}?user_id=$userId"),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${authCredentials.accessToken}',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        onSuccessCallback(response);
+        return true;
+      } else {
+        _handleStatusCode(
+            response.statusCode, response.reasonPhrase, onErrorCallback);
+      }
+    } catch (e) {
+      log("get summary report: $e");
+    }
+    return false;
+  }
+
+  Future<bool?> archiveProject(
+      {required String projectId,
+      required OnErrorCallback onErrorCallback,
+      required OnSuccessCallback onSuccessCallback}) async {
+    try {
+      final AuthCredentials authCredentials =
+          await AuthRepository().getTokens();
+
+      if (authCredentials.accessToken.isEmpty) {
+        log('Access token is empty');
+        onErrorCallback('Access token is empty', 0);
+        return null;
+      }
+
+      http.Response response = await http.post(
+        Uri.parse(
+            "${BaseUrl.baseUrl}${ApiEndpoints.archiveProject}?project_id=$projectId"),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ${authCredentials.accessToken}',

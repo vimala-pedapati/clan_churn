@@ -15,6 +15,7 @@ class ClientBloc extends Bloc<ClientEvent, ClientState> {
     on<UpdateClientEvent>(onUpdateClientEvent);
     on<DeleteClientEvent>(onDeleteClientEvent);
     on<UploadClientLogo>(onUploadClientLogo);
+    on<ArchiveProjectEvent>(onArchiveProjectEvent);
   }
   onCreateClientEvent(
       CreateClientEvent event, Emitter<ClientState> emit) async {
@@ -64,5 +65,13 @@ class ClientBloc extends Bloc<ClientEvent, ClientState> {
     if (result != null) {
       emit(state.copyWith(clientUploadLogoResponse: result));
     }
+  }
+
+  onArchiveProjectEvent(
+      ArchiveProjectEvent event, Emitter<ClientState> emit) async {
+    final result = apiRepository.archiveProject(
+        projectId: event.projectId,
+        onErrorCallback: event.onErrorCallback,
+        onSuccessCallback: event.onSuccessCallback);
   }
 }
