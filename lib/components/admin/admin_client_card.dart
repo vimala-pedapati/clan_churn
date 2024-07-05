@@ -1,16 +1,8 @@
 import 'package:clan_churn/api_repos/models/client_details.dart';
-import 'package:clan_churn/churn_blocs/client/client_bloc.dart';
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/components/admin/update_client_body.dart';
-import 'package:clan_churn/components/dialogs.dart';
 import 'package:clan_churn/components/project_card.dart';
-import 'package:clan_churn/pages/admin_home_page.dart';
-import 'package:clan_churn/pages/create_new_client.dart';
-import 'package:clan_churn/utils/routes.dart';
 import 'package:clan_churn/utils/typography.dart';
-import 'package:file_picker/_internal/file_picker_web.dart';
-import 'package:file_picker/file_picker.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
