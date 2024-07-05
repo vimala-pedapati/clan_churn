@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:clan_churn/api_repos/models/client_details.dart';
+import 'package:clan_churn/api_repos/models/client_logo_upload_res.dart';
 import 'package:clan_churn/api_repos/models/column_model.dart';
 import 'package:clan_churn/api_repos/models/project_history_model.dart';
 import 'package:clan_churn/api_repos/models/project_model.dart';
@@ -656,7 +657,7 @@ class ApiRepository {
     }
   }
 
-  Future<ClientDetails?> clientCreate(
+  Future clientCreate(
       {required String clientName,
       required String roleName,
       required String address1,
@@ -693,12 +694,13 @@ class ApiRepository {
             "poc_mail_id": pocMailId,
             "image": image
           }));
-
+      print(" create client reponse: $response");
       if (response.statusCode == 200) {
         onSuccessCallback(response);
-        ClientDetails clientDetails =
-            ClientDetails.fromJson(json.decode(response.body));
-        return clientDetails;
+        // ClientDetails clientDetails =
+        //     ClientDetails.fromJson(json.decode(response.body));
+        print(" create client reponse: ${response.body}");
+        // return clientDetails;
       } else {
         _handleStatusCode(
             response.statusCode, response.reasonPhrase, onErrorCallback);
@@ -750,9 +752,9 @@ class ApiRepository {
           }));
 
       if (response.statusCode == 200) {
-        onSuccessCallback(response);
         ClientDetails clientDetails =
             ClientDetails.fromJson(json.decode(response.body));
+        onSuccessCallback(response);
         return clientDetails;
       } else {
         _handleStatusCode(
@@ -764,7 +766,7 @@ class ApiRepository {
     return null;
   }
 
-  Future<String?> uploadClientLogo(
+  Future<ClientUploadLogoResponse?> uploadClientLogo(
       {required FilePickerResult filePickerResult,
       required OnErrorCallback onErrorCallback,
       required OnSuccessCallback onSuccessCallback}) async {
@@ -792,18 +794,21 @@ class ApiRepository {
 
         if (file.bytes != null) {
           request.files.add(http.MultipartFile.fromBytes(
-            'image',
+            'image_logo',
             file.bytes!,
             filename: file.name,
           ));
         }
         request.headers.addAll(headers);
         http.StreamedResponse response = await request.send();
-        log(response.reasonPhrase ?? 'No Reason Phrase');
+        // print(response.reasonPhrase);
+        // print(response.statusCode);
         if (response.statusCode == 200) {
           String responseString = await response.stream.bytesToString();
-          log(responseString);
-          String imageUrl = json.decode(responseString);
+          print(responseString);
+          ClientUploadLogoResponse imageUrl =
+              ClientUploadLogoResponse.fromJson(json.decode(responseString));
+          print(imageUrl);
           onSuccessCallback(null);
           return imageUrl;
         } else {
@@ -812,7 +817,7 @@ class ApiRepository {
           return null;
         }
       } else {
-        log('Client Logo Upload Canceled');
+        print('Client Logo Upload Canceled');
       }
     } catch (e) {
       log('Network Error: $e');

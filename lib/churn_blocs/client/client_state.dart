@@ -1,10 +1,17 @@
 part of 'client_bloc.dart';
 
-sealed class ClientState extends Equatable {
-  const ClientState();
-  
-  @override
-  List<Object> get props => [];
-}
+class ClientState extends Equatable {
+  const ClientState({required this.clientUploadLogoResponse});
+  const ClientState.initial() : this(clientUploadLogoResponse: null);
+  final ClientUploadLogoResponse? clientUploadLogoResponse;
 
-final class ClientInitial extends ClientState {}
+  ClientState copyWith({ClientUploadLogoResponse? clientUploadLogoResponse}) {
+    return ClientState(
+        clientUploadLogoResponse:
+            clientUploadLogoResponse ?? this.clientUploadLogoResponse);
+  }
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [clientUploadLogoResponse];
+}

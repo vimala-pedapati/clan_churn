@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:clan_churn/api_repos/api_repo.dart';
+import 'package:clan_churn/api_repos/models/client_logo_upload_res.dart';
 import 'package:equatable/equatable.dart';
 import 'package:file_picker/file_picker.dart';
 
@@ -8,7 +9,8 @@ part 'client_state.dart';
 
 class ClientBloc extends Bloc<ClientEvent, ClientState> {
   ApiRepository apiRepository;
-  ClientBloc({required this.apiRepository}) : super(ClientInitial()) {
+  ClientBloc({required this.apiRepository})
+      : super(const ClientState.initial()) {
     on<CreateClientEvent>(onCreateClientEvent);
     on<UpdateClientEvent>(onUpdateClientEvent);
     on<DeleteClientEvent>(onDeleteClientEvent);
@@ -58,5 +60,9 @@ class ClientBloc extends Bloc<ClientEvent, ClientState> {
         filePickerResult: event.filePickerResult,
         onErrorCallback: event.onErrorCallback,
         onSuccessCallback: event.onSuccessCallback);
+
+    if (result != null) {
+      emit(state.copyWith(clientUploadLogoResponse: result));
+    }
   }
 }
