@@ -11,20 +11,23 @@ class AdminHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.05),
-      body: const WrapProfile(
+      body: WrapProfile(
           child: Column(
         children: [
-          NavBar(),
-          SizedBox(
+          const NavBar(),
+          const SizedBox(
             height: 10,
           ),
           Expanded(
             child: Row(
               children: [
-                SideBar(
+                const SideBar(
                   selectedRoute: SelectedRoute.home,
                 ),
-                Expanded(child: AdminClientsComponet())
+                Expanded(
+                    child: SizedBox(
+                        height: MediaQuery.of(context).size.height,
+                        child: const AdminClientsComponet()))
               ],
             ),
           )
