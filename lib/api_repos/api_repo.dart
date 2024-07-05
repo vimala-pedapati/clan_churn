@@ -838,11 +838,12 @@ class ApiRepository {
         log('Access token is empty');
         onErrorCallback('Access token is empty', 0);
         return null;
-      }
+      } 
 
-      http.Response response = await http.post(
+      http.Response response = await http.delete(
         Uri.parse(
-            "${BaseUrl.baseUrl}${ApiEndpoints.deleteClient}?client_id: $clientId"),
+            "${BaseUrl.baseUrl}${ApiEndpoints.deleteClient}?client_id=$clientId"),
+    
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ${authCredentials.accessToken}',
@@ -851,13 +852,14 @@ class ApiRepository {
 
       if (response.statusCode == 200) {
         onSuccessCallback(response);
+
         return true;
       } else {
         _handleStatusCode(
             response.statusCode, response.reasonPhrase, onErrorCallback);
       }
     } catch (e) {
-      log("get summary report: $e");
+      log("delete client: $e");
     }
     return false;
   }
@@ -1106,10 +1108,10 @@ class ApiRepository {
             422);
         break;
       case 500:
-        onErrorCallback('Internal server error: $reasonPhrase', 500);
+        onErrorCallback('Internal server error: $reasonPhrase', statusCode);
         break;
       default:
-        onErrorCallback('Unexpected error: $reasonPhrase', 0);
+        onErrorCallback('$reasonPhrase', statusCode);
     }
   }
 

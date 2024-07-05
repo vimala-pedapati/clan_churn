@@ -153,7 +153,8 @@ class _UpdateClientBodyState extends State<UpdateClientBody> {
     if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(pocMailId.text)) {
       return 'Point of contact email is not in valid format';
     }
-    if (context.read<ClientBloc>().state.clientUploadLogoResponse == null && widget.updateClient.image == null) {
+    if (context.read<ClientBloc>().state.clientUploadLogoResponse == null &&
+        widget.updateClient.image == null) {
       return 'Profile pic is required';
     }
     return null;
@@ -413,10 +414,11 @@ class _UpdateClientBodyState extends State<UpdateClientBody> {
                                         .read<ClientBloc>()
                                         .state
                                         .clientUploadLogoResponse
-                                        ?.filename ?? 
+                                        ?.filename ??
                                     '',
                                 onErrorCallback: (errorMessage, errorCode) {
-                                  print( "unable to update the client: $errorMessage");
+                                  print(
+                                      "unable to update the client: $errorMessage");
                                 },
                                 onSuccessCallback: (message) {
                                   Navigator.pushReplacement(
@@ -430,13 +432,48 @@ class _UpdateClientBodyState extends State<UpdateClientBody> {
                       : null,
                   child: Row(
                     children: [
-                      const Icon(Icons.arrow_circle_right_outlined),
+                      const Icon(Icons.save_outlined),
                       const SizedBox(
                         width: 10,
                       ),
                       FittedBox(
                         child: Text(
                           "Update Client",
+                          style: ClanChurnTypography.font15600,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  width: 20,
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    context.read<ClientBloc>().add(DeleteClientEvent(
+                          clientId: widget.updateClient.id,
+                          onErrorCallback: (errorMessage, errorCode) {
+                              print("Delete Client error call back : $errorMessage $errorCode");
+                          },
+                          onSuccessCallback: (message) {
+                            Navigator.pushReplacement(
+                                context,
+                                customPageRouteForNavigation(
+                                    const AdminHomePage()));
+                          },
+                        ));
+                  },
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).colorScheme.error),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.archive_outlined),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      FittedBox(
+                        child: Text(
+                          "Deactivate Client",
                           style: ClanChurnTypography.font15600,
                         ),
                       ),

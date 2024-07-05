@@ -153,14 +153,16 @@ class ClanChurnApp extends StatelessWidget {
           canvasColor: Colors.grey,
           textTheme: GoogleFonts.montserratTextTheme().copyWith(),
           colorScheme: ColorScheme.fromSeed(
-              seedColor: const Color.fromRGBO(108, 63, 235, 1),
-              primary: const Color.fromRGBO(108, 63, 235, 1),
-              secondary: const Color.fromRGBO(56, 56, 56, 1),
-              onSecondary: const Color.fromRGBO(125, 125, 125, 1),
-              tertiary: const Color.fromRGBO(199, 199, 199, 1),
-              background: const Color(0xffFFFFFF),
-              shadow: const Color.fromRGBO(0, 0, 0, 0.15),
-              onBackground: Colors.black),
+            seedColor: const Color.fromRGBO(108, 63, 235, 1),
+            primary: const Color.fromRGBO(108, 63, 235, 1),
+            secondary: const Color.fromRGBO(56, 56, 56, 1),
+            onSecondary: const Color.fromRGBO(125, 125, 125, 1),
+            tertiary: const Color.fromRGBO(199, 199, 199, 1),
+            background: const Color(0xffFFFFFF),
+            shadow: const Color.fromRGBO(0, 0, 0, 0.15),
+            onBackground: Colors.black,
+            error: const Color.fromRGBO(230, 36, 36, 1),
+          ),
           elevatedButtonTheme: ElevatedButtonThemeData(
             style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(
