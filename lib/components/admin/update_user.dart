@@ -407,7 +407,6 @@ class _UpdateUserState extends State<UpdateUser> {
                 ElevatedButton(
                   onPressed: checkValidation()
                       ? () {
-                          print("update user");
                           context.read<UserBloc>().add(UpdateUserEvent(
                                 clientId: widget.user.clientDetails?.id ?? '',
                                 firstName: firstName.text,
