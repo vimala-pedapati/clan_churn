@@ -1,6 +1,6 @@
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/components/admin/admin_client_card.dart';
-import 'package:clan_churn/components/admin/create_user_card.dart';
+import 'package:clan_churn/components/admin/admin_user_section.dart';
 import 'package:clan_churn/utils/typography.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
