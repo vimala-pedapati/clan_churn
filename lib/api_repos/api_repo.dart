@@ -989,7 +989,7 @@ class ApiRepository {
 
         if (file.bytes != null) {
           request.files.add(http.MultipartFile.fromBytes(
-            'image',
+            'image_logo',
             file.bytes!,
             filename: file.name,
           ));
@@ -999,7 +999,7 @@ class ApiRepository {
         log(response.reasonPhrase ?? 'No Reason Phrase');
         if (response.statusCode == 200) {
           String responseString = await response.stream.bytesToString();
-          log(responseString);
+          print(responseString);
           String imageUrl = json.decode(responseString);
           onSuccessCallback(null);
           return imageUrl;

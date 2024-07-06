@@ -176,11 +176,13 @@ class _NewClientFormState extends State<NewClientForm> {
                                 isImageUploading = false;
                                 imageUploadFailed = true;
                               });
+
                             },
                             onSuccessCallback: (message) {
                               setState(() {
                                 isImageUploading = false;
                               });
+                             // add get all users api 
                             },
                           ));
                       Navigator.pop(context);
