@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:clan_churn/api_repos/api_repo.dart';
+import 'package:clan_churn/api_repos/models/client_details.dart';
 import 'package:clan_churn/api_repos/models/column_model.dart';
 import 'package:clan_churn/api_repos/models/project_history_model.dart';
 import 'package:clan_churn/api_repos/models/project_model.dart';
@@ -45,9 +46,8 @@ class ProjectArchitectBloc
   _onClientsEvent(
       GetClientsEvent event, Emitter<ProjectArchitectState> emit) async {
     final result = await apiRepository.getClientsList(
-        onErrorCallback: (String message, int errorCode) {
-      log(" $message");
-    });
+        onErrorCallback: event.onErrorCallback,
+        onSuccessCallback: event.onSuccessCallback);
     if (result != null) {
       emit(state.copyWith(clientList: result));
     } else {
@@ -190,7 +190,7 @@ class ProjectArchitectBloc
         projectId: event.projectId,
         projectDetails: event.projectDetails,
         onErrorCallback: (String message, int errorCode) {
-          log(" $message");
+          print("unable tp update the project details: $message");
         });
     if (result != null) {
       emit(state.copyWith(createdProject: result));

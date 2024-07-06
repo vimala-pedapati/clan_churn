@@ -68,6 +68,7 @@ class _ProjectsViewComponentState extends State<ProjectsViewComponent> {
                     child: ChurnContainer(
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,

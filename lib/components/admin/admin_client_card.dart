@@ -1,13 +1,14 @@
 import 'package:clan_churn/api_repos/models/client_details.dart';
+import 'package:clan_churn/api_repos/models/user_model.dart';
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
+import 'package:clan_churn/components/admin/update_client_body.dart';
 import 'package:clan_churn/components/project_card.dart';
-import 'package:clan_churn/pages/client_projects_view.dart';
 import 'package:clan_churn/utils/typography.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ClientsCard extends StatelessWidget {
-  const ClientsCard({super.key, required this.client});
+class AdminClientCard extends StatelessWidget {
+  const AdminClientCard({super.key, required this.client});
   final ClientDetails client;
 
   @override
@@ -49,7 +50,7 @@ class ClientsCard extends StatelessWidget {
                 Column(
                   children: [
                     Text(
-                       client.name,
+                      client.name,
                       style: ClanChurnTypography.font15600,
                     ),
                   ],
@@ -61,19 +62,11 @@ class ClientsCard extends StatelessWidget {
                         padding: const EdgeInsets.only(left: 20, right: 20),
                         shape: const StadiumBorder()),
                     child: Text(
-                      "View",
+                      "Edit",
                       style: ClanChurnTypography.font15600,
                     ),
                     onPressed: () {
-                      context.read<ProjectArchitectBloc>().add(
-                          SetSelectedClientEvent(
-                              selectedClient:client));
-                      // GoRouter.of(context).go(AppRoutes.clientProjects);
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  const ClientProjectsView()));
+                      updateClient(context, client);
                     },
                   ),
                 )
@@ -83,3 +76,26 @@ class ClientsCard extends StatelessWidget {
     );
   }
 }
+
+void updateClient(BuildContext context, ClientDetails updateClient) {
+  showDialog(
+    context: context,
+    builder: (_) => AlertDialog(
+      backgroundColor: Theme.of(context).colorScheme.background,
+      surfaceTintColor: Colors.transparent,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(08),
+      ),
+      content: Container(
+        decoration: const BoxDecoration(
+            borderRadius: BorderRadius.all(
+          Radius.circular(0.0),
+        )),
+        child: UpdateClientBody(
+          updateClient: updateClient,
+        ),
+      ),
+    ),
+  );
+}
+

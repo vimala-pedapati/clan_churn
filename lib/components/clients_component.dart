@@ -32,24 +32,39 @@ class _ClientsComponentState extends State<ClientsComponent> {
             ),
             ClanChurnSpacing.hw30,
             Expanded(
-              child: SingleChildScrollView(
-                child: GridView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: HomePageRespUi.getCount(
-                          context: context, isNotExpanded: state.isNotExpanded),
-                      childAspectRatio: 1,
-                      crossAxisSpacing: 15,
-                      mainAxisSpacing: 15),
-                  itemCount: state.clientList.length,
-                  itemBuilder: (context, index) {
-                    return ClientsCard(
-                      index: index,
-                    );
-                  },
-                ),
-              ),
+              child:SingleChildScrollView(
+                  child: BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
+                      builder: (context, state) {
+                        return Wrap(
+                          runSpacing: 10,
+                          spacing: 10,
+                          children: state.clientList.map((c) {
+                            return ClientsCard(
+                              client: c,
+                            );
+                          }).toList(),
+                        );
+                      },
+                    ),
+                )
+              //  SingleChildScrollView(
+              //   child: GridView.builder(
+              //     physics: const NeverScrollableScrollPhysics(),
+              //     shrinkWrap: true,
+              //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              //         crossAxisCount: HomePageRespUi.getCount(
+              //             context: context, isNotExpanded: state.isNotExpanded),
+              //         childAspectRatio: 1,
+              //         crossAxisSpacing: 15,
+              //         mainAxisSpacing: 15),
+              //     itemCount: state.clientList.length,
+              //     itemBuilder: (context, index) {
+              //       return ClientsCard(
+              //         index: index,
+              //       );
+              //     },
+              //   ),
+              // ),
             )
           ]),
         );
