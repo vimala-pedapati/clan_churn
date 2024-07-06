@@ -1018,7 +1018,7 @@ class ApiRepository {
     return null;
   }
 
-  Future getUserTypes(
+  Future<List<String>?> getUserTypes(
       {required OnErrorCallback onErrorCallback,
       required OnSuccessCallback onSuccessCallback}) async {
     try {
@@ -1038,9 +1038,11 @@ class ApiRepository {
           'Authorization': 'Bearer ${authCredentials.accessToken}',
         },
       );
-
+      print(response);
       if (response.statusCode == 200) {
+        List<String> res = json.decode(response.body);
         onSuccessCallback(response);
+        return res;
       } else {
         _handleStatusCode(
             response.statusCode, response.reasonPhrase, onErrorCallback);
@@ -1048,6 +1050,7 @@ class ApiRepository {
     } catch (e) {
       log("get summary report: $e");
     }
+    return null;
   }
 
   Future<bool?> deleteUser(

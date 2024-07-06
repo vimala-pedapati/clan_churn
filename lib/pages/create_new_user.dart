@@ -14,8 +14,28 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class CreateNewUser extends StatelessWidget {
+class CreateNewUser extends StatefulWidget {
   const CreateNewUser({super.key});
+
+  @override
+  State<CreateNewUser> createState() => _CreateNewUserState();
+}
+
+class _CreateNewUserState extends State<CreateNewUser> {
+  @override
+  void initState() {
+    context.read<UserBloc>().add(GetUserTypesEvent(
+          onErrorCallback: (errorMessage, errorCode) {
+            print(
+                'on error call back for getting user types: $errorMessage, $errorCode');
+          },
+          onSuccessCallback: (message) {
+            print(
+                'on success call back for get user data types ${message?.body}');
+          },
+        ));
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -176,13 +196,12 @@ class _NewClientFormState extends State<NewClientForm> {
                                 isImageUploading = false;
                                 imageUploadFailed = true;
                               });
-
                             },
                             onSuccessCallback: (message) {
                               setState(() {
                                 isImageUploading = false;
                               });
-                             // add get all users api 
+                              // add get all users api
                             },
                           ));
                       Navigator.pop(context);

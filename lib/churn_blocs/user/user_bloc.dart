@@ -75,6 +75,9 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       onErrorCallback: event.onErrorCallback,
       onSuccessCallback: event.onSuccessCallback,
     );
+    if (result != null) {
+      emit(state.copyWith(userTypes: result));
+    }
   }
 
   onDeleteUserEvent(DeleteUserEvent event, Emitter<UserState> emit) async {
