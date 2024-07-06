@@ -1040,9 +1040,17 @@ class ApiRepository {
       );
       print(response);
       if (response.statusCode == 200) {
-        List<String> res = json.decode(response.body);
+        print(json.decode(response.body));
+        print((json.decode(response.body)).runtimeType);
+        List<dynamic> res = json.decode(response.body);
         onSuccessCallback(response);
-        return res;
+        List<String> r = [];
+        for (var i in res) {
+          r.add(i.toString());
+        }
+        print(r);
+        print(r.runtimeType);
+        return r;
       } else {
         _handleStatusCode(
             response.statusCode, response.reasonPhrase, onErrorCallback);

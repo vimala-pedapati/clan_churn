@@ -8,6 +8,7 @@ import 'package:clan_churn/components/wrap_profile.dart';
 import 'package:clan_churn/pages/create_client.dart';
 import 'package:clan_churn/utils/routes.dart';
 import 'package:clan_churn/utils/typography.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:file_picker/_internal/file_picker_web.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -100,6 +101,7 @@ class _NewClientFormState extends State<NewClientForm> {
   bool isImageUploading = false;
   bool imageUploadFailed = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  String? selectedType;
 
   String? validateFields() {
     if (firstName.text.isEmpty) {
@@ -279,13 +281,123 @@ class _NewClientFormState extends State<NewClientForm> {
                           const CusText(
                             text: 'Type of user',
                           ),
-                          CusTextEditingController(
-                            hintText: "Enter First Name",
-                            controller: firstName,
-                            onChanged: (p0) {},
-                            textInputAction: TextInputAction.next,
+                          SizedBox(
+                            width: 400,
+                            child: BlocBuilder<UserBloc, UserState>(
+                              builder: (context, state) {
+                                return DropdownButtonHideUnderline(
+                                  child: DropdownButton2<String>(
+                                    isExpanded: true,
+                                    hint: Row(children: [
+                                      Text(
+                                        'Select',
+                                        style: ClanChurnTypography.font18500,
+                                        overflow: TextOverflow.ellipsis,
+                                      )
+                                    ]),
+                                    items: state.userTypes
+                                        .map((String item) =>
+                                            DropdownMenuItem<String>(
+                                              value: item,
+                                              child: Text(
+                                                item,
+                                                style: ClanChurnTypography
+                                                    .font18500
+                                                    .copyWith(
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .background),
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ))
+                                        .toList(),
+                                    value: selectedType,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        selectedType = value;
+                                      });
+                                    },
+                                    selectedItemBuilder:
+                                        (BuildContext context) {
+                                      return state.userTypes.map((String item) {
+                                        return Center(
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                item,
+                                                style: ClanChurnTypography
+                                                    .font18500
+                                                    .copyWith(
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .secondary),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      }).toList();
+                                    },
+                                    buttonStyleData: ButtonStyleData(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(8),
+                                        border: Border.all(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary
+                                                .withOpacity(0.6)),
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary
+                                            .withOpacity(0.2),
+                                      ),
+                                      elevation: 0,
+                                    ),
+                                    iconStyleData: IconStyleData(
+                                      icon:
+                                          const Icon(Icons.keyboard_arrow_down),
+                                      iconSize: 25,
+                                      iconEnabledColor: Theme.of(context)
+                                          .colorScheme
+                                          .secondary,
+                                      iconDisabledColor: Colors.grey,
+                                    ),
+                                    dropdownStyleData: DropdownStyleData(
+                                      elevation: 0,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(8),
+                                        border: Border.all(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary
+                                                .withOpacity(0.6)),
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary
+                                            .withOpacity(1.0),
+                                      ),
+                                      scrollbarTheme: ScrollbarThemeData(
+                                        radius: const Radius.circular(40),
+                                        thickness: MaterialStateProperty.all(6),
+                                        thumbVisibility:
+                                            MaterialStateProperty.all(true),
+                                      ),
+                                    ),
+                                    menuItemStyleData: const MenuItemStyleData(
+                                      height: 40,
+                                      padding:
+                                          EdgeInsets.only(left: 14, right: 14),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
                           )
                         ],
+                      ),
+                      const SizedBox(
+                        width: 15,
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
