@@ -1,6 +1,8 @@
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/components/admin/admin_client_card.dart';
 import 'package:clan_churn/components/admin/admin_user_section.dart';
+import 'package:clan_churn/pages/create_new_client.dart';
+import 'package:clan_churn/utils/routes.dart';
 import 'package:clan_churn/utils/typography.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -45,11 +47,14 @@ class _CreateClientBodyState extends State<CreateClientBody> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 "Create",
                 style: ClanChurnTypography.font24600,
               ),
+              // if(_currentPage == 1)
+              // const CreateNewUserButton()
             ],
           ),
           const SizedBox(
@@ -136,5 +141,41 @@ class _CreateClientBodyState extends State<CreateClientBody> {
             ),
           )
         ]);
+  }
+}
+
+class CreateNewClientCard extends StatelessWidget {
+  const CreateNewClientCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        Navigator.push(context, customPageRouteForNavigation(const CreateNewClient()));
+      },
+      child: Container(
+        height: 190,
+        width: 160,
+        padding:
+            const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 20),
+        decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+            border: Border.all(color: Theme.of(context).colorScheme.primary),
+            borderRadius: BorderRadius.circular(10)),
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          const Icon(
+            Icons.add_circle_outline_outlined,
+            size: 70,
+          ),
+          const SizedBox(
+            height: 12,
+          ),
+          Text(
+            "Create New Client",
+            style: ClanChurnTypography.font12600,
+          )
+        ]),
+      ),
+    );
   }
 }

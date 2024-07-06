@@ -1,4 +1,5 @@
 import 'package:clan_churn/churn_blocs/client/client_bloc.dart';
+import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
 import 'package:clan_churn/components/churn_continer.dart';
 import 'package:clan_churn/components/dialogs.dart';
 import 'package:clan_churn/components/nav_bar.dart';
@@ -13,8 +14,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class CreateNewClient extends StatelessWidget {
-  const CreateNewClient({super.key});
+class CreateNewUser extends StatelessWidget {
+  const CreateNewUser({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -40,11 +41,11 @@ class CreateNewClient extends StatelessWidget {
                       child: Row(
                         children: [
                           Text(
-                            "Create > Clients > ",
+                            "Create > Users > ",
                             style: ClanChurnTypography.font16500,
                           ),
                           Text(
-                            "Create New Client",
+                            "Create New User",
                             style: ClanChurnTypography.font16500.copyWith(
                                 color: Theme.of(context).colorScheme.primary),
                           ),
@@ -72,43 +73,32 @@ class NewClientForm extends StatefulWidget {
 }
 
 class _NewClientFormState extends State<NewClientForm> {
-  TextEditingController clientName = TextEditingController();
-  TextEditingController roleName = TextEditingController();
-  TextEditingController address1 = TextEditingController();
-  TextEditingController address2 = TextEditingController();
-  TextEditingController pocName = TextEditingController();
-  TextEditingController pocContactNumber = TextEditingController();
-  TextEditingController pocMailId = TextEditingController();
+  TextEditingController firstName = TextEditingController();
+  TextEditingController lastName = TextEditingController();
+  TextEditingController password = TextEditingController();
+  TextEditingController mailId = TextEditingController();
   bool isImageUploading = false;
   bool imageUploadFailed = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   String? validateFields() {
-    if (clientName.text.isEmpty) {
-      return 'Client name cannot be empty';
+    if (firstName.text.isEmpty) {
+      return 'First name cannot be empty';
     }
-    if (roleName.text.isEmpty) {
-      return 'Role name cannot be empty';
+    if (lastName.text.isEmpty) {
+      return 'Last name cannot be empty';
     }
-    if (address1.text.isEmpty) {
-      return 'Address line 1 cannot be empty';
+
+    if (password.text.isEmpty) {
+      return 'Passwrd cannot be empty';
     }
-    if (address2.text.isEmpty) {
-      return 'Address line 2 cannot be empty';
+    // if (!RegExp(r'^\d{10}$').hasMatch(phoneNumber.text)) {
+    //   return 'Contact number must be 10 digits';
+    // }
+    if (password.text.length >= 6) {
+      return 'Password is too weak';
     }
-    if (pocName.text.isEmpty) {
-      return 'Point of contact name cannot be empty';
-    }
-    if (pocContactNumber.text.isEmpty) {
-      return 'Point of contact number cannot be empty';
-    }
-    if (!RegExp(r'^\d{10}$').hasMatch(pocContactNumber.text)) {
-      return 'Point of contact number must be 10 digits';
-    }
-    if (pocMailId.text.isEmpty) {
-      return 'Point of contact email cannot be empty';
-    }
-    if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(pocMailId.text)) {
+    if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(mailId.text)) {
       return 'Point of contact email is not in valid format';
     }
     if (context.read<ClientBloc>().state.clientUploadLogoResponse == null) {
@@ -128,13 +118,10 @@ class _NewClientFormState extends State<NewClientForm> {
 
   @override
   void initState() {
-    clientName.addListener(_validateForm);
-    roleName.addListener(_validateForm);
-    address1.addListener(_validateForm);
-    address2.addListener(_validateForm);
-    pocName.addListener(_validateForm);
-    pocContactNumber.addListener(_validateForm);
-    pocMailId.addListener(_validateForm);
+    firstName.addListener(_validateForm);
+    lastName.addListener(_validateForm);
+    password.addListener(_validateForm);
+    mailId.addListener(_validateForm);
 
     super.initState();
   }
@@ -159,7 +146,7 @@ class _NewClientFormState extends State<NewClientForm> {
               width: 30,
             ),
             Text(
-              "Create New Client",
+              "Create New User",
               style: ClanChurnTypography.font20600,
             )
           ],
@@ -182,7 +169,7 @@ class _NewClientFormState extends State<NewClientForm> {
                     });
                     if (value != null) {
                       GetDialog.uploadFile(context);
-                      context.read<ClientBloc>().add(UploadClientLogo(
+                      context.read<UserBloc>().add(UploadUserProfileEvent(
                             filePickerResult: value,
                             onErrorCallback: (errorMessage, errorCode) {
                               setState(() {
@@ -237,14 +224,12 @@ class _NewClientFormState extends State<NewClientForm> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const CusText(
-                            text: 'Client Name',
+                            text: 'First Name',
                           ),
                           CusTextEditingController(
-                            hintText: "Enter Client Name",
-                            controller: clientName,
-                            onChanged: (p0) {
-                              print("${clientName.text}");
-                            },
+                            hintText: "Enter First Name",
+                            controller: firstName,
+                            onChanged: (p0) {},
                             textInputAction: TextInputAction.next,
                           )
                         ],
@@ -253,43 +238,17 @@ class _NewClientFormState extends State<NewClientForm> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const CusText(
-                            text: 'Role Name',
+                            text: 'Last Name',
                           ),
                           CusTextEditingController(
-                            hintText: "Enter Role Name",
-                            controller: roleName,
+                            hintText: "Enter Last Name",
+                            controller: lastName,
                             onChanged: (p0) {},
                             textInputAction: TextInputAction.next,
                           )
                         ],
-                      )
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const CusText(
-                        text: 'Client Office Address',
-                      ),
-                      CusTextEditingController(
-                        hintText: "Address Line 1",
-                        controller: address1,
-                        onChanged: (p0) {},
-                        textInputAction: TextInputAction.next,
-                      ),
-                      CusTextEditingController(
-                        hintText: "Address Line 2",
-                        controller: address2,
-                        onChanged: (p0) {},
-                        textInputAction: TextInputAction.next,
                       ),
                     ],
-                  ),
-                  const SizedBox(
-                    height: 20,
                   ),
                   Row(
                     children: [
@@ -297,11 +256,11 @@ class _NewClientFormState extends State<NewClientForm> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const CusText(
-                            text: 'POC Name',
+                            text: 'Type of user',
                           ),
                           CusTextEditingController(
-                            hintText: "Enter POC Name",
-                            controller: pocName,
+                            hintText: "Enter First Name",
+                            controller: firstName,
                             onChanged: (p0) {},
                             textInputAction: TextInputAction.next,
                           )
@@ -311,32 +270,53 @@ class _NewClientFormState extends State<NewClientForm> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const CusText(
-                            text: 'POC Contact Number',
+                            text: 'Assign Client',
                           ),
                           CusTextEditingController(
-                            hintText: "Enter POC Contact",
-                            controller: pocContactNumber,
-                            onChanged: (p0) {},
-                            textInputAction: TextInputAction.next,
-                          )
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const CusText(
-                            text: 'POC Mail ID',
-                          ),
-                          CusTextEditingController(
-                            hintText: "Enter POC Mail ID",
-                            controller: pocMailId,
+                            hintText: "Enter Last Name",
+                            controller: lastName,
                             onChanged: (p0) {},
                             textInputAction: TextInputAction.next,
                           )
                         ],
                       ),
                     ],
-                  )
+                  ),
+                  Row(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const CusText(
+                            text: 'Mail ID',
+                          ),
+                          CusTextEditingController(
+                            hintText: "Enter Mail Id",
+                            controller: mailId,
+                            onChanged: (p0) {},
+                            textInputAction: TextInputAction.next,
+                          ),
+                        ],
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const CusText(
+                            text: 'Password',
+                          ),
+                          CusTextEditingController(
+                            hintText: "Enter your password",
+                            controller: password,
+                            onChanged: (p0) {},
+                            textInputAction: TextInputAction.next,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 80,
+                  ),
                 ],
               ),
             ),
@@ -352,32 +332,21 @@ class _NewClientFormState extends State<NewClientForm> {
                   onPressed: checkValidation()
                       ? () {
                           // GoRouter.of(context).go(AppRoutes.createClient);
-                          context.read<ClientBloc>().add(CreateClientEvent(
-                                clinetName: clientName.text,
-                                roleName: roleName.text,
-                                address1: address1.text,
-                                address2: address2.text,
-                                pocName: pocName.text,
-                                pocContactNumber: pocContactNumber.text,
-                                pocMailId: pocMailId.text,
-                                image: context
-                                        .read<ClientBloc>()
-                                        .state
-                                        .clientUploadLogoResponse
-                                        ?.filename ??
-                                    '',
+                          context.read<UserBloc>().add(AddUserEvent(
+                                clientId: '',
+                                firstName: firstName.text,
+                                lastName: lastName.text,
+                                email: mailId.text,
+                                password: password.text,
+                                userType: '',
                                 onErrorCallback: (errorMessage, errorCode) {
-                                  print(
-                                      "unable to create client: $errorMessage");
+                                  print("unable to create user: $errorMessage");
                                 },
                                 onSuccessCallback: (message) {
                                   Navigator.pushReplacement(
                                       context,
                                       customPageRouteForNavigation(
                                           const CreateClient()));
-                                  // GoRouter.of(context).goNamed(AppRoutes.createClient);
-                                  // GoRouter.of(context)
-                                  //     .go(AppRoutes.createClient);
                                 },
                               ));
                         }
@@ -390,7 +359,7 @@ class _NewClientFormState extends State<NewClientForm> {
                       ),
                       FittedBox(
                         child: Text(
-                          "Create Client",
+                          "Create User",
                           style: ClanChurnTypography.font15600,
                         ),
                       ),
