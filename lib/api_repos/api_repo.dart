@@ -907,7 +907,7 @@ class ApiRepository {
             response.statusCode, response.reasonPhrase, onErrorCallback);
       }
     } catch (e) {
-      log("get summary report: $e");
+      log("add user: $e");
     }
     return false;
   }
@@ -921,16 +921,25 @@ class ApiRepository {
       required String userType,
       required OnErrorCallback onErrorCallback,
       required OnSuccessCallback onSuccessCallback}) async {
+    print("from api repo");
     try {
+      print("from try bloc");
       final AuthCredentials authCredentials =
           await AuthRepository().getTokens();
-
+      print("1 ${Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.updateUser}")}");
       if (authCredentials.accessToken.isEmpty) {
         log('Access token is empty');
         onErrorCallback('Access token is empty', 0);
         return null;
       }
-
+      print("2 ${{
+        "client_id": clientId,
+        "first_name": firstName,
+        "last_name": lastName,
+        "user_id": userId,
+        "password": password,
+        "user_type": userType
+      }}");
       http.Response response = await http.post(
           Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.updateUser}"),
           headers: {
@@ -947,16 +956,18 @@ class ApiRepository {
               "user_type": userType
             }
           }));
-
+      print("3");
+      print("update user response : $response");
       if (response.statusCode == 200) {
         onSuccessCallback(response);
+        print("update user response : ${response.body}");
         return true;
       } else {
         _handleStatusCode(
             response.statusCode, response.reasonPhrase, onErrorCallback);
       }
     } catch (e) {
-      log("get summary report: $e");
+      log("update user: $e");
     }
     return false;
   }
@@ -1056,7 +1067,7 @@ class ApiRepository {
             response.statusCode, response.reasonPhrase, onErrorCallback);
       }
     } catch (e) {
-      log("get summary report: $e");
+      log(" get user types : $e");
     }
     return null;
   }
@@ -1092,7 +1103,7 @@ class ApiRepository {
             response.statusCode, response.reasonPhrase, onErrorCallback);
       }
     } catch (e) {
-      log("get summary report: $e");
+      log("delete user: $e");
     }
     return false;
   }
@@ -1128,7 +1139,7 @@ class ApiRepository {
             response.statusCode, response.reasonPhrase, onErrorCallback);
       }
     } catch (e) {
-      log("get summary report: $e");
+      log("archive project: $e");
     }
     return false;
   }

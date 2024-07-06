@@ -1,10 +1,7 @@
+import 'package:clan_churn/api_repos/models/user_model.dart';
 import 'package:clan_churn/churn_blocs/client/client_bloc.dart';
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
-import 'package:clan_churn/components/churn_continer.dart';
 import 'package:clan_churn/components/dialogs.dart';
-import 'package:clan_churn/components/nav_bar.dart';
-import 'package:clan_churn/components/side_bar.dart';
-import 'package:clan_churn/components/wrap_profile.dart';
 import 'package:clan_churn/pages/create_client.dart';
 import 'package:clan_churn/pages/create_new_client.dart';
 import 'package:clan_churn/utils/routes.dart';
@@ -16,89 +13,19 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class CreateNewUser extends StatefulWidget {
-  const CreateNewUser({super.key});
+class UpdateUser extends StatefulWidget {
+  const UpdateUser({super.key, required this.user});
+  final User user;
 
   @override
-  State<CreateNewUser> createState() => _CreateNewUserState();
+  State<UpdateUser> createState() => _UpdateUserState();
 }
 
-class _CreateNewUserState extends State<CreateNewUser> {
-  @override
-  void initState() {
-    context.read<UserBloc>().add(GetUserTypesEvent(
-          onErrorCallback: (errorMessage, errorCode) {
-            print(
-                'on error call back for getting user types: $errorMessage, $errorCode');
-          },
-          onSuccessCallback: (message) {
-            print(
-                'on success call back for get user data types ${message?.body}');
-          },
-        ));
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.05),
-      body: WrapProfile(
-          child: Column(
-        children: [
-          const NavBar(),
-          const SizedBox(
-            height: 10,
-          ),
-          Expanded(
-            child: Row(children: [
-              const SideBar(
-                selectedRoute: SelectedRoute.createClient,
-              ),
-              Expanded(
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 50),
-                      child: Row(
-                        children: [
-                          Text(
-                            "Create > Users > ",
-                            style: ClanChurnTypography.font16500,
-                          ),
-                          Text(
-                            "Create New User",
-                            style: ClanChurnTypography.font16500.copyWith(
-                                color: Theme.of(context).colorScheme.primary),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const Expanded(
-                        child: ChurnContainer(child: NewClientForm())),
-                  ],
-                ),
-              )
-            ]),
-          )
-        ],
-      )),
-    );
-  }
-}
-
-class NewClientForm extends StatefulWidget {
-  const NewClientForm({super.key});
-
-  @override
-  State<NewClientForm> createState() => _NewClientFormState();
-}
-
-class _NewClientFormState extends State<NewClientForm> {
+class _UpdateUserState extends State<UpdateUser> {
   TextEditingController firstName = TextEditingController();
   TextEditingController lastName = TextEditingController();
   TextEditingController password = TextEditingController();
-  TextEditingController mailId = TextEditingController();
+  // TextEditingController mailId = TextEditingController();
   bool isImageUploading = false;
   bool imageUploadFailed = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -118,15 +45,15 @@ class _NewClientFormState extends State<NewClientForm> {
     // if (!RegExp(r'^\d{10}$').hasMatch(phoneNumber.text)) {
     //   return 'Contact number must be 10 digits';
     // }
-    if (password.text.length >= 6) {
+    if (password.text.length < 6) {
       return 'Password is too weak';
     }
-    if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(mailId.text)) {
-      return 'Point of contact email is not in valid format';
-    }
-    if (context.read<ClientBloc>().state.clientUploadLogoResponse == null) {
-      return 'Profile pic is required';
-    }
+    // if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(mailId.text)) {
+    //   return 'Point of contact email is not in valid format';
+    // }
+    // if (context.read<ClientBloc>().state.clientUploadLogoResponse == null) {
+    //   return 'Profile pic is required';
+    // }
     return null;
   }
 
@@ -144,7 +71,22 @@ class _NewClientFormState extends State<NewClientForm> {
     firstName.addListener(_validateForm);
     lastName.addListener(_validateForm);
     password.addListener(_validateForm);
-    mailId.addListener(_validateForm);
+    context.read<UserBloc>().add(GetUserTypesEvent(
+          onErrorCallback: (errorMessage, errorCode) {
+            print(
+                'on error call back for getting user types: $errorMessage, $errorCode');
+          },
+          onSuccessCallback: (message) {
+            print(
+                'on success call back for get user data types ${message?.body}');
+          },
+        ));
+    setState(() {
+      firstName.text = widget.user.firstName ?? '';
+      lastName.text = widget.user.lastName;
+      // password.text = widget.user
+      selectedType = widget.user.userType.value;
+    });
 
     super.initState();
   }
@@ -169,7 +111,7 @@ class _NewClientFormState extends State<NewClientForm> {
               width: 30,
             ),
             Text(
-              "Create New User",
+              "Update User",
               style: ClanChurnTypography.font20600,
             )
           ],
@@ -418,20 +360,20 @@ class _NewClientFormState extends State<NewClientForm> {
                   ),
                   Row(
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const CusText(
-                            text: 'Mail ID',
-                          ),
-                          CusTextEditingController(
-                            hintText: "Enter Mail Id",
-                            controller: mailId,
-                            onChanged: (p0) {},
-                            textInputAction: TextInputAction.next,
-                          ),
-                        ],
-                      ),
+                      // Column(
+                      //   crossAxisAlignment: CrossAxisAlignment.start,
+                      //   children: [
+                      //     const CusText(
+                      //       text: 'Mail ID',
+                      //     ),
+                      //     CusTextEditingController(
+                      //       hintText: "Enter Mail Id",
+                      //       controller: mailId,
+                      //       onChanged: (p0) {},
+                      //       textInputAction: TextInputAction.next,
+                      //     ),
+                      //   ],
+                      // ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -465,18 +407,22 @@ class _NewClientFormState extends State<NewClientForm> {
                 ElevatedButton(
                   onPressed: checkValidation()
                       ? () {
-                          // GoRouter.of(context).go(AppRoutes.createClient);
-                          context.read<UserBloc>().add(AddUserEvent(
-                                clientId: '',
+                          print("update user");
+                          context.read<UserBloc>().add(UpdateUserEvent(
+                                clientId: widget.user.clientDetails?.id ?? '',
                                 firstName: firstName.text,
                                 lastName: lastName.text,
-                                email: mailId.text,
+                                // email: mailId.text,
+                                userId: widget.user.userId,
                                 password: password.text,
-                                userType: '',
+                                userType: selectedType!,
                                 onErrorCallback: (errorMessage, errorCode) {
-                                  print("unable to create user: $errorMessage");
+                                  print(
+                                      "error response from update user: $errorMessage, $errorCode");
                                 },
                                 onSuccessCallback: (message) {
+                                  print(
+                                      "success response from update user: ${message?.body}");
                                   Navigator.pushReplacement(
                                       context,
                                       customPageRouteForNavigation(
@@ -493,7 +439,7 @@ class _NewClientFormState extends State<NewClientForm> {
                       ),
                       FittedBox(
                         child: Text(
-                          "Create User",
+                          "Update User",
                           style: ClanChurnTypography.font15600,
                         ),
                       ),

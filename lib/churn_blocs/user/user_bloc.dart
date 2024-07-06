@@ -49,6 +49,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   }
 
   onUpdateUserEvent(UpdateUserEvent event, Emitter<UserState> emit) async {
+    print("from bloc");
     final result = await apiRepository.updateUser(
       clientId: event.clientId,
       firstName: event.firstName,
