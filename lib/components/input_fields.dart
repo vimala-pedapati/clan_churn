@@ -108,13 +108,14 @@ class _ProjectInitializationState extends State<ProjectInitialization> {
 }
 
 class InputLabel extends StatelessWidget {
-  const InputLabel({super.key, required this.label});
+  const InputLabel({super.key, required this.label, this.width});
   final String label;
+  final double? width;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: MediaQuery.of(context).size.width * 0.35,
+      width: width ?? MediaQuery.of(context).size.width * 0.35,
       child: Text(
         label,
         style: ClanChurnTypography.font15600,
@@ -244,7 +245,8 @@ class _GetInputFieldsState extends State<GetInputFields> {
 
   @override
   void initState() {
-    context.read<ProjectArchitectBloc>().add(const UploadNewSheetRequestedEvent(uploadNewSheetRequested: false));
+    context.read<ProjectArchitectBloc>().add(
+        const UploadNewSheetRequestedEvent(uploadNewSheetRequested: false));
     if (context.read<ProjectArchitectBloc>().state.selectedClient != null) {
       setState(() {
         customerNameController.text =
@@ -540,7 +542,6 @@ class _GetInputFieldsState extends State<GetInputFields> {
           children: [
             Column(
               children: [
-               
                 Row(
                   children: [
                     IconButton(
@@ -595,8 +596,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
                           children: [
                             ClanChurnSpacing.h10,
                             Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 CustomTextFormField(
                                   label: InputFieldLabels.customerName,
@@ -623,8 +623,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
                               ],
                             ),
                             Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 CustomTextFormField(
                                   label: InputFieldLabels.projectOwner,
@@ -637,13 +636,11 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                       TextInputFormatterType.string,
                                 ),
                                 CustomTextFormField(
-                                  label:
-                                      InputFieldLabels.projectStartDate,
+                                  label: InputFieldLabels.projectStartDate,
                                   controller: projectStartDateController,
                                   hintText: 'Select Date',
                                   suffixIcon: IconButton(
-                                    icon:
-                                        const Icon(Icons.calendar_month),
+                                    icon: const Icon(Icons.calendar_month),
                                     onPressed: () async {
                                       setState(() async {
                                         projectStartDateController.text =
@@ -662,24 +659,21 @@ class _GetInputFieldsState extends State<GetInputFields> {
                               ],
                             ),
                             Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 CustomTextFormField(
-                                  label: InputFieldLabels
-                                      .studyPeriodBeginningDate,
+                                  label:
+                                      InputFieldLabels.studyPeriodBeginningDate,
                                   controller:
                                       studyPeriodBeginningDateController,
                                   textInputType: TextInputType.name,
                                   hintText: 'Select Date',
                                   suffixIcon: IconButton(
-                                    icon:
-                                        const Icon(Icons.calendar_month),
+                                    icon: const Icon(Icons.calendar_month),
                                     onPressed: () async {
                                       setState(() async {
                                         studyPeriodBeginningDateController
-                                                .text =
-                                            await selectDate(context);
+                                            .text = await selectDate(context);
                                       });
                                     },
                                   ),
@@ -691,21 +685,17 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                       TextInputFormatterType.string,
                                 ),
                                 CustomTextFormField(
-                                  label:
-                                      InputFieldLabels.studyPeriodEndDate,
-                                  controller:
-                                      studyPeriodEndDateController,
+                                  label: InputFieldLabels.studyPeriodEndDate,
+                                  controller: studyPeriodEndDateController,
                                   textInputType: TextInputType.name,
                                   isObscureText: false,
                                   isEnabled: true,
                                   hintText: 'Select Date',
                                   suffixIcon: IconButton(
-                                    icon:
-                                        const Icon(Icons.calendar_month),
+                                    icon: const Icon(Icons.calendar_month),
                                     onPressed: () async {
                                       setState(() async {
-                                        studyPeriodEndDateController
-                                                .text =
+                                        studyPeriodEndDateController.text =
                                             await selectDate(context);
                                       });
                                     },
@@ -718,8 +708,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
                               ],
                             ),
                             Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 CustomTextFormField(
                                   label: InputFieldLabels
@@ -729,13 +718,11 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                   textInputType: TextInputType.name,
                                   hintText: 'Select Date',
                                   suffixIcon: IconButton(
-                                    icon:
-                                        const Icon(Icons.calendar_month),
+                                    icon: const Icon(Icons.calendar_month),
                                     onPressed: () async {
                                       setState(() async {
                                         earliestDateForDateOfJoiningReleventForTheStudyController
-                                                .text =
-                                            await selectDate(context);
+                                            .text = await selectDate(context);
                                       });
                                     },
                                   ),
@@ -753,13 +740,11 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                       endDateForDateOfJoiningReleventForTheStudyController,
                                   hintText: 'Select Date',
                                   suffixIcon: IconButton(
-                                    icon:
-                                        const Icon(Icons.calendar_month),
+                                    icon: const Icon(Icons.calendar_month),
                                     onPressed: () async {
                                       setState(() async {
                                         endDateForDateOfJoiningReleventForTheStudyController
-                                                .text =
-                                            await selectDate(context);
+                                            .text = await selectDate(context);
                                       });
                                     },
                                   ),
@@ -774,14 +759,12 @@ class _GetInputFieldsState extends State<GetInputFields> {
                               ],
                             ),
                             Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 CustomTextFormField(
-                                  label: InputFieldLabels
-                                      .unitForValuePerformance,
-                                  controller:
-                                      unitForValuePerformanceController,
+                                  label:
+                                      InputFieldLabels.unitForValuePerformance,
+                                  controller: unitForValuePerformanceController,
                                   textInputType: TextInputType.name,
                                   isObscureText: false,
                                   isEnabled: true,
@@ -804,8 +787,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
                               ],
                             ),
                             Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 CustomTextFormField(
                                   label: InputFieldLabels
@@ -830,8 +812,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
                               ],
                             ),
                             Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 CustomTextFormField(
                                   label: InputFieldLabels
@@ -856,8 +837,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
                               ],
                             ),
                             Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 CustomTextFormField(
                                   label: InputFieldLabels
@@ -882,8 +862,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
                               ],
                             ),
                             Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 CustomTextFormField(
                                   label: InputFieldLabels
@@ -908,8 +887,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
                               ],
                             ),
                             Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 CustomTextFormField(
                                   label: InputFieldLabels
@@ -934,8 +912,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
                               ],
                             ),
                             Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 CustomTextFormField(
                                   label: InputFieldLabels
@@ -960,8 +937,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
                               ],
                             ),
                             Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 CustomTextFormField(
                                   label: InputFieldLabels
@@ -986,8 +962,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
                               ],
                             ),
                             Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 CustomTextFormField(
                                   label: InputFieldLabels
@@ -1012,8 +987,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
                               ],
                             ),
                             Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 CustomTextFormField(
                                   label: InputFieldLabels
@@ -1038,8 +1012,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
                               ],
                             ),
                             Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 CustomTextFormField(
                                   label: InputFieldLabels
@@ -1064,8 +1037,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
                               ],
                             ),
                             Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 CustomTextFormField(
                                   label: InputFieldLabels
@@ -1090,8 +1062,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
                               ],
                             ),
                             Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 CustomTextFormField(
                                   label: InputFieldLabels
@@ -1116,14 +1087,11 @@ class _GetInputFieldsState extends State<GetInputFields> {
                               ],
                             ),
                             Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment:
-                                  CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   // mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     ...departmentFields,
@@ -1131,23 +1099,21 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                       child: const Text("add department"),
                                       onPressed: () {
                                         setState(() {
-                                          departments.add(
-                                              TextEditingController());
+                                          departments
+                                              .add(TextEditingController());
                                           departmentFields
                                               .add(CustomTextFormField(
                                             label:
                                                 "department${departmentFields.length + 1}",
                                             controller: departments[
                                                 departments.length - 1],
-                                            textInputType:
-                                                TextInputType.name,
+                                            textInputType: TextInputType.name,
                                             isObscureText: false,
                                             isEnabled: true,
                                             textInputAction:
                                                 TextInputAction.next,
                                             textInputFormatterType:
-                                                TextInputFormatterType
-                                                    .string,
+                                                TextInputFormatterType.string,
                                           ));
                                         });
                                       },
@@ -1155,33 +1121,29 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                   ],
                                 ),
                                 Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   // mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     ...designationFields,
                                     TextButton(
-                                      child:
-                                          const Text("add designation"),
+                                      child: const Text("add designation"),
                                       onPressed: () {
                                         setState(() {
-                                          designations.add(
-                                              TextEditingController());
+                                          designations
+                                              .add(TextEditingController());
                                           designationFields
                                               .add(CustomTextFormField(
                                             label:
                                                 "designation ${designationFields.length + 1}",
                                             controller: designations[
                                                 designations.length - 1],
-                                            textInputType:
-                                                TextInputType.name,
+                                            textInputType: TextInputType.name,
                                             isObscureText: false,
                                             isEnabled: true,
                                             textInputAction:
                                                 TextInputAction.next,
                                             textInputFormatterType:
-                                                TextInputFormatterType
-                                                    .string,
+                                                TextInputFormatterType.string,
                                           ));
                                         });
                                       },
@@ -1209,14 +1171,12 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                         departments: depart,
                                         designations: design,
                                         projectStartDate:
-                                            projectStartDateController
-                                                .text,
+                                            projectStartDateController.text,
                                         studyPeriodBeginingDate:
                                             studyPeriodBeginningDateController
                                                 .text,
                                         studyPeriodEndDate:
-                                            studyPeriodEndDateController
-                                                .text,
+                                            studyPeriodEndDateController.text,
                                         earliestDateForDateOfJoiningReleventForTheStudy:
                                             earliestDateForDateOfJoiningReleventForTheStudyController
                                                 .text,
@@ -1254,19 +1214,17 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                         projectMaximumMonthlyIncentive: int.parse(projectMaximumMonthlyIncentiveController.text.isEmpty ? '0' : projectMaximumMonthlyIncentiveController.text),
                                         projectTopOutlierRankForMaximumMonthlyIncentive: int.parse(projectTopOutlierRankForMaximumMonthlyIncentiveController.text.isEmpty ? '0' : projectTopOutlierRankForMaximumMonthlyIncentiveController.text),
                                         projectBottomOutlierRankForMaximumMonthlyIncentive: int.parse(projectBottomOutlierRankForMaximumMonthlyIncentiveController.text.isEmpty ? '0' : projectBottomOutlierRankForMaximumMonthlyIncentiveController.text));
-                                    context
-                                        .read<ProjectArchitectBloc>()
-                                        .add(UpdateProjectDetailsEvent(
+                                    context.read<ProjectArchitectBloc>().add(
+                                        UpdateProjectDetailsEvent(
                                             projectId: context
-                                                .read<
-                                                    ProjectArchitectBloc>()
+                                                .read<ProjectArchitectBloc>()
                                                 .state
                                                 .createdProject!
                                                 .id,
                                             projectDetails: a));
                                     log("$a");
                                     log("${a.toJson()}");
-                                            
+
                                     goToNextPage();
                                   },
                                   child: const Text("Next"),
@@ -1279,12 +1237,16 @@ class _GetInputFieldsState extends State<GetInputFields> {
                 ),
               ],
             ),
-            (state.createdProject!.latestInput == null || state.uploadNewSheetRequested)
+            (state.createdProject!.latestInput == null ||
+                    state.uploadNewSheetRequested)
                 ? UploadNewData(
-                    onPressed: () { goToPreviousPage(); },
+                    onPressed: () {
+                      goToPreviousPage();
+                    },
                   )
                 : UploadedExcelSummaryReport(
-                    onPressed: () { goToPreviousPage();
+                    onPressed: () {
+                      goToPreviousPage();
                     },
                     uploadNewSheetRequested: () {
                       context.read<ProjectArchitectBloc>().add(
@@ -1342,6 +1304,8 @@ class CustomTextFormField extends StatelessWidget {
       this.textInputFormatterType,
       this.readOnly = false,
       this.suffixIcon,
+      this.height,
+      this.width,
       Key? key})
       : super(key: key);
   final TextEditingController? controller;
@@ -1355,25 +1319,27 @@ class CustomTextFormField extends StatelessWidget {
   final TextInputFormatterType? textInputFormatterType;
   final bool readOnly;
   final Widget? suffixIcon;
+  final double? height;
+  final double? width;
   @override
   Widget build(BuildContext context) {
     //     // final h = MediaQuery.of(context).size.height;
     final w = MediaQuery.of(context).size.width;
     return Container(
-      // padding: const EdgeInsets.fromLTRB(10, 3, 20, 0),
-
+      // color: Colors.red,
       margin: const EdgeInsets.only(bottom: 15),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           InputLabel(
             label: label ?? "",
+            width: width,
           ),
           ClanChurnSpacing.h6,
           Container(
-              width: w * 0.35,
+              width: width ?? w * 0.35,
               alignment: Alignment.center,
-              height: 40,
+              height: height ?? 40,
               decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
 
