@@ -593,7 +593,6 @@ class _GetInputFieldsState extends State<GetInputFields> {
                         key: _formKey,
                         child: Column(
                           children: [
-                            
                             ClanChurnSpacing.h10,
                             Row(
                               mainAxisAlignment:

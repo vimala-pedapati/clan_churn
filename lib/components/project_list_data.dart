@@ -99,23 +99,28 @@ class _ProjectsListDataState extends State<ProjectsListData> {
             ClanChurnSpacing.h20,
             state.projectsList.isEmpty
                 ? const Center(child: Text("No projects are created yet"))
-                : SingleChildScrollView(
-                    child: BlocBuilder<ProjectArchitectBloc,
-                        ProjectArchitectState>(
-                      builder: (context, state) {
-                        return Wrap(
-                          runSpacing: 10,
-                          spacing: 10,
-                          children: state.projectsList.map((p) {
-                            return ProjectCard(
-                              project: p,
+                : Expanded(
+                    child: SingleChildScrollView(
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        child: BlocBuilder<ProjectArchitectBloc,
+                            ProjectArchitectState>(
+                          builder: (context, state) {
+                            return Wrap(
+                              runSpacing: 10,
+                              spacing: 10,
+                              children: state.projectsList.map((p) {
+                                return ProjectCard(
+                                  project: p,
+                                );
+                              }).toList(),
                             );
-                          }).toList(),
-                        );
-                      },
+                          },
+                        ),
+                      ),
                     ),
                   )
-        
+
             //  SingleChildScrollView(
             //     child: GridView.builder(
             //       physics: const NeverScrollableScrollPhysics(),

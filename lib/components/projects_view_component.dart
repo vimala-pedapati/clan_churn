@@ -124,7 +124,7 @@ class _ProjectsViewComponentState extends State<ProjectsViewComponent> {
                               style: ClanChurnTypography.font15600,
                             ),
                             ClanChurnSpacing.h10,
-                            const ProjectsListData()
+                            Expanded(child: const ProjectsListData())
                           ]),
                     ),
                   ),

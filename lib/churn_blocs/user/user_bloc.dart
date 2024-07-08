@@ -62,8 +62,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     );
   }
 
-  onUploadUserProfileEvent(
-      UploadUserProfileEvent event, Emitter<UserState> emit) async {
+  onUploadUserProfileEvent(UploadUserProfileEvent event, Emitter<UserState> emit) async {
     final result = await apiRepository.uploadUserPic(
       filePickerResult: event.filePickerResult,
       onErrorCallback: event.onErrorCallback,
