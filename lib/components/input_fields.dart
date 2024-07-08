@@ -1948,49 +1948,6 @@ class _GetInputFieldsState extends State<GetInputFields> {
           children: [
             Column(
               children: [
-                Row(
-                  children: [
-                    IconButton(
-                      icon: Icon(
-                        Icons.keyboard_backspace,
-                        color: Theme.of(context).colorScheme.secondary,
-                      ),
-                      onPressed: () {
-                        Navigator.pop(context);
-                        // GoRouter.of(context).go(AppRoutes.home);
-                      },
-                    ),
-                    ClanChurnSpacing.w10,
-                    Text(
-                      "Project Initialization",
-                      style: ClanChurnTypography.font18600,
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Text(
-                          "Select Initialization",
-                          style: ClanChurnTypography.font14500,
-                        ),
-                        ClanChurnSpacing.w15,
-                        // DropDown
-                        const GetInitializationDropDown(),
-                      ],
-                    ),
-                    ElevatedButton(
-                      child: const Text(
-                        "download input sheet",
-                      ),
-                      onPressed: () {
-                        launchURL(state.createdProject!.inputSheet ?? "");
-                      },
-                    )
-                  ],
-                ),
                 Expanded(
                   child: Container(
                     padding: const EdgeInsets.only(top: 10),
