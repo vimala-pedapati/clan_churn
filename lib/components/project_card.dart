@@ -76,9 +76,10 @@ class ProjectCard extends StatelessWidget {
                       // print(
                       //   "${state.selectedClient!.image}",
                       // );
-                      context.read<ProjectArchitectBloc>().add(
-                          SetCreatedProjectEvent(
-                              createdProject: project));
+                      print("setting creating a project $project");
+                      context
+                          .read<ProjectArchitectBloc>()
+                          .add(SetCreatedProjectEvent(createdProject: project));
                       if (project.inputSheet == null) {
                         Navigator.push(
                             context,

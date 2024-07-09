@@ -1403,13 +1403,10 @@
 //   }
 // }
 
-import 'dart:developer';
 import 'package:clan_churn/api_repos/models/project_model.dart';
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/components/upload_new_data.dart';
 import 'package:clan_churn/components/uploaded_excel_summary_report.dart';
-import 'package:clan_churn/pages/new_project_components.dart';
-import 'package:clan_churn/pages/project_input_fields_sheet.dart';
 import 'package:clan_churn/utils/input_field_strings.dart';
 import 'package:clan_churn/utils/spacing.dart';
 import 'package:clan_churn/utils/typography.dart';
@@ -1669,6 +1666,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
       });
     }
     Project? p = context.read<ProjectArchitectBloc>().state.createdProject;
+    print("......created project ------$p");
     if (p != null) {
       setState(() {
         projectNameController.text = p.name ?? '';
@@ -1678,11 +1676,13 @@ class _GetInputFieldsState extends State<GetInputFields> {
             .createdProject!
             .projectDetails;
         if (pd != null) {
-          projectStartDateController.text = pd.projectStartDate?.split("T").first ?? "";
+          projectStartDateController.text =
+              pd.projectStartDate?.split("T").first ?? "";
           studyPeriodBeginningDateController.text =
               pd.studyPeriodBeginingDate?.split("T").first ?? "";
 
-          studyPeriodEndDateController.text = pd.studyPeriodEndDate?.split("T").first ?? "";
+          studyPeriodEndDateController.text =
+              pd.studyPeriodEndDate?.split("T").first ?? "";
 
           earliestDateForDateOfJoiningReleventForTheStudyController.text =
               pd.earliestDateForDateOfJoiningReleventForTheStudy ?? "";
@@ -1809,7 +1809,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
           designations = [];
           departmentFields = [];
           designationFields = [];
-
+          print("...............${pd.departments}");
           if (pd.departments == null) {
             departments.add(TextEditingController());
             departmentFields.add(CustomTextFormField(
@@ -1866,6 +1866,27 @@ class _GetInputFieldsState extends State<GetInputFields> {
               ));
             }
           }
+        } else {
+          departments.add(TextEditingController());
+          departmentFields.add(CustomTextFormField(
+            label: "Department 1 Covered in the Study",
+            controller: departments[0],
+            textInputType: TextInputType.name,
+            isObscureText: false,
+            isEnabled: true,
+            textInputAction: TextInputAction.next,
+            textInputFormatterType: TextInputFormatterType.string,
+          ));
+          designations.add(TextEditingController());
+          designationFields.add(CustomTextFormField(
+            label: "Designation 1 Covered in the Study",
+            controller: designations[0],
+            textInputType: TextInputType.name,
+            isObscureText: false,
+            isEnabled: true,
+            textInputAction: TextInputAction.next,
+            textInputFormatterType: TextInputFormatterType.string,
+          ));
         }
       });
     }
