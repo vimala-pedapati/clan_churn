@@ -13,7 +13,6 @@ import 'package:clan_churn/components/input_sheet_columns.dart';
 import 'package:clan_churn/components/nav_bar.dart';
 import 'package:clan_churn/components/side_bar.dart';
 import 'package:clan_churn/components/wrap_profile.dart';
-import 'package:clan_churn/utils/input_field_strings.dart';
 import 'package:clan_churn/utils/routes.dart';
 import 'package:clan_churn/utils/spacing.dart';
 import 'package:clan_churn/utils/typography.dart';
@@ -72,6 +71,35 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
   String previousName = "";
   String projectName = "";
   bool isProjectCreated = false;
+  int _currentPage = 0;
+  final PageController _pageController = PageController();
+
+  void _goToNextPage() {
+    print("....$_currentPage");
+    if (_currentPage < 2) {
+      setState(() {
+        _currentPage++;
+      });
+      print("....$_currentPage");
+      _pageController.animateToPage(
+        _currentPage,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+      print("....$_currentPage");
+    }
+  }
+
+  void _goToPreviousPage() {
+    if (_currentPage > 0) {
+      _currentPage--;
+      _pageController.animateToPage(
+        _currentPage,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
 
   @override
   void initState() {
@@ -107,332 +135,236 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
 
   @override
   Widget build(BuildContext context) {
-    final h = MediaQuery.of(context).size.height;
-    final w = MediaQuery.of(context).size.width;
     return BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
       builder: (context, state) {
         return ChurnContainer(
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    IconButton(
-                      icon: Icon(
-                        Icons.keyboard_backspace,
-                        color: Theme.of(context).colorScheme.secondary,
-                      ),
-                      onPressed: () {
-                        Navigator.pop(context);
-                        // GoRouter.of(context).go(AppRoutes.home);
-                      },
-                    ),
-                    ClanChurnSpacing.w10,
-                    Text(
-                      "Start New Project",
-                      style: ClanChurnTypography.font18600,
-                    ),
-                  ],
-                ),
-                ClanChurnSpacing.h30,
-                Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: <Widget>[
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    Text(
-                                      "Customer Name",
-                                      style: ClanChurnTypography.font15900,
-                                    ),
-                                    Text(
-                                      "*",
-                                      style: ClanChurnTypography.font10600
-                                          .copyWith(color: Colors.red),
-                                    )
-                                  ],
-                                ),
-                                Container(
-                                  width: 300,
-                                  height: 30,
-                                  decoration: BoxDecoration(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .primary
-                                          .withOpacity(0.1),
-                                      borderRadius: BorderRadius.circular(8.0)),
-                                  margin:
-                                      const EdgeInsets.only(top: 5, bottom: 20),
-                                  child: TextFormField(
-                                    controller: clientController,
-                                    keyboardType: TextInputType.emailAddress,
-                                    autofocus: false,
-                                    cursorHeight: 15,
-                                    readOnly: true,
-                                    decoration: InputDecoration(
-                                      hintText: 'Enter Client ID',
-                                      hintStyle: ClanChurnTypography.font12500
-                                          .copyWith(
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .tertiary),
-                                      contentPadding: const EdgeInsets.only(
-                                          top: 10, left: 10, right: 10),
-                                      border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8.0)),
-                                    ),
-                                    onChanged: (value) {},
-                                    validator: (String? val) {
-                                      return null;
-                                    },
-                                    onSaved: (String? val) {},
-                                  ),
-                                ),
-                              ],
-                            ),
-                            ClanChurnSpacing.w20,
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Project Name",
-                                  style: ClanChurnTypography.font15900,
-                                ),
-                                Container(
-                                  width: 300,
-                                  height: 30,
-                                  decoration: BoxDecoration(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .primary
-                                          .withOpacity(0.1),
-                                      borderRadius: BorderRadius.circular(8.0)),
-                                  margin:
-                                      const EdgeInsets.only(top: 5, bottom: 20),
-                                  child: TextFormField(
-                                    controller: projectController,
-                                    keyboardType: TextInputType.emailAddress,
-                                    autofocus: false,
-                                    cursorHeight: 15,
-                                    readOnly: false,
-                                    decoration: InputDecoration(
-                                      hintText: 'Enter Project Name',
-                                      hintStyle: ClanChurnTypography.font15400
-                                          .copyWith(
-                                              color:
-                                                  Colors.grey.withOpacity(0.7)),
-                                      contentPadding: const EdgeInsets.only(
-                                          top: 10, left: 10, right: 10),
-                                      border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8.0)),
-                                    ),
-                                    onChanged: (value) {
-                                      setState(() {
-                                        projectName = value;
-                                      });
-                                    },
-                                    validator: (String? val) {
-                                      return null;
-                                    },
-                                    onSaved: (String? val) {},
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
+          child: PageView(
+            controller: _pageController,
+            children: [
+              Column(
+                children: [
+                  Row(
+                    children: [
+                      IconButton(
+                        icon: Icon(
+                          Icons.keyboard_backspace,
+                          color: Theme.of(context).colorScheme.secondary,
                         ),
-                        ElevatedButton(
-                          onPressed: (projectName.isEmpty ||
-                                  state.columnsList.isEmpty ||
-                                  projectName == previousName)
-                              ? null
-                              : () {
-                                  if (isProjectCreated) {
-                                    context.read<ProjectArchitectBloc>().add(
-                                        UpdateProjectNameEvent(
-                                            projectId: state.createdProject!.id,
-                                            updatedProjectName:
-                                                projectController.text,
+                        onPressed: () {
+                          Navigator.pop(context);
+                          // GoRouter.of(context).go(AppRoutes.home);
+                        },
+                      ),
+                      ClanChurnSpacing.w10,
+                      Text(
+                        "Start New Project",
+                        style: ClanChurnTypography.font18600,
+                      ),
+                    ],
+                  ),
+                  ClanChurnSpacing.h30,
+                  Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: <Widget>[
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Text(
+                                        "Customer Name",
+                                        style: ClanChurnTypography.font15900,
+                                      ),
+                                      Text(
+                                        "*",
+                                        style: ClanChurnTypography.font10600
+                                            .copyWith(color: Colors.red),
+                                      )
+                                    ],
+                                  ),
+                                  Container(
+                                    width: 300,
+                                    height: 30,
+                                    decoration: BoxDecoration(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary
+                                            .withOpacity(0.1),
+                                        borderRadius:
+                                            BorderRadius.circular(8.0)),
+                                    margin: const EdgeInsets.only(
+                                        top: 5, bottom: 20),
+                                    child: TextFormField(
+                                      controller: clientController,
+                                      keyboardType: TextInputType.emailAddress,
+                                      autofocus: false,
+                                      cursorHeight: 15,
+                                      readOnly: true,
+                                      decoration: InputDecoration(
+                                        hintText: 'Enter Client ID',
+                                        hintStyle: ClanChurnTypography.font12500
+                                            .copyWith(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .tertiary),
+                                        contentPadding: const EdgeInsets.only(
+                                            top: 10, left: 10, right: 10),
+                                        border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(8.0)),
+                                      ),
+                                      onChanged: (value) {},
+                                      validator: (String? val) {
+                                        return null;
+                                      },
+                                      onSaved: (String? val) {},
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              ClanChurnSpacing.w20,
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Project Name",
+                                    style: ClanChurnTypography.font15900,
+                                  ),
+                                  Container(
+                                    width: 300,
+                                    height: 30,
+                                    decoration: BoxDecoration(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary
+                                            .withOpacity(0.1),
+                                        borderRadius:
+                                            BorderRadius.circular(8.0)),
+                                    margin: const EdgeInsets.only(
+                                        top: 5, bottom: 20),
+                                    child: TextFormField(
+                                      controller: projectController,
+                                      keyboardType: TextInputType.emailAddress,
+                                      autofocus: false,
+                                      cursorHeight: 15,
+                                      readOnly: false,
+                                      decoration: InputDecoration(
+                                        hintText: 'Enter Project Name',
+                                        hintStyle: ClanChurnTypography.font15400
+                                            .copyWith(
+                                                color: Colors.grey
+                                                    .withOpacity(0.7)),
+                                        contentPadding: const EdgeInsets.only(
+                                            top: 10, left: 10, right: 10),
+                                        border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(8.0)),
+                                      ),
+                                      onChanged: (value) {
+                                        setState(() {
+                                          projectName = value;
+                                        });
+                                      },
+                                      validator: (String? val) {
+                                        return null;
+                                      },
+                                      onSaved: (String? val) {},
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          ElevatedButton(
+                            onPressed: (projectName.isEmpty ||
+                                    state.columnsList.isEmpty ||
+                                    projectName == previousName)
+                                ? null
+                                : () {
+                                    if (isProjectCreated) {
+                                      context.read<ProjectArchitectBloc>().add(
+                                          UpdateProjectNameEvent(
+                                              projectId:
+                                                  state.createdProject!.id,
+                                              updatedProjectName:
+                                                  projectController.text,
+                                              onSuccessCallback: (message) {
+                                                ApiRepository()
+                                                    .handleSuccessMessage(
+                                                        "Project name updated successfully!......",
+                                                        context);
+                                              },
+                                              warningMessageCallback:
+                                                  (String message,
+                                                      int errorCode) {
+                                                ApiRepository()
+                                                    .handleWarningMessage(
+                                                        message,
+                                                        context,
+                                                        errorCode);
+                                              }));
+                                    } else {
+                                      context
+                                          .read<ProjectArchitectBloc>()
+                                          .add(CreateProjectEvent(
+                                            clientId: state.selectedClient!.id,
+                                            projectName: projectController.text,
                                             onSuccessCallback: (message) {
+                                              setState(() {
+                                                isProjectCreated = true;
+                                              });
                                               ApiRepository().handleSuccessMessage(
-                                                  "Project name updated successfully!......",
+                                                  "Project created successfully!......",
                                                   context);
                                             },
-                                            warningMessageCallback:
-                                                (String message,
-                                                    int errorCode) {
+                                            onErrorCallback:
+                                                (message, errorCode) {
                                               ApiRepository()
                                                   .handleWarningMessage(message,
                                                       context, errorCode);
-                                            }));
-                                  } else {
-                                    context
-                                        .read<ProjectArchitectBloc>()
-                                        .add(CreateProjectEvent(
-                                          clientId: state.selectedClient!.id,
-                                          projectName: projectController.text,
-                                          onSuccessCallback: (message) {
-                                            setState(() {
-                                              isProjectCreated = true;
-                                            });
-                                            ApiRepository().handleSuccessMessage(
-                                                "Project created successfully!......",
-                                                context);
-                                          },
-                                          onErrorCallback:
-                                              (message, errorCode) {
-                                            ApiRepository()
-                                                .handleWarningMessage(message,
-                                                    context, errorCode);
-                                          },
-                                        ));
-                                  }
-                                },
-                          child: Text(
-                              " ${isProjectCreated ? "Update Project" : "Create Project"} "),
-                        )
-                      ],
-                    ),
-                    // Text("${state.columnsList}")
-                  ],
-                ),
-
-                Row(
-                  // cro,
-                  children: [
-                    CustomTextFormField(
-                      height: 30,
-                      width: 300,
-                      label: InputFieldLabels.projectStartDate,
-                      // controller: projectStartDateController,
-                      hintText: 'Select Date',
-                      suffixIcon: IconButton(
-                        icon: const Icon(
-                          Icons.calendar_month,
-                          size: 18,
-                        ),
-                        onPressed: () async {
-                          setState(() async {
-                            // projectStartDateController.text =
-                            //     await selectDate(context);
-                          });
-                        },
+                                            },
+                                          ));
+                                    }
+                                  },
+                            child: Text(
+                                " ${isProjectCreated ? "Update Project" : "Create Project"} "),
+                          )
+                        ],
                       ),
-                      readOnly: true,
-                      textInputType: TextInputType.name,
-                      isObscureText: false,
-                      isEnabled: true,
-                      textInputAction: TextInputAction.next,
-                      textInputFormatterType: TextInputFormatterType.string,
-                    ),
-                    ClanChurnSpacing.w20,
-                    CustomTextFormField(
-                      height: 30,
-                      width: 300,
-                      label: InputFieldLabels.studyPeriodBeginningDate,
-                      // controller: studyPeriodBeginningDateController,
-                      textInputType: TextInputType.name,
-                      hintText: 'Select Date',
-                      suffixIcon: IconButton(
-                        icon: const Icon(
-                          Icons.calendar_month,
-                          size: 18,
-                        ),
-                        onPressed: () async {
-                          setState(() async {
-                            // studyPeriodBeginningDateController.text =
-                            //     await selectDate(context);
-                          });
-                        },
+                    ],
+                  ),
+                  Expanded(
+                    child: AbsorbPointer(
+                      absorbing: projectName.isEmpty,
+                      child: Opacity(
+                        opacity: (projectName.isEmpty ||
+                                state.createdProject == null)
+                            ? 0.4
+                            : (state.createdProject!.id.isEmpty)
+                                ? 0.4
+                                : 1.0,
+                        child: GetInputFields(
+                            isCreatingNewProject: true,
+                            onTap: () {
+                              _goToNextPage();
+                            }),
                       ),
-                      readOnly: true,
-                      isObscureText: false,
-                      isEnabled: true,
-                      textInputAction: TextInputAction.next,
-                      textInputFormatterType: TextInputFormatterType.string,
-                    ),
-                    ClanChurnSpacing.w20,
-                    CustomTextFormField(
-                      height: 30,
-                      width: 300,
-                      label: InputFieldLabels.studyPeriodEndDate,
-                      // controller: studyPeriodEndDateController,
-                      textInputType: TextInputType.name,
-                      isObscureText: false,
-                      isEnabled: true,
-                      hintText: 'Select Date',
-                      suffixIcon: IconButton(
-                        icon: const Icon(
-                          Icons.calendar_month,
-                          size: 18,
-                        ),
-                        onPressed: () async {
-                          setState(() async {
-                            // studyPeriodEndDateController.text =
-                            //     await selectDate(context);
-                          });
-                        },
-                      ),
-                      readOnly: true,
-                      textInputAction: TextInputAction.next,
-                      textInputFormatterType: TextInputFormatterType.string,
-                    ),
-                  ],
-                ),
-
-                Text(
-                  "Columns to choose",
-                  style: ClanChurnTypography.font18600,
-                ),
-
-                // ClanChurnSpacing.h10,
-                Expanded(
-                  child: AbsorbPointer(
-                    absorbing: projectName.isEmpty,
-                    child: Opacity(
-                      // opacity: (projectName.isEmpty) ? 0.4 : 1.0,
-                      opacity:
-                          (projectName.isEmpty || state.createdProject == null)
-                              ? 0.4
-                              : (state.createdProject!.id.isEmpty)
-                                  ? 0.4
-                                  : 1.0,
-                      child: InputSheetColumns(
-                          columnsList: state.columnsList,
-                          customerColumnNames: state.customerColumnNames),
                     ),
                   ),
-                ),
-
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    ElevatedButton(
-                      onPressed:
-                          (projectName.isEmpty || state.createdProject == null)
-                              ? null
-                              : (state.createdProject!.id.isEmpty)
-                                  ? null
-                                  : () {
-                                      context
-                                          .read<ProjectArchitectBloc>()
-                                          .add(AddColumnsToProjectEvent());
-                                      GetDialog.showDownloadDialog(context);
-                                    },
-                      child: const Text("Next"),
-                    ),
-                  ],
-                )
-              ]),
+                ],
+              ),
+              ColumnsToChooseWidget(
+                projectName: projectName,
+                onBackPressed: () {
+                  _goToPreviousPage();
+                },
+              )
+            ],
+          ),
         );
       },
     );
@@ -467,4 +399,75 @@ void downloadFile(String url, BuildContext context) async {
     log("Error downloading file: $e");
   }
   GoRouter.of(context).go(AppRoutes.home);
+}
+
+class ColumnsToChooseWidget extends StatelessWidget {
+  const ColumnsToChooseWidget(
+      {super.key, required this.projectName, required this.onBackPressed});
+  final String projectName;
+  final Function() onBackPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
+      builder: (context, state) {
+        return Column(
+          // mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.keyboard_backspace_outlined),
+                  onPressed: onBackPressed,
+                ),
+                ClanChurnSpacing.w20,
+                Text(
+                  "Columns to choose",
+                  style: ClanChurnTypography.font18600,
+                ),
+              ],
+            ),
+
+            // ClanChurnSpacing.h10,
+            Expanded(
+              child: AbsorbPointer(
+                absorbing: projectName.isEmpty,
+                child: Opacity(
+                  // opacity: (projectName.isEmpty) ? 0.4 : 1.0,
+                  opacity: (projectName.isEmpty || state.createdProject == null)
+                      ? 0.4
+                      : (state.createdProject!.id.isEmpty)
+                          ? 0.4
+                          : 1.0,
+                  child: InputSheetColumns(
+                      columnsList: state.columnsList,
+                      customerColumnNames: state.customerColumnNames),
+                ),
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                ElevatedButton(
+                  onPressed:
+                      (projectName.isEmpty || state.createdProject == null)
+                          ? null
+                          : (state.createdProject!.id.isEmpty)
+                              ? null
+                              : () {
+                                  context
+                                      .read<ProjectArchitectBloc>()
+                                      .add(AddColumnsToProjectEvent());
+                                  GetDialog.showDownloadDialog(context);
+                                },
+                  child: const Text("Next"),
+                ),
+              ],
+            )
+          ],
+        );
+      },
+    );
+  }
 }
