@@ -141,6 +141,7 @@ class ProjectDetails extends Equatable {
   final String? projectStartDate;
   final String? studyPeriodBeginingDate;
   final String? studyPeriodEndDate;
+  final String? projectOwner;
   final String? earliestDateForDateOfJoiningReleventForTheStudy;
   final String? endDateForDateOfJoiningReleventForTheStudy;
   final List<String>? designations;
@@ -173,6 +174,7 @@ class ProjectDetails extends Equatable {
     required this.projectStartDate,
     required this.studyPeriodBeginingDate,
     required this.studyPeriodEndDate,
+    required this.projectOwner,
     required this.earliestDateForDateOfJoiningReleventForTheStudy,
     required this.endDateForDateOfJoiningReleventForTheStudy,
     required this.designations,
@@ -206,6 +208,7 @@ class ProjectDetails extends Equatable {
         projectStartDate: json["project_start_date"],
         studyPeriodBeginingDate: json["study_period_begining_date"],
         studyPeriodEndDate: json["study_period_end_date"],
+        projectOwner: json["project_owner"],
         earliestDateForDateOfJoiningReleventForTheStudy:
             json["earliest_date_for_date_of_joining_relevent_for_the_study"],
         endDateForDateOfJoiningReleventForTheStudy:
@@ -268,6 +271,7 @@ class ProjectDetails extends Equatable {
             : studyPeriodBeginingDate!.isEmpty
                 ? null
                 : studyPeriodBeginingDate,
+        "project_owner": projectOwner,
         "study_period_end_date": studyPeriodEndDate == null
             ? studyPeriodEndDate
             : studyPeriodEndDate!.isEmpty
@@ -336,6 +340,7 @@ class ProjectDetails extends Equatable {
         projectStartDate,
         studyPeriodBeginingDate,
         studyPeriodEndDate,
+        projectOwner,
         earliestDateForDateOfJoiningReleventForTheStudy,
         endDateForDateOfJoiningReleventForTheStudy,
         designations,

@@ -1403,8 +1403,10 @@
 //   }
 // }
 
+import 'package:clan_churn/api_repos/api_repo.dart';
 import 'package:clan_churn/api_repos/models/project_model.dart';
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
+import 'package:clan_churn/components/dialogs.dart';
 import 'package:clan_churn/components/upload_new_data.dart';
 import 'package:clan_churn/components/uploaded_excel_summary_report.dart';
 import 'package:clan_churn/utils/input_field_strings.dart';
@@ -1680,7 +1682,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
               pd.projectStartDate?.split("T").first ?? "";
           studyPeriodBeginningDateController.text =
               pd.studyPeriodBeginingDate?.split("T").first ?? "";
-
+          projectOwnerController.text = pd.projectOwner ?? "";
           studyPeriodEndDateController.text =
               pd.studyPeriodEndDate?.split("T").first ?? "";
 
@@ -1964,10 +1966,37 @@ class _GetInputFieldsState extends State<GetInputFields> {
     }
   }
 
+  bool areAllControllersNotEmpty() {
+    List<TextEditingController> controllers = [
+      customerNameController,
+      projectNameController,
+      projectOwnerController,
+      projectStartDateController,
+      studyPeriodBeginningDateController,
+      studyPeriodEndDateController,
+      earliestDateForDateOfJoiningReleventForTheStudyController,
+      endDateForDateOfJoiningReleventForTheStudyController,
+      unitForValuePerformanceController,
+      unitForQuantityPerformanceController,
+      ...departments,
+      ...designations,
+    ];
+
+    for (var controller in controllers) {
+      if (controller.text.isEmpty) {
+        print("........${controller.text}");
+        return false;
+      }
+    }
+
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
       builder: (context, state) {
+        areAllControllersNotEmpty();
         return PageView(
           physics: const NeverScrollableScrollPhysics(),
           controller: _pageController,
@@ -2018,17 +2047,17 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                           TextInputFormatterType.string,
                                       readOnly: true,
                                     ),
-                                  if (!widget.isCreatingNewProject)
-                                    CustomTextFormField(
-                                      label: InputFieldLabels.projectOwner,
-                                      controller: projectOwnerController,
-                                      textInputType: TextInputType.name,
-                                      isObscureText: false,
-                                      isEnabled: true,
-                                      textInputAction: TextInputAction.next,
-                                      textInputFormatterType:
-                                          TextInputFormatterType.string,
-                                    ),
+                                  // if (!widget.isCreatingNewProject)
+                                  CustomTextFormField(
+                                    label: InputFieldLabels.projectOwner,
+                                    controller: projectOwnerController,
+                                    textInputType: TextInputType.name,
+                                    isObscureText: false,
+                                    isEnabled: true,
+                                    textInputAction: TextInputAction.next,
+                                    textInputFormatterType:
+                                        TextInputFormatterType.string,
+                                  ),
                                   CustomTextFormField(
                                     label: InputFieldLabels.projectStartDate,
                                     controller: projectStartDateController,
@@ -2147,76 +2176,6 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                     textInputFormatterType:
                                         TextInputFormatterType.string,
                                   ),
-                                  // CustomTextFormField(
-                                  //   label: InputFieldLabels
-                                  //       .projectTopOutlierRankForResidencyMonthofPerformanceMonth,
-                                  //   controller:
-                                  //       projectTopOutlierRankForResidencyMonthOfPerformanceMonthController,
-                                  //   textInputType: TextInputType.name,
-                                  //   isObscureText: false,
-                                  //   isEnabled: true,
-                                  //   textInputAction: TextInputAction.next,
-                                  // ),
-                                  // CustomTextFormField(
-                                  //   label: InputFieldLabels
-                                  //       .projectTopOutlierRankForResidencyMonthofPerformanceMonth,
-                                  //   controller:
-                                  //       projectTopOutlierRankForResidencyMonthOfPerformanceMonthController,
-                                  //   textInputType: TextInputType.name,
-                                  //   isObscureText: false,
-                                  //   isEnabled: true,
-                                  //   textInputAction: TextInputAction.next,
-                                  // ),
-                                  // CustomTextFormField(
-                                  //   label: InputFieldLabels
-                                  //       .projectTopOutlierRankForResidencyMonthofPerformanceMonth,
-                                  //   controller:
-                                  //       projectTopOutlierRankForResidencyMonthOfPerformanceMonthController,
-                                  //   textInputType: TextInputType.name,
-                                  //   isObscureText: false,
-                                  //   isEnabled: true,
-                                  //   textInputAction: TextInputAction.next,
-                                  // ),
-                                  // CustomTextFormField(
-                                  //   label: InputFieldLabels
-                                  //       .projectTopOutlierRankForResidencyMonthofPerformanceMonth,
-                                  //   controller:
-                                  //       projectTopOutlierRankForResidencyMonthOfPerformanceMonthController,
-                                  //   textInputType: TextInputType.name,
-                                  //   isObscureText: false,
-                                  //   isEnabled: true,
-                                  //   textInputAction: TextInputAction.next,
-                                  // ),
-                                  // CustomTextFormField(
-                                  //   label: InputFieldLabels
-                                  //       .projectTopOutlierRankForResidencyMonthofPerformanceMonth,
-                                  //   controller:
-                                  //       projectTopOutlierRankForResidencyMonthOfPerformanceMonthController,
-                                  //   textInputType: TextInputType.name,
-                                  //   isObscureText: false,
-                                  //   isEnabled: true,
-                                  //   textInputAction: TextInputAction.next,
-                                  // ),
-                                  // CustomTextFormField(
-                                  //   label: InputFieldLabels
-                                  //       .projectTopOutlierRankForResidencyMonthofPerformanceMonth,
-                                  //   controller:
-                                  //       projectTopOutlierRankForResidencyMonthOfPerformanceMonthController,
-                                  //   textInputType: TextInputType.name,
-                                  //   isObscureText: false,
-                                  //   isEnabled: true,
-                                  //   textInputAction: TextInputAction.next,
-                                  // ),
-                                  // CustomTextFormField(
-                                  //   label: InputFieldLabels
-                                  //       .projectTopOutlierRankForResidencyMonthofPerformanceMonth,
-                                  //   controller:
-                                  //       projectTopOutlierRankForResidencyMonthOfPerformanceMonthController,
-                                  //   textInputType: TextInputType.name,
-                                  //   isObscureText: false,
-                                  //   isEnabled: true,
-                                  //   textInputAction: TextInputAction.next,
-                                  // ),
                                   CustomTextFormField(
                                     label: InputFieldLabels
                                         .unitForValuePerformance,
@@ -2241,6 +2200,77 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                     textInputFormatterType:
                                         TextInputFormatterType.string,
                                   ),
+                                  // CustomTextFormField(
+                                  //   label: InputFieldLabels
+                                  //       .projectTopOutlierRankForResidencyMonthofPerformanceMonth,
+                                  //   controller:
+                                  //       projectTopOutlierRankForResidencyMonthOfPerformanceMonthController,
+                                  //   textInputType: TextInputType.name,
+                                  //   isObscureText: false,
+                                  //   isEnabled: true,
+                                  //   textInputAction: TextInputAction.next,
+                                  // ),
+                                  // CustomTextFormField(
+                                  //   label: InputFieldLabels
+                                  //       .projectTopOutlierRankForResidencyMonthofPerformanceMonth,
+                                  //   controller:
+                                  //       projectTopOutlierRankForResidencyMonthOfPerformanceMonthController,
+                                  //   textInputType: TextInputType.name,
+                                  //   isObscureText: false,
+                                  //   isEnabled: true,
+                                  //   textInputAction: TextInputAction.next,
+                                  // ),
+                                  // CustomTextFormField(
+                                  //   label: InputFieldLabels
+                                  //       .projectTopOutlierRankForResidencyMonthofPerformanceMonth,
+                                  //   controller:
+                                  //       projectTopOutlierRankForResidencyMonthOfPerformanceMonthController,
+                                  //   textInputType: TextInputType.name,
+                                  //   isObscureText: false,
+                                  //   isEnabled: true,
+                                  //   textInputAction: TextInputAction.next,
+                                  // ),
+                                  // CustomTextFormField(
+                                  //   label: InputFieldLabels
+                                  //       .projectTopOutlierRankForResidencyMonthofPerformanceMonth,
+                                  //   controller:
+                                  //       projectTopOutlierRankForResidencyMonthOfPerformanceMonthController,
+                                  //   textInputType: TextInputType.name,
+                                  //   isObscureText: false,
+                                  //   isEnabled: true,
+                                  //   textInputAction: TextInputAction.next,
+                                  // ),
+                                  // CustomTextFormField(
+                                  //   label: InputFieldLabels
+                                  //       .projectTopOutlierRankForResidencyMonthofPerformanceMonth,
+                                  //   controller:
+                                  //       projectTopOutlierRankForResidencyMonthOfPerformanceMonthController,
+                                  //   textInputType: TextInputType.name,
+                                  //   isObscureText: false,
+                                  //   isEnabled: true,
+                                  //   textInputAction: TextInputAction.next,
+                                  // ),
+                                  // CustomTextFormField(
+                                  //   label: InputFieldLabels
+                                  //       .projectTopOutlierRankForResidencyMonthofPerformanceMonth,
+                                  //   controller:
+                                  //       projectTopOutlierRankForResidencyMonthOfPerformanceMonthController,
+                                  //   textInputType: TextInputType.name,
+                                  //   isObscureText: false,
+                                  //   isEnabled: true,
+                                  //   textInputAction: TextInputAction.next,
+                                  // ),
+                                  // CustomTextFormField(
+                                  //   label: InputFieldLabels
+                                  //       .projectTopOutlierRankForResidencyMonthofPerformanceMonth,
+                                  //   controller:
+                                  //       projectTopOutlierRankForResidencyMonthOfPerformanceMonthController,
+                                  //   textInputType: TextInputType.name,
+                                  //   isObscureText: false,
+                                  //   isEnabled: true,
+                                  //   textInputAction: TextInputAction.next,
+                                  // ),
+
                                   // CustomTextFormField(
                                   //   label: InputFieldLabels
                                   //       .projectMaximumResidencyMonth,
@@ -2559,6 +2589,13 @@ class _GetInputFieldsState extends State<GetInputFields> {
                   children: [
                     ElevatedButton(
                       onPressed: () {
+                        if (!areAllControllersNotEmpty()) {
+                          print(".......all should fileds be required to add");
+                          GetDialog().showBootomMessage(
+                              "Please fill in all the required fields before proceeding.",
+                              context);
+                          return;
+                        }
                         List<String> depart = [];
                         List<String> design = [];
                         for (var i in departments) {
@@ -2571,6 +2608,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
                             departments: depart,
                             designations: design,
                             projectStartDate: projectStartDateController.text,
+                            projectOwner: projectOwnerController.text,
                             studyPeriodBeginingDate:
                                 studyPeriodBeginningDateController.text,
                             studyPeriodEndDate:
@@ -2583,16 +2621,16 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                     .text,
                             unitForValuePerformance:
                                 unitForValuePerformanceController.text,
-                            unitForQuantityPerformance: '',
-                            projectMaximumResidencyMonth: int.parse(
-                                projectMaximumResidencyMonthController.text.isEmpty
-                                    ? '0'
-                                    : projectMaximumResidencyMonthController
-                                        .text),
+                            unitForQuantityPerformance:
+                                unitForQuantityPerformanceController.text,
+                            projectMaximumResidencyMonth: int.parse(projectMaximumResidencyMonthController.text.isEmpty
+                                ? '0'
+                                : projectMaximumResidencyMonthController.text),
                             projectTopOutlierRankForResidencyMonthOfPerformanceMonth:
-                                int.parse(projectTopOutlierRankForResidencyMonthOfPerformanceMonthController.text.isEmpty
-                                    ? '0'
-                                    : projectTopOutlierRankForResidencyMonthOfPerformanceMonthController.text),
+                                int.parse(
+                                    projectTopOutlierRankForResidencyMonthOfPerformanceMonthController.text.isEmpty
+                                        ? '0'
+                                        : projectTopOutlierRankForResidencyMonthOfPerformanceMonthController.text),
                             projectBottomOutlierRankForResidencyMonthOfPerformanceMonth: int.parse(projectBottomOutlierRankForResidencyMonthOfPerformanceMonthController.text.isEmpty ? '0' : projectBottomOutlierRankForResidencyMonthOfPerformanceMonthController.text),
                             projectMaxPerformanceValueTarget: int.parse(projectMaxPerformanceValueTargetController.text.isEmpty ? '0' : projectMaxPerformanceValueTargetController.text),
                             projectTopOutlierRankForMaximumPerformanceValueTarget: int.parse(projectTopOutlierRankForMaximumPerformanceValueTargetController.text.isEmpty ? '0' : projectTopOutlierRankForMaximumPerformanceValueTargetController.text),
@@ -2612,6 +2650,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
                             projectMaximumMonthlyIncentive: int.parse(projectMaximumMonthlyIncentiveController.text.isEmpty ? '0' : projectMaximumMonthlyIncentiveController.text),
                             projectTopOutlierRankForMaximumMonthlyIncentive: int.parse(projectTopOutlierRankForMaximumMonthlyIncentiveController.text.isEmpty ? '0' : projectTopOutlierRankForMaximumMonthlyIncentiveController.text),
                             projectBottomOutlierRankForMaximumMonthlyIncentive: int.parse(projectBottomOutlierRankForMaximumMonthlyIncentiveController.text.isEmpty ? '0' : projectBottomOutlierRankForMaximumMonthlyIncentiveController.text));
+                        // updating project details api
                         context.read<ProjectArchitectBloc>().add(
                             UpdateProjectDetailsEvent(
                                 projectId: context
