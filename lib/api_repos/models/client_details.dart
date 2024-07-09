@@ -62,5 +62,6 @@ class ClientDetails extends Equatable {
         name,
         role,
         pocMailId,
+        image
       ];
 }

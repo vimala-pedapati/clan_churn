@@ -197,6 +197,13 @@ class _UpdateClientBodyState extends State<UpdateClientBody> {
                                       setState(() {
                                         isImageUploading = false;
                                       });
+                                      // context
+                                      //     .read<ProjectArchitectBloc>()
+                                      //     .add(GetClientsEvent(
+                                      //       onErrorCallback:
+                                      //           (errorMessage, errorCode) {},
+                                      //       onSuccessCallback: (message) {},
+                                      //     ));
                                     },
                                   ));
                               Navigator.pop(context);
@@ -353,6 +360,7 @@ class _UpdateClientBodyState extends State<UpdateClientBody> {
                         ElevatedButton(
                           onPressed: checkValidation()
                               ? () {
+                                  
                                   context
                                       .read<ClientBloc>()
                                       .add(UpdateClientEvent(
@@ -367,8 +375,7 @@ class _UpdateClientBodyState extends State<UpdateClientBody> {
                                                 .read<ClientBloc>()
                                                 .state
                                                 .clientUploadLogoResponse
-                                                ?.filename ??
-                                            '',
+                                                ?.filename,
                                         onErrorCallback:
                                             (errorMessage, errorCode) {
                                           print(

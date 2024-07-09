@@ -42,7 +42,7 @@ class UpdateClientEvent extends ClientEvent {
   final String pocName;
   final String pocContactNumber;
   final String pocMailId;
-  final String image;
+  final String? image;
   final OnErrorCallback onErrorCallback;
   final OnSuccessCallback onSuccessCallback;
 

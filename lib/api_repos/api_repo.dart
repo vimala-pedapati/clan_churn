@@ -130,7 +130,7 @@ class ApiRepository {
 
       if (response.statusCode == 200) {
         List<Project> listOfProjects = projectFromJson(response.body);
-        log("List of Projects:..... $listOfProjects");
+        print("List of Projects:..... $listOfProjects");
         return listOfProjects;
       } else {
         _handleStatusCode(
@@ -720,7 +720,7 @@ class ApiRepository {
       required String pocName,
       required String pocContactNumber,
       required String pocMailId,
-      required String image,
+      required String? image,
       required OnErrorCallback onErrorCallback,
       required OnSuccessCallback onSuccessCallback}) async {
     try {
@@ -788,7 +788,8 @@ class ApiRepository {
         };
         var request = http.MultipartRequest(
           'POST',
-          Uri.parse('${BaseUrl.baseUrl}${ApiEndpoints.clientLogo}'),
+          Uri.parse(
+              '${BaseUrl.baseUrl}${ApiEndpoints.uploadLogo}?document_type=client'),
         );
         // request.fields.addAll({'project_id': projectId});
 
@@ -801,8 +802,8 @@ class ApiRepository {
         }
         request.headers.addAll(headers);
         http.StreamedResponse response = await request.send();
-        // print(response.reasonPhrase);
-        // print(response.statusCode);
+        print(response.reasonPhrase);
+        print(response.statusCode);
         if (response.statusCode == 200) {
           String responseString = await response.stream.bytesToString();
           print(responseString);

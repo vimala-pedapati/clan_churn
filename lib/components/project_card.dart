@@ -36,7 +36,7 @@ class ProjectCard extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Image.network(
-                      state.selectedClient!.image!,
+                      "${state.selectedClient?.image}",
                       // loadingBuilder: ((context, child, loadingProgress) {
                       //   return const CircularProgressIndicator();
                       // }),
