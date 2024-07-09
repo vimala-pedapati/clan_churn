@@ -350,6 +350,7 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                         child: GetInputFields(
                             isCreatingNewProject: true,
                             onTap: () {
+                              print("....going to next page");
                               _goToNextPage();
                             }),
                       ),

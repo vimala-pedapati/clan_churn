@@ -2558,81 +2558,78 @@ class _GetInputFieldsState extends State<GetInputFields> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     ElevatedButton(
-                      onPressed: (widget.isCreatingNewProject)
-                          ? widget.onTap
-                          : () {
-                              List<String> depart = [];
-                              List<String> design = [];
-                              for (var i in departments) {
-                                depart.add(i.text);
-                              }
-                              for (var i in designations) {
-                                design.add(i.text);
-                              }
-                              ProjectDetails a = ProjectDetails(
-                                  departments: depart,
-                                  designations: design,
-                                  projectStartDate:
-                                      projectStartDateController.text,
-                                  studyPeriodBeginingDate:
-                                      studyPeriodBeginningDateController.text,
-                                  studyPeriodEndDate:
-                                      studyPeriodEndDateController.text,
-                                  earliestDateForDateOfJoiningReleventForTheStudy:
-                                      earliestDateForDateOfJoiningReleventForTheStudyController
-                                          .text,
-                                  endDateForDateOfJoiningReleventForTheStudy:
-                                      endDateForDateOfJoiningReleventForTheStudyController
-                                          .text,
-                                  unitForValuePerformance:
-                                      unitForValuePerformanceController.text,
-                                  unitForQuantityPerformance: '',
-                                  projectMaximumResidencyMonth: int.parse(
-                                      projectMaximumResidencyMonthController
-                                              .text.isEmpty
-                                          ? '0'
-                                          : projectMaximumResidencyMonthController
-                                              .text),
-                                  projectTopOutlierRankForResidencyMonthOfPerformanceMonth:
-                                      int.parse(projectTopOutlierRankForResidencyMonthOfPerformanceMonthController.text.isEmpty ? '0' : projectTopOutlierRankForResidencyMonthOfPerformanceMonthController.text),
-                                  projectBottomOutlierRankForResidencyMonthOfPerformanceMonth: int.parse(projectBottomOutlierRankForResidencyMonthOfPerformanceMonthController.text.isEmpty ? '0' : projectBottomOutlierRankForResidencyMonthOfPerformanceMonthController.text),
-                                  projectMaxPerformanceValueTarget: int.parse(projectMaxPerformanceValueTargetController.text.isEmpty ? '0' : projectMaxPerformanceValueTargetController.text),
-                                  projectTopOutlierRankForMaximumPerformanceValueTarget: int.parse(projectTopOutlierRankForMaximumPerformanceValueTargetController.text.isEmpty ? '0' : projectTopOutlierRankForMaximumPerformanceValueTargetController.text),
-                                  projectBottomOutlierRankForMaximumPerformanceValueTarget: int.parse(projectBottomOutlierRankForMaximumPerformanceValueTargetController.text.isEmpty ? '0' : projectBottomOutlierRankForMaximumPerformanceValueTargetController.text),
-                                  projectMaximumPerformanceValueActual: int.parse(projectMaximumPerformanceValueActualController.text.isEmpty ? '0' : projectMaximumPerformanceValueActualController.text),
-                                  projectTopOutlierRankForMaximumPerformanceValueActual: int.parse(projectTopOutlierRankForMaximumPerformanceValueActualController.text.isEmpty ? '0' : projectTopOutlierRankForMaximumPerformanceValueActualController.text),
-                                  projectBottomOutlierRankForMaximumPerformanceValueActual: int.parse(projectBottomOutlierRankForMaximumPerformanceValueActualController.text.isEmpty ? '0' : projectBottomOutlierRankForMaximumPerformanceValueActualController.text),
-                                  projectMaximumPerformanceQuantityTarget: int.parse(projectMaximumPerformanceQuantityTargetController.text.isEmpty ? '0' : projectMaximumPerformanceQuantityTargetController.text),
-                                  projectTopOutlierRankForMaximumPerformanceQuantityTarget: int.parse(projectTopOutlierRankForMaximumPerformanceQuantityTargetController.text.isEmpty ? '0' : projectTopOutlierRankForMaximumPerformanceQuantityTargetController.text),
-                                  projectBottomOutlierRankForMaximumPerformanceQuantityTarget: int.parse(projectBottomOutlierRankForMaximumPerformanceQuantityTargetController.text.isEmpty ? '0' : projectBottomOutlierRankForMaximumPerformanceQuantityTargetController.text),
-                                  projectMaximumOverAllPerformanceAchievementPer: int.parse(projectMaximumOverAllPerformanceAchievementPerController.text.isEmpty ? '0' : projectMaximumOverAllPerformanceAchievementPerController.text),
-                                  projectTopOutlierRankForMaximumOverAllPerformanceAchievementPer: int.parse(projectTopOutlierRankForMaximumOverAllPerformanceAchievementPerController.text.isEmpty ? '0' : projectTopOutlierRankForMaximumOverAllPerformanceAchievementPerController.text),
-                                  projectBottomOutlierRankForMaximumOverAllPerformanceAchievementPer: int.parse(projectBottomOutlierRankForMaximumOverAllPerformanceAchievementPerController.text.isEmpty ? '0' : projectBottomOutlierRankForMaximumOverAllPerformanceAchievementPerController.text),
-                                  projectMaximumMonthlyFixedSalaryIndex: int.parse(projectMaximumMonthlyFixedSalaryIndexController.text.isEmpty ? '0' : projectMaximumMonthlyFixedSalaryIndexController.text),
-                                  projectTopOutlierRankForMaximumMonthlyFixedSalaryIndex: int.parse(projectTopOutlierRankForMaximumMonthlyFixedSalaryIndexController.text.isEmpty ? '0' : projectTopOutlierRankForMaximumMonthlyFixedSalaryIndexController.text),
-                                  projectBottomOutlierRankForMaximumMonthlyFixedSalaryIndex: int.parse(projectBottomOutlierRankForMaximumMonthlyFixedSalaryIndexController.text.isEmpty ? '0' : projectBottomOutlierRankForMaximumMonthlyFixedSalaryIndexController.text),
-                                  projectMaximumMonthlyIncentive: int.parse(projectMaximumMonthlyIncentiveController.text.isEmpty ? '0' : projectMaximumMonthlyIncentiveController.text),
-                                  projectTopOutlierRankForMaximumMonthlyIncentive: int.parse(projectTopOutlierRankForMaximumMonthlyIncentiveController.text.isEmpty ? '0' : projectTopOutlierRankForMaximumMonthlyIncentiveController.text),
-                                  projectBottomOutlierRankForMaximumMonthlyIncentive: int.parse(projectBottomOutlierRankForMaximumMonthlyIncentiveController.text.isEmpty ? '0' : projectBottomOutlierRankForMaximumMonthlyIncentiveController.text));
-                              context.read<ProjectArchitectBloc>().add(
-                                  UpdateProjectDetailsEvent(
-                                      projectId: context
-                                          .read<ProjectArchitectBloc>()
-                                          .state
-                                          .createdProject!
-                                          .id,
-                                      projectDetails: a));
-                              // log("$a");
-                              // log("${a.toJson()}");
-                              // bool isTrue = widget.isCreatingNewProject ?? false;
-                              // if (isTrue) {
-                              //   print(".....true");
-                              //   widget.onTap;
-                              // } else {
-                              //   print(".....false");
-                              goToNextPage();
-                              // }
-                            },
+                      onPressed: () {
+                        List<String> depart = [];
+                        List<String> design = [];
+                        for (var i in departments) {
+                          depart.add(i.text);
+                        }
+                        for (var i in designations) {
+                          design.add(i.text);
+                        }
+                        ProjectDetails a = ProjectDetails(
+                            departments: depart,
+                            designations: design,
+                            projectStartDate: projectStartDateController.text,
+                            studyPeriodBeginingDate:
+                                studyPeriodBeginningDateController.text,
+                            studyPeriodEndDate:
+                                studyPeriodEndDateController.text,
+                            earliestDateForDateOfJoiningReleventForTheStudy:
+                                earliestDateForDateOfJoiningReleventForTheStudyController
+                                    .text,
+                            endDateForDateOfJoiningReleventForTheStudy:
+                                endDateForDateOfJoiningReleventForTheStudyController
+                                    .text,
+                            unitForValuePerformance:
+                                unitForValuePerformanceController.text,
+                            unitForQuantityPerformance: '',
+                            projectMaximumResidencyMonth: int.parse(
+                                projectMaximumResidencyMonthController.text.isEmpty
+                                    ? '0'
+                                    : projectMaximumResidencyMonthController
+                                        .text),
+                            projectTopOutlierRankForResidencyMonthOfPerformanceMonth:
+                                int.parse(projectTopOutlierRankForResidencyMonthOfPerformanceMonthController.text.isEmpty
+                                    ? '0'
+                                    : projectTopOutlierRankForResidencyMonthOfPerformanceMonthController.text),
+                            projectBottomOutlierRankForResidencyMonthOfPerformanceMonth: int.parse(projectBottomOutlierRankForResidencyMonthOfPerformanceMonthController.text.isEmpty ? '0' : projectBottomOutlierRankForResidencyMonthOfPerformanceMonthController.text),
+                            projectMaxPerformanceValueTarget: int.parse(projectMaxPerformanceValueTargetController.text.isEmpty ? '0' : projectMaxPerformanceValueTargetController.text),
+                            projectTopOutlierRankForMaximumPerformanceValueTarget: int.parse(projectTopOutlierRankForMaximumPerformanceValueTargetController.text.isEmpty ? '0' : projectTopOutlierRankForMaximumPerformanceValueTargetController.text),
+                            projectBottomOutlierRankForMaximumPerformanceValueTarget: int.parse(projectBottomOutlierRankForMaximumPerformanceValueTargetController.text.isEmpty ? '0' : projectBottomOutlierRankForMaximumPerformanceValueTargetController.text),
+                            projectMaximumPerformanceValueActual: int.parse(projectMaximumPerformanceValueActualController.text.isEmpty ? '0' : projectMaximumPerformanceValueActualController.text),
+                            projectTopOutlierRankForMaximumPerformanceValueActual: int.parse(projectTopOutlierRankForMaximumPerformanceValueActualController.text.isEmpty ? '0' : projectTopOutlierRankForMaximumPerformanceValueActualController.text),
+                            projectBottomOutlierRankForMaximumPerformanceValueActual: int.parse(projectBottomOutlierRankForMaximumPerformanceValueActualController.text.isEmpty ? '0' : projectBottomOutlierRankForMaximumPerformanceValueActualController.text),
+                            projectMaximumPerformanceQuantityTarget: int.parse(projectMaximumPerformanceQuantityTargetController.text.isEmpty ? '0' : projectMaximumPerformanceQuantityTargetController.text),
+                            projectTopOutlierRankForMaximumPerformanceQuantityTarget: int.parse(projectTopOutlierRankForMaximumPerformanceQuantityTargetController.text.isEmpty ? '0' : projectTopOutlierRankForMaximumPerformanceQuantityTargetController.text),
+                            projectBottomOutlierRankForMaximumPerformanceQuantityTarget: int.parse(projectBottomOutlierRankForMaximumPerformanceQuantityTargetController.text.isEmpty ? '0' : projectBottomOutlierRankForMaximumPerformanceQuantityTargetController.text),
+                            projectMaximumOverAllPerformanceAchievementPer: int.parse(projectMaximumOverAllPerformanceAchievementPerController.text.isEmpty ? '0' : projectMaximumOverAllPerformanceAchievementPerController.text),
+                            projectTopOutlierRankForMaximumOverAllPerformanceAchievementPer: int.parse(projectTopOutlierRankForMaximumOverAllPerformanceAchievementPerController.text.isEmpty ? '0' : projectTopOutlierRankForMaximumOverAllPerformanceAchievementPerController.text),
+                            projectBottomOutlierRankForMaximumOverAllPerformanceAchievementPer: int.parse(projectBottomOutlierRankForMaximumOverAllPerformanceAchievementPerController.text.isEmpty ? '0' : projectBottomOutlierRankForMaximumOverAllPerformanceAchievementPerController.text),
+                            projectMaximumMonthlyFixedSalaryIndex: int.parse(projectMaximumMonthlyFixedSalaryIndexController.text.isEmpty ? '0' : projectMaximumMonthlyFixedSalaryIndexController.text),
+                            projectTopOutlierRankForMaximumMonthlyFixedSalaryIndex: int.parse(projectTopOutlierRankForMaximumMonthlyFixedSalaryIndexController.text.isEmpty ? '0' : projectTopOutlierRankForMaximumMonthlyFixedSalaryIndexController.text),
+                            projectBottomOutlierRankForMaximumMonthlyFixedSalaryIndex: int.parse(projectBottomOutlierRankForMaximumMonthlyFixedSalaryIndexController.text.isEmpty ? '0' : projectBottomOutlierRankForMaximumMonthlyFixedSalaryIndexController.text),
+                            projectMaximumMonthlyIncentive: int.parse(projectMaximumMonthlyIncentiveController.text.isEmpty ? '0' : projectMaximumMonthlyIncentiveController.text),
+                            projectTopOutlierRankForMaximumMonthlyIncentive: int.parse(projectTopOutlierRankForMaximumMonthlyIncentiveController.text.isEmpty ? '0' : projectTopOutlierRankForMaximumMonthlyIncentiveController.text),
+                            projectBottomOutlierRankForMaximumMonthlyIncentive: int.parse(projectBottomOutlierRankForMaximumMonthlyIncentiveController.text.isEmpty ? '0' : projectBottomOutlierRankForMaximumMonthlyIncentiveController.text));
+                        context.read<ProjectArchitectBloc>().add(
+                            UpdateProjectDetailsEvent(
+                                projectId: context
+                                    .read<ProjectArchitectBloc>()
+                                    .state
+                                    .createdProject!
+                                    .id,
+                                projectDetails: a));
+                        print("project details that are going to update: $a");
+                        print(" ${widget.isCreatingNewProject}");
+                        if (widget.isCreatingNewProject) {
+                          widget.onTap!();
+                        } else {
+                          goToNextPage();
+                        }
+
+                        // }
+                      },
                       child: const Text("Next"),
                     )
                   ],
