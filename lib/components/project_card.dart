@@ -20,7 +20,7 @@ class ProjectCard extends StatelessWidget {
       builder: (context, state) {
         return Container(
           height: 200,
-          width: 160,
+        width: 180,
           padding:
               const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 20),
           decoration: BoxDecoration(
@@ -54,6 +54,7 @@ class ProjectCard extends StatelessWidget {
                   children: [
                     Text(
                       state.selectedClient!.name,
+                      overflow: TextOverflow.ellipsis,
                       style: ClanChurnTypography.font12500,
                     ),
                     Text(
@@ -63,7 +64,7 @@ class ProjectCard extends StatelessWidget {
                   ],
                 ),
                 SizedBox(
-                  width: 160,
+                width: 180,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.only(left: 20, right: 20),
@@ -98,7 +99,7 @@ class ProjectCard extends StatelessWidget {
         );
 
         // Container(
-        //   // height: 190,
+        //   // height: 230,
         //   // width: 160,
         //   padding:
         //       const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 20),

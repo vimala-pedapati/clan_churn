@@ -20,8 +20,8 @@ class CreateNewUserCard extends StatelessWidget {
             context, customPageRouteForNavigation(const CreateNewUser()));
       },
       child: Container(
-        height: 190,
-        width: 160,
+        height: 230,
+        width: 180,
         padding:
             const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 20),
         decoration: BoxDecoration(
@@ -147,8 +147,8 @@ class UserCard extends StatelessWidget {
     return BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
       builder: (context, state) {
         return Container(
-          height: 190,
-          width: 160,
+          height: 230,
+          width: 180,
           padding:
               const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 20),
           decoration: BoxDecoration(
@@ -182,12 +182,14 @@ class UserCard extends StatelessWidget {
                   children: [
                     Text(
                       user.firstName ?? '',
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
                       style: ClanChurnTypography.font15600,
                     ),
                   ],
                 ),
                 SizedBox(
-                  width: 160,
+                  width: 180,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.only(left: 20, right: 20),

@@ -7,6 +7,7 @@ import 'package:clan_churn/components/wrap_profile.dart';
 import 'package:clan_churn/pages/create_client.dart';
 import 'package:clan_churn/utils/routes.dart';
 import 'package:clan_churn/utils/typography.dart';
+import 'package:clan_churn/utils/validations.dart';
 import 'package:file_picker/_internal/file_picker_web.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -84,8 +85,9 @@ class _NewClientFormState extends State<NewClientForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   String? validateFields() {
-    if (clientName.text.isEmpty) {
-      return 'Client name cannot be empty';
+    final String? val = Validation.validateCustomerName(clientName.text);
+    if (val != null) {
+      return val;
     }
     if (roleName.text.isEmpty) {
       return 'Role name cannot be empty';
@@ -413,10 +415,18 @@ class CusText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      text,
-      style: ClanChurnTypography.font18500,
-    );
+    return Text.rich(TextSpan(children: [
+      TextSpan(
+        text: text,
+        style: ClanChurnTypography.font18500,
+      ),
+      TextSpan(
+        text: " *",
+        style: ClanChurnTypography.font22600.copyWith(
+            color: Theme.of(context).colorScheme.error,
+            fontWeight: FontWeight.w400),
+      ),
+    ]));
   }
 }
 

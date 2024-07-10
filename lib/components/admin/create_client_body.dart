@@ -154,8 +154,8 @@ class CreateNewClientCard extends StatelessWidget {
         Navigator.push(context, customPageRouteForNavigation(const CreateNewClient()));
       },
       child: Container(
-        height: 190,
-        width: 160,
+        height: 230,
+      width: 180,
         padding:
             const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 20),
         decoration: BoxDecoration(

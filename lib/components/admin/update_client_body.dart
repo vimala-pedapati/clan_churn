@@ -162,7 +162,7 @@ class _UpdateClientBodyState extends State<UpdateClientBody> {
                       width: 30,
                     ),
                     Text(
-                      "Update Client",
+                      "Update Client - ${clientName.text}",
                       style: ClanChurnTypography.font20600,
                     )
                   ],

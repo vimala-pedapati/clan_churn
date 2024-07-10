@@ -15,8 +15,8 @@ class ClientsCard extends StatelessWidget {
     return BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
       builder: (context, state) {
         return Container(
-          height: 190,
-          width: 160,
+          height: 230,
+          width: 180,
           padding:
               const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 20),
           decoration: BoxDecoration(
@@ -25,6 +25,7 @@ class ClientsCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(10)),
           child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+             
               children: [
                 CircleAvatar(
                   radius: state.isNotExpanded ? 40 : 35,
@@ -46,16 +47,20 @@ class ClientsCard extends StatelessWidget {
                     ),
                   ),
                 ),
-                Column(
-                  children: [
-                    Text(
-                       client.name,
+                Container(
+              
+                  child: Center(
+                    child: Text(
+                      client.name,
+                      maxLines: 3,
+                      textAlign: TextAlign.center,
+                       overflow: TextOverflow.ellipsis,
                       style: ClanChurnTypography.font15600,
                     ),
-                  ],
+                  ),
                 ),
                 SizedBox(
-                  width: 160,
+                width: 180,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.only(left: 20, right: 20),
@@ -65,9 +70,9 @@ class ClientsCard extends StatelessWidget {
                       style: ClanChurnTypography.font15600,
                     ),
                     onPressed: () {
-                      context.read<ProjectArchitectBloc>().add(
-                          SetSelectedClientEvent(
-                              selectedClient:client));
+                      context
+                          .read<ProjectArchitectBloc>()
+                          .add(SetSelectedClientEvent(selectedClient: client));
                       // GoRouter.of(context).go(AppRoutes.clientProjects);
                       Navigator.push(
                           context,
