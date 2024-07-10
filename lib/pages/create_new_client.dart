@@ -83,7 +83,7 @@ class _NewClientFormState extends State<NewClientForm> {
   bool isImageUploading = false;
   bool imageUploadFailed = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
+  String? errorMessage = '';
   String? validateFields() {
     final String? val = Validation.validateCustomerName(clientName.text);
     if (val != null) {
@@ -122,6 +122,9 @@ class _NewClientFormState extends State<NewClientForm> {
   bool checkValidation() {
     String? validationResult = validateFields();
     if (validationResult != null) {
+      setState(() {
+        errorMessage = validationResult;
+      });
       print(validationResult);
       return false;
     }
@@ -346,60 +349,66 @@ class _NewClientFormState extends State<NewClientForm> {
         ),
         Expanded(
           flex: 1,
-          child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  onPressed: checkValidation()
-                      ? () {
-                          // GoRouter.of(context).go(AppRoutes.createClient);
-                          context.read<ClientBloc>().add(CreateClientEvent(
-                                clinetName: clientName.text,
-                                roleName: roleName.text,
-                                address1: address1.text,
-                                address2: address2.text,
-                                pocName: pocName.text,
-                                pocContactNumber: pocContactNumber.text,
-                                pocMailId: pocMailId.text,
-                                image: context
-                                        .read<ClientBloc>()
-                                        .state
-                                        .clientUploadLogoResponse
-                                        ?.filename ??
-                                    '',
-                                onErrorCallback: (errorMessage, errorCode) {
-                                  print(
-                                      "unable to create client: $errorMessage");
-                                },
-                                onSuccessCallback: (message) {
-                                  Navigator.pushReplacement(
-                                      context,
-                                      customPageRouteForNavigation(
-                                          const CreateClient()));
-                                  // GoRouter.of(context).goNamed(AppRoutes.createClient);
-                                  // GoRouter.of(context)
-                                  //     .go(AppRoutes.createClient);
-                                },
-                              ));
-                        }
-                      : null,
-                  child: Row(
-                    children: [
-                      const Icon(Icons.arrow_circle_right_outlined),
-                      const SizedBox(
-                        width: 10,
+          child: Column(
+            children: [
+              const SizedBox(height: 10,),
+              //  Text(errorMessage ?? '', style: ClanChurnTypography.font10600.copyWith(color: Theme.of(context).colorScheme.error),),
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      onPressed: checkValidation()
+                          ? () {
+                              // GoRouter.of(context).go(AppRoutes.createClient);
+                              context.read<ClientBloc>().add(CreateClientEvent(
+                                    clinetName: clientName.text,
+                                    roleName: roleName.text,
+                                    address1: address1.text,
+                                    address2: address2.text,
+                                    pocName: pocName.text,
+                                    pocContactNumber: pocContactNumber.text,
+                                    pocMailId: pocMailId.text,
+                                    image: context
+                                            .read<ClientBloc>()
+                                            .state
+                                            .clientUploadLogoResponse
+                                            ?.filename ??
+                                        '',
+                                    onErrorCallback: (errorMessage, errorCode) {
+                                      print(
+                                          "unable to create client: $errorMessage");
+                                    },
+                                    onSuccessCallback: (message) {
+                                      Navigator.pushReplacement(
+                                          context,
+                                          customPageRouteForNavigation(
+                                              const CreateClient()));
+                                      // GoRouter.of(context).goNamed(AppRoutes.createClient);
+                                      // GoRouter.of(context)
+                                      //     .go(AppRoutes.createClient);
+                                    },
+                                  ));
+                            }
+                          : null,
+                      child: Row(
+                        children: [
+                          const Icon(Icons.arrow_circle_right_outlined),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          FittedBox(
+                            child: Text(
+                              "Create Client",
+                              style: ClanChurnTypography.font15600,
+                            ),
+                          ),
+                        ],
                       ),
-                      FittedBox(
-                        child: Text(
-                          "Create Client",
-                          style: ClanChurnTypography.font15600,
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              ]),
+                    )
+                  ]),
+            ],
+          ),
         )
       ],
     );
