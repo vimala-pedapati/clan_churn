@@ -1,14 +1,16 @@
 import 'package:clan_churn/api_repos/models/client_details.dart';
-import 'package:clan_churn/api_repos/models/project_model.dart';
 import 'package:clan_churn/churn_blocs/client/client_bloc.dart';
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
+import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
+import 'package:clan_churn/components/admin/deactivate_button.dart';
+import 'package:clan_churn/components/client_projects.dart';
 import 'package:clan_churn/components/dialogs.dart';
-import 'package:clan_churn/components/project_card.dart';
 import 'package:clan_churn/pages/admin_home_page.dart';
 import 'package:clan_churn/pages/create_new_client.dart';
 import 'package:clan_churn/utils/routes.dart';
 import 'package:clan_churn/utils/typography.dart';
 import 'package:clan_churn/utils/validations.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:file_picker/_internal/file_picker_web.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -289,18 +291,155 @@ class _UpdateClientBodyState extends State<UpdateClientBody> {
                               const CusText(
                                 text: 'Client Office Address',
                               ),
-                              CusTextEditingController(
-                                hintText: "Address Line 1",
-                                controller: address1,
-                                onChanged: (p0) {},
-                                textInputAction: TextInputAction.next,
+                              Row(
+                                children: [
+                                  CusTextEditingController(
+                                    hintText: "Address Line 1",
+                                    controller: address1,
+                                    onChanged: (p0) {},
+                                    textInputAction: TextInputAction.next,
+                                  ),
+                                  CusTextEditingController(
+                                    hintText: "Address Line 2",
+                                    controller: address2,
+                                    onChanged: (p0) {},
+                                    textInputAction: TextInputAction.next,
+                                  ),
+                                ],
                               ),
-                              CusTextEditingController(
-                                hintText: "Address Line 2",
-                                controller: address2,
-                                onChanged: (p0) {},
-                                textInputAction: TextInputAction.next,
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const CusText(
+                                text: 'Assign Project Architect',
                               ),
+                              SizedBox(
+                                width: 400,
+                                child: BlocBuilder<UserBloc, UserState>(
+                                  builder: (context, state) {
+                                    return DropdownButtonHideUnderline(
+                                      child: DropdownButton2<String>(
+                                        isExpanded: true,
+                                        hint: Row(children: [
+                                          Text(
+                                            'Select',
+                                            style:
+                                                ClanChurnTypography.font18500,
+                                            overflow: TextOverflow.ellipsis,
+                                          )
+                                        ]),
+                                        items: state.userTypes
+                                            .map((String item) =>
+                                                DropdownMenuItem<String>(
+                                                  value: item,
+                                                  child: Text(
+                                                    item,
+                                                    style: ClanChurnTypography
+                                                        .font18500
+                                                        .copyWith(
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .colorScheme
+                                                                .background),
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  ),
+                                                ))
+                                            .toList(),
+                                        // value: selectedType,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            // selectedType = value;
+                                          });
+                                        },
+                                        selectedItemBuilder:
+                                            (BuildContext context) {
+                                          return state.userTypes
+                                              .map((String item) {
+                                            return Center(
+                                              child: Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    item,
+                                                    style: ClanChurnTypography
+                                                        .font18500
+                                                        .copyWith(
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .colorScheme
+                                                                .secondary),
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          }).toList();
+                                        },
+                                        buttonStyleData: ButtonStyleData(
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                            border: Border.all(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .primary
+                                                    .withOpacity(0.6)),
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary
+                                                .withOpacity(0.2),
+                                          ),
+                                          elevation: 0,
+                                        ),
+                                        iconStyleData: IconStyleData(
+                                          icon: const Icon(
+                                              Icons.keyboard_arrow_down),
+                                          iconSize: 25,
+                                          iconEnabledColor: Theme.of(context)
+                                              .colorScheme
+                                              .secondary,
+                                          iconDisabledColor: Colors.grey,
+                                        ),
+                                        dropdownStyleData: DropdownStyleData(
+                                          elevation: 0,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                            border: Border.all(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .primary
+                                                    .withOpacity(0.6)),
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary
+                                                .withOpacity(1.0),
+                                          ),
+                                          scrollbarTheme: ScrollbarThemeData(
+                                            radius: const Radius.circular(40),
+                                            thickness:
+                                                MaterialStateProperty.all(6),
+                                            thumbVisibility:
+                                                MaterialStateProperty.all(true),
+                                          ),
+                                        ),
+                                        menuItemStyleData:
+                                            const MenuItemStyleData(
+                                          height: 40,
+                                          padding: EdgeInsets.only(
+                                              left: 14, right: 14),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              )
                             ],
                           ),
                           const SizedBox(
@@ -431,189 +570,6 @@ class _UpdateClientBodyState extends State<UpdateClientBody> {
               client: widget.updateClient,
             )
           ]),
-    );
-  }
-}
-
-class DeactivateButton extends StatelessWidget {
-  const DeactivateButton(
-      {super.key, required this.clientId, required this.onNextPage});
-  final String clientId;
-  final Function() onNextPage;
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
-      builder: (context, state) {
-        return ElevatedButton(
-          onPressed: state.projectsList.isEmpty
-              ? () {
-                  context.read<ClientBloc>().add(DeleteClientEvent(
-                        clientId: clientId,
-                        onErrorCallback: (errorMessage, errorCode) {
-                          print(
-                              "Delete Client error call back : $errorMessage $errorCode");
-                        },
-                        onSuccessCallback: (message) {
-                          Navigator.pushReplacement(
-                              context,
-                              customPageRouteForNavigation(
-                                  const AdminHomePage()));
-                        },
-                      ));
-                }
-              : onNextPage,
-          style: ElevatedButton.styleFrom(
-              backgroundColor: Theme.of(context).colorScheme.error),
-          child: Row(
-            children: [
-              const Icon(Icons.archive_outlined),
-              const SizedBox(
-                width: 10,
-              ),
-              FittedBox(
-                child: Text(
-                  "Deactivate Client",
-                  style: ClanChurnTypography.font15600,
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-}
-
-class ClientProjects extends StatelessWidget {
-  const ClientProjects(
-      {super.key, required this.goToPreviousPage, required this.client});
-  final Function() goToPreviousPage;
-  final ClientDetails client;
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
-      builder: (context, state) {
-        return Column(
-          children: [
-            Row(
-              children: [
-                IconButton(
-                    onPressed: goToPreviousPage,
-                    icon: const Icon(Icons.keyboard_backspace_outlined)),
-                const SizedBox(
-                  width: 30,
-                ),
-                Text(
-                  "Clinet Projects",
-                  style: ClanChurnTypography.font20600,
-                )
-              ],
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: state.projectsList.length,
-                // itemCount: 10,
-                itemBuilder: (context, index) {
-                  return ClinetProjectViewCard(
-                    client: client,
-                    project: state.projectsList[index],
-                  );
-                  // return Text("vimala kesireddy");
-                },
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
-}
-
-class ClinetProjectViewCard extends StatelessWidget {
-  const ClinetProjectViewCard(
-      {super.key, required this.project, required this.client});
-  final Project project;
-  final ClientDetails client;
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      // width: MediaQuery.of(context).size.width*0.5,
-      // padding: const EdgeInsets.all(08),
-      margin: const EdgeInsets.all(08),
-      child: Row(
-        children: [
-          CircleAvatar(
-            radius: 25,
-            child: Padding(
-              padding: const EdgeInsets.all(0),
-              child: Image.network(
-                "${client.image}",
-                // loadingBuilder: ((context, child, loadingProgress) {
-                //   return const CircularProgressIndicator();
-                // }),
-                errorBuilder: (context, error, stackTrace) {
-                  return ClipOval(
-                      child: Image.network(
-                    image,
-                    scale: 2,
-                  ));
-                },
-              ),
-            ),
-          ),
-          const SizedBox(
-            width: 20,
-          ),
-          Expanded(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      project.name ?? '',
-                      style: ClanChurnTypography.font14600,
-                    ),
-                    Text(
-                      client.role ?? '',
-                      style: ClanChurnTypography.font12600,
-                    )
-                  ],
-                ),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.only(
-                          top: 5, bottom: 5, left: 8, right: 8),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20))),
-                  onPressed: () {
-                    context.read<ClientBloc>().add(ArchiveProjectEvent(
-                          projectId: project.id,
-                          onErrorCallback: (errorMessage, errorCode) {
-                            print(
-                                "archieve project error: $errorCode, $errorMessage");
-                          },
-                          onSuccessCallback: (message) {
-                            print("project archieve success ${message?.body}");
-                            context
-                                .read<ProjectArchitectBloc>()
-                                .add(GetProjectsListEvent(clientId: client.id));
-                          },
-                        ));
-                  },
-                  child: const Text('archive'),
-                )
-              ],
-            ),
-          )
-        ],
-      ),
     );
   }
 }
