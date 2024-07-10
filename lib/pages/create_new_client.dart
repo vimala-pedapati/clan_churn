@@ -85,12 +85,13 @@ class _NewClientFormState extends State<NewClientForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String? errorMessage = '';
   String? validateFields() {
-    final String? val = Validation.validateCustomerName(clientName.text);
-    if (val != null) {
-      return val;
+    final String? cn = Validation.validateCustomerName(clientName.text);
+    if (cn != null) {
+      return cn;
     }
-    if (roleName.text.isEmpty) {
-      return 'Role name cannot be empty';
+    final String? rn = Validation.validateRoleName(roleName.text);
+    if (rn != null) {
+      return rn;
     }
     if (address1.text.isEmpty) {
       return 'Address line 1 cannot be empty';
@@ -351,7 +352,9 @@ class _NewClientFormState extends State<NewClientForm> {
           flex: 1,
           child: Column(
             children: [
-              const SizedBox(height: 10,),
+              const SizedBox(
+                height: 10,
+              ),
               //  Text(errorMessage ?? '', style: ClanChurnTypography.font10600.copyWith(color: Theme.of(context).colorScheme.error),),
               Row(
                   mainAxisAlignment: MainAxisAlignment.center,

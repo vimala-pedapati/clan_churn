@@ -8,6 +8,7 @@ import 'package:clan_churn/pages/admin_home_page.dart';
 import 'package:clan_churn/pages/create_new_client.dart';
 import 'package:clan_churn/utils/routes.dart';
 import 'package:clan_churn/utils/typography.dart';
+import 'package:clan_churn/utils/validations.dart';
 import 'package:file_picker/_internal/file_picker_web.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -35,8 +36,13 @@ class _UpdateClientBodyState extends State<UpdateClientBody> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   String? validateFields() {
-    if (clientName.text.isEmpty) {
-      return 'Client name cannot be empty';
+    final String? cn = Validation.validateCustomerName(clientName.text);
+    if (cn != null) {
+      return cn;
+    }
+    final String? rn = Validation.validateRoleName(roleName.text);
+    if (rn != null) {
+      return rn;
     }
     if (roleName.text.isEmpty) {
       return 'Role name cannot be empty';
@@ -360,7 +366,6 @@ class _UpdateClientBodyState extends State<UpdateClientBody> {
                         ElevatedButton(
                           onPressed: checkValidation()
                               ? () {
-                                  
                                   context
                                       .read<ClientBloc>()
                                       .add(UpdateClientEvent(
@@ -372,10 +377,10 @@ class _UpdateClientBodyState extends State<UpdateClientBody> {
                                         pocContactNumber: pocContactNumber.text,
                                         pocMailId: pocMailId.text,
                                         image: context
-                                                .read<ClientBloc>()
-                                                .state
-                                                .clientUploadLogoResponse
-                                                ?.filename,
+                                            .read<ClientBloc>()
+                                            .state
+                                            .clientUploadLogoResponse
+                                            ?.filename,
                                         onErrorCallback:
                                             (errorMessage, errorCode) {
                                           print(
