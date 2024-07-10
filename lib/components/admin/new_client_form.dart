@@ -282,6 +282,10 @@ class _NewClientFormState extends State<NewClientForm> {
                                       ],
                                     ),
                                     items: state.listOfUsers
+                                        .where((u) =>
+                                            u.userType ==
+                                            UserType.projectArchitect)
+                                        .toList()
                                         .map((item) => DropdownMenuItem<User>(
                                               value: item,
                                               child: Text(
@@ -311,7 +315,12 @@ class _NewClientFormState extends State<NewClientForm> {
                                     },
                                     selectedItemBuilder:
                                         (BuildContext context) {
-                                      return state.listOfUsers.map((item) {
+                                      return state.listOfUsers
+                                          .where((u) =>
+                                              u.userType ==
+                                              UserType.projectArchitect)
+                                          .toList()
+                                          .map((item) {
                                         return Center(
                                           child: Row(
                                             crossAxisAlignment:
@@ -399,7 +408,6 @@ class _NewClientFormState extends State<NewClientForm> {
                                   return UserChip(
                                     user: user,
                                     onDeleted: () {
-                                      
                                       setState(() {
                                         assignedProjectArchitects.remove(user);
                                       });
