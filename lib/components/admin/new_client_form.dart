@@ -1,6 +1,7 @@
 import 'package:clan_churn/api_repos/models/user_model.dart';
 import 'package:clan_churn/churn_blocs/client/client_bloc.dart';
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
+import 'package:clan_churn/components/admin/user_chip.dart';
 import 'package:clan_churn/components/cus_text.dart';
 import 'package:clan_churn/components/cus_text_editing_controller.dart';
 import 'package:clan_churn/components/dialogs.dart';
@@ -13,7 +14,7 @@ import 'package:file_picker/_internal/file_picker_web.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart'; 
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class NewClientForm extends StatefulWidget {
   const NewClientForm({super.key});
@@ -262,111 +263,153 @@ class _NewClientFormState extends State<NewClientForm> {
                       const CusText(
                         text: 'Assign Project Architect',
                       ),
-                      SizedBox(
-                        width: 400,
-                        child: BlocBuilder<UserBloc, UserState>(
-                          builder: (context, state) {
-                            return DropdownButtonHideUnderline(
-                              child: DropdownButton2<String>(
-                                isExpanded: true,
-                                hint: Row(children: [
-                                  Text(
-                                    'Select',
-                                    style: ClanChurnTypography.font18500,
-                                    overflow: TextOverflow.ellipsis,
-                                  )
-                                ]),
-                                items: state.listOfUsers
-                                    .map((item) => DropdownMenuItem<String>(
-                                          value: item.firstName,
-                                          child: Text(
-                                            '${item.firstName}',
-                                            style: ClanChurnTypography.font18500
-                                                .copyWith(
-                                                    color: Theme.of(context)
-                                                        .colorScheme
-                                                        .background),
-                                            overflow: TextOverflow.ellipsis,
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: 400,
+                            child: BlocBuilder<UserBloc, UserState>(
+                              builder: (context, state) {
+                                return DropdownButtonHideUnderline(
+                                  child: DropdownButton2<User>(
+                                    isExpanded: true,
+                                    hint: Row(
+                                      children: [
+                                        Text(
+                                          'Select',
+                                          style: ClanChurnTypography.font18500,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ],
+                                    ),
+                                    items: state.listOfUsers
+                                        .map((item) => DropdownMenuItem<User>(
+                                              value: item,
+                                              child: Text(
+                                                '${item.firstName}',
+                                                style: ClanChurnTypography
+                                                    .font18500
+                                                    .copyWith(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .background,
+                                                ),
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ))
+                                        .toList(),
+                                    onChanged: (User? user) {
+                                      if (user != null) {
+                                        setState(() {
+                                          if (assignedProjectArchitects
+                                                  .isEmpty ||
+                                              !assignedProjectArchitects
+                                                  .contains(user)) {
+                                            assignedProjectArchitects.add(user);
+                                          }
+                                        });
+                                      }
+                                    },
+                                    selectedItemBuilder:
+                                        (BuildContext context) {
+                                      return state.listOfUsers.map((item) {
+                                        return Center(
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "${item.firstName}",
+                                                style: ClanChurnTypography
+                                                    .font18500
+                                                    .copyWith(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .secondary,
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                        ))
-                                    .toList(),
-                                // value: selectedType,
-                                onChanged: (value) {
-                                  setState(() {
-                                    // selectedType = value;
-                                  });
-                                },
-                                selectedItemBuilder: (BuildContext context) {
-                                  return state.listOfUsers.map((item) {
-                                    return Center(
-                                      child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "${item.firstName}",
-                                            style: ClanChurnTypography.font18500
-                                                .copyWith(
-                                                    color: Theme.of(context)
-                                                        .colorScheme
-                                                        .secondary),
-                                          ),
-                                        ],
+                                        );
+                                      }).toList();
+                                    },
+                                    buttonStyleData: ButtonStyleData(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(8),
+                                        border: Border.all(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary
+                                              .withOpacity(0.6),
+                                        ),
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary
+                                            .withOpacity(0.2),
                                       ),
-                                    );
-                                  }).toList();
+                                      elevation: 0,
+                                    ),
+                                    iconStyleData: IconStyleData(
+                                      icon:
+                                          const Icon(Icons.keyboard_arrow_down),
+                                      iconSize: 25,
+                                      iconEnabledColor: Theme.of(context)
+                                          .colorScheme
+                                          .secondary,
+                                      iconDisabledColor: Colors.grey,
+                                    ),
+                                    dropdownStyleData: DropdownStyleData(
+                                      elevation: 0,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(8),
+                                        border: Border.all(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary
+                                              .withOpacity(0.6),
+                                        ),
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary
+                                            .withOpacity(1.0),
+                                      ),
+                                      scrollbarTheme: ScrollbarThemeData(
+                                        radius: const Radius.circular(40),
+                                        thickness: MaterialStateProperty.all(6),
+                                        thumbVisibility:
+                                            MaterialStateProperty.all(true),
+                                      ),
+                                    ),
+                                    menuItemStyleData: const MenuItemStyleData(
+                                      height: 40,
+                                      padding:
+                                          EdgeInsets.only(left: 14, right: 14),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          Wrap(
+                            children: [
+                              ...assignedProjectArchitects.map(
+                                (User user) {
+                                  return UserChip(
+                                    user: user,
+                                    onDeleted: () {
+                                      
+                                      setState(() {
+                                        assignedProjectArchitects.remove(user);
+                                      });
+                                    },
+                                  );
                                 },
-                                buttonStyleData: ButtonStyleData(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8),
-                                    border: Border.all(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .primary
-                                            .withOpacity(0.6)),
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .primary
-                                        .withOpacity(0.2),
-                                  ),
-                                  elevation: 0,
-                                ),
-                                iconStyleData: IconStyleData(
-                                  icon: const Icon(Icons.keyboard_arrow_down),
-                                  iconSize: 25,
-                                  iconEnabledColor:
-                                      Theme.of(context).colorScheme.secondary,
-                                  iconDisabledColor: Colors.grey,
-                                ),
-                                dropdownStyleData: DropdownStyleData(
-                                  elevation: 0,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8),
-                                    border: Border.all(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .primary
-                                            .withOpacity(0.6)),
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .primary
-                                        .withOpacity(1.0),
-                                  ),
-                                  scrollbarTheme: ScrollbarThemeData(
-                                    radius: const Radius.circular(40),
-                                    thickness: MaterialStateProperty.all(6),
-                                    thumbVisibility:
-                                        MaterialStateProperty.all(true),
-                                  ),
-                                ),
-                                menuItemStyleData: const MenuItemStyleData(
-                                  height: 40,
-                                  padding: EdgeInsets.only(left: 14, right: 14),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
+                              )
+                            ],
+                          )
+                        ],
                       )
                     ],
                   ),

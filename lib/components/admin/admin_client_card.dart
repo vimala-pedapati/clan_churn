@@ -1,6 +1,6 @@
 import 'package:clan_churn/api_repos/models/client_details.dart';
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
-import 'package:clan_churn/components/admin/update_client_body.dart';
+import 'package:clan_churn/components/admin/update_client_form.dart';
 import 'package:clan_churn/components/project_card.dart';
 import 'package:clan_churn/utils/typography.dart';
 import 'package:flutter/material.dart';
