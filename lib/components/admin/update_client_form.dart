@@ -113,6 +113,11 @@ class _UpdateClientBodyState extends State<UpdateClientBody> {
     context
         .read<ProjectArchitectBloc>()
         .add(GetProjectsListEvent(clientId: widget.updateClient.id));
+    context.read<UserBloc>().add(GetAllUsersEvent(
+          clientId: '',
+          onErrorCallback: (errorMessage, errorCode) {},
+          onSuccessCallback: (message) {},
+        ));
     super.initState();
   }
 
@@ -565,6 +570,11 @@ class _UpdateClientBodyState extends State<UpdateClientBody> {
                         ElevatedButton(
                           onPressed: checkValidation()
                               ? () {
+                                  List<String> assignedUser = [];
+                                  for (var i in assignedProjectArchitects) {
+                                    assignedUser.add(i.userId);
+                                  }
+                                  print('.......updated users: ${assignedUser}');
                                   context
                                       .read<ClientBloc>()
                                       .add(UpdateClientEvent(
@@ -575,6 +585,7 @@ class _UpdateClientBodyState extends State<UpdateClientBody> {
                                         pocName: pocName.text,
                                         pocContactNumber: pocContactNumber.text,
                                         pocMailId: pocMailId.text,
+                                        assignedProjectArc: assignedUser,
                                         image: context
                                             .read<ClientBloc>()
                                             .state

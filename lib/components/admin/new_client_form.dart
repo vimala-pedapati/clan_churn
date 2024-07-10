@@ -96,7 +96,8 @@ class _NewClientFormState extends State<NewClientForm> {
     context.read<UserBloc>().add(GetAllUsersEvent(
           clientId: '',
           onErrorCallback: (errorMessage, errorCode) {},
-          onSuccessCallback: (message) {},
+          onSuccessCallback: (message) { 
+          },
         ));
     super.initState();
   }
@@ -490,6 +491,10 @@ class _NewClientFormState extends State<NewClientForm> {
                     ElevatedButton(
                       onPressed: checkValidation()
                           ? () {
+                              List<String> assignedUser = [];
+                              for (var i in assignedProjectArchitects) {
+                                assignedUser.add(i.userId);
+                              }
                               // GoRouter.of(context).go(AppRoutes.createClient);
                               context.read<ClientBloc>().add(CreateClientEvent(
                                     clinetName: clientName.text,
@@ -499,6 +504,7 @@ class _NewClientFormState extends State<NewClientForm> {
                                     pocName: pocName.text,
                                     pocContactNumber: pocContactNumber.text,
                                     pocMailId: pocMailId.text,
+                                    assignedProjectArc: assignedUser,
                                     image: context
                                             .read<ClientBloc>()
                                             .state

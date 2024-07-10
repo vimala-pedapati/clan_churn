@@ -84,8 +84,7 @@ class ApiRepository {
       //   Uri.parse(
       //       "${BaseUrl.baseUrl}${ApiEndpoints.getAllUsers}?client_id=$clientId"),
       final http.Response response = await http.post(
-        Uri.parse(
-            "${BaseUrl.baseUrl}${ApiEndpoints.getAllUsers}"),
+        Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.getAllUsers}"),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ${authCredentials.accessToken}',
@@ -711,6 +710,7 @@ class ApiRepository {
       required String pocContactNumber,
       required String pocMailId,
       required String image,
+      required List<String> assignedProjectArc,
       required OnErrorCallback onErrorCallback,
       required OnSuccessCallback onSuccessCallback}) async {
     try {
@@ -737,7 +737,8 @@ class ApiRepository {
             "poc_name": pocName,
             "poc_contact_number": pocContactNumber,
             "poc_mail_id": pocMailId,
-            "image": image
+            "image": image,
+            "assigned_users": assignedProjectArc
           }));
       print(" create client reponse: $response");
       if (response.statusCode == 200) {
@@ -766,6 +767,7 @@ class ApiRepository {
       required String pocContactNumber,
       required String pocMailId,
       required String? image,
+      required List<String> assignedProjectArc,
       required OnErrorCallback onErrorCallback,
       required OnSuccessCallback onSuccessCallback}) async {
     try {
@@ -793,7 +795,8 @@ class ApiRepository {
             "poc_name": pocName,
             "poc_contact_number": pocContactNumber,
             "poc_mail_id": pocMailId,
-            "image": image
+            "image": image,
+            "assigned_users": assignedProjectArc
           }));
 
       if (response.statusCode == 200) {

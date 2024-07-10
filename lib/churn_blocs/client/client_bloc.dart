@@ -28,6 +28,7 @@ class ClientBloc extends Bloc<ClientEvent, ClientState> {
         pocContactNumber: event.pocContactNumber,
         pocMailId: event.pocMailId,
         image: event.image,
+        assignedProjectArc: event.assignedProjectArc,
         onErrorCallback: event.onErrorCallback,
         onSuccessCallback: event.onSuccessCallback);
   }
@@ -44,6 +45,7 @@ class ClientBloc extends Bloc<ClientEvent, ClientState> {
         pocContactNumber: event.pocContactNumber,
         pocMailId: event.pocMailId,
         image: event.image,
+        assignedProjectArc: event.assignedProjectArc,
         onErrorCallback: event.onErrorCallback,
         onSuccessCallback: event.onSuccessCallback);
   }
