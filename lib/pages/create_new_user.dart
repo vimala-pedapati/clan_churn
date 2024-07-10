@@ -1,4 +1,5 @@
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
+import 'package:clan_churn/components/admin/new_user_form.dart';
 import 'package:clan_churn/components/churn_continer.dart';
 import 'package:clan_churn/components/nav_bar.dart';
 import 'package:clan_churn/components/side_bar.dart';
@@ -67,7 +68,7 @@ class _CreateNewUserState extends State<CreateNewUser> {
                       ),
                     ),
                     const Expanded(
-                        child: ChurnContainer(child: NewClientForm())),
+                        child: ChurnContainer(child: NewUserForm())),
                   ],
                 ),
               )

@@ -4,6 +4,8 @@ import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
 import 'package:clan_churn/components/admin/deactivate_button.dart';
 import 'package:clan_churn/components/client_projects.dart';
+import 'package:clan_churn/components/cus_text.dart';
+import 'package:clan_churn/components/cus_text_editing_controller.dart';
 import 'package:clan_churn/components/dialogs.dart';
 import 'package:clan_churn/pages/admin_home_page.dart';
 import 'package:clan_churn/pages/create_new_client.dart';
