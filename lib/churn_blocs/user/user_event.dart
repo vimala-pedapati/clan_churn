@@ -79,3 +79,14 @@ class DeleteUserEvent extends UserEvent {
       required this.onErrorCallback,
       required this.onSuccessCallback});
 }
+
+class GetAllUsersEvent extends UserEvent {
+  final String clientId;
+  final OnErrorCallback onErrorCallback;
+  final OnSuccessCallback onSuccessCallback;
+  const GetAllUsersEvent({
+    required this.clientId,
+    required this.onErrorCallback,
+    required this.onSuccessCallback,
+  });
+}

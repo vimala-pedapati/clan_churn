@@ -17,9 +17,10 @@ class ApiEndpoints {
   static String addUser = '/user/add';
   static String updateUser = '/user/update';
   static String updateUserStatus = '/user/update_user_status';
-  static String uploadUserPic = '/user/upload_user_pic';
+  // static String uploadUserPic = '/user/upload_user_pic';
   static String getUserTypes = '/user/get_user_types';
   static String deleteUser = '/user/delete_user';
+  static String getAllUsers = '/user/get_all_users';
 
   // client
   static String clientsList = '/client/client_list';

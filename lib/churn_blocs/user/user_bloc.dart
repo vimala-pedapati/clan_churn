@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:clan_churn/api_repos/api_repo.dart';
+import 'package:clan_churn/api_repos/models/client_logo_upload_res.dart';
 import 'package:clan_churn/api_repos/models/user_model.dart';
 import 'package:clan_churn/utils/routes.dart';
 import 'package:equatable/equatable.dart';
@@ -19,6 +20,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     on<GetUserTypesEvent>(onGetUserTypesEvent);
     on<UploadUserProfileEvent>(onUploadUserProfileEvent);
     on<DeleteUserEvent>(onDeleteUserEvent);
+    on<GetAllUsersEvent>(onGetAllUsersEvent);
   }
 
   onGetUserDetails(GetUserDetailsEvent event, Emitter<UserState> emit) async {
@@ -62,12 +64,16 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     );
   }
 
-  onUploadUserProfileEvent(UploadUserProfileEvent event, Emitter<UserState> emit) async {
+  onUploadUserProfileEvent(
+      UploadUserProfileEvent event, Emitter<UserState> emit) async {
     final result = await apiRepository.uploadUserPic(
       filePickerResult: event.filePickerResult,
       onErrorCallback: event.onErrorCallback,
       onSuccessCallback: event.onSuccessCallback,
     );
+    if (result != null) {
+      emit(state.copyWith(uploadLogoResponse: result));
+    }
   }
 
   onGetUserTypesEvent(GetUserTypesEvent event, Emitter<UserState> emit) async {
@@ -86,5 +92,15 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       onErrorCallback: event.onErrorCallback,
       onSuccessCallback: event.onSuccessCallback,
     );
+  }
+
+  onGetAllUsersEvent(GetAllUsersEvent event, Emitter<UserState> emit) async {
+    final result = await apiRepository.getAllUsers(
+        onErrorCallback: event.onErrorCallback,
+        onSuccessCallback: event.onSuccessCallback,
+        clientId: event.clientId);
+    if (result != null) {
+      emit(state.copyWith(listOfUsers: result));
+    }
   }
 }

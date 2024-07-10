@@ -2,6 +2,7 @@ import 'package:clan_churn/api_repos/models/user_model.dart';
 import 'package:clan_churn/churn_blocs/client/client_bloc.dart';
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
 import 'package:clan_churn/components/dialogs.dart';
+import 'package:clan_churn/components/project_card.dart';
 import 'package:clan_churn/pages/create_client.dart';
 import 'package:clan_churn/pages/create_new_client.dart';
 import 'package:clan_churn/utils/routes.dart';
@@ -155,20 +156,38 @@ class _UpdateUserState extends State<UpdateUser> {
                 );
               }
             },
-            child: BlocBuilder<ClientBloc, ClientState>(
+            child: BlocBuilder<UserBloc, UserState>(
               builder: (context, state) {
-                return CircleAvatar(
-                    radius: 50,
-                    foregroundImage: state.clientUploadLogoResponse == null
-                        ? null
-                        : NetworkImage(
-                            state.clientUploadLogoResponse!.imageUrl,
-                          ),
-                    child: Icon(
-                      Icons.add_photo_alternate_outlined,
-                      size: 40,
-                      color: Theme.of(context).colorScheme.background,
+                return ClipOval(
+                    // radius: 50,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Image.network(
+                        "${widget.user.image}",
+                        // loadingBuilder: ((context, child, loadingProgress) {
+                        //   return const CircularProgressIndicator();
+                        // }),
+                        errorBuilder: (context, error, stackTrace) {
+                          return ClipOval(
+                              child: Image.network(
+                            image,
+                            scale: 1,
+                          ));
+                        },
+                      ),
                     ));
+                // return CircleAvatar(
+                //     radius: 50,
+                //     foregroundImage: state.user == null
+                //         ? null
+                //         : NetworkImage(
+                //             state.clientUploadLogoResponse!.imageUrl,
+                //           ),
+                //     child: Icon(
+                //       Icons.add_photo_alternate_outlined,
+                //       size: 40,
+                //       color: Theme.of(context).colorScheme.background,
+                //     ));
               },
             ),
           ),
@@ -346,16 +365,30 @@ class _UpdateUserState extends State<UpdateUser> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const CusText(
-                            text: 'Assign Client',
+                            text: 'Password',
                           ),
                           CusTextEditingController(
-                            hintText: "Enter Last Name",
-                            controller: lastName,
+                            hintText: "Enter your password",
+                            controller: password,
                             onChanged: (p0) {},
                             textInputAction: TextInputAction.next,
-                          )
+                          ),
                         ],
                       ),
+                      // Column(
+                      //   crossAxisAlignment: CrossAxisAlignment.start,
+                      //   children: [
+                      //     const CusText(
+                      //       text: 'Assign Client',
+                      //     ),
+                      //     CusTextEditingController(
+                      //       hintText: "Enter Last Name",
+                      //       controller: lastName,
+                      //       onChanged: (p0) {},
+                      //       textInputAction: TextInputAction.next,
+                      //     )
+                      //   ],
+                      // ),
                     ],
                   ),
                   Row(
@@ -374,20 +407,20 @@ class _UpdateUserState extends State<UpdateUser> {
                       //     ),
                       //   ],
                       // ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const CusText(
-                            text: 'Password',
-                          ),
-                          CusTextEditingController(
-                            hintText: "Enter your password",
-                            controller: password,
-                            onChanged: (p0) {},
-                            textInputAction: TextInputAction.next,
-                          ),
-                        ],
-                      ),
+                      // Column(
+                      //   crossAxisAlignment: CrossAxisAlignment.start,
+                      //   children: [
+                      //     const CusText(
+                      //       text: 'Password',
+                      //     ),
+                      //     CusTextEditingController(
+                      //       hintText: "Enter your password",
+                      //       controller: password,
+                      //       onChanged: (p0) {},
+                      //       textInputAction: TextInputAction.next,
+                      //     ),
+                      //   ],
+                      // ),
                     ],
                   ),
                   const SizedBox(

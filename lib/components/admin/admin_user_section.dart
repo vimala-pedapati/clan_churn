@@ -1,7 +1,6 @@
 import 'package:clan_churn/api_repos/models/user_model.dart';
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
-import 'package:clan_churn/components/admin/admin_client_card.dart';
 import 'package:clan_churn/components/admin/update_user.dart';
 import 'package:clan_churn/components/project_card.dart';
 import 'package:clan_churn/pages/create_new_user.dart';
@@ -48,7 +47,9 @@ class CreateNewUserCard extends StatelessWidget {
 }
 
 class UsersCard extends StatefulWidget {
-  const UsersCard({super.key});
+  const UsersCard({
+    super.key,
+  });
 
   @override
   State<UsersCard> createState() => _UsersCardState();
@@ -58,6 +59,11 @@ class _UsersCardState extends State<UsersCard> {
   @override
   void initState() {
     context.read<UserBloc>().add(GetUserDetailsEvent(context: context));
+    context.read<UserBloc>().add(GetAllUsersEvent(
+          clientId: '',
+          onErrorCallback: (errorMessage, errorCode) {},
+          onSuccessCallback: (message) {},
+        ));
     super.initState();
   }
 
@@ -70,9 +76,9 @@ class _UsersCardState extends State<UsersCard> {
             runSpacing: 15,
             spacing: 15,
             children: [
-              ...[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((c) {
+              ...state.listOfUsers.map((user) {
                 return UserCard(
-                  user: state.user!,
+                  user: user,
                 );
               }).toList(),
               const CreateNewUserCard()

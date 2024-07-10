@@ -66,6 +66,51 @@ class ApiRepository {
     }
   }
 
+  Future<List<User>?> getAllUsers(
+      {required OnErrorCallback onErrorCallback,
+      required OnSuccessCallback onSuccessCallback,
+      required String clientId}) async {
+    try {
+      final AuthCredentials authCredentials =
+          await AuthRepository().getTokens();
+
+      if (authCredentials.accessToken.isEmpty) {
+        log('Access token is empty');
+        onErrorCallback('Access token is empty', 0);
+        return null;
+      }
+
+      // final http.Response response = await http.post(
+      //   Uri.parse(
+      //       "${BaseUrl.baseUrl}${ApiEndpoints.getAllUsers}?client_id=$clientId"),
+      final http.Response response = await http.post(
+        Uri.parse(
+            "${BaseUrl.baseUrl}${ApiEndpoints.getAllUsers}"),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${authCredentials.accessToken}',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = json.decode(response.body);
+        List<User> users = data.map((user) => User.fromJson(user)).toList();
+        log("getAllUsersResponse:..... $data");
+        onSuccessCallback(response);
+        return users;
+      } else {
+        _handleStatusCode(
+            response.statusCode, response.reasonPhrase, onErrorCallback);
+        onErrorCallback('${response.reasonPhrase}', response.statusCode);
+        return null;
+      }
+    } catch (e) {
+      log('Network Error: $e');
+      onErrorCallback('Network Error: $e', 0);
+      return null;
+    }
+  }
+
   Future<List<ClientDetails>?> getClientsList(
       {required OnErrorCallback onErrorCallback,
       required OnSuccessCallback onSuccessCallback}) async {
@@ -766,7 +811,7 @@ class ApiRepository {
     return null;
   }
 
-  Future<ClientUploadLogoResponse?> uploadClientLogo(
+  Future<UploadLogoResponse?> uploadClientLogo(
       {required FilePickerResult filePickerResult,
       required OnErrorCallback onErrorCallback,
       required OnSuccessCallback onSuccessCallback}) async {
@@ -807,8 +852,8 @@ class ApiRepository {
         if (response.statusCode == 200) {
           String responseString = await response.stream.bytesToString();
           print(responseString);
-          ClientUploadLogoResponse imageUrl =
-              ClientUploadLogoResponse.fromJson(json.decode(responseString));
+          UploadLogoResponse imageUrl =
+              UploadLogoResponse.fromJson(json.decode(responseString));
           print(imageUrl);
           onSuccessCallback(null);
           return imageUrl;
@@ -960,7 +1005,7 @@ class ApiRepository {
     return false;
   }
 
-  Future<String?> uploadUserPic(
+  Future<UploadLogoResponse?> uploadUserPic(
       {required FilePickerResult filePickerResult,
       required OnErrorCallback onErrorCallback,
       required OnSuccessCallback onSuccessCallback}) async {
@@ -982,7 +1027,8 @@ class ApiRepository {
         };
         var request = http.MultipartRequest(
           'POST',
-          Uri.parse('${BaseUrl.baseUrl}${ApiEndpoints.uploadUserPic}'),
+          Uri.parse(
+              '${BaseUrl.baseUrl}${ApiEndpoints.uploadLogo}?document_type=user'),
         );
         // request.fields.addAll({'project_id': projectId});
 
@@ -999,7 +1045,9 @@ class ApiRepository {
         if (response.statusCode == 200) {
           String responseString = await response.stream.bytesToString();
           print(responseString);
-          String imageUrl = json.decode(responseString);
+          UploadLogoResponse imageUrl =
+              UploadLogoResponse.fromJson(json.decode(responseString));
+          print(imageUrl);
           onSuccessCallback(null);
           return imageUrl;
         } else {
