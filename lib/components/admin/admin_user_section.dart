@@ -1,7 +1,7 @@
 import 'package:clan_churn/api_repos/models/user_model.dart';
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
-import 'package:clan_churn/components/admin/update_user.dart';
+import 'package:clan_churn/components/admin/update_user_form.dart';
 import 'package:clan_churn/components/project_card.dart';
 import 'package:clan_churn/pages/create_new_user.dart';
 import 'package:clan_churn/utils/routes.dart';
