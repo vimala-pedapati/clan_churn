@@ -919,6 +919,7 @@ class ApiRepository {
       required String email,
       required String password,
       required String userType,
+      required String? image,
       required OnErrorCallback onErrorCallback,
       required OnSuccessCallback onSuccessCallback}) async {
     try {
@@ -930,7 +931,7 @@ class ApiRepository {
         onErrorCallback('Access token is empty', 0);
         return null;
       }
-
+      print("................BEfore making api cal");
       http.Response response = await http.post(
           Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.addUser}"),
           headers: {
@@ -938,16 +939,15 @@ class ApiRepository {
             'Authorization': 'Bearer ${authCredentials.accessToken}',
           },
           body: json.encode({
-            {
-              "client_id": clientId,
-              "first_name": firstName,
-              "last_name": lastName,
-              "email": email,
-              "password": password,
-              "user_type": userType
-            }
+            "client_id": null,
+            "first_name": firstName,
+            "last_name": lastName,
+            "email": email,
+            "password": password,
+            "user_type": userType,
+            'image_url': image
           }));
-
+      print("................BEfore making api cal");
       if (response.statusCode == 200) {
         onSuccessCallback(response);
         return true;

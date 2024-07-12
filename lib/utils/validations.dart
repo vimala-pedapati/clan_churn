@@ -39,7 +39,7 @@ class Validation {
     return null;
   }
 
-  static String? validateCreateUserName(String value) {
+  static String? validateUserName(String value) {
     if (value.isEmpty) {
       return 'This field cannot be empty';
     }
@@ -78,6 +78,9 @@ class Validation {
     }
     if (value.length > 100) {
       return 'Maximum Character Limit Exceeded, please recheck or contact Admin';
+    }
+    if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+      return 'Point of contact email is not in valid format';
     }
     return null;
   }

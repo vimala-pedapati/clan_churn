@@ -45,6 +45,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       email: event.email,
       password: event.password,
       userType: event.userType,
+      image: event.image,
       onErrorCallback: event.onErrorCallback,
       onSuccessCallback: event.onSuccessCallback,
     );

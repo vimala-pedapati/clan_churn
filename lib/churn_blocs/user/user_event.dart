@@ -18,6 +18,7 @@ class AddUserEvent extends UserEvent {
   final String email;
   final String password;
   final String userType;
+  final String? image;
   final OnErrorCallback onErrorCallback;
   final OnSuccessCallback onSuccessCallback;
   const AddUserEvent(
@@ -27,6 +28,7 @@ class AddUserEvent extends UserEvent {
       required this.email,
       required this.password,
       required this.userType,
+      required this.image,
       required this.onErrorCallback,
       required this.onSuccessCallback});
 }

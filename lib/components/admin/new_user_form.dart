@@ -6,6 +6,7 @@ import 'package:clan_churn/components/dialogs.dart';
 import 'package:clan_churn/pages/create_client.dart';
 import 'package:clan_churn/utils/routes.dart';
 import 'package:clan_churn/utils/typography.dart';
+import 'package:clan_churn/utils/validations.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:file_picker/_internal/file_picker_web.dart';
 import 'package:file_picker/file_picker.dart';
@@ -21,8 +22,8 @@ class NewUserForm extends StatefulWidget {
 }
 
 class _NewUserFormState extends State<NewUserForm> {
-  TextEditingController firstName = TextEditingController();
-  TextEditingController lastName = TextEditingController();
+  TextEditingController fullName = TextEditingController();
+  // TextEditingController lastName = TextEditingController();
   TextEditingController password = TextEditingController();
   TextEditingController mailId = TextEditingController();
   bool isImageUploading = false;
@@ -31,26 +32,30 @@ class _NewUserFormState extends State<NewUserForm> {
   String? selectedType;
 
   String? validateFields() {
-    if (firstName.text.isEmpty) {
-      return 'First name cannot be empty';
+    String? checkUserName = Validation.validateUserName(fullName.text);
+
+    if (checkUserName != null) {
+      return checkUserName;
     }
-    if (lastName.text.isEmpty) {
-      return 'Last name cannot be empty';
+    if (selectedType == null) {
+      return 'Should select one type';
+    }
+
+    String? checkEmailAddress = Validation.validateUserEmailID(mailId.text);
+    if (checkEmailAddress != null) {
+      return checkEmailAddress;
     }
 
     if (password.text.isEmpty) {
       return 'Passwrd cannot be empty';
     }
-    // if (!RegExp(r'^\d{10}$').hasMatch(phoneNumber.text)) {
-    //   return 'Contact number must be 10 digits';
-    // }
+
     if (password.text.length >= 6) {
       return 'Password is too weak';
     }
-    if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(mailId.text)) {
-      return 'Point of contact email is not in valid format';
-    }
-    if (context.read<ClientBloc>().state.clientUploadLogoResponse == null) {
+
+    if (context.read<ClientBloc>().state.clientUploadLogoResponse == null &&
+        selectedType == null) {
       return 'Profile pic is required';
     }
     return null;
@@ -67,8 +72,8 @@ class _NewUserFormState extends State<NewUserForm> {
 
   @override
   void initState() {
-    firstName.addListener(_validateForm);
-    lastName.addListener(_validateForm);
+    fullName.addListener(_validateForm);
+    // lastName.addListener(_validateForm);
     password.addListener(_validateForm);
     mailId.addListener(_validateForm);
 
@@ -94,9 +99,13 @@ class _NewUserFormState extends State<NewUserForm> {
             const SizedBox(
               width: 30,
             ),
-            Text(
-              "Create New User",
-              style: ClanChurnTypography.font20600,
+            BlocBuilder<UserBloc, UserState>(
+              builder: (context, state) {
+                return Text(
+                  "Create New User ${state.uploadLogoResponse}",
+                  style: ClanChurnTypography.font20600,
+                );
+              },
             )
           ],
         ),
@@ -139,14 +148,14 @@ class _NewUserFormState extends State<NewUserForm> {
                 );
               }
             },
-            child: BlocBuilder<ClientBloc, ClientState>(
+            child: BlocBuilder<UserBloc, UserState>(
               builder: (context, state) {
                 return CircleAvatar(
                     radius: 50,
-                    foregroundImage: state.clientUploadLogoResponse == null
+                    foregroundImage: state.uploadLogoResponse == null
                         ? null
                         : NetworkImage(
-                            state.clientUploadLogoResponse!.imageUrl,
+                            state.uploadLogoResponse!.imageUrl,
                           ),
                     child: Icon(
                       Icons.add_photo_alternate_outlined,
@@ -174,34 +183,16 @@ class _NewUserFormState extends State<NewUserForm> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const CusText(
-                            text: 'First Name',
+                            text: 'Full Name',
                           ),
                           CusTextEditingController(
-                            hintText: "Enter First Name",
-                            controller: firstName,
+                            hintText: "Enter Full Name",
+                            controller: fullName,
                             onChanged: (p0) {},
                             textInputAction: TextInputAction.next,
                           )
                         ],
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const CusText(
-                            text: 'Last Name',
-                          ),
-                          CusTextEditingController(
-                            hintText: "Enter Last Name",
-                            controller: lastName,
-                            onChanged: (p0) {},
-                            textInputAction: TextInputAction.next,
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -323,23 +314,42 @@ class _NewUserFormState extends State<NewUserForm> {
                           )
                         ],
                       ),
-                      const SizedBox(
+
+                      // Column(
+                      //   crossAxisAlignment: CrossAxisAlignment.start,
+                      //   children: [
+                      //     const CusText(
+                      //       text: 'Last Name',
+                      //     ),
+                      //     CusTextEditingController(
+                      //       hintText: "Enter Last Name",
+                      //       controller: lastName,
+                      //       onChanged: (p0) {},
+                      //       textInputAction: TextInputAction.next,
+                      //     )
+                      //   ],
+                      // ),
+                    ],
+                  ),
+                  const Row(
+                    children: [
+                      SizedBox(
                         width: 15,
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const CusText(
-                            text: 'Assign Client',
-                          ),
-                          CusTextEditingController(
-                            hintText: "Enter Last Name",
-                            controller: lastName,
-                            onChanged: (p0) {},
-                            textInputAction: TextInputAction.next,
-                          )
-                        ],
-                      ),
+                      // Column(
+                      //   crossAxisAlignment: CrossAxisAlignment.start,
+                      //   children: [
+                      //     const CusText(
+                      //       text: 'Assign Client',
+                      //     ),
+                      //     CusTextEditingController(
+                      //       hintText: "Enter Last Name",
+                      //       controller: lastName,
+                      //       onChanged: (p0) {},
+                      //       textInputAction: TextInputAction.next,
+                      //     )
+                      //   ],
+                      // ),
                     ],
                   ),
                   Row(
@@ -388,43 +398,48 @@ class _NewUserFormState extends State<NewUserForm> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                ElevatedButton(
-                  onPressed: checkValidation()
-                      ? () {
-                          // GoRouter.of(context).go(AppRoutes.createClient);
-                          context.read<UserBloc>().add(AddUserEvent(
-                                clientId: '',
-                                firstName: firstName.text,
-                                lastName: lastName.text,
-                                email: mailId.text,
-                                password: password.text,
-                                userType: '',
-                                onErrorCallback: (errorMessage, errorCode) {
-                                  print("unable to create user: $errorMessage");
-                                },
-                                onSuccessCallback: (message) {
-                                  Navigator.pushReplacement(
-                                      context,
-                                      customPageRouteForNavigation(
-                                          const CreateClient()));
-                                },
-                              ));
-                        }
-                      : null,
-                  child: Row(
-                    children: [
-                      const Icon(Icons.arrow_circle_right_outlined),
-                      const SizedBox(
-                        width: 10,
+                BlocBuilder<UserBloc, UserState>(
+                  builder: (context, state) {
+                    return ElevatedButton(
+                      onPressed: checkValidation()
+                          ? () {
+                              context.read<UserBloc>().add(AddUserEvent(
+                                    clientId: '',
+                                    firstName: fullName.text,
+                                    lastName: '',
+                                    email: mailId.text,
+                                    password: password.text,
+                                    userType: selectedType ?? '',
+                                    image: state.uploadLogoResponse?.filename,
+                                    onErrorCallback: (errorMessage, errorCode) {
+                                      print(
+                                          "unable to create user: $errorMessage");
+                                    },
+                                    onSuccessCallback: (message) {
+                                      Navigator.pushReplacement(
+                                          context,
+                                          customPageRouteForNavigation(
+                                              const CreateClient()));
+                                    },
+                                  ));
+                            }
+                          : null,
+                      child: Row(
+                        children: [
+                          const Icon(Icons.arrow_circle_right_outlined),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          FittedBox(
+                            child: Text(
+                              "Create User",
+                              style: ClanChurnTypography.font15600,
+                            ),
+                          ),
+                        ],
                       ),
-                      FittedBox(
-                        child: Text(
-                          "Create User",
-                          style: ClanChurnTypography.font15600,
-                        ),
-                      ),
-                    ],
-                  ),
+                    );
+                  },
                 )
               ]),
         )
