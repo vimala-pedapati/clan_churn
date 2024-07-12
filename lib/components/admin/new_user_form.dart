@@ -50,7 +50,7 @@ class _NewUserFormState extends State<NewUserForm> {
       return 'Passwrd cannot be empty';
     }
 
-    if (password.text.length >= 6) {
+    if (password.text.length > 6) {
       return 'Password is too weak';
     }
 

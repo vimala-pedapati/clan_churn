@@ -40,28 +40,33 @@ class _UpdateUserState extends State<UpdateUser> {
     if (checkUserName != null) {
       return checkUserName;
     }
-    if (selectedType == null) {
-      return 'Should select one type';
-    }
-
     String? checkEmailAddress = Validation.validateUserEmailID(mailId.text);
     if (checkEmailAddress != null) {
       return checkEmailAddress;
     }
-
-    if (password.text.isEmpty) {
-      return 'Passwrd cannot be empty';
+    if (selectedType == null) {
+      return 'Should select one type';
     }
-
-    if (password.text.length >= 6) {
-      return 'Password is too weak';
-    }
-
     if (context.read<ClientBloc>().state.clientUploadLogoResponse == null &&
         selectedType == null) {
       return 'Profile pic is required';
     }
+    if (password.text.isNotEmpty) {
+      if (!(password.text.length >= 6 &&
+          password.text == confirmPassword.text)) {
+        return 'Password is too weak';
+      }
+    }
     return null;
+  }
+
+  String? checkConfirmPassword() {
+    if (password.text.isNotEmpty) {
+      if (password.text == confirmPassword.text) {
+        return null;
+      }
+    }
+    return "The Password and Confirm password should be the same";
   }
 
   bool checkValidation() {
@@ -76,7 +81,7 @@ class _UpdateUserState extends State<UpdateUser> {
   @override
   void initState() {
     fullName.addListener(_validateForm);
-    // lastName.addListener(_validateForm);
+    confirmPassword.addListener(_validateForm);
     password.addListener(_validateForm);
     context.read<UserBloc>().add(GetUserTypesEvent(
           onErrorCallback: (errorMessage, errorCode) {
@@ -447,57 +452,72 @@ class _UpdateUserState extends State<UpdateUser> {
         ),
         Expanded(
           flex: 1,
-          child: Row(
+          child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                BlocBuilder<UserBloc, UserState>(
-                  builder: (context, state) {
-                    return ElevatedButton(
-                      onPressed: checkValidation()
-                          ? () {
-                              context.read<UserBloc>().add(UpdateUserEvent(
-                                    clientId: '',
-                                    firstName: fullName.text,
-                                    lastName: null,
-                                    image: state.uploadLogoResponse?.filename,
-                                    // email: mailId.text,
-                                    userId: widget.user.userId,
-                                    password: password.text.trim().isEmpty
-                                        ? null
-                                        : password.text,
-                                    userType: selectedType!,
-                                    onErrorCallback: (errorMessage, errorCode) {
-                                      print(
-                                          "error response from update user: $errorMessage, $errorCode");
-                                    },
-                                    onSuccessCallback: (message) {
-                                      print(
-                                          "success response from update user: ${message?.body}");
-                                      Navigator.pushReplacement(
-                                          context,
-                                          customPageRouteForNavigation(
-                                              const CreateClient()));
-                                    },
-                                  ));
-                            }
-                          : null,
-                      child: Row(
-                        children: [
-                          const Icon(Icons.arrow_circle_right_outlined),
-                          const SizedBox(
-                            width: 10,
+                if (password.text.trim().isNotEmpty)
+                  if (checkConfirmPassword() != null)
+                    Text(
+                      "${checkConfirmPassword()}",
+                      style: ClanChurnTypography.font12600
+                          .copyWith(color: Theme.of(context).colorScheme.error),
+                    ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    BlocBuilder<UserBloc, UserState>(
+                      builder: (context, state) {
+                        return ElevatedButton(
+                          onPressed: checkValidation()
+                              ? () {
+                                  context.read<UserBloc>().add(UpdateUserEvent(
+                                        clientId: '',
+                                        firstName: fullName.text,
+                                        lastName: null,
+                                        image:
+                                            state.uploadLogoResponse?.filename,
+                                        // email: mailId.text,
+                                        userId: widget.user.userId,
+                                        password: password.text.trim().isEmpty
+                                            ? null
+                                            : password.text,
+                                        userType: selectedType!,
+                                        onErrorCallback:
+                                            (errorMessage, errorCode) {
+                                          print(
+                                              "error response from update user: $errorMessage, $errorCode");
+                                        },
+                                        onSuccessCallback: (message) {
+                                          print(
+                                              "success response from update user: ${message?.body}");
+                                          Navigator.pushReplacement(
+                                              context,
+                                              customPageRouteForNavigation(
+                                                  const CreateClient()));
+                                        },
+                                      ));
+                                }
+                              : null,
+                          child: Row(
+                            children: [
+                              const Icon(Icons.arrow_circle_right_outlined),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              FittedBox(
+                                child: Text(
+                                  "Update User",
+                                  style: ClanChurnTypography.font15600,
+                                ),
+                              ),
+                            ],
                           ),
-                          FittedBox(
-                            child: Text(
-                              "Update User",
-                              style: ClanChurnTypography.font15600,
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
+                        );
+                      },
+                    ),
+                  ],
                 )
               ]),
         )

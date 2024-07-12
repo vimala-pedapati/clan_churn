@@ -991,7 +991,8 @@ class ApiRepository {
             "last_name": null,
             "user_id": userId,
             "password": password,
-            "user_type": userType
+            "user_type": userType,
+              "image_url": image
           }));
 
       print("update user response : $response");
