@@ -913,9 +913,9 @@ class ApiRepository {
   }
 
   Future<bool?> addUser(
-      {required String clientId,
+      {required String? clientId,
       required String firstName,
-      required String lastName,
+      required String? lastName,
       required String email,
       required String password,
       required String userType,
@@ -962,12 +962,13 @@ class ApiRepository {
   }
 
   Future<bool?> updateUser(
-      {required String clientId,
+      {required String? clientId,
       required String firstName,
-      required String lastName,
+      required String? lastName,
       required String userId,
-      required String password,
+      required String? password,
       required String userType,
+      required String? image,
       required OnErrorCallback onErrorCallback,
       required OnSuccessCallback onSuccessCallback}) async {
     try {
@@ -985,9 +986,9 @@ class ApiRepository {
             'Authorization': 'Bearer ${authCredentials.accessToken}',
           },
           body: json.encode({
-            "client_id": clientId,
+            "client_id": null,
             "first_name": firstName,
-            "last_name": lastName,
+            "last_name": null,
             "user_id": userId,
             "password": password,
             "user_type": userType

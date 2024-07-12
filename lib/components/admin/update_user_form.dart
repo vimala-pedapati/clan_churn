@@ -6,9 +6,9 @@ import 'package:clan_churn/components/cus_text_editing_controller.dart';
 import 'package:clan_churn/components/dialogs.dart';
 import 'package:clan_churn/components/project_card.dart';
 import 'package:clan_churn/pages/create_client.dart';
-import 'package:clan_churn/pages/create_new_client.dart';
 import 'package:clan_churn/utils/routes.dart';
 import 'package:clan_churn/utils/typography.dart';
+import 'package:clan_churn/utils/validations.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:file_picker/_internal/file_picker_web.dart';
 import 'package:file_picker/file_picker.dart';
@@ -25,38 +25,42 @@ class UpdateUser extends StatefulWidget {
 }
 
 class _UpdateUserState extends State<UpdateUser> {
-  TextEditingController firstName = TextEditingController();
-  TextEditingController lastName = TextEditingController();
+  TextEditingController fullName = TextEditingController();
+  TextEditingController confirmPassword = TextEditingController();
   TextEditingController password = TextEditingController();
-  // TextEditingController mailId = TextEditingController();
+  TextEditingController mailId = TextEditingController();
   bool isImageUploading = false;
   bool imageUploadFailed = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String? selectedType;
 
   String? validateFields() {
-    if (firstName.text.isEmpty) {
-      return 'First name cannot be empty';
+    String? checkUserName = Validation.validateUserName(fullName.text);
+
+    if (checkUserName != null) {
+      return checkUserName;
     }
-    if (lastName.text.isEmpty) {
-      return 'Last name cannot be empty';
+    if (selectedType == null) {
+      return 'Should select one type';
+    }
+
+    String? checkEmailAddress = Validation.validateUserEmailID(mailId.text);
+    if (checkEmailAddress != null) {
+      return checkEmailAddress;
     }
 
     if (password.text.isEmpty) {
       return 'Passwrd cannot be empty';
     }
-    // if (!RegExp(r'^\d{10}$').hasMatch(phoneNumber.text)) {
-    //   return 'Contact number must be 10 digits';
-    // }
-    if (password.text.length < 6) {
+
+    if (password.text.length >= 6) {
       return 'Password is too weak';
     }
-    // if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(mailId.text)) {
-    //   return 'Point of contact email is not in valid format';
-    // }
-    // if (context.read<ClientBloc>().state.clientUploadLogoResponse == null) {
-    //   return 'Profile pic is required';
-    // }
+
+    if (context.read<ClientBloc>().state.clientUploadLogoResponse == null &&
+        selectedType == null) {
+      return 'Profile pic is required';
+    }
     return null;
   }
 
@@ -71,8 +75,8 @@ class _UpdateUserState extends State<UpdateUser> {
 
   @override
   void initState() {
-    firstName.addListener(_validateForm);
-    lastName.addListener(_validateForm);
+    fullName.addListener(_validateForm);
+    // lastName.addListener(_validateForm);
     password.addListener(_validateForm);
     context.read<UserBloc>().add(GetUserTypesEvent(
           onErrorCallback: (errorMessage, errorCode) {
@@ -85,9 +89,9 @@ class _UpdateUserState extends State<UpdateUser> {
           },
         ));
     setState(() {
-      firstName.text = widget.user.firstName ?? '';
-      lastName.text = widget.user.lastName;
-      // password.text = widget.user
+      fullName.text = widget.user.firstName ?? '';
+      // lastName.text = widget.user.lastName;
+      mailId.text = widget.user.email;
       selectedType = widget.user.userType.value;
     });
 
@@ -163,21 +167,21 @@ class _UpdateUserState extends State<UpdateUser> {
                 return ClipOval(
                     // radius: 50,
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Image.network(
-                        "${widget.user.image}",
-                        // loadingBuilder: ((context, child, loadingProgress) {
-                        //   return const CircularProgressIndicator();
-                        // }),
-                        errorBuilder: (context, error, stackTrace) {
-                          return ClipOval(
-                              child: Image.network(
-                            image,
-                            scale: 1,
-                          ));
-                        },
-                      ),
-                    ));
+                  padding: const EdgeInsets.all(8.0),
+                  child: Image.network(
+                    "${widget.user.image}",
+                    // loadingBuilder: ((context, child, loadingProgress) {
+                    //   return const CircularProgressIndicator();
+                    // }),
+                    errorBuilder: (context, error, stackTrace) {
+                      return ClipOval(
+                          child: Image.network(
+                        image,
+                        scale: 1,
+                      ));
+                    },
+                  ),
+                ));
                 // return CircleAvatar(
                 //     radius: 50,
                 //     foregroundImage: state.user == null
@@ -211,11 +215,12 @@ class _UpdateUserState extends State<UpdateUser> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const CusText(
-                            text: 'First Name',
+                            text: 'Full Name',
+                            isNotRequired: true,
                           ),
                           CusTextEditingController(
-                            hintText: "Enter First Name",
-                            controller: firstName,
+                            hintText: "Enter Full Name",
+                            controller: fullName,
                             onChanged: (p0) {},
                             textInputAction: TextInputAction.next,
                           )
@@ -225,12 +230,14 @@ class _UpdateUserState extends State<UpdateUser> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const CusText(
-                            text: 'Last Name',
+                            text: 'Email ID',
+                            isNotRequired: true,
                           ),
                           CusTextEditingController(
-                            hintText: "Enter Last Name",
-                            controller: lastName,
+                            hintText: "Enter Mail Id",
+                            controller: mailId,
                             onChanged: (p0) {},
+                            isEnabled: false,
                             textInputAction: TextInputAction.next,
                           )
                         ],
@@ -244,6 +251,7 @@ class _UpdateUserState extends State<UpdateUser> {
                         children: [
                           const CusText(
                             text: 'Type of user',
+                            isNotRequired: true,
                           ),
                           SizedBox(
                             width: 400,
@@ -368,10 +376,12 @@ class _UpdateUserState extends State<UpdateUser> {
                         children: [
                           const CusText(
                             text: 'Password',
+                            isNotRequired: true,
                           ),
                           CusTextEditingController(
-                            hintText: "Enter your password",
+                            hintText: "********",
                             controller: password,
+                            isObacureText: true,
                             onChanged: (p0) {},
                             textInputAction: TextInputAction.next,
                           ),
@@ -393,38 +403,40 @@ class _UpdateUserState extends State<UpdateUser> {
                       // ),
                     ],
                   ),
-                  Row(
-                    children: [
-                      // Column(
-                      //   crossAxisAlignment: CrossAxisAlignment.start,
-                      //   children: [
-                      //     const CusText(
-                      //       text: 'Mail ID',
-                      //     ),
-                      //     CusTextEditingController(
-                      //       hintText: "Enter Mail Id",
-                      //       controller: mailId,
-                      //       onChanged: (p0) {},
-                      //       textInputAction: TextInputAction.next,
-                      //     ),
-                      //   ],
-                      // ),
-                      // Column(
-                      //   crossAxisAlignment: CrossAxisAlignment.start,
-                      //   children: [
-                      //     const CusText(
-                      //       text: 'Password',
-                      //     ),
-                      //     CusTextEditingController(
-                      //       hintText: "Enter your password",
-                      //       controller: password,
-                      //       onChanged: (p0) {},
-                      //       textInputAction: TextInputAction.next,
-                      //     ),
-                      //   ],
-                      // ),
-                    ],
-                  ),
+                  if (password.text.trim().isNotEmpty)
+                    Row(
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const CusText(
+                              text: 'Confirm Password',
+                            ),
+                            CusTextEditingController(
+                              hintText: "********",
+                              isObacureText: true,
+                              controller: confirmPassword,
+                              onChanged: (p0) {},
+                              textInputAction: TextInputAction.next,
+                            ),
+                          ],
+                        ),
+                        // Column(
+                        //   crossAxisAlignment: CrossAxisAlignment.start,
+                        //   children: [
+                        //     const CusText(
+                        //       text: 'Password',
+                        //     ),
+                        //     CusTextEditingController(
+                        //       hintText: "Enter your password",
+                        //       controller: password,
+                        //       onChanged: (p0) {},
+                        //       textInputAction: TextInputAction.next,
+                        //     ),
+                        //   ],
+                        // ),
+                      ],
+                    ),
                   const SizedBox(
                     height: 80,
                   ),
@@ -439,46 +451,53 @@ class _UpdateUserState extends State<UpdateUser> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                ElevatedButton(
-                  onPressed: checkValidation()
-                      ? () {
-                          context.read<UserBloc>().add(UpdateUserEvent(
-                                clientId: widget.user.clientDetails?.id ?? '',
-                                firstName: firstName.text,
-                                lastName: lastName.text,
-                                // email: mailId.text,
-                                userId: widget.user.userId,
-                                password: password.text,
-                                userType: selectedType!,
-                                onErrorCallback: (errorMessage, errorCode) {
-                                  print(
-                                      "error response from update user: $errorMessage, $errorCode");
-                                },
-                                onSuccessCallback: (message) {
-                                  print(
-                                      "success response from update user: ${message?.body}");
-                                  Navigator.pushReplacement(
-                                      context,
-                                      customPageRouteForNavigation(
-                                          const CreateClient()));
-                                },
-                              ));
-                        }
-                      : null,
-                  child: Row(
-                    children: [
-                      const Icon(Icons.arrow_circle_right_outlined),
-                      const SizedBox(
-                        width: 10,
+                BlocBuilder<UserBloc, UserState>(
+                  builder: (context, state) {
+                    return ElevatedButton(
+                      onPressed: checkValidation()
+                          ? () {
+                              context.read<UserBloc>().add(UpdateUserEvent(
+                                    clientId: '',
+                                    firstName: fullName.text,
+                                    lastName: null,
+                                    image: state.uploadLogoResponse?.filename,
+                                    // email: mailId.text,
+                                    userId: widget.user.userId,
+                                    password: password.text.trim().isEmpty
+                                        ? null
+                                        : password.text,
+                                    userType: selectedType!,
+                                    onErrorCallback: (errorMessage, errorCode) {
+                                      print(
+                                          "error response from update user: $errorMessage, $errorCode");
+                                    },
+                                    onSuccessCallback: (message) {
+                                      print(
+                                          "success response from update user: ${message?.body}");
+                                      Navigator.pushReplacement(
+                                          context,
+                                          customPageRouteForNavigation(
+                                              const CreateClient()));
+                                    },
+                                  ));
+                            }
+                          : null,
+                      child: Row(
+                        children: [
+                          const Icon(Icons.arrow_circle_right_outlined),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          FittedBox(
+                            child: Text(
+                              "Update User",
+                              style: ClanChurnTypography.font15600,
+                            ),
+                          ),
+                        ],
                       ),
-                      FittedBox(
-                        child: Text(
-                          "Update User",
-                          style: ClanChurnTypography.font15600,
-                        ),
-                      ),
-                    ],
-                  ),
+                    );
+                  },
                 )
               ]),
         )

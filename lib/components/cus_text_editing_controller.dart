@@ -13,12 +13,17 @@ class CusTextEditingController extends StatelessWidget {
       required this.hintText,
       required this.controller,
       required this.onChanged,
-      required this.textInputAction});
+      required this.textInputAction,
+      this.isEnabled = true,
+      this.isObacureText = false}
+      );
   final double? width;
   final String hintText;
   final TextEditingController controller;
   final Function(String) onChanged;
   final TextInputAction textInputAction;
+  final bool isEnabled;
+  final bool isObacureText;
 
   @override
   Widget build(BuildContext context) {
@@ -33,13 +38,15 @@ class CusTextEditingController extends StatelessWidget {
           controller: controller, // Use the passed controller here
           textInputAction: textInputAction,
           onChanged: onChanged,
+           enabled: isEnabled,
+           obscureText: isObacureText,
           decoration: InputDecoration(
               hintText: hintText,
               hintStyle: ClanChurnTypography.font18500.copyWith(
                   color: Theme.of(context)
                       .colorScheme
                       .onSecondary
-                      .withOpacity(0.8)),
+                      .withOpacity( isObacureText? 1.0: 0.8)),
               contentPadding: const EdgeInsets.only(
                 left: 10,
                 right: 10,
