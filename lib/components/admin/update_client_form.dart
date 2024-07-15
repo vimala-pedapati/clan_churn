@@ -114,7 +114,7 @@ class _UpdateClientBodyState extends State<UpdateClientBody> {
         .read<ProjectArchitectBloc>()
         .add(GetProjectsListEvent(clientId: widget.updateClient.id));
     context.read<UserBloc>().add(GetAllUsersEvent(
-          clientId: '',
+        
           onErrorCallback: (errorMessage, errorCode) {},
           onSuccessCallback: (message) {},
         ));

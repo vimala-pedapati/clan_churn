@@ -102,8 +102,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   onGetAllUsersEvent(GetAllUsersEvent event, Emitter<UserState> emit) async {
     final result = await apiRepository.getAllUsers(
         onErrorCallback: event.onErrorCallback,
-        onSuccessCallback: event.onSuccessCallback,
-        clientId: event.clientId);
+        onSuccessCallback: event.onSuccessCallback,);
     if (result != null) {
       emit(state.copyWith(listOfUsers: result));
     }

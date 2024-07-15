@@ -68,8 +68,7 @@ class ApiRepository {
 
   Future<List<User>?> getAllUsers(
       {required OnErrorCallback onErrorCallback,
-      required OnSuccessCallback onSuccessCallback,
-      required String clientId}) async {
+      required OnSuccessCallback onSuccessCallback}) async {
     try {
       final AuthCredentials authCredentials =
           await AuthRepository().getTokens();
@@ -992,7 +991,7 @@ class ApiRepository {
             "user_id": userId,
             "password": password,
             "user_type": userType,
-              "image_url": image
+            "image_url": image
           }));
 
       print("update user response : $response");
@@ -1129,7 +1128,7 @@ class ApiRepository {
 
       http.Response response = await http.delete(
         Uri.parse(
-            "${BaseUrl.baseUrl}${ApiEndpoints.deleteClient}?user_id=$userId"),
+            "${BaseUrl.baseUrl}${ApiEndpoints.deleteUser}?user_id=$userId"),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ${authCredentials.accessToken}',

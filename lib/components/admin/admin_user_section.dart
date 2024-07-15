@@ -60,7 +60,7 @@ class _UsersCardState extends State<UsersCard> {
   void initState() {
     context.read<UserBloc>().add(GetUserDetailsEvent(context: context));
     context.read<UserBloc>().add(GetAllUsersEvent(
-          clientId: '',
+       
           onErrorCallback: (errorMessage, errorCode) {},
           onSuccessCallback: (message) {},
         ));

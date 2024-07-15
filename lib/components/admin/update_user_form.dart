@@ -532,6 +532,16 @@ class _UpdateUserState extends State<UpdateUser> {
                                 },
                                 onSuccessCallback: (message) {
                                   Navigator.pop(context);
+                                  context.read<UserBloc>().add(GetAllUsersEvent(
+                                        onErrorCallback:
+                                            (errorMessage, errorCode) {
+                                          ApiRepository().handleWarningMessage(
+                                              "Unable to fetch updated user details",
+                                              context,
+                                              errorCode);
+                                        },
+                                        onSuccessCallback: (message) {},
+                                      ));
                                 },
                               ),
                             );

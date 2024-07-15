@@ -94,7 +94,7 @@ class _NewClientFormState extends State<NewClientForm> {
     pocContactNumber.addListener(_validateForm);
     pocMailId.addListener(_validateForm);
     context.read<UserBloc>().add(GetAllUsersEvent(
-          clientId: '',
+       
           onErrorCallback: (errorMessage, errorCode) {},
           onSuccessCallback: (message) { 
           },
