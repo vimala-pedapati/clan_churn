@@ -1,9 +1,11 @@
+import 'package:clan_churn/api_repos/api_repo.dart';
 import 'package:clan_churn/churn_blocs/client/client_bloc.dart';
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
 import 'package:clan_churn/components/cus_text.dart';
 import 'package:clan_churn/components/cus_text_editing_controller.dart';
 import 'package:clan_churn/components/dialogs.dart';
 import 'package:clan_churn/pages/create_client.dart';
+import 'package:clan_churn/utils/api_endpoins.dart';
 import 'package:clan_churn/utils/routes.dart';
 import 'package:clan_churn/utils/typography.dart';
 import 'package:clan_churn/utils/validations.dart';
@@ -412,14 +414,17 @@ class _NewUserFormState extends State<NewUserForm> {
                                     userType: selectedType ?? '',
                                     image: state.uploadLogoResponse?.filename,
                                     onErrorCallback: (errorMessage, errorCode) {
-                                      print(
-                                          "unable to create user: $errorMessage");
+                                      ApiRepository().handleWarningMessage(
+                                          errorMessage, context, errorCode);
                                     },
                                     onSuccessCallback: (message) {
                                       Navigator.pushReplacement(
                                           context,
                                           customPageRouteForNavigation(
                                               const CreateClient()));
+                                      ApiRepository().handleSuccessMessage(
+                                          "successfully created user!....",
+                                          context);
                                     },
                                   ));
                             }
