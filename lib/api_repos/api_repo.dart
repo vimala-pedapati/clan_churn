@@ -11,6 +11,7 @@ import 'package:http/http.dart' as http;
 import 'package:clan_churn/api_repos/auth_repo.dart';
 import 'package:clan_churn/api_repos/models/user_model.dart';
 import 'package:clan_churn/utils/api_endpoins.dart';
+import 'package:http/http.dart';
 
 typedef OnErrorCallback = void Function(String errorMessage, int errorCode);
 typedef OnSuccessCallback = void Function(http.Response? message);
@@ -54,9 +55,8 @@ class ApiRepository {
         log("getUserResponse:..... $data");
         return user;
       } else {
-        _handleStatusCode(
-            response.statusCode, response.reasonPhrase, onErrorCallback);
-        onErrorCallback('${response.reasonPhrase}', response.statusCode);
+        _handleStatusCode(response.statusCode, response, onErrorCallback);
+        onErrorCallback('${response}', response.statusCode);
         return null;
       }
     } catch (e) {
@@ -97,9 +97,8 @@ class ApiRepository {
         onSuccessCallback(response);
         return users;
       } else {
-        _handleStatusCode(
-            response.statusCode, response.reasonPhrase, onErrorCallback);
-        onErrorCallback('${response.reasonPhrase}', response.statusCode);
+        _handleStatusCode(response.statusCode, response, onErrorCallback);
+        onErrorCallback('${response}', response.statusCode);
         return null;
       }
     } catch (e) {
@@ -137,8 +136,7 @@ class ApiRepository {
         onSuccessCallback(response);
         return clientDetails;
       } else {
-        _handleStatusCode(
-            response.statusCode, response.reasonPhrase, onErrorCallback);
+        _handleStatusCode(response.statusCode, response, onErrorCallback);
         return null;
       }
     } catch (e) {
@@ -176,8 +174,7 @@ class ApiRepository {
         print("List of Projects:..... $listOfProjects");
         return listOfProjects;
       } else {
-        _handleStatusCode(
-            response.statusCode, response.reasonPhrase, onErrorCallback);
+        _handleStatusCode(response.statusCode, response, onErrorCallback);
         return null;
       }
     } catch (e) {
@@ -221,8 +218,7 @@ class ApiRepository {
         onSuccessCallback(response);
         return res;
       } else {
-        _handleStatusCode(
-            response.statusCode, response.reasonPhrase, onErrorCallback);
+        _handleStatusCode(response.statusCode, response, onErrorCallback);
         return null;
       }
     } catch (e) {
@@ -268,8 +264,7 @@ class ApiRepository {
         print("Updated project:..... ${response.body}");
         return project;
       } else {
-        _handleStatusCode(
-            response.statusCode, response.reasonPhrase, onErrorCallback);
+        _handleStatusCode(response.statusCode, response, onErrorCallback);
         return null;
       }
     } catch (e) {
@@ -312,8 +307,7 @@ class ApiRepository {
         log("get project:..... $project");
         return project;
       } else {
-        _handleStatusCode(
-            response.statusCode, response.reasonPhrase, onErrorCallback);
+        _handleStatusCode(response.statusCode, response, onErrorCallback);
         return null;
       }
     } catch (e) {
@@ -353,8 +347,7 @@ class ApiRepository {
         onSuccessCallback(response);
         return createdProject;
       } else {
-        _handleStatusCode(
-            response.statusCode, response.reasonPhrase, onErrorCallback);
+        _handleStatusCode(response.statusCode, response, onErrorCallback);
         return null;
       }
     } catch (e) {
@@ -389,8 +382,7 @@ class ApiRepository {
         log("List of Columns:..... $columnsList");
         return columnsList;
       } else {
-        _handleStatusCode(
-            response.statusCode, response.reasonPhrase, onErrorCallback);
+        _handleStatusCode(response.statusCode, response, onErrorCallback);
         return null;
       }
     } catch (e) {
@@ -430,8 +422,7 @@ class ApiRepository {
         log("Updated project with columns:..... $updatedProject");
         return updatedProject;
       } else {
-        _handleStatusCode(
-            response.statusCode, response.reasonPhrase, onErrorCallback);
+        _handleStatusCode(response.statusCode, response, onErrorCallback);
         return null;
       }
     } catch (e) {
@@ -478,8 +469,7 @@ class ApiRepository {
         onSuccessCallback(response);
         return updatedProjectDetails;
       } else {
-        _handleStatusCode(
-            response.statusCode, response.reasonPhrase, onErrorCallback);
+        _handleStatusCode(response.statusCode, response, onErrorCallback);
         return null;
       }
     } catch (e) {
@@ -526,7 +516,7 @@ class ApiRepository {
         }
         request.headers.addAll(headers);
         http.StreamedResponse response = await request.send();
-        log(response.reasonPhrase ?? 'No Reason Phrase');
+
         if (response.statusCode == 200) {
           String responseString = await response.stream.bytesToString();
           log(responseString);
@@ -534,8 +524,8 @@ class ApiRepository {
           onSuccessCallback(null);
           return project;
         } else {
-          _handleStatusCode(
-              response.statusCode, response.reasonPhrase, onErrorCallback);
+          _handleStatusCode(response.statusCode,
+              await http.Response.fromStream(response), onErrorCallback);
           return null;
         }
       } else {
@@ -573,8 +563,7 @@ class ApiRepository {
       if (response.statusCode == 200) {
         onSuccessCallback(response);
       } else {
-        _handleStatusCode(
-            response.statusCode, response.reasonPhrase, onErrorCallback);
+        _handleStatusCode(response.statusCode, response, onErrorCallback);
       }
     } catch (e) {
       log("get summary report: $e");
@@ -608,8 +597,7 @@ class ApiRepository {
             projectHistoryModelFromJson(response.body);
         return history;
       } else {
-        _handleStatusCode(
-            response.statusCode, response.reasonPhrase, onErrorCallback);
+        _handleStatusCode(response.statusCode, response, onErrorCallback);
       }
     } catch (e) {
       log("Project Input History: $e");
@@ -651,8 +639,7 @@ class ApiRepository {
         onSuccessCallback(response);
         return json.decode(response.body);
       } else {
-        _handleStatusCode(
-            response.statusCode, response.reasonPhrase, onErrorCallback);
+        _handleStatusCode(response.statusCode, response, onErrorCallback);
         return null;
       }
     } catch (e) {
@@ -690,8 +677,7 @@ class ApiRepository {
         onSuccessCallback(response);
         return json.decode(response.body);
       } else {
-        _handleStatusCode(
-            response.statusCode, response.reasonPhrase, onErrorCallback);
+        _handleStatusCode(response.statusCode, response, onErrorCallback);
         return null;
       }
     } catch (e) {
@@ -747,8 +733,7 @@ class ApiRepository {
         print(" create client reponse: ${response.body}");
         // return clientDetails;
       } else {
-        _handleStatusCode(
-            response.statusCode, response.reasonPhrase, onErrorCallback);
+        _handleStatusCode(response.statusCode, response, onErrorCallback);
       }
     } catch (e) {
       log("get summary report: $e");
@@ -804,8 +789,7 @@ class ApiRepository {
         onSuccessCallback(response);
         return clientDetails;
       } else {
-        _handleStatusCode(
-            response.statusCode, response.reasonPhrase, onErrorCallback);
+        _handleStatusCode(response.statusCode, response, onErrorCallback);
       }
     } catch (e) {
       log("get summary report: $e");
@@ -849,7 +833,7 @@ class ApiRepository {
         }
         request.headers.addAll(headers);
         http.StreamedResponse response = await request.send();
-        print(response.reasonPhrase);
+        print(response);
         print(response.statusCode);
         if (response.statusCode == 200) {
           String responseString = await response.stream.bytesToString();
@@ -860,8 +844,8 @@ class ApiRepository {
           onSuccessCallback(null);
           return imageUrl;
         } else {
-          _handleStatusCode(
-              response.statusCode, response.reasonPhrase, onErrorCallback);
+          _handleStatusCode(response.statusCode,
+              await http.Response.fromStream(response), onErrorCallback);
           return null;
         }
       } else {
@@ -902,8 +886,7 @@ class ApiRepository {
 
         return true;
       } else {
-        _handleStatusCode(
-            response.statusCode, response.reasonPhrase, onErrorCallback);
+        _handleStatusCode(response.statusCode, response, onErrorCallback);
       }
     } catch (e) {
       log("delete client: $e");
@@ -951,8 +934,7 @@ class ApiRepository {
         onSuccessCallback(response);
         return true;
       } else {
-        _handleStatusCode(
-            response.statusCode, response.reasonPhrase, onErrorCallback);
+        _handleStatusCode(response.statusCode, response, onErrorCallback);
       }
     } catch (e) {
       log("add user: $e");
@@ -1000,8 +982,7 @@ class ApiRepository {
         print("update user response : ${response.body}");
         return true;
       } else {
-        _handleStatusCode(
-            response.statusCode, response.reasonPhrase, onErrorCallback);
+        _handleStatusCode(response.statusCode, response, onErrorCallback);
       }
     } catch (e) {
       log("update user: $e");
@@ -1045,7 +1026,7 @@ class ApiRepository {
         }
         request.headers.addAll(headers);
         http.StreamedResponse response = await request.send();
-        log(response.reasonPhrase ?? 'No Reason Phrase');
+
         if (response.statusCode == 200) {
           String responseString = await response.stream.bytesToString();
           print(responseString);
@@ -1055,8 +1036,8 @@ class ApiRepository {
           onSuccessCallback(null);
           return imageUrl;
         } else {
-          _handleStatusCode(
-              response.statusCode, response.reasonPhrase, onErrorCallback);
+          _handleStatusCode(response.statusCode,
+              await http.Response.fromStream(response), onErrorCallback);
           return null;
         }
       } else {
@@ -1103,8 +1084,7 @@ class ApiRepository {
         print(r.runtimeType);
         return r;
       } else {
-        _handleStatusCode(
-            response.statusCode, response.reasonPhrase, onErrorCallback);
+        _handleStatusCode(response.statusCode, response, onErrorCallback);
       }
     } catch (e) {
       log(" get user types : $e");
@@ -1139,8 +1119,7 @@ class ApiRepository {
         onSuccessCallback(response);
         return true;
       } else {
-        _handleStatusCode(
-            response.statusCode, response.reasonPhrase, onErrorCallback);
+        _handleStatusCode(response.statusCode, response, onErrorCallback);
       }
     } catch (e) {
       log("delete user: $e");
@@ -1175,8 +1154,7 @@ class ApiRepository {
         onSuccessCallback(response);
         return true;
       } else {
-        _handleStatusCode(
-            response.statusCode, response.reasonPhrase, onErrorCallback);
+        _handleStatusCode(response.statusCode, response, onErrorCallback);
       }
     } catch (e) {
       log("archive project: $e");
@@ -1185,31 +1163,34 @@ class ApiRepository {
   }
 
   void _handleStatusCode(
-      int statusCode, String? reasonPhrase, OnErrorCallback onErrorCallback) {
-    switch (statusCode) {
-      case 400:
-        onErrorCallback('Bad request: $reasonPhrase', 400);
-        break;
-      case 401:
-        onErrorCallback('Unauthorized: $reasonPhrase', 401);
-        break;
-      case 403:
-        onErrorCallback('Forbidden: $reasonPhrase', 403);
-        break;
-      case 404:
-        onErrorCallback('Not found: $reasonPhrase', 404);
-        break;
-      case 422:
-        onErrorCallback(
-            'Invalid format. Please check your input and try again.: $reasonPhrase',
-            422);
-        break;
-      case 500:
-        onErrorCallback('Internal server error: $reasonPhrase', statusCode);
-        break;
-      default:
-        onErrorCallback('$reasonPhrase', statusCode);
-    }
+      int statusCode, Response response, OnErrorCallback onErrorCallback) {
+    String reason =
+        "${(json.decode(response.body) as Map<String, dynamic>)["detail"]}";
+    return onErrorCallback(reason, statusCode);
+    // switch (statusCode) {
+    //   case 400:
+    //     onErrorCallback('Bad request: $response', 400);
+    //     break;
+    //   case 401:
+    //     onErrorCallback('Unauthorized: $response', 401);
+    //     break;
+    //   case 403:
+    //     onErrorCallback('Forbidden: $response', 403);
+    //     break;
+    //   case 404:
+    //     onErrorCallback('Not found: $response', 404);
+    //     break;
+    //   case 422:
+    //     onErrorCallback(
+    //         'Invalid format. Please check your input and try again.: $response',
+    //         422);
+    //     break;
+    //   case 500:
+    //     onErrorCallback('Internal server error: $response', statusCode);
+    //     break;
+    //   default:
+    //     onErrorCallback('$response', statusCode);
+    // }
   }
 
   void handleWarningMessage(
