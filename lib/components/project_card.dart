@@ -20,7 +20,7 @@ class ProjectCard extends StatelessWidget {
       builder: (context, state) {
         return Container(
           height: 200,
-          width: 160,
+        width: 180,
           padding:
               const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 20),
           decoration: BoxDecoration(
@@ -36,7 +36,7 @@ class ProjectCard extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Image.network(
-                      state.selectedClient!.image!,
+                      "${state.selectedClient?.image}",
                       // loadingBuilder: ((context, child, loadingProgress) {
                       //   return const CircularProgressIndicator();
                       // }),
@@ -54,6 +54,7 @@ class ProjectCard extends StatelessWidget {
                   children: [
                     Text(
                       state.selectedClient!.name,
+                      overflow: TextOverflow.ellipsis,
                       style: ClanChurnTypography.font12500,
                     ),
                     Text(
@@ -63,7 +64,7 @@ class ProjectCard extends StatelessWidget {
                   ],
                 ),
                 SizedBox(
-                  width: 160,
+                width: 180,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.only(left: 20, right: 20),
@@ -76,9 +77,10 @@ class ProjectCard extends StatelessWidget {
                       // print(
                       //   "${state.selectedClient!.image}",
                       // );
-                      context.read<ProjectArchitectBloc>().add(
-                          SetCreatedProjectEvent(
-                              createdProject: project));
+                      print("setting creating a project $project");
+                      context
+                          .read<ProjectArchitectBloc>()
+                          .add(SetCreatedProjectEvent(createdProject: project));
                       if (project.inputSheet == null) {
                         Navigator.push(
                             context,
@@ -97,7 +99,7 @@ class ProjectCard extends StatelessWidget {
         );
 
         // Container(
-        //   // height: 190,
+        //   // height: 230,
         //   // width: 160,
         //   padding:
         //       const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 20),

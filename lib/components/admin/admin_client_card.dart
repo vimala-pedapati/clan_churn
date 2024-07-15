@@ -1,7 +1,6 @@
 import 'package:clan_churn/api_repos/models/client_details.dart';
-import 'package:clan_churn/api_repos/models/user_model.dart';
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
-import 'package:clan_churn/components/admin/update_client_body.dart';
+import 'package:clan_churn/components/admin/update_client_form.dart';
 import 'package:clan_churn/components/project_card.dart';
 import 'package:clan_churn/utils/typography.dart';
 import 'package:flutter/material.dart';
@@ -16,8 +15,8 @@ class AdminClientCard extends StatelessWidget {
     return BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
       builder: (context, state) {
         return Container(
-          height: 190,
-          width: 160,
+          height: 230,
+          width: 180,
           padding:
               const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 20),
           decoration: BoxDecoration(
@@ -51,12 +50,14 @@ class AdminClientCard extends StatelessWidget {
                   children: [
                     Text(
                       client.name,
+                      maxLines: 3,
+                      // overflow: TextOverflow.ellipsis,
                       style: ClanChurnTypography.font15600,
                     ),
                   ],
                 ),
                 SizedBox(
-                  width: 160,
+                  width: 180,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.only(left: 20, right: 20),
@@ -98,4 +99,3 @@ void updateClient(BuildContext context, ClientDetails updateClient) {
     ),
   );
 }
-

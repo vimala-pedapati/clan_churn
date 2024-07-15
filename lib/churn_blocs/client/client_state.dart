@@ -3,9 +3,9 @@ part of 'client_bloc.dart';
 class ClientState extends Equatable {
   const ClientState({required this.clientUploadLogoResponse});
   const ClientState.initial() : this(clientUploadLogoResponse: null);
-  final ClientUploadLogoResponse? clientUploadLogoResponse;
+  final UploadLogoResponse? clientUploadLogoResponse;
 
-  ClientState copyWith({ClientUploadLogoResponse? clientUploadLogoResponse}) {
+  ClientState copyWith({UploadLogoResponse? clientUploadLogoResponse}) {
     return ClientState(
         clientUploadLogoResponse:
             clientUploadLogoResponse ?? this.clientUploadLogoResponse);

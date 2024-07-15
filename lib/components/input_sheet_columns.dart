@@ -66,9 +66,11 @@ class InputSheetColumns extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Text(
-                              column.columnName,
-                              overflow: TextOverflow.visible,
+                            Expanded(
+                              child: Text(
+                                column.columnName,
+                                overflow: TextOverflow.visible,
+                              ),
                             ),
                             SizedBox(
                               height: 30,

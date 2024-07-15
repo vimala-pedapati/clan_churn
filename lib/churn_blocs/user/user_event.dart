@@ -14,10 +14,11 @@ class GetUserDetailsEvent extends UserEvent {
 class AddUserEvent extends UserEvent {
   final String clientId;
   final String firstName;
-  final String lastName;
+  final String? lastName;
   final String email;
   final String password;
   final String userType;
+  final String? image;
   final OnErrorCallback onErrorCallback;
   final OnSuccessCallback onSuccessCallback;
   const AddUserEvent(
@@ -27,17 +28,19 @@ class AddUserEvent extends UserEvent {
       required this.email,
       required this.password,
       required this.userType,
+      required this.image,
       required this.onErrorCallback,
       required this.onSuccessCallback});
 }
 
 class UpdateUserEvent extends UserEvent {
-  final String clientId;
+  final String? clientId;
   final String firstName;
-  final String lastName;
+  final String? lastName;
   final String userId;
-  final String password;
+  final String? password;
   final String userType;
+  final String? image;
   final OnErrorCallback onErrorCallback;
   final OnSuccessCallback onSuccessCallback;
   const UpdateUserEvent(
@@ -47,6 +50,7 @@ class UpdateUserEvent extends UserEvent {
       required this.userId,
       required this.password,
       required this.userType,
+      required this.image,
       required this.onErrorCallback,
       required this.onSuccessCallback});
 }
@@ -79,3 +83,15 @@ class DeleteUserEvent extends UserEvent {
       required this.onErrorCallback,
       required this.onSuccessCallback});
 }
+
+class GetAllUsersEvent extends UserEvent {
+  final OnErrorCallback onErrorCallback;
+  final OnSuccessCallback onSuccessCallback;
+  const GetAllUsersEvent({ 
+    required this.onErrorCallback,
+    required this.onSuccessCallback,
+  });
+}
+
+
+ 

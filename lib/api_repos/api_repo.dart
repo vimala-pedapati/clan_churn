@@ -66,6 +66,49 @@ class ApiRepository {
     }
   }
 
+  Future<List<User>?> getAllUsers(
+      {required OnErrorCallback onErrorCallback,
+      required OnSuccessCallback onSuccessCallback}) async {
+    try {
+      final AuthCredentials authCredentials =
+          await AuthRepository().getTokens();
+
+      if (authCredentials.accessToken.isEmpty) {
+        log('Access token is empty');
+        onErrorCallback('Access token is empty', 0);
+        return null;
+      }
+
+      // final http.Response response = await http.post(
+      //   Uri.parse(
+      //       "${BaseUrl.baseUrl}${ApiEndpoints.getAllUsers}?client_id=$clientId"),
+      final http.Response response = await http.post(
+        Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.getAllUsers}"),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${authCredentials.accessToken}',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = json.decode(response.body);
+        List<User> users = data.map((user) => User.fromJson(user)).toList();
+        log("getAllUsersResponse:..... $data");
+        onSuccessCallback(response);
+        return users;
+      } else {
+        _handleStatusCode(
+            response.statusCode, response.reasonPhrase, onErrorCallback);
+        onErrorCallback('${response.reasonPhrase}', response.statusCode);
+        return null;
+      }
+    } catch (e) {
+      log('Network Error: $e');
+      onErrorCallback('Network Error: $e', 0);
+      return null;
+    }
+  }
+
   Future<List<ClientDetails>?> getClientsList(
       {required OnErrorCallback onErrorCallback,
       required OnSuccessCallback onSuccessCallback}) async {
@@ -130,7 +173,7 @@ class ApiRepository {
 
       if (response.statusCode == 200) {
         List<Project> listOfProjects = projectFromJson(response.body);
-        log("List of Projects:..... $listOfProjects");
+        print("List of Projects:..... $listOfProjects");
         return listOfProjects;
       } else {
         _handleStatusCode(
@@ -666,6 +709,7 @@ class ApiRepository {
       required String pocContactNumber,
       required String pocMailId,
       required String image,
+      required List<String> assignedProjectArc,
       required OnErrorCallback onErrorCallback,
       required OnSuccessCallback onSuccessCallback}) async {
     try {
@@ -692,7 +736,8 @@ class ApiRepository {
             "poc_name": pocName,
             "poc_contact_number": pocContactNumber,
             "poc_mail_id": pocMailId,
-            "image": image
+            "image": image,
+            "assigned_users": assignedProjectArc
           }));
       print(" create client reponse: $response");
       if (response.statusCode == 200) {
@@ -720,7 +765,8 @@ class ApiRepository {
       required String pocName,
       required String pocContactNumber,
       required String pocMailId,
-      required String image,
+      required String? image,
+      required List<String> assignedProjectArc,
       required OnErrorCallback onErrorCallback,
       required OnSuccessCallback onSuccessCallback}) async {
     try {
@@ -748,7 +794,8 @@ class ApiRepository {
             "poc_name": pocName,
             "poc_contact_number": pocContactNumber,
             "poc_mail_id": pocMailId,
-            "image": image
+            "image": image,
+            "assigned_users": assignedProjectArc
           }));
 
       if (response.statusCode == 200) {
@@ -766,7 +813,7 @@ class ApiRepository {
     return null;
   }
 
-  Future<ClientUploadLogoResponse?> uploadClientLogo(
+  Future<UploadLogoResponse?> uploadClientLogo(
       {required FilePickerResult filePickerResult,
       required OnErrorCallback onErrorCallback,
       required OnSuccessCallback onSuccessCallback}) async {
@@ -788,7 +835,8 @@ class ApiRepository {
         };
         var request = http.MultipartRequest(
           'POST',
-          Uri.parse('${BaseUrl.baseUrl}${ApiEndpoints.clientLogo}'),
+          Uri.parse(
+              '${BaseUrl.baseUrl}${ApiEndpoints.uploadLogo}?document_type=client'),
         );
         // request.fields.addAll({'project_id': projectId});
 
@@ -801,13 +849,13 @@ class ApiRepository {
         }
         request.headers.addAll(headers);
         http.StreamedResponse response = await request.send();
-        // print(response.reasonPhrase);
-        // print(response.statusCode);
+        print(response.reasonPhrase);
+        print(response.statusCode);
         if (response.statusCode == 200) {
           String responseString = await response.stream.bytesToString();
           print(responseString);
-          ClientUploadLogoResponse imageUrl =
-              ClientUploadLogoResponse.fromJson(json.decode(responseString));
+          UploadLogoResponse imageUrl =
+              UploadLogoResponse.fromJson(json.decode(responseString));
           print(imageUrl);
           onSuccessCallback(null);
           return imageUrl;
@@ -864,12 +912,13 @@ class ApiRepository {
   }
 
   Future<bool?> addUser(
-      {required String clientId,
+      {required String? clientId,
       required String firstName,
-      required String lastName,
+      required String? lastName,
       required String email,
       required String password,
       required String userType,
+      required String? image,
       required OnErrorCallback onErrorCallback,
       required OnSuccessCallback onSuccessCallback}) async {
     try {
@@ -881,7 +930,7 @@ class ApiRepository {
         onErrorCallback('Access token is empty', 0);
         return null;
       }
-
+      print("................BEfore making api cal");
       http.Response response = await http.post(
           Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.addUser}"),
           headers: {
@@ -889,16 +938,15 @@ class ApiRepository {
             'Authorization': 'Bearer ${authCredentials.accessToken}',
           },
           body: json.encode({
-            {
-              "client_id": clientId,
-              "first_name": firstName,
-              "last_name": lastName,
-              "email": email,
-              "password": password,
-              "user_type": userType
-            }
+            "client_id": null,
+            "first_name": firstName,
+            "last_name": lastName,
+            "email": email,
+            "password": password,
+            "user_type": userType,
+            'image_url': image
           }));
-
+      print("................BEfore making api cal");
       if (response.statusCode == 200) {
         onSuccessCallback(response);
         return true;
@@ -913,12 +961,13 @@ class ApiRepository {
   }
 
   Future<bool?> updateUser(
-      {required String clientId,
+      {required String? clientId,
       required String firstName,
-      required String lastName,
+      required String? lastName,
       required String userId,
-      required String password,
+      required String? password,
       required String userType,
+      required String? image,
       required OnErrorCallback onErrorCallback,
       required OnSuccessCallback onSuccessCallback}) async {
     try {
@@ -936,12 +985,13 @@ class ApiRepository {
             'Authorization': 'Bearer ${authCredentials.accessToken}',
           },
           body: json.encode({
-            "client_id": clientId,
+            "client_id": null,
             "first_name": firstName,
-            "last_name": lastName,
+            "last_name": null,
             "user_id": userId,
             "password": password,
-            "user_type": userType
+            "user_type": userType,
+            "image_url": image
           }));
 
       print("update user response : $response");
@@ -959,7 +1009,7 @@ class ApiRepository {
     return false;
   }
 
-  Future<String?> uploadUserPic(
+  Future<UploadLogoResponse?> uploadUserPic(
       {required FilePickerResult filePickerResult,
       required OnErrorCallback onErrorCallback,
       required OnSuccessCallback onSuccessCallback}) async {
@@ -981,7 +1031,8 @@ class ApiRepository {
         };
         var request = http.MultipartRequest(
           'POST',
-          Uri.parse('${BaseUrl.baseUrl}${ApiEndpoints.uploadUserPic}'),
+          Uri.parse(
+              '${BaseUrl.baseUrl}${ApiEndpoints.uploadLogo}?document_type=user'),
         );
         // request.fields.addAll({'project_id': projectId});
 
@@ -998,7 +1049,9 @@ class ApiRepository {
         if (response.statusCode == 200) {
           String responseString = await response.stream.bytesToString();
           print(responseString);
-          String imageUrl = json.decode(responseString);
+          UploadLogoResponse imageUrl =
+              UploadLogoResponse.fromJson(json.decode(responseString));
+          print(imageUrl);
           onSuccessCallback(null);
           return imageUrl;
         } else {
@@ -1075,7 +1128,7 @@ class ApiRepository {
 
       http.Response response = await http.delete(
         Uri.parse(
-            "${BaseUrl.baseUrl}${ApiEndpoints.deleteClient}?user_id=$userId"),
+            "${BaseUrl.baseUrl}${ApiEndpoints.deleteUser}?user_id=$userId"),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ${authCredentials.accessToken}',

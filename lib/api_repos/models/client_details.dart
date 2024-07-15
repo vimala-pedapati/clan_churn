@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:clan_churn/api_repos/models/user_model.dart';
 import 'package:equatable/equatable.dart';
 
 List<ClientDetails> clientDetailsFromJson(String str) =>
@@ -19,30 +20,36 @@ class ClientDetails extends Equatable {
   final String? pocContactNumber;
   final String? pocMailId;
   final String? image;
+  final List<User>? assignedProjectArc;
 
-  const ClientDetails({
-    required this.id,
-    required this.name,
-    required this.role,
-    required this.address1,
-    required this.address2,
-    required this.pocName,
-    required this.pocContactNumber,
-    required this.pocMailId,
-    required this.image,
-  });
+  const ClientDetails(
+      {required this.id,
+      required this.name,
+      required this.role,
+      required this.address1,
+      required this.address2,
+      required this.pocName,
+      required this.pocContactNumber,
+      required this.pocMailId,
+      required this.image,
+      required this.assignedProjectArc});
 
   factory ClientDetails.fromJson(Map<String, dynamic> json) => ClientDetails(
-        id: json["id"],
-        name: json["name"],
-        role: json["role"],
-        address1: json["address_1"],
-        address2: json["address_2"],
-        pocName: json["poc_name"],
-        pocContactNumber: json["poc_contact_number"],
-        pocMailId: json["poc_mail_id"],
-        image: json["image"],
-      );
+      id: json["id"],
+      name: json["name"],
+      role: json["role"],
+      address1: json["address_1"],
+      address2: json["address_2"],
+      pocName: json["poc_name"],
+      pocContactNumber: json["poc_contact_number"],
+      pocMailId: json["poc_mail_id"],
+      image: json["image"],
+      // assignedProjectArc: (json['assigned_users'] ?? <User>[])
+      //     .map((user) => User.fromJson(user))
+      //     .toList());
+      assignedProjectArc: (json['assigned_users'] as List<dynamic>?)
+          ?.map((user) => User.fromJson(user))
+          .toList());
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -54,13 +61,13 @@ class ClientDetails extends Equatable {
         "poc_contact_number": pocContactNumber,
         "poc_mail_id": pocMailId,
         "image": image,
+        "assigned_users": assignedProjectArc!
+            .map(
+              (e) => e.toJson(),
+            )
+            .toList()
       };
 
   @override
-  List<Object?> get props => [
-        id,
-        name,
-        role,
-        pocMailId,
-      ];
+  List<Object?> get props => [id, name, role, pocMailId, image];
 }

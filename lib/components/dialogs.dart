@@ -25,8 +25,10 @@ class GetDialog {
                       : ElevatedButton(
                           onPressed: () {
                             // fetching all project list once the project is created
-                            context.read<ProjectArchitectBloc>().add(GetProjectsListEvent(clientId: state.selectedClient!.id));
-                            
+                            context.read<ProjectArchitectBloc>().add(
+                                GetProjectsListEvent(
+                                    clientId: state.selectedClient!.id));
+
                             launchURL(state.createdProject!.inputSheet!);
                             Navigator.pop(context);
                             Navigator.pop(context);
@@ -97,6 +99,15 @@ class GetDialog {
           },
         );
       },
+    );
+  }
+
+  void showBootomMessage(String message, BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.red.withOpacity(0.9),
+      ),
     );
   }
 }

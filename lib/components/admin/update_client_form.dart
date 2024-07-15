@@ -1,13 +1,19 @@
 import 'package:clan_churn/api_repos/models/client_details.dart';
-import 'package:clan_churn/api_repos/models/project_model.dart';
+import 'package:clan_churn/api_repos/models/user_model.dart';
 import 'package:clan_churn/churn_blocs/client/client_bloc.dart';
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
+import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
+import 'package:clan_churn/components/admin/deactivate_button.dart';
+import 'package:clan_churn/components/admin/user_chip.dart';
+import 'package:clan_churn/components/client_projects.dart';
+import 'package:clan_churn/components/cus_text.dart';
+import 'package:clan_churn/components/cus_text_editing_controller.dart';
 import 'package:clan_churn/components/dialogs.dart';
-import 'package:clan_churn/components/project_card.dart';
 import 'package:clan_churn/pages/admin_home_page.dart';
-import 'package:clan_churn/pages/create_new_client.dart';
 import 'package:clan_churn/utils/routes.dart';
 import 'package:clan_churn/utils/typography.dart';
+import 'package:clan_churn/utils/validations.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:file_picker/_internal/file_picker_web.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -33,10 +39,16 @@ class _UpdateClientBodyState extends State<UpdateClientBody> {
   bool isImageUploading = false;
   bool imageUploadFailed = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  List<User> assignedProjectArchitects = [];
 
   String? validateFields() {
-    if (clientName.text.isEmpty) {
-      return 'Client name cannot be empty';
+    final String? cn = Validation.validateCustomerName(clientName.text);
+    if (cn != null) {
+      return cn;
+    }
+    final String? rn = Validation.validateRoleName(roleName.text);
+    if (rn != null) {
+      return rn;
     }
     if (roleName.text.isEmpty) {
       return 'Role name cannot be empty';
@@ -88,6 +100,7 @@ class _UpdateClientBodyState extends State<UpdateClientBody> {
       pocName.text = widget.updateClient.pocName ?? '';
       pocContactNumber.text = widget.updateClient.pocContactNumber ?? '';
       pocMailId.text = widget.updateClient.pocMailId ?? '';
+      assignedProjectArchitects = widget.updateClient.assignedProjectArc ?? [];
     });
 
     clientName.addListener(_validateForm);
@@ -100,6 +113,11 @@ class _UpdateClientBodyState extends State<UpdateClientBody> {
     context
         .read<ProjectArchitectBloc>()
         .add(GetProjectsListEvent(clientId: widget.updateClient.id));
+    context.read<UserBloc>().add(GetAllUsersEvent(
+        
+          onErrorCallback: (errorMessage, errorCode) {},
+          onSuccessCallback: (message) {},
+        ));
     super.initState();
   }
 
@@ -162,7 +180,7 @@ class _UpdateClientBodyState extends State<UpdateClientBody> {
                       width: 30,
                     ),
                     Text(
-                      "Update Client",
+                      "Update Client - ${clientName.text}",
                       style: ClanChurnTypography.font20600,
                     )
                   ],
@@ -197,6 +215,13 @@ class _UpdateClientBodyState extends State<UpdateClientBody> {
                                       setState(() {
                                         isImageUploading = false;
                                       });
+                                      // context
+                                      //     .read<ProjectArchitectBloc>()
+                                      //     .add(GetClientsEvent(
+                                      //       onErrorCallback:
+                                      //           (errorMessage, errorCode) {},
+                                      //       onSuccessCallback: (message) {},
+                                      //     ));
                                     },
                                   ));
                               Navigator.pop(context);
@@ -276,18 +301,210 @@ class _UpdateClientBodyState extends State<UpdateClientBody> {
                               const CusText(
                                 text: 'Client Office Address',
                               ),
-                              CusTextEditingController(
-                                hintText: "Address Line 1",
-                                controller: address1,
-                                onChanged: (p0) {},
-                                textInputAction: TextInputAction.next,
+                              Row(
+                                children: [
+                                  CusTextEditingController(
+                                    hintText: "Address Line 1",
+                                    controller: address1,
+                                    onChanged: (p0) {},
+                                    textInputAction: TextInputAction.next,
+                                  ),
+                                  CusTextEditingController(
+                                    hintText: "Address Line 2",
+                                    controller: address2,
+                                    onChanged: (p0) {},
+                                    textInputAction: TextInputAction.next,
+                                  ),
+                                ],
                               ),
-                              CusTextEditingController(
-                                hintText: "Address Line 2",
-                                controller: address2,
-                                onChanged: (p0) {},
-                                textInputAction: TextInputAction.next,
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const CusText(
+                                text: 'Assign Project Architect',
                               ),
+                              Row(
+                                children: [
+                                  SizedBox(
+                                    width: 400,
+                                    child: BlocBuilder<UserBloc, UserState>(
+                                      builder: (context, state) {
+                                        return DropdownButtonHideUnderline(
+                                          child: DropdownButton2<User>(
+                                            isExpanded: true,
+                                            hint: Row(
+                                              children: [
+                                                Text(
+                                                  'Select',
+                                                  style: ClanChurnTypography
+                                                      .font18500,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
+                                              ],
+                                            ),
+                                            items: state.listOfUsers
+                                                .where((u) =>
+                                                    u.userType ==
+                                                    UserType.projectArchitect)
+                                                .toList()
+                                                .map((item) =>
+                                                    DropdownMenuItem<User>(
+                                                      value: item,
+                                                      child: Text(
+                                                        '${item.firstName}',
+                                                        style:
+                                                            ClanChurnTypography
+                                                                .font18500
+                                                                .copyWith(
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .colorScheme
+                                                                  .background,
+                                                        ),
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                      ),
+                                                    ))
+                                                .toList(),
+                                            onChanged: (User? user) {
+                                              if (user != null) {
+                                                setState(() {
+                                                  if (assignedProjectArchitects
+                                                          .isEmpty ||
+                                                      !assignedProjectArchitects
+                                                          .contains(user)) {
+                                                    assignedProjectArchitects
+                                                        .add(user);
+                                                  }
+                                                });
+                                              }
+                                            },
+                                            selectedItemBuilder:
+                                                (BuildContext context) {
+                                              return state.listOfUsers
+                                                  .where((u) =>
+                                                      u.userType ==
+                                                      UserType.projectArchitect)
+                                                  .toList()
+                                                  .map((item) {
+                                                return Center(
+                                                  child: Row(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        "${item.firstName}",
+                                                        style:
+                                                            ClanChurnTypography
+                                                                .font18500
+                                                                .copyWith(
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .colorScheme
+                                                                  .secondary,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                );
+                                              }).toList();
+                                            },
+                                            buttonStyleData: ButtonStyleData(
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                                border: Border.all(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .primary
+                                                      .withOpacity(0.6),
+                                                ),
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .primary
+                                                    .withOpacity(0.2),
+                                              ),
+                                              elevation: 0,
+                                            ),
+                                            iconStyleData: IconStyleData(
+                                              icon: const Icon(
+                                                  Icons.keyboard_arrow_down),
+                                              iconSize: 25,
+                                              iconEnabledColor:
+                                                  Theme.of(context)
+                                                      .colorScheme
+                                                      .secondary,
+                                              iconDisabledColor: Colors.grey,
+                                            ),
+                                            dropdownStyleData:
+                                                DropdownStyleData(
+                                              elevation: 0,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                                border: Border.all(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .primary
+                                                      .withOpacity(0.6),
+                                                ),
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .primary
+                                                    .withOpacity(1.0),
+                                              ),
+                                              scrollbarTheme:
+                                                  ScrollbarThemeData(
+                                                radius:
+                                                    const Radius.circular(40),
+                                                thickness:
+                                                    MaterialStateProperty.all(
+                                                        6),
+                                                thumbVisibility:
+                                                    MaterialStateProperty.all(
+                                                        true),
+                                              ),
+                                            ),
+                                            menuItemStyleData:
+                                                const MenuItemStyleData(
+                                              height: 40,
+                                              padding: EdgeInsets.only(
+                                                  left: 14, right: 14),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 20,
+                                  ),
+                                  Wrap(
+                                    children: [
+                                      ...assignedProjectArchitects.map(
+                                        (User user) {
+                                          return UserChip(
+                                            user: user,
+                                            onDeleted: () {
+                                              setState(() {
+                                                assignedProjectArchitects
+                                                    .remove(user);
+                                              });
+                                            },
+                                          );
+                                        },
+                                      )
+                                    ],
+                                  )
+                                ],
+                              )
                             ],
                           ),
                           const SizedBox(
@@ -353,6 +570,11 @@ class _UpdateClientBodyState extends State<UpdateClientBody> {
                         ElevatedButton(
                           onPressed: checkValidation()
                               ? () {
+                                  List<String> assignedUser = [];
+                                  for (var i in assignedProjectArchitects) {
+                                    assignedUser.add(i.userId);
+                                  }
+                                  print('.......updated users: ${assignedUser}');
                                   context
                                       .read<ClientBloc>()
                                       .add(UpdateClientEvent(
@@ -363,12 +585,12 @@ class _UpdateClientBodyState extends State<UpdateClientBody> {
                                         pocName: pocName.text,
                                         pocContactNumber: pocContactNumber.text,
                                         pocMailId: pocMailId.text,
+                                        assignedProjectArc: assignedUser,
                                         image: context
-                                                .read<ClientBloc>()
-                                                .state
-                                                .clientUploadLogoResponse
-                                                ?.filename ??
-                                            '',
+                                            .read<ClientBloc>()
+                                            .state
+                                            .clientUploadLogoResponse
+                                            ?.filename,
                                         onErrorCallback:
                                             (errorMessage, errorCode) {
                                           print(
@@ -419,189 +641,6 @@ class _UpdateClientBodyState extends State<UpdateClientBody> {
               client: widget.updateClient,
             )
           ]),
-    );
-  }
-}
-
-class DeactivateButton extends StatelessWidget {
-  const DeactivateButton(
-      {super.key, required this.clientId, required this.onNextPage});
-  final String clientId;
-  final Function() onNextPage;
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
-      builder: (context, state) {
-        return ElevatedButton(
-          onPressed: state.projectsList.isEmpty
-              ? () {
-                  context.read<ClientBloc>().add(DeleteClientEvent(
-                        clientId: clientId,
-                        onErrorCallback: (errorMessage, errorCode) {
-                          print(
-                              "Delete Client error call back : $errorMessage $errorCode");
-                        },
-                        onSuccessCallback: (message) {
-                          Navigator.pushReplacement(
-                              context,
-                              customPageRouteForNavigation(
-                                  const AdminHomePage()));
-                        },
-                      ));
-                }
-              : onNextPage,
-          style: ElevatedButton.styleFrom(
-              backgroundColor: Theme.of(context).colorScheme.error),
-          child: Row(
-            children: [
-              const Icon(Icons.archive_outlined),
-              const SizedBox(
-                width: 10,
-              ),
-              FittedBox(
-                child: Text(
-                  "Deactivate Client",
-                  style: ClanChurnTypography.font15600,
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-}
-
-class ClientProjects extends StatelessWidget {
-  const ClientProjects(
-      {super.key, required this.goToPreviousPage, required this.client});
-  final Function() goToPreviousPage;
-  final ClientDetails client;
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
-      builder: (context, state) {
-        return Column(
-          children: [
-            Row(
-              children: [
-                IconButton(
-                    onPressed: goToPreviousPage,
-                    icon: const Icon(Icons.keyboard_backspace_outlined)),
-                const SizedBox(
-                  width: 30,
-                ),
-                Text(
-                  "Clinet Projects",
-                  style: ClanChurnTypography.font20600,
-                )
-              ],
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: state.projectsList.length,
-                // itemCount: 10,
-                itemBuilder: (context, index) {
-                  return ClinetProjectViewCard(
-                    client: client,
-                    project: state.projectsList[index],
-                  );
-                  // return Text("vimala kesireddy");
-                },
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
-}
-
-class ClinetProjectViewCard extends StatelessWidget {
-  const ClinetProjectViewCard(
-      {super.key, required this.project, required this.client});
-  final Project project;
-  final ClientDetails client;
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      // width: MediaQuery.of(context).size.width*0.5,
-      // padding: const EdgeInsets.all(08),
-      margin: const EdgeInsets.all(08),
-      child: Row(
-        children: [
-          CircleAvatar(
-            radius: 25,
-            child: Padding(
-              padding: const EdgeInsets.all(0),
-              child: Image.network(
-                "${client.image}",
-                // loadingBuilder: ((context, child, loadingProgress) {
-                //   return const CircularProgressIndicator();
-                // }),
-                errorBuilder: (context, error, stackTrace) {
-                  return ClipOval(
-                      child: Image.network(
-                    image,
-                    scale: 2,
-                  ));
-                },
-              ),
-            ),
-          ),
-          const SizedBox(
-            width: 20,
-          ),
-          Expanded(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      project.name ?? '',
-                      style: ClanChurnTypography.font14600,
-                    ),
-                    Text(
-                      client.role ?? '',
-                      style: ClanChurnTypography.font12600,
-                    )
-                  ],
-                ),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.only(
-                          top: 5, bottom: 5, left: 8, right: 8),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20))),
-                  onPressed: () {
-                    context.read<ClientBloc>().add(ArchiveProjectEvent(
-                          projectId: project.id,
-                          onErrorCallback: (errorMessage, errorCode) {
-                            print(
-                                "archieve project error: $errorCode, $errorMessage");
-                          },
-                          onSuccessCallback: (message) {
-                            print("project archieve success ${message?.body}");
-                            context
-                                .read<ProjectArchitectBloc>()
-                                .add(GetProjectsListEvent(clientId: client.id));
-                          },
-                        ));
-                  },
-                  child: const Text('archive'),
-                )
-              ],
-            ),
-          )
-        ],
-      ),
     );
   }
 }

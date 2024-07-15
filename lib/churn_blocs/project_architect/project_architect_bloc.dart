@@ -26,7 +26,7 @@ class ProjectArchitectBloc
     on<SetSelectedClientEvent>(_onSetSelectedClientEvent);
     on<GetProjectsListEvent>(_onGetProjectsListEvent);
     on<GetColumnsEvent>(_onGetColumnsEvent);
-    on<CreateProjectEvent>(_onCreateProjectEvent);
+    on<CreateProjectEvent>(_onCreateProjectEvent);                                                                             
     on<ClearCreateProjectEvent>(_onClearCreateProjectEvent);
     on<ReplaceColumnsEvent>(_onReplaceColumnsEvent);
     on<AddColumnsToProjectEvent>(_onAddColumnsToProjectEvent);

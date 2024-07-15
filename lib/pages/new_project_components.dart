@@ -8,6 +8,7 @@ import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
 import 'package:clan_churn/components/churn_continer.dart';
 import 'package:clan_churn/components/dialogs.dart';
+import 'package:clan_churn/components/input_fields.dart';
 import 'package:clan_churn/components/input_sheet_columns.dart';
 import 'package:clan_churn/components/nav_bar.dart';
 import 'package:clan_churn/components/side_bar.dart';
@@ -70,6 +71,35 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
   String previousName = "";
   String projectName = "";
   bool isProjectCreated = false;
+  int _currentPage = 0;
+  final PageController _pageController = PageController();
+
+  void _goToNextPage() {
+    print("....$_currentPage");
+    if (_currentPage < 2) {
+      setState(() {
+        _currentPage++;
+      });
+      print("....$_currentPage");
+      _pageController.animateToPage(
+        _currentPage,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+      print("....$_currentPage");
+    }
+  }
+
+  void _goToPreviousPage() {
+    if (_currentPage > 0) {
+      _currentPage--;
+      _pageController.animateToPage(
+        _currentPage,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
 
   @override
   void initState() {
@@ -105,37 +135,35 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
 
   @override
   Widget build(BuildContext context) {
-    final h = MediaQuery.of(context).size.height;
-    final w = MediaQuery.of(context).size.width;
     return BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
       builder: (context, state) {
         return ChurnContainer(
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    IconButton(
-                      icon: Icon(
-                        Icons.keyboard_backspace,
-                        color: Theme.of(context).colorScheme.secondary,
+          child: PageView(
+            controller: _pageController,
+            children: [
+              Column(
+                children: [
+                  Row(
+                    children: [
+                      IconButton(
+                        icon: Icon(
+                          Icons.keyboard_backspace,
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                        onPressed: () {
+                          Navigator.pop(context);
+                          // GoRouter.of(context).go(AppRoutes.home);
+                        },
                       ),
-                      onPressed: () {
-                        Navigator.pop(context);
-                        // GoRouter.of(context).go(AppRoutes.home);
-                      },
-                    ),
-                    ClanChurnSpacing.w10,
-                    Text(
-                      "Start New Project",
-                      style: ClanChurnTypography.font18600,
-                    ),
-                  ],
-                ),
-                ClanChurnSpacing.h30,
-                SingleChildScrollView(
-                  child: Column(
+                      ClanChurnSpacing.w10,
+                      Text(
+                        "Start New Project",
+                        style: ClanChurnTypography.font18600,
+                      ),
+                    ],
+                  ),
+                  ClanChurnSpacing.h30,
+                  Column(
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -159,7 +187,7 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                                     ],
                                   ),
                                   Container(
-                                    width: w * 0.25,
+                                    width: 300,
                                     height: 30,
                                     decoration: BoxDecoration(
                                         color: Theme.of(context)
@@ -207,7 +235,7 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                                     style: ClanChurnTypography.font15900,
                                   ),
                                   Container(
-                                    width: w * 0.25,
+                                    width: 300,
                                     height: 30,
                                     decoration: BoxDecoration(
                                         color: Theme.of(context)
@@ -292,6 +320,12 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                                               ApiRepository().handleSuccessMessage(
                                                   "Project created successfully!......",
                                                   context);
+
+                                              context
+                                                  .read<ProjectArchitectBloc>()
+                                                  .add(GetProjectsListEvent(
+                                                      clientId: state
+                                                          .selectedClient!.id));
                                             },
                                             onErrorCallback:
                                                 (message, errorCode) {
@@ -307,53 +341,37 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                           )
                         ],
                       ),
-                      // Text("${state.columnsList}")
                     ],
                   ),
-                ),
-                Text(
-                  "Columns to choose",
-                  style: ClanChurnTypography.font18600,
-                ),
-                // ClanChurnSpacing.h10,
-                Expanded(
-                  child: AbsorbPointer(
-                    absorbing: projectName.isEmpty,
-                    child: Opacity(
-                      // opacity: (projectName.isEmpty) ? 0.4 : 1.0,
-                      opacity:
-                          (projectName.isEmpty || state.createdProject == null)
-                              ? 0.4
-                              : (state.createdProject!.id.isEmpty)
-                                  ? 0.4
-                                  : 1.0,
-                      child: InputSheetColumns(
-                          columnsList: state.columnsList,
-                          customerColumnNames: state.customerColumnNames),
+                  Expanded(
+                    child: AbsorbPointer(
+                      absorbing: projectName.isEmpty,
+                      child: Opacity(
+                        opacity: (projectName.isEmpty ||
+                                state.createdProject == null)
+                            ? 0.4
+                            : (state.createdProject!.id.isEmpty)
+                                ? 0.4
+                                : 1.0,
+                        child: GetInputFields(
+                            isCreatingNewProject: true,
+                            onTap: () {
+                              print("....going to next page");
+                              _goToNextPage();
+                            }),
+                      ),
                     ),
                   ),
-                ),
-
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    ElevatedButton(
-                      onPressed:
-                          (projectName.isEmpty || state.createdProject == null)
-                              ? null
-                              : (state.createdProject!.id.isEmpty)
-                                  ? null
-                                  : () {
-                                      context
-                                          .read<ProjectArchitectBloc>()
-                                          .add(AddColumnsToProjectEvent());
-                                      GetDialog.showDownloadDialog(context);
-                                    },
-                      child: const Text("Next"),
-                    ),
-                  ],
-                )
-              ]),
+                ],
+              ),
+              ColumnsToChooseWidget(
+                projectName: projectName,
+                onBackPressed: () {
+                  _goToPreviousPage();
+                },
+              )
+            ],
+          ),
         );
       },
     );
@@ -389,4 +407,74 @@ void downloadFile(String url, BuildContext context) async {
   }
   GoRouter.of(context).go(AppRoutes.home);
 }
- 
+
+class ColumnsToChooseWidget extends StatelessWidget {
+  const ColumnsToChooseWidget(
+      {super.key, required this.projectName, required this.onBackPressed});
+  final String projectName;
+  final Function() onBackPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
+      builder: (context, state) {
+        return Column(
+          // mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.keyboard_backspace_outlined),
+                  onPressed: onBackPressed,
+                ),
+                ClanChurnSpacing.w20,
+                Text(
+                  "Columns to choose",
+                  style: ClanChurnTypography.font18600,
+                ),
+              ],
+            ),
+
+            // ClanChurnSpacing.h10,
+            Expanded(
+              child: AbsorbPointer(
+                absorbing: projectName.isEmpty,
+                child: Opacity(
+                  // opacity: (projectName.isEmpty) ? 0.4 : 1.0,
+                  opacity: (projectName.isEmpty || state.createdProject == null)
+                      ? 0.4
+                      : (state.createdProject!.id.isEmpty)
+                          ? 0.4
+                          : 1.0,
+                  child: InputSheetColumns(
+                      columnsList: state.columnsList,
+                      customerColumnNames: state.customerColumnNames),
+                ),
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                ElevatedButton(
+                  onPressed:
+                      (projectName.isEmpty || state.createdProject == null)
+                          ? null
+                          : (state.createdProject!.id.isEmpty)
+                              ? null
+                              : () {
+                                  context
+                                      .read<ProjectArchitectBloc>()
+                                      .add(AddColumnsToProjectEvent());
+                                  GetDialog.showDownloadDialog(context);
+                                },
+                  child: const Text("Next"),
+                ),
+              ],
+            )
+          ],
+        );
+      },
+    );
+  }
+}

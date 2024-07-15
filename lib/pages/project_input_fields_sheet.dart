@@ -5,6 +5,9 @@ import 'package:clan_churn/components/input_fields.dart';
 import 'package:clan_churn/components/nav_bar.dart';
 import 'package:clan_churn/components/side_bar.dart';
 import 'package:clan_churn/components/wrap_profile.dart';
+import 'package:clan_churn/pages/new_project_components.dart';
+import 'package:clan_churn/utils/spacing.dart';
+import 'package:clan_churn/utils/typography.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -54,8 +57,55 @@ class GetInputFieldsComponent extends StatelessWidget {
     final w = MediaQuery.of(context).size.width;
     return BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
       builder: (context, state) {
-        return const ChurnContainer(
-          child: GetInputFields(),
+        return ChurnContainer(
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  IconButton(
+                    icon: Icon(
+                      Icons.keyboard_backspace,
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                      // GoRouter.of(context).go(AppRoutes.home);
+                    },
+                  ),
+                  ClanChurnSpacing.w10,
+                  Text(
+                    "Project Initialization",
+                    style: ClanChurnTypography.font18600,
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        "Select Initialization",
+                        style: ClanChurnTypography.font14500,
+                      ),
+                      ClanChurnSpacing.w15,
+                      // DropDown
+                      const GetInitializationDropDown(),
+                    ],
+                  ),
+                  ElevatedButton(
+                    child: const Text(
+                      "download input sheet",
+                    ),
+                    onPressed: () {
+                      launchURL(state.createdProject!.inputSheet ?? "");
+                    },
+                  )
+                ],
+              ),
+              const Expanded(child: GetInputFields()),
+            ],
+          ),
         );
       },
     );

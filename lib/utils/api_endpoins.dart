@@ -6,25 +6,27 @@ class BaseUrl {
 }
 
 class ApiEndpoints {
-  // User
+  // default
   static String signIn = '/sign_in';
   static String forgotPasword = '/forgot_password_email';
   static String resetPassword = '/reset_password';
+  static String uploadLogo = '/upload_picture';
+
+  // User
   static String getUserDetails = '/user/get_user_details';
   static String addUser = '/user/add';
   static String updateUser = '/user/update';
   static String updateUserStatus = '/user/update_user_status';
-  static String uploadUserPic = '/user/upload_user_pic';
+  // static String uploadUserPic = '/user/upload_user_pic';
   static String getUserTypes = '/user/get_user_types';
   static String deleteUser = '/user/delete_user';
+  static String getAllUsers = '/user/get_all_users';
 
   // client
   static String clientsList = '/client/client_list';
-  static String clientLogo = '/client/upload_client_logo';
   static String clientCreate = '/client/create';
   static String clientUpdate = '/client/update';
   static String deleteClient = '/client/delete_client';
-  static String archiveProject = '/project/archive_project';
 
   // Project
   static String getAllProjects = '/project/get_all_projects';
@@ -36,6 +38,7 @@ class ApiEndpoints {
   static String uploadFile = "/project/upload_input_data";
   static String updateProjectName = "/project/update";
   static String projectInputHistory = "/project/project_input_history";
+  static String archiveProject = '/project/archive_project';
 
   // Input
   static String getInputExcelSummary = "/input/get_input_excel_summary";
