@@ -320,6 +320,12 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                                               ApiRepository().handleSuccessMessage(
                                                   "Project created successfully!......",
                                                   context);
+
+                                              context
+                                                  .read<ProjectArchitectBloc>()
+                                                  .add(GetProjectsListEvent(
+                                                      clientId: state
+                                                          .selectedClient!.id));
                                             },
                                             onErrorCallback:
                                                 (message, errorCode) {

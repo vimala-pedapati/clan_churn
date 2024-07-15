@@ -1968,8 +1968,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
 
   bool areAllControllersNotEmpty() {
     List<TextEditingController> controllers = [
-      customerNameController,
-      projectNameController,
+      // customerNameController
       projectOwnerController,
       projectStartDateController,
       studyPeriodBeginningDateController,
