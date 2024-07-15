@@ -34,7 +34,10 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     log("user profile: $result");
     if (result != null) {
       emit(state.copyWith(user: result));
-    } else {}
+    } else {
+      // ignore: use_build_context_synchronously
+      GoRouter.of(event.context).go(AppRoutes.intial);
+    }
   }
 
   onAddUserEvent(AddUserEvent event, Emitter<UserState> emit) async {
