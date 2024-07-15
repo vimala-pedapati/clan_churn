@@ -5,6 +5,8 @@ import 'package:clan_churn/api_repos/models/client_logo_upload_res.dart';
 import 'package:clan_churn/api_repos/models/column_model.dart';
 import 'package:clan_churn/api_repos/models/project_history_model.dart';
 import 'package:clan_churn/api_repos/models/project_model.dart';
+import 'package:clan_churn/components/custom_snack_bar.dart';
+import 'package:clan_churn/components/show_top_snack_bar.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -1195,20 +1197,50 @@ class ApiRepository {
 
   void handleWarningMessage(
       String message, BuildContext context, int errorCode) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: Colors.red,
+    showTopSnackBar(
+      Overlay.of(context),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(
+            width: 500,
+            child: CustomSnackBar.error(
+              message: message,
+            ),
+          ),
+        ],
       ),
     );
+    // ScaffoldMessenger.of(context).showSnackBar(
+    //   SnackBar(
+    //     content: Text(message),
+    //     backgroundColor: Colors.red,
+    //   ),
+    // );
   }
 
   void handleSuccessMessage(String message, BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: Colors.green,
+    showTopSnackBar(
+      Overlay.of(context),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(
+            width: 500,
+            child: CustomSnackBar.success(
+              message: message,
+            ),
+          ),
+        ],
       ),
     );
+    // ScaffoldMessenger.of(context).showSnackBar(
+    //   SnackBar(
+    //     content: Text(message),
+    //     backgroundColor: Colors.green,
+    //   ),
+    // );
   }
 }
