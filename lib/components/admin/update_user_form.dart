@@ -1,3 +1,4 @@
+import 'package:clan_churn/api_repos/api_repo.dart';
 import 'package:clan_churn/api_repos/models/user_model.dart';
 import 'package:clan_churn/churn_blocs/client/client_bloc.dart';
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
@@ -517,6 +518,41 @@ class _UpdateUserState extends State<UpdateUser> {
                         );
                       },
                     ),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        context.read<UserBloc>().add(
+                              DeleteUserEvent(
+                                userId: widget.user.userId,
+                                onErrorCallback: (errorMessage, errorCode) {
+                                  ApiRepository().handleWarningMessage(
+                                      errorMessage, context, errorCode);
+                                },
+                                onSuccessCallback: (message) {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                            );
+                      },
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Theme.of(context).colorScheme.error),
+                      child: Row(
+                        children: [
+                          const Icon(Icons.delete_outline_outlined),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          FittedBox(
+                            child: Text(
+                              "Delete",
+                              style: ClanChurnTypography.font15600,
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
                   ],
                 )
               ]),
