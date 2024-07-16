@@ -188,8 +188,9 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                                   //     )
                                   //   ],
                                   // ),
-                                  const CusTextForPC(
+                                  CusText(
                                     text: "Customer Name",
+                                    textStyle: ClanChurnTypography.font15600,
                                   ),
                                   Container(
                                     width: 300,
@@ -235,8 +236,9 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const CusTextForPC(
+                                  CusText(
                                     text: "Project Name",
+                                    textStyle: ClanChurnTypography.font15600,
                                   ),
                                   Container(
                                     width: 300,
@@ -355,8 +357,9 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                   ),
                   Expanded(
                     child: AbsorbPointer(
-                      absorbing:
-                          (projectName.isEmpty || state.createdProject == null || state.createdProject!.id.isEmpty),
+                      absorbing: (projectName.isEmpty ||
+                          state.createdProject == null ||
+                          state.createdProject!.id.isEmpty),
                       child: Opacity(
                         opacity: (projectName.isEmpty ||
                                 state.createdProject == null)
