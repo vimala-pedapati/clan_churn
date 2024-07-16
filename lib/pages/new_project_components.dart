@@ -7,6 +7,7 @@ import 'package:clan_churn/api_repos/models/column_model.dart';
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
 import 'package:clan_churn/components/churn_continer.dart';
+import 'package:clan_churn/components/cus_text.dart';
 import 'package:clan_churn/components/dialogs.dart';
 import 'package:clan_churn/components/input_fields.dart';
 import 'package:clan_churn/components/input_sheet_columns.dart';
@@ -17,6 +18,7 @@ import 'package:clan_churn/utils/routes.dart';
 import 'package:clan_churn/utils/spacing.dart';
 import 'package:clan_churn/utils/typography.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
@@ -173,18 +175,21 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Row(
-                                    children: [
-                                      Text(
-                                        "Customer Name",
-                                        style: ClanChurnTypography.font15900,
-                                      ),
-                                      Text(
-                                        "*",
-                                        style: ClanChurnTypography.font10600
-                                            .copyWith(color: Colors.red),
-                                      )
-                                    ],
+                                  // Row(
+                                  //   children: [
+                                  //     Text(
+                                  //       "Customer Name",
+                                  //       style: ClanChurnTypography.font15900,
+                                  //     ),
+                                  //     Text(
+                                  //       "*",
+                                  //       style: ClanChurnTypography.font10600
+                                  //           .copyWith(color: Colors.red),
+                                  //     )
+                                  //   ],
+                                  // ),
+                                  const CusTextForPC(
+                                    text: "Customer Name",
                                   ),
                                   Container(
                                     width: 300,
@@ -230,9 +235,8 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    "Project Name",
-                                    style: ClanChurnTypography.font15900,
+                                  const CusTextForPC(
+                                    text: "Project Name",
                                   ),
                                   Container(
                                     width: 300,
@@ -252,6 +256,11 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                                       autofocus: false,
                                       cursorHeight: 15,
                                       readOnly: false,
+                                      inputFormatters: [
+                                        FilteringTextInputFormatter.allow(
+                                            RegExp(r'[a-zA-Z0-9 ]')),
+                                        LengthLimitingTextInputFormatter(100),
+                                      ],
                                       decoration: InputDecoration(
                                         hintText: 'Enter Project Name',
                                         hintStyle: ClanChurnTypography.font15400
@@ -280,7 +289,8 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                             ],
                           ),
                           ElevatedButton(
-                            onPressed: (projectName.isEmpty ||
+                            onPressed: (projectName.trim().isEmpty ||
+                                    projectName.trim().length < 2 ||
                                     state.columnsList.isEmpty ||
                                     projectName == previousName)
                                 ? null
@@ -345,7 +355,8 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                   ),
                   Expanded(
                     child: AbsorbPointer(
-                      absorbing: projectName.isEmpty,
+                      absorbing:
+                          (projectName.isEmpty || state.createdProject == null || state.createdProject!.id.isEmpty),
                       child: Opacity(
                         opacity: (projectName.isEmpty ||
                                 state.createdProject == null)

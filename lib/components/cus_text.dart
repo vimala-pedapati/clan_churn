@@ -22,3 +22,24 @@ class CusText extends StatelessWidget {
     ]));
   }
 }
+
+class CusTextForPC extends StatelessWidget {
+  const CusTextForPC(
+      {super.key, required this.text, this.isNotRequired = false});
+  final String text;
+  final bool isNotRequired;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text.rich(TextSpan(children: [
+      TextSpan(
+        text: text,
+        style: ClanChurnTypography.font15900,
+      ),
+      TextSpan(
+        text: isNotRequired ? "" : "  *",
+        style: ClanChurnTypography.font12600.copyWith(color: Colors.red),
+      ),
+    ]));
+  }
+}

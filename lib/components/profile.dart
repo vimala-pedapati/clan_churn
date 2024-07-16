@@ -52,7 +52,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                         color: Theme.of(context)
                             .colorScheme
                             .primary
-                            .withOpacity(0.1),
+                            .withOpacity(1),
                         borderRadius:
                             BorderRadius.circular(isNotExpanded ? 30 : 30)),
                     child: Column(
@@ -75,8 +75,11 @@ class _ProfileWidgetState extends State<ProfileWidget>
                                 icon: AnimatedRotation(
                                   turns: rotationAngle / 360,
                                   duration: const Duration(milliseconds: 300),
-                                  child: const Icon(
+                                  child: Icon(
                                     Icons.expand_circle_down_outlined,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .background,
                                   ),
                                 )),
                           ),
@@ -93,15 +96,16 @@ class _ProfileWidgetState extends State<ProfileWidget>
                                         .copyWith(
                                             color: Theme.of(context)
                                                 .colorScheme
-                                                .primary),
+                                                .background),
                                   );
                                 },
                               ),
                               Text(
                                 "${state.user?.userType.value}",
                                 style: ClanChurnTypography.font10600.copyWith(
-                                    color:
-                                        Theme.of(context).colorScheme.primary),
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .background),
                               )
                             ],
                           ),
