@@ -50,6 +50,7 @@ class CustomTextFormField extends StatelessWidget {
       this.suffixIcon,
       this.height = 30,
       this.width = 300,
+      this.isMandatory,
       Key? key})
       : super(key: key);
   final TextEditingController? controller;
@@ -65,6 +66,7 @@ class CustomTextFormField extends StatelessWidget {
   final Widget? suffixIcon;
   final double? height;
   final double? width;
+  final bool? isMandatory;
   @override
   Widget build(BuildContext context) {
     //     // final h = MediaQuery.of(context).size.height;
@@ -75,7 +77,10 @@ class CustomTextFormField extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CusText(text: label ?? "", textStyle: ClanChurnTypography.font15900),
+          CusText(
+              text: label ?? "",
+              textStyle: ClanChurnTypography.font15900,
+              isNotRequired: !(isMandatory ?? true)),
           ClanChurnSpacing.h6,
           // Expanded(child: Container(),),
           Container(

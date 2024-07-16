@@ -455,8 +455,8 @@ class _GetInputFieldsState extends State<GetInputFields> {
       studyPeriodEndDateController,
       earliestDateForDateOfJoiningReleventForTheStudyController,
       endDateForDateOfJoiningReleventForTheStudyController,
-      unitForValuePerformanceController,
-      unitForQuantityPerformanceController,
+      // unitForValuePerformanceController,
+      // unitForQuantityPerformanceController,
       ...departments,
       ...designations,
     ];
@@ -659,6 +659,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                         .unitForValuePerformance,
                                     controller:
                                         unitForValuePerformanceController,
+                                    isMandatory: false,
                                     textInputType: TextInputType.name,
                                     isObscureText: false,
                                     isEnabled: true,
@@ -669,6 +670,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                   CustomTextFormField(
                                     label: InputFieldLabels
                                         .unitForQuantityPerformance,
+                                    isMandatory: false,
                                     controller:
                                         unitForQuantityPerformanceController,
                                     textInputType: TextInputType.name,
