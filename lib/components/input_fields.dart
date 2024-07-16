@@ -1,3 +1,4 @@
+import 'package:clan_churn/api_repos/api_repo.dart';
 import 'package:clan_churn/api_repos/models/project_model.dart';
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/components/cus_text_form_filed_for_input_form.dart';
@@ -10,8 +11,6 @@ import 'package:clan_churn/utils/typography.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-
 
 class GetInputFields extends StatefulWidget {
   const GetInputFields(
@@ -112,6 +111,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
   List<CustomTextFormField> departmentFields = [];
   List<CustomTextFormField> designationFields = [];
   final PageController _pageController = PageController();
+  String? errorText;
   int _currentPage = 0;
   void goToNextPage() {
     if (_currentPage < 3) {
@@ -445,9 +445,11 @@ class _GetInputFieldsState extends State<GetInputFields> {
   }
 
   bool areAllControllersNotEmpty() {
+    if (projectOwnerController.text.trim().length < 2) {
+      errorText = "Minimum Character Limit not met, please contact Admin";
+      return false;
+    }
     List<TextEditingController> controllers = [
-      // customerNameController
-      projectOwnerController,
       projectStartDateController,
       studyPeriodBeginningDateController,
       studyPeriodEndDateController,
@@ -461,7 +463,6 @@ class _GetInputFieldsState extends State<GetInputFields> {
 
     for (var controller in controllers) {
       if (controller.text.isEmpty) {
-        print("........${controller.text}");
         return false;
       }
     }
@@ -1067,9 +1068,9 @@ class _GetInputFieldsState extends State<GetInputFields> {
                     ElevatedButton(
                       onPressed: () {
                         if (!areAllControllersNotEmpty()) {
-                          print(".......all should fileds be required to add");
-                          GetDialog().showBootomMessage(
-                              "Please fill in all the required fields before proceeding.",
+                          ApiRepository().handleWarningMessage(
+                              errorText ??
+                                  "Please fill in all the required fields before proceeding.",
                               context);
                           return;
                         }
@@ -1175,4 +1176,3 @@ class _GetInputFieldsState extends State<GetInputFields> {
     );
   }
 }
-

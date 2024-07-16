@@ -528,7 +528,7 @@ class _UpdateUserState extends State<UpdateUser> {
                                 userId: widget.user.userId,
                                 onErrorCallback: (errorMessage, errorCode) {
                                   ApiRepository().handleWarningMessage(
-                                      errorMessage, context, errorCode);
+                                      errorMessage, context);
                                 },
                                 onSuccessCallback: (message) {
                                   Navigator.pop(context);
@@ -538,7 +538,7 @@ class _UpdateUserState extends State<UpdateUser> {
                                           ApiRepository().handleWarningMessage(
                                               "Unable to fetch updated user details",
                                               context,
-                                              errorCode);
+                                            );
                                         },
                                         onSuccessCallback: (message) {},
                                       ));

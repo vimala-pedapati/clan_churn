@@ -1,6 +1,5 @@
 // Define the input formatters
 import 'package:clan_churn/components/cus_text.dart';
-import 'package:clan_churn/components/input_fields.dart';
 import 'package:clan_churn/utils/spacing.dart';
 import 'package:clan_churn/utils/typography.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +11,7 @@ List<TextInputFormatter> a = <TextInputFormatter>[
 
 List<TextInputFormatter> b = <TextInputFormatter>[
   FilteringTextInputFormatter.digitsOnly,
+  LengthLimitingTextInputFormatter(20),
 ];
 
 List<TextInputFormatter> c = <TextInputFormatter>[

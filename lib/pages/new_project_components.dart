@@ -142,6 +142,7 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
         return ChurnContainer(
           child: PageView(
             controller: _pageController,
+            physics: const NeverScrollableScrollPhysics(),
             children: [
               Column(
                 children: [
@@ -159,7 +160,9 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                       ),
                       ClanChurnSpacing.w10,
                       Text(
-                        "Start New Project",
+                        isProjectCreated
+                            ? "Update Project"
+                            : "Start New Project",
                         style: ClanChurnTypography.font18600,
                       ),
                     ],
@@ -315,9 +318,9 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                                                       int errorCode) {
                                                 ApiRepository()
                                                     .handleWarningMessage(
-                                                        message,
-                                                        context,
-                                                        errorCode);
+                                                  message,
+                                                  context,
+                                                );
                                               }));
                                     } else {
                                       context
@@ -342,8 +345,10 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                                             onErrorCallback:
                                                 (message, errorCode) {
                                               ApiRepository()
-                                                  .handleWarningMessage(message,
-                                                      context, errorCode);
+                                                  .handleWarningMessage(
+                                                message,
+                                                context,
+                                              );
                                             },
                                           ));
                                     }

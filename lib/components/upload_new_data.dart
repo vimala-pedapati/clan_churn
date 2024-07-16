@@ -77,7 +77,7 @@ class _UploadNewDataState extends State<UploadNewData> {
                                       ApiRepository().handleWarningMessage(
                                           "$message unable to upload file, something went wrong ",
                                           context,
-                                          errorCode);
+                                          );
                                     },
                                     onSuccessCallBack: (message) {
                                       ApiRepository().handleSuccessMessage(

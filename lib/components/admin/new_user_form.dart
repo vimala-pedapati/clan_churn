@@ -415,7 +415,7 @@ class _NewUserFormState extends State<NewUserForm> {
                                     image: state.uploadLogoResponse?.filename,
                                     onErrorCallback: (errorMessage, errorCode) {
                                       ApiRepository().handleWarningMessage(
-                                          errorMessage, context, errorCode);
+                                          errorMessage, context);
                                     },
                                     onSuccessCallback: (message) {
                                       Navigator.pushReplacement(

@@ -1196,7 +1196,7 @@ class ApiRepository {
   }
 
   void handleWarningMessage(
-      String message, BuildContext context, int errorCode) {
+      String message, BuildContext context) {
     showTopSnackBar(
       Overlay.of(context),
       Row(
