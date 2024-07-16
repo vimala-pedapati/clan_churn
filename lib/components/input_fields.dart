@@ -2,14 +2,11 @@ import 'package:clan_churn/api_repos/api_repo.dart';
 import 'package:clan_churn/api_repos/models/project_model.dart';
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/components/cus_text_form_filed_for_input_form.dart';
-import 'package:clan_churn/components/dialogs.dart';
 import 'package:clan_churn/components/upload_new_data.dart';
 import 'package:clan_churn/components/uploaded_excel_summary_report.dart';
 import 'package:clan_churn/utils/input_field_strings.dart';
 import 'package:clan_churn/utils/spacing.dart';
-import 'package:clan_churn/utils/typography.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class GetInputFields extends StatefulWidget {
@@ -146,7 +143,6 @@ class _GetInputFieldsState extends State<GetInputFields> {
       });
     }
     Project? p = context.read<ProjectArchitectBloc>().state.createdProject;
-    print("......created project ------$p");
     if (p != null) {
       setState(() {
         projectNameController.text = p.name ?? '';
@@ -347,6 +343,10 @@ class _GetInputFieldsState extends State<GetInputFields> {
             }
           }
         } else {
+          setState(() {
+            projectStartDateController.text =
+                DateTime.now().toString().split(" ").first;
+          });
           departments.add(TextEditingController());
           departmentFields.add(CustomTextFormField(
             label: "Department 1 Covered in the Study",
@@ -435,7 +435,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(1900),
-      lastDate: DateTime(2101),
+      lastDate: DateTime.now(),
     );
     if (picked != null) {
       return picked.toString().split(" ").first;
