@@ -285,11 +285,10 @@ class _GetInputFieldsState extends State<GetInputFields> {
           designations = [];
           departmentFields = [];
           designationFields = [];
-          print("...............${pd.departments}");
           if (pd.departments == null) {
             departments.add(TextEditingController());
             departmentFields.add(CustomTextFormField(
-              label: "Department 1 Covered in the Study",
+              label: "Department Covered in the Study",
               controller: departments[0],
               textInputType: TextInputType.name,
               isObscureText: false,
@@ -303,21 +302,21 @@ class _GetInputFieldsState extends State<GetInputFields> {
             }
             for (int i = 0; i < pd.departments!.length; i++) {
               departmentFields.add(CustomTextFormField(
-                label: "Department ${i + 1} Covered in the Study",
-                controller: departments[i],
-                textInputType: TextInputType.name,
-                isObscureText: false,
-                isEnabled: true,
-                textInputAction: TextInputAction.next,
-                textInputFormatterType: TextInputFormatterType.string,
-              ));
+                  label: "Department Covered in the Study",
+                  controller: departments[i],
+                  textInputType: TextInputType.name,
+                  isObscureText: false,
+                  isEnabled: true,
+                  textInputAction: TextInputAction.next,
+                  textInputFormatterType: TextInputFormatterType.string,
+                  isMandatory: i == 0 ? true : false));
             }
           }
 
           if (pd.designations == null) {
             designations.add(TextEditingController());
             designationFields.add(CustomTextFormField(
-              label: "Designation 1 Covered in the Study",
+              label: "Designation Covered in the Study",
               controller: designations[0],
               textInputType: TextInputType.name,
               isObscureText: false,
@@ -332,14 +331,14 @@ class _GetInputFieldsState extends State<GetInputFields> {
             }
             for (int i = 0; i < pd.designations!.length; i++) {
               designationFields.add(CustomTextFormField(
-                label: "Designation ${i + 1} Covered in the Study",
-                controller: designations[i],
-                textInputType: TextInputType.name,
-                isObscureText: false,
-                isEnabled: true,
-                textInputAction: TextInputAction.next,
-                textInputFormatterType: TextInputFormatterType.string,
-              ));
+                  label: "Designation Covered in the Study",
+                  controller: designations[i],
+                  textInputType: TextInputType.name,
+                  isObscureText: false,
+                  isEnabled: true,
+                  textInputAction: TextInputAction.next,
+                  textInputFormatterType: TextInputFormatterType.string,
+                  isMandatory: i == 0 ? true : false));
             }
           }
         } else {
@@ -349,7 +348,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
           });
           departments.add(TextEditingController());
           departmentFields.add(CustomTextFormField(
-            label: "Department 1 Covered in the Study",
+            label: "Department Covered in the Study",
             controller: departments[0],
             textInputType: TextInputType.name,
             isObscureText: false,
@@ -359,7 +358,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
           ));
           designations.add(TextEditingController());
           designationFields.add(CustomTextFormField(
-            label: "Designation 1 Covered in the Study",
+            label: "Designation Covered in the Study",
             controller: designations[0],
             textInputType: TextInputType.name,
             isObscureText: false,
@@ -449,6 +448,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
       errorText = "Minimum Character Limit not met, please contact Admin";
       return false;
     }
+    errorText = null;
     List<TextEditingController> controllers = [
       projectStartDateController,
       studyPeriodBeginningDateController,
@@ -457,8 +457,9 @@ class _GetInputFieldsState extends State<GetInputFields> {
       endDateForDateOfJoiningReleventForTheStudyController,
       // unitForValuePerformanceController,
       // unitForQuantityPerformanceController,
-      ...departments,
-      ...designations,
+      if (departments.isNotEmpty) departments[0],
+
+      if (designations.isNotEmpty) designations[0],
     ];
 
     for (var controller in controllers) {
@@ -1003,8 +1004,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                             .add(TextEditingController());
                                         departmentFields
                                             .add(CustomTextFormField(
-                                          label:
-                                              "Department${departmentFields.length + 1}",
+                                          label: "Department",
                                           controller: departments[
                                               departments.length - 1],
                                           textInputType: TextInputType.name,
@@ -1013,6 +1013,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                           textInputAction: TextInputAction.next,
                                           textInputFormatterType:
                                               TextInputFormatterType.string,
+                                          isMandatory: false,
                                         ));
                                       });
                                     },
@@ -1040,8 +1041,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                             .add(TextEditingController());
                                         designationFields
                                             .add(CustomTextFormField(
-                                          label:
-                                              "Designation ${designationFields.length + 1}",
+                                          label: "Designation",
                                           controller: designations[
                                               designations.length - 1],
                                           textInputType: TextInputType.name,
@@ -1050,6 +1050,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                           textInputAction: TextInputAction.next,
                                           textInputFormatterType:
                                               TextInputFormatterType.string,
+                                          isMandatory: false,
                                         ));
                                       });
                                     },
