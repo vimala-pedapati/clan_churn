@@ -28,84 +28,12 @@ class _GetInputFieldsState extends State<GetInputFields> {
   TextEditingController projectNameController = TextEditingController();
   TextEditingController projectOwnerController = TextEditingController();
   TextEditingController projectStartDateController = TextEditingController();
-  TextEditingController studyPeriodBeginningDateController =
-      TextEditingController();
+  TextEditingController stuPerBegDateController = TextEditingController();
   TextEditingController studyPeriodEndDateController = TextEditingController();
-  TextEditingController
-      earliestDateForDateOfJoiningReleventForTheStudyController =
-      TextEditingController();
-  TextEditingController endDateForDOJReleventForTheStudyController =
-      TextEditingController();
-  TextEditingController unitForValuePerformanceController =
-      TextEditingController();
-  TextEditingController unitForQuantityPerformanceController =
-      TextEditingController();
-  TextEditingController projectMaximumResidencyMonthController =
-      TextEditingController();
-  TextEditingController
-      projectTopOutlierRankForResidencyMonthOfPerformanceMonthController =
-      TextEditingController();
-  TextEditingController
-      projectBottomOutlierRankForResidencyMonthOfPerformanceMonthController =
-      TextEditingController();
-  TextEditingController projectMaxPerformanceValueTargetController =
-      TextEditingController();
-  TextEditingController
-      projectTopOutlierRankForMaximumPerformanceValueTargetController =
-      TextEditingController();
-  TextEditingController
-      projectBottomOutlierRankForMaximumPerformanceValueTargetController =
-      TextEditingController();
-  TextEditingController projectMaximumPerformanceValueActualController =
-      TextEditingController();
-  TextEditingController
-      projectTopOutlierRankForMaximumPerformanceValueActualController =
-      TextEditingController();
-  TextEditingController
-      projectBottomOutlierRankForMaximumPerformanceValueActualController =
-      TextEditingController();
-  TextEditingController projectMaximumPerformanceQuantityActualController =
-      TextEditingController();
-  TextEditingController
-      projectTopOutlierRankForMaximumPerformanceQuantityActualController =
-      TextEditingController();
-  TextEditingController
-      projectBottomOutlierRankMaximumPerformanceQuantityActualController =
-      TextEditingController();
-  TextEditingController projectMaximumPerformanceQuantityTargetController =
-      TextEditingController();
-  TextEditingController
-      projectTopOutlierRankForMaximumPerformanceQuantityTargetController =
-      TextEditingController();
-  TextEditingController
-      projectBottomOutlierRankForMaximumPerformanceQuantityTargetController =
-      TextEditingController();
-  TextEditingController
-      projectMaximumOverAllPerformanceAchievementPerController =
-      TextEditingController();
-  TextEditingController
-      projectTopOutlierRankForMaximumOverAllPerformanceAchievementPerController =
-      TextEditingController();
-  TextEditingController
-      projectBottomOutlierRankForMaximumOverAllPerformanceAchievementPerController =
-      TextEditingController();
-  TextEditingController projectMaximumMonthlyFixedSalaryIndexController =
-      TextEditingController();
-  TextEditingController
-      projectTopOutlierRankForMaximumMonthlyFixedSalaryIndexController =
-      TextEditingController();
-  TextEditingController
-      projectBottomOutlierRankForMaximumMonthlyFixedSalaryIndexController =
-      TextEditingController();
-  TextEditingController projectMaximumMonthlyIncentiveController =
-      TextEditingController();
-  TextEditingController
-      projectTopOutlierRankForMaximumMonthlyIncentiveController =
-      TextEditingController();
-  TextEditingController
-      projectBottomOutlierRankForMaximumMonthlyIncentiveController =
-      TextEditingController();
-
+  TextEditingController earDateForDOJController = TextEditingController();
+  TextEditingController endDateForDOJController = TextEditingController();
+  TextEditingController unitForValPerController = TextEditingController();
+  TextEditingController unitForQuaPerforController = TextEditingController();
   List<CustomTextFormField> departmentFields = [];
   List<CustomTextFormField> designationFields = [];
   final PageController _pageController = PageController();
@@ -155,132 +83,21 @@ class _GetInputFieldsState extends State<GetInputFields> {
         if (pd != null) {
           projectStartDateController.text =
               pd.projectStartDate?.split("T").first ?? "";
-          studyPeriodBeginningDateController.text =
+          stuPerBegDateController.text =
               pd.studyPeriodBeginingDate?.split("T").first ?? "";
           projectOwnerController.text = pd.projectOwner ?? "";
           studyPeriodEndDateController.text =
               pd.studyPeriodEndDate?.split("T").first ?? "";
 
-          earliestDateForDateOfJoiningReleventForTheStudyController.text =
-              pd.earliestDateForDateOfJoiningReleventForTheStudy ?? "";
+          earDateForDOJController.text =
+              pd.earDateForDOJRel?.split("T").first ?? "";
 
-          endDateForDOJReleventForTheStudyController.text =
-              pd.endDateForDateOfJoiningReleventForTheStudy ?? "";
+          endDateForDOJController.text =
+              pd.endDateForDOJ?.split("T").first ?? "";
 
-          unitForValuePerformanceController.text =
-              pd.unitForValuePerformance ?? "";
+          unitForValPerController.text = pd.unitForValPer ?? "";
 
-          unitForQuantityPerformanceController.text =
-              pd.unitForQuantityPerformance ?? "";
-
-          projectMaximumResidencyMonthController.text =
-              (pd.projectMaximumResidencyMonth ?? "").toString();
-
-          projectTopOutlierRankForResidencyMonthOfPerformanceMonthController
-                  .text =
-              (pd.projectTopOutlierRankForResidencyMonthOfPerformanceMonth ??
-                      "")
-                  .toString();
-
-          projectBottomOutlierRankForResidencyMonthOfPerformanceMonthController
-                  .text =
-              (pd.projectBottomOutlierRankForResidencyMonthOfPerformanceMonth ??
-                      "")
-                  .toString();
-
-          projectMaxPerformanceValueTargetController.text =
-              (pd.projectMaxPerformanceValueTarget ?? "").toString();
-
-          projectTopOutlierRankForMaximumPerformanceValueTargetController.text =
-              (pd.projectTopOutlierRankForMaximumPerformanceValueTarget ?? "")
-                  .toString();
-
-          projectBottomOutlierRankForMaximumPerformanceValueTargetController
-                  .text =
-              (pd.projectBottomOutlierRankForMaximumPerformanceValueTarget ??
-                      "")
-                  .toString();
-
-          projectMaximumPerformanceValueActualController.text =
-              (pd.projectMaximumPerformanceValueActual ?? "").toString();
-
-          projectTopOutlierRankForMaximumPerformanceValueActualController.text =
-              (pd.projectTopOutlierRankForMaximumPerformanceValueActual ?? "")
-                  .toString();
-
-          projectBottomOutlierRankForMaximumPerformanceValueActualController
-                  .text =
-              (pd.projectBottomOutlierRankForMaximumPerformanceValueActual ??
-                      "")
-                  .toString();
-
-          //  projectMaximumPerformanceQuantityActualController.text= (pd.projectMaximumPerformanceQuantityActual ?? "").toString();
-          projectMaximumPerformanceQuantityActualController.text =
-              ("").toString();
-
-          // projectTopOutlierRankForMaximumPerformanceQuantityActualController.text= (pd.projectTopOutlierRankForMaximumPerformanceQuantityActual ?? "").toString();
-          projectTopOutlierRankForMaximumPerformanceQuantityActualController
-              .text = ("").toString();
-
-          // projectBottomOutlierRankMaximumPerformanceQuantityActualController.text= (pd.projectBottomOutlierRankMaximumPerformanceQuantityActual ?? "").toString();
-          projectBottomOutlierRankMaximumPerformanceQuantityActualController
-              .text = ("").toString();
-
-          projectMaximumPerformanceQuantityTargetController.text =
-              (pd.projectMaximumPerformanceQuantityTarget ?? "").toString();
-
-          projectTopOutlierRankForMaximumPerformanceQuantityTargetController
-                  .text =
-              (pd.projectTopOutlierRankForMaximumPerformanceQuantityTarget ??
-                      "")
-                  .toString();
-
-          projectBottomOutlierRankForMaximumPerformanceQuantityTargetController
-                  .text =
-              (pd.projectBottomOutlierRankForMaximumPerformanceQuantityTarget ??
-                      "")
-                  .toString();
-
-          projectMaximumOverAllPerformanceAchievementPerController.text =
-              (pd.projectMaximumOverAllPerformanceAchievementPer ?? "")
-                  .toString();
-
-          projectTopOutlierRankForMaximumOverAllPerformanceAchievementPerController
-                  .text =
-              (pd.projectTopOutlierRankForMaximumOverAllPerformanceAchievementPer ??
-                      "")
-                  .toString();
-
-          projectBottomOutlierRankForMaximumOverAllPerformanceAchievementPerController
-                  .text =
-              (pd.projectBottomOutlierRankForMaximumOverAllPerformanceAchievementPer ??
-                      "")
-                  .toString();
-
-          projectMaximumMonthlyFixedSalaryIndexController.text =
-              (pd.projectMaximumMonthlyFixedSalaryIndex ?? "").toString();
-
-          projectTopOutlierRankForMaximumMonthlyFixedSalaryIndexController
-                  .text =
-              (pd.projectTopOutlierRankForMaximumMonthlyFixedSalaryIndex ?? "")
-                  .toString();
-
-          projectBottomOutlierRankForMaximumMonthlyFixedSalaryIndexController
-                  .text =
-              (pd.projectBottomOutlierRankForMaximumMonthlyFixedSalaryIndex ??
-                      "")
-                  .toString();
-
-          projectMaximumMonthlyIncentiveController.text =
-              (pd.projectMaximumMonthlyIncentive ?? "").toString();
-
-          projectTopOutlierRankForMaximumMonthlyIncentiveController.text =
-              (pd.projectTopOutlierRankForMaximumMonthlyIncentive ?? "")
-                  .toString();
-
-          projectBottomOutlierRankForMaximumMonthlyIncentiveController.text =
-              (pd.projectBottomOutlierRankForMaximumMonthlyIncentive ?? "")
-                  .toString();
+          unitForQuaPerforController.text = pd.unitForQuaPerfor ?? "";
 
           departments = [];
           designations = [];
@@ -380,47 +197,12 @@ class _GetInputFieldsState extends State<GetInputFields> {
     projectNameController.dispose();
     projectOwnerController.dispose();
     projectStartDateController.dispose();
-    studyPeriodBeginningDateController.dispose();
+    stuPerBegDateController.dispose();
     studyPeriodEndDateController.dispose();
-    earliestDateForDateOfJoiningReleventForTheStudyController.dispose();
-    endDateForDOJReleventForTheStudyController.dispose();
-    unitForValuePerformanceController.dispose();
-    unitForQuantityPerformanceController.dispose();
-    projectMaximumResidencyMonthController.dispose();
-    projectTopOutlierRankForResidencyMonthOfPerformanceMonthController
-        .dispose();
-    projectBottomOutlierRankForResidencyMonthOfPerformanceMonthController
-        .dispose();
-    projectMaxPerformanceValueTargetController.dispose();
-    projectTopOutlierRankForMaximumPerformanceValueTargetController.dispose();
-    projectBottomOutlierRankForMaximumPerformanceValueTargetController
-        .dispose();
-    projectMaximumPerformanceValueActualController.dispose();
-    projectTopOutlierRankForMaximumPerformanceValueActualController.dispose();
-    projectBottomOutlierRankForMaximumPerformanceValueActualController
-        .dispose();
-    projectMaximumPerformanceQuantityActualController.dispose();
-    projectTopOutlierRankForMaximumPerformanceQuantityActualController
-        .dispose();
-    projectBottomOutlierRankMaximumPerformanceQuantityActualController
-        .dispose();
-    projectMaximumPerformanceQuantityTargetController.dispose();
-    projectTopOutlierRankForMaximumPerformanceQuantityTargetController
-        .dispose();
-    projectBottomOutlierRankForMaximumPerformanceQuantityTargetController
-        .dispose();
-    projectMaximumOverAllPerformanceAchievementPerController.dispose();
-    projectTopOutlierRankForMaximumOverAllPerformanceAchievementPerController
-        .dispose();
-    projectBottomOutlierRankForMaximumOverAllPerformanceAchievementPerController
-        .dispose();
-    projectMaximumMonthlyFixedSalaryIndexController.dispose();
-    projectTopOutlierRankForMaximumMonthlyFixedSalaryIndexController.dispose();
-    projectBottomOutlierRankForMaximumMonthlyFixedSalaryIndexController
-        .dispose();
-    projectMaximumMonthlyIncentiveController.dispose();
-    projectTopOutlierRankForMaximumMonthlyIncentiveController.dispose();
-    projectBottomOutlierRankForMaximumMonthlyIncentiveController.dispose();
+    earDateForDOJController.dispose();
+    endDateForDOJController.dispose();
+    unitForValPerController.dispose();
+    unitForQuaPerforController.dispose();
     for (var i in designations) {
       i.dispose();
     }
@@ -444,17 +226,16 @@ class _GetInputFieldsState extends State<GetInputFields> {
     }
   }
 
-  setEarliestDOJ() {
-    if (studyPeriodBeginningDateController.text.isNotEmpty &&
+  void setEarliestDOJ() {
+    if (stuPerBegDateController.text.isNotEmpty &&
         studyPeriodEndDateController.text.isNotEmpty) {
       setState(() {
-        earliestDateForDateOfJoiningReleventForTheStudyController.text =
-            calculateEarliestDOJ(
-                    studyPeriodBeginningDateController.text.toDateTime(),
-                    studyPeriodEndDateController.text.toDateTime())
-                .toString()
-                .split(" ")
-                .first;
+        earDateForDOJController.text = calculateEarliestDOJ(
+                stuPerBegDateController.text.toDateTime(),
+                studyPeriodEndDateController.text.toDateTime())
+            .toString()
+            .split(" ")
+            .first;
       });
     }
   }
@@ -467,10 +248,10 @@ class _GetInputFieldsState extends State<GetInputFields> {
     errorText = null;
     List<TextEditingController> controllers = [
       projectStartDateController,
-      studyPeriodBeginningDateController,
+      stuPerBegDateController,
       studyPeriodEndDateController,
-      earliestDateForDateOfJoiningReleventForTheStudyController,
-      endDateForDOJReleventForTheStudyController,
+      earDateForDOJController,
+      endDateForDOJController,
       // unitForValuePerformanceController,
       // unitForQuantityPerformanceController,
       if (departments.isNotEmpty) departments[0],
@@ -588,8 +369,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                   CustomTextFormField(
                                     label: InputFieldLabels
                                         .studyPeriodBeginningDate,
-                                    controller:
-                                        studyPeriodBeginningDateController,
+                                    controller: stuPerBegDateController,
                                     textInputType: TextInputType.name,
                                     hintText: 'Select Date',
                                     suffixIcon: IconButton(
@@ -599,8 +379,8 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                       ),
                                       onPressed: () async {
                                         setState(() async {
-                                          studyPeriodBeginningDateController
-                                              .text = await selectDate(context);
+                                          stuPerBegDateController.text =
+                                              await selectDate(context);
                                           setEarliestDOJ();
                                         });
                                       },
@@ -638,8 +418,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                   CustomTextFormField(
                                     label: InputFieldLabels
                                         .earliestDateForDateOfJoiningRelevantForStudy,
-                                    controller:
-                                        earliestDateForDateOfJoiningReleventForTheStudyController,
+                                    controller: earDateForDOJController,
                                     textInputType: TextInputType.name,
                                     hintText: 'Select Date',
                                     suffixIcon: IconButton(
@@ -647,8 +426,8 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                           size: 18),
                                       onPressed: () async {
                                         setState(() async {
-                                          earliestDateForDateOfJoiningReleventForTheStudyController
-                                              .text = await selectDate(context);
+                                          earDateForDOJController.text =
+                                              await selectDate(context);
                                         });
                                       },
                                     ),
@@ -662,16 +441,15 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                   CustomTextFormField(
                                     label: InputFieldLabels
                                         .endDateForDateOfJoiningRelevantForStudy,
-                                    controller:
-                                        endDateForDOJReleventForTheStudyController,
+                                    controller: endDateForDOJController,
                                     hintText: 'Select Date',
                                     suffixIcon: IconButton(
                                       icon: const Icon(Icons.calendar_month,
                                           size: 18),
                                       onPressed: () async {
                                         setState(() async {
-                                          endDateForDOJReleventForTheStudyController
-                                              .text = await selectDate(context);
+                                          endDateForDOJController.text =
+                                              await selectDate(context);
                                         });
                                       },
                                     ),
@@ -686,8 +464,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                   CustomTextFormField(
                                     label: InputFieldLabels
                                         .unitForValuePerformance,
-                                    controller:
-                                        unitForValuePerformanceController,
+                                    controller: unitForValPerController,
                                     isMandatory: false,
                                     textInputType: TextInputType.name,
                                     isObscureText: false,
@@ -700,8 +477,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                     label: InputFieldLabels
                                         .unitForQuantityPerformance,
                                     isMandatory: false,
-                                    controller:
-                                        unitForQuantityPerformanceController,
+                                    controller: unitForQuaPerforController,
                                     textInputType: TextInputType.name,
                                     isObscureText: false,
                                     isEnabled: true,
@@ -709,307 +485,6 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                     textInputFormatterType:
                                         TextInputFormatterType.string,
                                   ),
-                                  // CustomTextFormField(
-                                  //   label: InputFieldLabels
-                                  //       .projectTopOutlierRankForResidencyMonthofPerformanceMonth,
-                                  //   controller:
-                                  //       projectTopOutlierRankForResidencyMonthOfPerformanceMonthController,
-                                  //   textInputType: TextInputType.name,
-                                  //   isObscureText: false,
-                                  //   isEnabled: true,
-                                  //   textInputAction: TextInputAction.next,
-                                  // ),
-                                  // CustomTextFormField(
-                                  //   label: InputFieldLabels
-                                  //       .projectTopOutlierRankForResidencyMonthofPerformanceMonth,
-                                  //   controller:
-                                  //       projectTopOutlierRankForResidencyMonthOfPerformanceMonthController,
-                                  //   textInputType: TextInputType.name,
-                                  //   isObscureText: false,
-                                  //   isEnabled: true,
-                                  //   textInputAction: TextInputAction.next,
-                                  // ),
-                                  // CustomTextFormField(
-                                  //   label: InputFieldLabels
-                                  //       .projectTopOutlierRankForResidencyMonthofPerformanceMonth,
-                                  //   controller:
-                                  //       projectTopOutlierRankForResidencyMonthOfPerformanceMonthController,
-                                  //   textInputType: TextInputType.name,
-                                  //   isObscureText: false,
-                                  //   isEnabled: true,
-                                  //   textInputAction: TextInputAction.next,
-                                  // ),
-                                  // CustomTextFormField(
-                                  //   label: InputFieldLabels
-                                  //       .projectTopOutlierRankForResidencyMonthofPerformanceMonth,
-                                  //   controller:
-                                  //       projectTopOutlierRankForResidencyMonthOfPerformanceMonthController,
-                                  //   textInputType: TextInputType.name,
-                                  //   isObscureText: false,
-                                  //   isEnabled: true,
-                                  //   textInputAction: TextInputAction.next,
-                                  // ),
-                                  // CustomTextFormField(
-                                  //   label: InputFieldLabels
-                                  //       .projectTopOutlierRankForResidencyMonthofPerformanceMonth,
-                                  //   controller:
-                                  //       projectTopOutlierRankForResidencyMonthOfPerformanceMonthController,
-                                  //   textInputType: TextInputType.name,
-                                  //   isObscureText: false,
-                                  //   isEnabled: true,
-                                  //   textInputAction: TextInputAction.next,
-                                  // ),
-                                  // CustomTextFormField(
-                                  //   label: InputFieldLabels
-                                  //       .projectTopOutlierRankForResidencyMonthofPerformanceMonth,
-                                  //   controller:
-                                  //       projectTopOutlierRankForResidencyMonthOfPerformanceMonthController,
-                                  //   textInputType: TextInputType.name,
-                                  //   isObscureText: false,
-                                  //   isEnabled: true,
-                                  //   textInputAction: TextInputAction.next,
-                                  // ),
-                                  // CustomTextFormField(
-                                  //   label: InputFieldLabels
-                                  //       .projectTopOutlierRankForResidencyMonthofPerformanceMonth,
-                                  //   controller:
-                                  //       projectTopOutlierRankForResidencyMonthOfPerformanceMonthController,
-                                  //   textInputType: TextInputType.name,
-                                  //   isObscureText: false,
-                                  //   isEnabled: true,
-                                  //   textInputAction: TextInputAction.next,
-                                  // ),
-
-                                  // CustomTextFormField(
-                                  //   label: InputFieldLabels
-                                  //       .projectMaximumResidencyMonth,
-                                  //   controller:
-                                  //       projectMaximumResidencyMonthController,
-                                  //   textInputType: TextInputType.name,
-                                  //   isObscureText: false,
-                                  //   isEnabled: true,
-                                  //   textInputAction: TextInputAction.next,
-                                  // ),
-                                  // CustomTextFormField(
-                                  //   label: InputFieldLabels
-                                  //       .projectBottomOutlierRankForResidencyMonthOfPerformaceMonth,
-                                  //   controller:
-                                  //       projectBottomOutlierRankForResidencyMonthOfPerformanceMonthController,
-                                  //   textInputType: TextInputType.name,
-                                  //   isObscureText: false,
-                                  //   isEnabled: true,
-                                  //   textInputAction: TextInputAction.next,
-                                  // ),
-                                  // CustomTextFormField(
-                                  //   label: InputFieldLabels
-                                  //       .projectMaximumPerformanceValueTarget,
-                                  //   controller:
-                                  //       projectMaxPerformanceValueTargetController,
-                                  //   textInputType: TextInputType.name,
-                                  //   isObscureText: false,
-                                  //   isEnabled: true,
-                                  //   textInputAction: TextInputAction.next,
-                                  // ),
-                                  // CustomTextFormField(
-                                  //   label: InputFieldLabels
-                                  //       .projectTopOutlierRankForMaximumPerforamceValueTarget,
-                                  //   controller:
-                                  //       projectTopOutlierRankForMaximumPerformanceValueTargetController,
-                                  //   textInputType: TextInputType.name,
-                                  //   isObscureText: false,
-                                  //   isEnabled: true,
-                                  //   textInputAction: TextInputAction.next,
-                                  // ),
-                                  // CustomTextFormField(
-                                  //   label: InputFieldLabels
-                                  //       .projectBottomOutlierRankMaximumPerformanceValueTarget,
-                                  //   controller:
-                                  //       projectBottomOutlierRankForMaximumPerformanceValueTargetController,
-                                  //   textInputType: TextInputType.name,
-                                  //   isObscureText: false,
-                                  //   isEnabled: true,
-                                  //   textInputAction: TextInputAction.next,
-                                  // ),
-                                  // CustomTextFormField(
-                                  //   label: InputFieldLabels
-                                  //       .projectMaximumPerformanceValueActual,
-                                  //   controller:
-                                  //       projectMaximumPerformanceValueActualController,
-                                  //   textInputType: TextInputType.name,
-                                  //   isObscureText: false,
-                                  //   isEnabled: true,
-                                  //   textInputAction: TextInputAction.next,
-                                  // ),
-                                  // CustomTextFormField(
-                                  //   label: InputFieldLabels
-                                  //       .projectTopOutlierRankForMaximumPerformanceValueActual,
-                                  //   controller:
-                                  //       projectTopOutlierRankForMaximumPerformanceValueActualController,
-                                  //   textInputType: TextInputType.name,
-                                  //   isObscureText: false,
-                                  //   isEnabled: true,
-                                  //   textInputAction: TextInputAction.next,
-                                  // ),
-                                  // CustomTextFormField(
-                                  //   label: InputFieldLabels
-                                  //       .projectBottomOutlierRankMaximumPerformacealueActual,
-                                  //   controller:
-                                  //       projectBottomOutlierRankForMaximumPerformanceValueActualController,
-                                  //   textInputType: TextInputType.name,
-                                  //   isObscureText: false,
-                                  //   isEnabled: true,
-                                  //   textInputAction: TextInputAction.next,
-                                  // ),
-                                  // CustomTextFormField(
-                                  //   label: InputFieldLabels
-                                  //       .projectMaximumPerformanceQuantityActual,
-                                  //   controller:
-                                  //       projectMaximumPerformanceQuantityActualController,
-                                  //   textInputType: TextInputType.name,
-                                  //   isObscureText: false,
-                                  //   isEnabled: true,
-                                  //   textInputAction: TextInputAction.next,
-                                  // ),
-                                  // CustomTextFormField(
-                                  //   label: InputFieldLabels
-                                  //       .projectTopOutlierRankForMaximumPerformanceQuantityTarget,
-                                  //   controller:
-                                  //       projectTopOutlierRankForMaximumPerformanceQuantityTargetController,
-                                  //   textInputType: TextInputType.name,
-                                  //   isObscureText: false,
-                                  //   isEnabled: true,
-                                  //   textInputAction: TextInputAction.next,
-                                  // ),
-                                  // CustomTextFormField(
-                                  //   label: InputFieldLabels
-                                  //       .projectBottomOutlierRankMaximumPerformanceQuatityTarget,
-                                  //   controller:
-                                  //       projectBottomOutlierRankForMaximumPerformanceQuantityTargetController,
-                                  //   textInputType: TextInputType.name,
-                                  //   isObscureText: false,
-                                  //   isEnabled: true,
-                                  //   textInputAction: TextInputAction.next,
-                                  // ),
-                                  // CustomTextFormField(
-                                  //   label: InputFieldLabels
-                                  //       .projectMaximumPerformanceQuantityActual,
-                                  //   controller:
-                                  //       projectMaximumPerformanceQuantityActualController,
-                                  //   textInputType: TextInputType.name,
-                                  //   isObscureText: false,
-                                  //   isEnabled: true,
-                                  //   textInputAction: TextInputAction.next,
-                                  // ),
-                                  // CustomTextFormField(
-                                  //   label: InputFieldLabels
-                                  //       .projectTopOutlierRankForMaximumPerformanceQuantityActual,
-                                  //   controller:
-                                  //       projectTopOutlierRankForMaximumPerformanceQuantityActualController,
-                                  //   textInputType: TextInputType.name,
-                                  //   isObscureText: false,
-                                  //   isEnabled: true,
-                                  //   textInputAction: TextInputAction.next,
-                                  // ),
-                                  // CustomTextFormField(
-                                  //   label: InputFieldLabels
-                                  //       .projectBottomOutlierRankMaximumPerformanceQuantityActual,
-                                  //   controller:
-                                  //       projectBottomOutlierRankMaximumPerformanceQuantityActualController,
-                                  //   textInputType: TextInputType.name,
-                                  //   isObscureText: false,
-                                  //   isEnabled: true,
-                                  //   textInputAction: TextInputAction.next,
-                                  // ),
-                                  // CustomTextFormField(
-                                  //   label: InputFieldLabels
-                                  //       .projectMaximumOverAllPerformancePerAchievement,
-                                  //   controller:
-                                  //       projectMaximumOverAllPerformanceAchievementPerController,
-                                  //   textInputType: TextInputType.name,
-                                  //   isObscureText: false,
-                                  //   isEnabled: true,
-                                  //   textInputAction: TextInputAction.next,
-                                  // ),
-                                  // CustomTextFormField(
-                                  //   label: InputFieldLabels
-                                  //       .projectTopOutlierRankForMaximumOverAllPerformanceAchieventPer,
-                                  //   controller:
-                                  //       projectTopOutlierRankForMaximumOverAllPerformanceAchievementPerController,
-                                  //   textInputType: TextInputType.name,
-                                  //   isObscureText: false,
-                                  //   isEnabled: true,
-                                  //   textInputAction: TextInputAction.next,
-                                  // ),
-                                  // CustomTextFormField(
-                                  //   label: InputFieldLabels
-                                  //       .projectBottomOutlierRankMaximumOverAllPerformanceAchievementPer,
-                                  //   controller:
-                                  //       projectBottomOutlierRankForMaximumOverAllPerformanceAchievementPerController,
-                                  //   textInputType: TextInputType.name,
-                                  //   isObscureText: false,
-                                  //   isEnabled: true,
-                                  //   textInputAction: TextInputAction.next,
-                                  // ),
-                                  // CustomTextFormField(
-                                  //   label: InputFieldLabels
-                                  //       .projectMaximumMonthlyFixedSalaryIndex,
-                                  //   controller:
-                                  //       projectMaximumMonthlyFixedSalaryIndexController,
-                                  //   textInputType: TextInputType.name,
-                                  //   isObscureText: false,
-                                  //   isEnabled: true,
-                                  //   textInputAction: TextInputAction.next,
-                                  // ),
-                                  // CustomTextFormField(
-                                  //   label: InputFieldLabels
-                                  //       .projectTopOutlierRankForMaximumMonthlyFixedSalaryIndex,
-                                  //   controller:
-                                  //       projectTopOutlierRankForMaximumMonthlyFixedSalaryIndexController,
-                                  //   textInputType: TextInputType.name,
-                                  //   isObscureText: false,
-                                  //   isEnabled: true,
-                                  //   textInputAction: TextInputAction.next,
-                                  // ),
-                                  // CustomTextFormField(
-                                  //   label: InputFieldLabels
-                                  //       .projectBottomOutlierRankMaximumMonthlyFixedSalaryIndex,
-                                  //   controller:
-                                  //       projectBottomOutlierRankForMaximumMonthlyFixedSalaryIndexController,
-                                  //   textInputType: TextInputType.name,
-                                  //   isObscureText: false,
-                                  //   isEnabled: true,
-                                  //   textInputAction: TextInputAction.next,
-                                  // ),
-                                  // CustomTextFormField(
-                                  //   label: InputFieldLabels
-                                  //       .projectTopOutlierRankForMaximumMonthlyIncentive,
-                                  //   controller:
-                                  //       projectTopOutlierRankForMaximumMonthlyIncentiveController,
-                                  //   textInputType: TextInputType.name,
-                                  //   isObscureText: false,
-                                  //   isEnabled: true,
-                                  //   textInputAction: TextInputAction.next,
-                                  // ),
-                                  // CustomTextFormField(
-                                  //   label: InputFieldLabels
-                                  //       .projectBottomOutlierRankMaximumMonthlyIncentive,
-                                  //   controller:
-                                  //       projectBottomOutlierRankForMaximumMonthlyIncentiveController,
-                                  //   textInputType: TextInputType.name,
-                                  //   isObscureText: false,
-                                  //   isEnabled: true,
-                                  //   textInputAction: TextInputAction.next,
-                                  // ),
-                                  // CustomTextFormField(
-                                  //   label: InputFieldLabels
-                                  //       .projectMaximumMonthlyIncentive,
-                                  //   controller:
-                                  //       projectMaximumMonthlyIncentiveController,
-                                  //   textInputType: TextInputType.name,
-                                  //   isObscureText: false,
-                                  //   isEnabled: true,
-                                  //   textInputAction: TextInputAction.next,
-                                  // ),
                                 ],
                               ),
                               Row(
@@ -1061,8 +536,6 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                     ),
                                   ),
                                   TextButton(
-                                    // style: TextButton.styleFrom(
-                                    //     padding: const EdgeInsets.all(0)),
                                     onPressed: () {
                                       setState(() {
                                         designations
@@ -1114,50 +587,17 @@ class _GetInputFieldsState extends State<GetInputFields> {
                           design.add(i.text);
                         }
                         ProjectDetails a = ProjectDetails(
-                            departments: depart,
-                            designations: design,
-                            projectStartDate: projectStartDateController.text,
-                            projectOwner: projectOwnerController.text,
-                            studyPeriodBeginingDate:
-                                studyPeriodBeginningDateController.text,
-                            studyPeriodEndDate:
-                                studyPeriodEndDateController.text,
-                            earliestDateForDateOfJoiningReleventForTheStudy:
-                                earliestDateForDateOfJoiningReleventForTheStudyController
-                                    .text,
-                            endDateForDateOfJoiningReleventForTheStudy:
-                                endDateForDOJReleventForTheStudyController.text,
-                            unitForValuePerformance:
-                                unitForValuePerformanceController.text,
-                            unitForQuantityPerformance:
-                                unitForQuantityPerformanceController.text,
-                            projectMaximumResidencyMonth: int.parse(projectMaximumResidencyMonthController.text.isEmpty
-                                ? '0'
-                                : projectMaximumResidencyMonthController.text),
-                            projectTopOutlierRankForResidencyMonthOfPerformanceMonth:
-                                int.parse(projectTopOutlierRankForResidencyMonthOfPerformanceMonthController
-                                        .text.isEmpty
-                                    ? '0'
-                                    : projectTopOutlierRankForResidencyMonthOfPerformanceMonthController.text),
-                            projectBottomOutlierRankForResidencyMonthOfPerformanceMonth: int.parse(projectBottomOutlierRankForResidencyMonthOfPerformanceMonthController.text.isEmpty ? '0' : projectBottomOutlierRankForResidencyMonthOfPerformanceMonthController.text),
-                            projectMaxPerformanceValueTarget: int.parse(projectMaxPerformanceValueTargetController.text.isEmpty ? '0' : projectMaxPerformanceValueTargetController.text),
-                            projectTopOutlierRankForMaximumPerformanceValueTarget: int.parse(projectTopOutlierRankForMaximumPerformanceValueTargetController.text.isEmpty ? '0' : projectTopOutlierRankForMaximumPerformanceValueTargetController.text),
-                            projectBottomOutlierRankForMaximumPerformanceValueTarget: int.parse(projectBottomOutlierRankForMaximumPerformanceValueTargetController.text.isEmpty ? '0' : projectBottomOutlierRankForMaximumPerformanceValueTargetController.text),
-                            projectMaximumPerformanceValueActual: int.parse(projectMaximumPerformanceValueActualController.text.isEmpty ? '0' : projectMaximumPerformanceValueActualController.text),
-                            projectTopOutlierRankForMaximumPerformanceValueActual: int.parse(projectTopOutlierRankForMaximumPerformanceValueActualController.text.isEmpty ? '0' : projectTopOutlierRankForMaximumPerformanceValueActualController.text),
-                            projectBottomOutlierRankForMaximumPerformanceValueActual: int.parse(projectBottomOutlierRankForMaximumPerformanceValueActualController.text.isEmpty ? '0' : projectBottomOutlierRankForMaximumPerformanceValueActualController.text),
-                            projectMaximumPerformanceQuantityTarget: int.parse(projectMaximumPerformanceQuantityTargetController.text.isEmpty ? '0' : projectMaximumPerformanceQuantityTargetController.text),
-                            projectTopOutlierRankForMaximumPerformanceQuantityTarget: int.parse(projectTopOutlierRankForMaximumPerformanceQuantityTargetController.text.isEmpty ? '0' : projectTopOutlierRankForMaximumPerformanceQuantityTargetController.text),
-                            projectBottomOutlierRankForMaximumPerformanceQuantityTarget: int.parse(projectBottomOutlierRankForMaximumPerformanceQuantityTargetController.text.isEmpty ? '0' : projectBottomOutlierRankForMaximumPerformanceQuantityTargetController.text),
-                            projectMaximumOverAllPerformanceAchievementPer: int.parse(projectMaximumOverAllPerformanceAchievementPerController.text.isEmpty ? '0' : projectMaximumOverAllPerformanceAchievementPerController.text),
-                            projectTopOutlierRankForMaximumOverAllPerformanceAchievementPer: int.parse(projectTopOutlierRankForMaximumOverAllPerformanceAchievementPerController.text.isEmpty ? '0' : projectTopOutlierRankForMaximumOverAllPerformanceAchievementPerController.text),
-                            projectBottomOutlierRankForMaximumOverAllPerformanceAchievementPer: int.parse(projectBottomOutlierRankForMaximumOverAllPerformanceAchievementPerController.text.isEmpty ? '0' : projectBottomOutlierRankForMaximumOverAllPerformanceAchievementPerController.text),
-                            projectMaximumMonthlyFixedSalaryIndex: int.parse(projectMaximumMonthlyFixedSalaryIndexController.text.isEmpty ? '0' : projectMaximumMonthlyFixedSalaryIndexController.text),
-                            projectTopOutlierRankForMaximumMonthlyFixedSalaryIndex: int.parse(projectTopOutlierRankForMaximumMonthlyFixedSalaryIndexController.text.isEmpty ? '0' : projectTopOutlierRankForMaximumMonthlyFixedSalaryIndexController.text),
-                            projectBottomOutlierRankForMaximumMonthlyFixedSalaryIndex: int.parse(projectBottomOutlierRankForMaximumMonthlyFixedSalaryIndexController.text.isEmpty ? '0' : projectBottomOutlierRankForMaximumMonthlyFixedSalaryIndexController.text),
-                            projectMaximumMonthlyIncentive: int.parse(projectMaximumMonthlyIncentiveController.text.isEmpty ? '0' : projectMaximumMonthlyIncentiveController.text),
-                            projectTopOutlierRankForMaximumMonthlyIncentive: int.parse(projectTopOutlierRankForMaximumMonthlyIncentiveController.text.isEmpty ? '0' : projectTopOutlierRankForMaximumMonthlyIncentiveController.text),
-                            projectBottomOutlierRankForMaximumMonthlyIncentive: int.parse(projectBottomOutlierRankForMaximumMonthlyIncentiveController.text.isEmpty ? '0' : projectBottomOutlierRankForMaximumMonthlyIncentiveController.text));
+                          departments: depart,
+                          designations: design,
+                          projectStartDate: projectStartDateController.text,
+                          projectOwner: projectOwnerController.text,
+                          studyPeriodBeginingDate: stuPerBegDateController.text,
+                          studyPeriodEndDate: studyPeriodEndDateController.text,
+                          earDateForDOJRel: earDateForDOJController.text,
+                          endDateForDOJ: endDateForDOJController.text,
+                          unitForValPer: unitForValPerController.text,
+                          unitForQuaPerfor: unitForQuaPerforController.text,
+                        );
                         // updating project details api
                         context.read<ProjectArchitectBloc>().add(
                             UpdateProjectDetailsEvent(

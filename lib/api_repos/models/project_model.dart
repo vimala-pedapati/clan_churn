@@ -142,66 +142,24 @@ class ProjectDetails extends Equatable {
   final String? studyPeriodBeginingDate;
   final String? studyPeriodEndDate;
   final String? projectOwner;
-  final String? earliestDateForDateOfJoiningReleventForTheStudy;
-  final String? endDateForDateOfJoiningReleventForTheStudy;
+  final String? earDateForDOJRel;
+  final String? endDateForDOJ;
   final List<String>? designations;
   final List<String>? departments;
-  final String? unitForValuePerformance;
-  final String? unitForQuantityPerformance;
-  final int? projectMaximumResidencyMonth;
-  final int? projectTopOutlierRankForResidencyMonthOfPerformanceMonth;
-  final int? projectBottomOutlierRankForResidencyMonthOfPerformanceMonth;
-  final int? projectMaxPerformanceValueTarget;
-  final int? projectTopOutlierRankForMaximumPerformanceValueTarget;
-  final int? projectBottomOutlierRankForMaximumPerformanceValueTarget;
-  final int? projectMaximumPerformanceValueActual;
-  final int? projectTopOutlierRankForMaximumPerformanceValueActual;
-  final int? projectBottomOutlierRankForMaximumPerformanceValueActual;
-  final int? projectMaximumPerformanceQuantityTarget;
-  final int? projectTopOutlierRankForMaximumPerformanceQuantityTarget;
-  final int? projectBottomOutlierRankForMaximumPerformanceQuantityTarget;
-  final int? projectMaximumOverAllPerformanceAchievementPer;
-  final int? projectTopOutlierRankForMaximumOverAllPerformanceAchievementPer;
-  final int? projectBottomOutlierRankForMaximumOverAllPerformanceAchievementPer;
-  final int? projectMaximumMonthlyFixedSalaryIndex;
-  final int? projectTopOutlierRankForMaximumMonthlyFixedSalaryIndex;
-  final int? projectBottomOutlierRankForMaximumMonthlyFixedSalaryIndex;
-  final int? projectMaximumMonthlyIncentive;
-  final int? projectTopOutlierRankForMaximumMonthlyIncentive;
-  final int? projectBottomOutlierRankForMaximumMonthlyIncentive;
+  final String? unitForValPer;
+  final String? unitForQuaPerfor;
 
   const ProjectDetails({
     required this.projectStartDate,
     required this.studyPeriodBeginingDate,
     required this.studyPeriodEndDate,
     required this.projectOwner,
-    required this.earliestDateForDateOfJoiningReleventForTheStudy,
-    required this.endDateForDateOfJoiningReleventForTheStudy,
+    required this.earDateForDOJRel,
+    required this.endDateForDOJ,
     required this.designations,
     required this.departments,
-    required this.unitForValuePerformance,
-    required this.unitForQuantityPerformance,
-    required this.projectMaximumResidencyMonth,
-    required this.projectTopOutlierRankForResidencyMonthOfPerformanceMonth,
-    required this.projectBottomOutlierRankForResidencyMonthOfPerformanceMonth,
-    required this.projectMaxPerformanceValueTarget,
-    required this.projectTopOutlierRankForMaximumPerformanceValueTarget,
-    required this.projectBottomOutlierRankForMaximumPerformanceValueTarget,
-    required this.projectMaximumPerformanceValueActual,
-    required this.projectTopOutlierRankForMaximumPerformanceValueActual,
-    required this.projectBottomOutlierRankForMaximumPerformanceValueActual,
-    required this.projectMaximumPerformanceQuantityTarget,
-    required this.projectTopOutlierRankForMaximumPerformanceQuantityTarget,
-    required this.projectBottomOutlierRankForMaximumPerformanceQuantityTarget,
-    required this.projectMaximumOverAllPerformanceAchievementPer,
-    required this.projectTopOutlierRankForMaximumOverAllPerformanceAchievementPer,
-    required this.projectBottomOutlierRankForMaximumOverAllPerformanceAchievementPer,
-    required this.projectMaximumMonthlyFixedSalaryIndex,
-    required this.projectTopOutlierRankForMaximumMonthlyFixedSalaryIndex,
-    required this.projectBottomOutlierRankForMaximumMonthlyFixedSalaryIndex,
-    required this.projectMaximumMonthlyIncentive,
-    required this.projectTopOutlierRankForMaximumMonthlyIncentive,
-    required this.projectBottomOutlierRankForMaximumMonthlyIncentive,
+    required this.unitForValPer,
+    required this.unitForQuaPerfor,
   });
 
   factory ProjectDetails.fromJson(Map<String, dynamic> json) => ProjectDetails(
@@ -209,55 +167,14 @@ class ProjectDetails extends Equatable {
         studyPeriodBeginingDate: json["study_period_begining_date"],
         studyPeriodEndDate: json["study_period_end_date"],
         projectOwner: json["project_owner"],
-        earliestDateForDateOfJoiningReleventForTheStudy:
+        earDateForDOJRel:
             json["earliest_date_for_date_of_joining_relevent_for_the_study"],
-        endDateForDateOfJoiningReleventForTheStudy:
+        endDateForDOJ:
             json["end_date_for_date_of_joining_relevent_for_the_study"],
         designations: List<String>.from(json["designations"].map((x) => x)),
         departments: List<String>.from(json["departments"].map((x) => x)),
-        unitForValuePerformance: json["unit_for_value_performance"],
-        unitForQuantityPerformance: json["unit_for_quantity_performance"],
-        projectMaximumResidencyMonth: json["project_maximum_residency_month"],
-        projectTopOutlierRankForResidencyMonthOfPerformanceMonth: json[
-            "project_top_outlier_rank_for_residency_month_of_performance_month"],
-        projectBottomOutlierRankForResidencyMonthOfPerformanceMonth: json[
-            "project_bottom_outlier_rank_for_residency_month_of_performance_month"],
-        projectMaxPerformanceValueTarget:
-            json["project_max_performance_value_target"],
-        projectTopOutlierRankForMaximumPerformanceValueTarget: json[
-            "project_top_outlier_rank_for_maximum_performance_value_target"],
-        projectBottomOutlierRankForMaximumPerformanceValueTarget: json[
-            "project_bottom_outlier_rank_for_maximum_performance_value_target"],
-        projectMaximumPerformanceValueActual:
-            json["project_maximum_performance_value_actual"],
-        projectTopOutlierRankForMaximumPerformanceValueActual: json[
-            "project_top_outlier_rank_for_maximum_performance_value_actual"],
-        projectBottomOutlierRankForMaximumPerformanceValueActual: json[
-            "project_bottom_outlier_rank_for_maximum_performance_value_actual"],
-        projectMaximumPerformanceQuantityTarget:
-            json["project_maximum_performance_quantity_target"],
-        projectTopOutlierRankForMaximumPerformanceQuantityTarget: json[
-            "project_top_outlier_rank_for_maximum_performance_quantity_target"],
-        projectBottomOutlierRankForMaximumPerformanceQuantityTarget: json[
-            "project_bottom_outlier_rank_for_maximum_performance_quantity_target"],
-        projectMaximumOverAllPerformanceAchievementPer:
-            json["project_maximum_over_all_performance_achievement_per"],
-        projectTopOutlierRankForMaximumOverAllPerformanceAchievementPer: json[
-            "project_top_outlier_rank_for_maximum_over_all_performance_achievement_per"],
-        projectBottomOutlierRankForMaximumOverAllPerformanceAchievementPer: json[
-            "project_bottom_outlier_rank_for_maximum_over_all_performance_achievement_per"],
-        projectMaximumMonthlyFixedSalaryIndex:
-            json["project_maximum_monthly_fixed_salary_index"],
-        projectTopOutlierRankForMaximumMonthlyFixedSalaryIndex: json[
-            "project_top_outlier_rank_for_maximum_monthly_fixed_salary_index"],
-        projectBottomOutlierRankForMaximumMonthlyFixedSalaryIndex: json[
-            "project_bottom_outlier_rank_for_maximum_monthly_fixed_salary_index"],
-        projectMaximumMonthlyIncentive:
-            json["project_maximum_monthly_incentive"],
-        projectTopOutlierRankForMaximumMonthlyIncentive:
-            json["project_top_outlier_rank_for_maximum_monthly_incentive"],
-        projectBottomOutlierRankForMaximumMonthlyIncentive:
-            json["project_bottom_outlier_rank_for_maximum_monthly_incentive"],
+        unitForValPer: json["unit_for_value_performance"],
+        unitForQuaPerfor: json["unit_for_quantity_performance"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -278,61 +195,21 @@ class ProjectDetails extends Equatable {
                 ? null
                 : studyPeriodEndDate,
         "earliest_date_for_date_of_joining_relevent_for_the_study":
-            earliestDateForDateOfJoiningReleventForTheStudy == null
-                ? earliestDateForDateOfJoiningReleventForTheStudy
-                : earliestDateForDateOfJoiningReleventForTheStudy!.isEmpty
+            earDateForDOJRel == null
+                ? earDateForDOJRel
+                : earDateForDOJRel!.isEmpty
                     ? null
-                    : earliestDateForDateOfJoiningReleventForTheStudy,
+                    : earDateForDOJRel,
         "end_date_for_date_of_joining_relevent_for_the_study":
-            endDateForDateOfJoiningReleventForTheStudy == null
-                ? endDateForDateOfJoiningReleventForTheStudy
-                : endDateForDateOfJoiningReleventForTheStudy!.isEmpty
+            endDateForDOJ == null
+                ? endDateForDOJ
+                : endDateForDOJ!.isEmpty
                     ? null
-                    : endDateForDateOfJoiningReleventForTheStudy,
+                    : endDateForDOJ,
         "designations": List<dynamic>.from((designations ?? []).map((x) => x)),
         "departments": List<dynamic>.from((departments ?? []).map((x) => x)),
-        "unit_for_value_performance": unitForValuePerformance,
-        "unit_for_quantity_performance": unitForQuantityPerformance,
-        "project_maximum_residency_month": projectMaximumResidencyMonth,
-        "project_top_outlier_rank_for_residency_month_of_performance_month":
-            projectTopOutlierRankForResidencyMonthOfPerformanceMonth,
-        "project_bottom_outlier_rank_for_residency_month_of_performance_month":
-            projectBottomOutlierRankForResidencyMonthOfPerformanceMonth,
-        "project_max_performance_value_target":
-            projectMaxPerformanceValueTarget,
-        "project_top_outlier_rank_for_maximum_performance_value_target":
-            projectTopOutlierRankForMaximumPerformanceValueTarget,
-        "project_bottom_outlier_rank_for_maximum_performance_value_target":
-            projectBottomOutlierRankForMaximumPerformanceValueTarget,
-        "project_maximum_performance_value_actual":
-            projectMaximumPerformanceValueActual,
-        "project_top_outlier_rank_for_maximum_performance_value_actual":
-            projectTopOutlierRankForMaximumPerformanceValueActual,
-        "project_bottom_outlier_rank_for_maximum_performance_value_actual":
-            projectBottomOutlierRankForMaximumPerformanceValueActual,
-        "project_maximum_performance_quantity_target":
-            projectMaximumPerformanceQuantityTarget,
-        "project_top_outlier_rank_for_maximum_performance_quantity_target":
-            projectTopOutlierRankForMaximumPerformanceQuantityTarget,
-        "project_bottom_outlier_rank_for_maximum_performance_quantity_target":
-            projectBottomOutlierRankForMaximumPerformanceQuantityTarget,
-        "project_maximum_over_all_performance_achievement_per":
-            projectMaximumOverAllPerformanceAchievementPer,
-        "project_top_outlier_rank_for_maximum_over_all_performance_achievement_per":
-            projectTopOutlierRankForMaximumOverAllPerformanceAchievementPer,
-        "project_bottom_outlier_rank_for_maximum_over_all_performance_achievement_per":
-            projectBottomOutlierRankForMaximumOverAllPerformanceAchievementPer,
-        "project_maximum_monthly_fixed_salary_index":
-            projectMaximumMonthlyFixedSalaryIndex,
-        "project_top_outlier_rank_for_maximum_monthly_fixed_salary_index":
-            projectTopOutlierRankForMaximumMonthlyFixedSalaryIndex,
-        "project_bottom_outlier_rank_for_maximum_monthly_fixed_salary_index":
-            projectBottomOutlierRankForMaximumMonthlyFixedSalaryIndex,
-        "project_maximum_monthly_incentive": projectMaximumMonthlyIncentive,
-        "project_top_outlier_rank_for_maximum_monthly_incentive":
-            projectTopOutlierRankForMaximumMonthlyIncentive,
-        "project_bottom_outlier_rank_for_maximum_monthly_incentive":
-            projectBottomOutlierRankForMaximumMonthlyIncentive,
+        "unit_for_value_performance": unitForValPer,
+        "unit_for_quantity_performance": unitForQuaPerfor,
       };
 
   @override
@@ -341,33 +218,12 @@ class ProjectDetails extends Equatable {
         studyPeriodBeginingDate,
         studyPeriodEndDate,
         projectOwner,
-        earliestDateForDateOfJoiningReleventForTheStudy,
-        endDateForDateOfJoiningReleventForTheStudy,
+        earDateForDOJRel,
+        endDateForDOJ,
         designations,
         departments,
-        unitForValuePerformance,
-        unitForQuantityPerformance,
-        projectMaximumResidencyMonth,
-        projectTopOutlierRankForResidencyMonthOfPerformanceMonth,
-        projectBottomOutlierRankForResidencyMonthOfPerformanceMonth,
-        projectMaxPerformanceValueTarget,
-        projectTopOutlierRankForMaximumPerformanceValueTarget,
-        projectBottomOutlierRankForMaximumPerformanceValueTarget,
-        projectMaximumPerformanceValueActual,
-        projectTopOutlierRankForMaximumPerformanceValueActual,
-        projectBottomOutlierRankForMaximumPerformanceValueActual,
-        projectMaximumPerformanceQuantityTarget,
-        projectTopOutlierRankForMaximumPerformanceQuantityTarget,
-        projectBottomOutlierRankForMaximumPerformanceQuantityTarget,
-        projectMaximumOverAllPerformanceAchievementPer,
-        projectTopOutlierRankForMaximumOverAllPerformanceAchievementPer,
-        projectBottomOutlierRankForMaximumOverAllPerformanceAchievementPer,
-        projectMaximumMonthlyFixedSalaryIndex,
-        projectTopOutlierRankForMaximumMonthlyFixedSalaryIndex,
-        projectBottomOutlierRankForMaximumMonthlyFixedSalaryIndex,
-        projectMaximumMonthlyIncentive,
-        projectTopOutlierRankForMaximumMonthlyIncentive,
-        projectBottomOutlierRankForMaximumMonthlyIncentive,
+        unitForValPer,
+        unitForQuaPerfor,
       ];
 }
 
