@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:clan_churn/api_repos/models/threshold_val_model.dart';
 import 'package:clan_churn/api_repos/models/user_model.dart';
 import 'package:equatable/equatable.dart';
 
@@ -148,34 +149,38 @@ class ProjectDetails extends Equatable {
   final List<String>? departments;
   final String? unitForValPer;
   final String? unitForQuaPerfor;
+  final List<ProThreModel>? thresholdVals;
 
-  const ProjectDetails({
-    required this.projectStartDate,
-    required this.studyPeriodBeginingDate,
-    required this.studyPeriodEndDate,
-    required this.projectOwner,
-    required this.earDateForDOJRel,
-    required this.endDateForDOJ,
-    required this.designations,
-    required this.departments,
-    required this.unitForValPer,
-    required this.unitForQuaPerfor,
-  });
+  const ProjectDetails(
+      {required this.projectStartDate,
+      required this.studyPeriodBeginingDate,
+      required this.studyPeriodEndDate,
+      required this.projectOwner,
+      required this.earDateForDOJRel,
+      required this.endDateForDOJ,
+      required this.designations,
+      required this.departments,
+      required this.unitForValPer,
+      required this.unitForQuaPerfor,
+      required this.thresholdVals});
 
   factory ProjectDetails.fromJson(Map<String, dynamic> json) => ProjectDetails(
-        projectStartDate: json["project_start_date"],
-        studyPeriodBeginingDate: json["study_period_begining_date"],
-        studyPeriodEndDate: json["study_period_end_date"],
-        projectOwner: json["project_owner"],
-        earDateForDOJRel:
-            json["earliest_date_for_date_of_joining_relevent_for_the_study"],
-        endDateForDOJ:
-            json["end_date_for_date_of_joining_relevent_for_the_study"],
-        designations: List<String>.from(json["designations"].map((x) => x)),
-        departments: List<String>.from(json["departments"].map((x) => x)),
-        unitForValPer: json["unit_for_value_performance"],
-        unitForQuaPerfor: json["unit_for_quantity_performance"],
-      );
+      projectStartDate: json["project_start_date"],
+      studyPeriodBeginingDate: json["study_period_begining_date"],
+      studyPeriodEndDate: json["study_period_end_date"],
+      projectOwner: json["project_owner"],
+      earDateForDOJRel:
+          json["earliest_date_for_date_of_joining_relevent_for_the_study"],
+      endDateForDOJ:
+          json["end_date_for_date_of_joining_relevent_for_the_study"],
+      designations: List<String>.from(json["designations"].map((x) => x)),
+      departments: List<String>.from(json["departments"].map((x) => x)),
+      unitForValPer: json["unit_for_value_performance"],
+      unitForQuaPerfor: json["unit_for_quantity_performance"],
+      thresholdVals:
+          List<ProThreModel>.from((json["threshold_details"] ?? []).map(
+        (e) => ProThreModel.fromJson(e),
+      )));
 
   Map<String, dynamic> toJson() => {
         "project_start_date": projectStartDate == null
@@ -210,6 +215,8 @@ class ProjectDetails extends Equatable {
         "departments": List<dynamic>.from((departments ?? []).map((x) => x)),
         "unit_for_value_performance": unitForValPer,
         "unit_for_quantity_performance": unitForQuaPerfor,
+        "threshold_details":
+            List<dynamic>.from((thresholdVals ?? []).map((e) => e.toJson()))
       };
 
   @override

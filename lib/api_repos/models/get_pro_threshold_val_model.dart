@@ -1,19 +1,15 @@
-// To parse this JSON data, do
-//
-//     final projectThresholdValueModel = projectThresholdValueModelFromJson(jsonString);
-
 import 'dart:convert';
 
-List<ProjectThresholdValueModel> projectThresholdValueModelFromJson(
+List<GetProThresholdValModel> projectThresholdValueModelFromJson(
         String str) =>
-    List<ProjectThresholdValueModel>.from(
-        json.decode(str).map((x) => ProjectThresholdValueModel.fromJson(x)));
+    List<GetProThresholdValModel>.from(
+        json.decode(str).map((x) => GetProThresholdValModel.fromJson(x)));
 
 String projectThresholdValueModelToJson(
-        List<ProjectThresholdValueModel> data) =>
+        List<GetProThresholdValModel> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class ProjectThresholdValueModel {
+class GetProThresholdValModel {
   String id;
   SheetName sheetName;
   String columnName;
@@ -23,7 +19,7 @@ class ProjectThresholdValueModel {
   String clientColumnName;
   ColumnDataType columnDataType;
 
-  ProjectThresholdValueModel({
+  GetProThresholdValModel({
     required this.id,
     required this.sheetName,
     required this.columnName,
@@ -34,8 +30,8 @@ class ProjectThresholdValueModel {
     required this.columnDataType,
   });
 
-  factory ProjectThresholdValueModel.fromJson(Map<String, dynamic> json) =>
-      ProjectThresholdValueModel(
+  factory GetProThresholdValModel.fromJson(Map<String, dynamic> json) =>
+      GetProThresholdValModel(
         id: json["id"],
         sheetName: sheetNameValues.map[json["sheet_name"]]!,
         columnName: json["column_name"],
@@ -58,10 +54,10 @@ class ProjectThresholdValueModel {
       };
 }
 
-enum ColumnDataType { DATE, NUMERIC }
+enum ColumnDataType { date, numeric }
 
 final columnDataTypeValues = EnumValues(
-    {"date": ColumnDataType.DATE, "numeric": ColumnDataType.NUMERIC});
+    {"date": ColumnDataType.date, "numeric": ColumnDataType.numeric});
 
 enum SheetName {
   customerEmployeeBasicData,
