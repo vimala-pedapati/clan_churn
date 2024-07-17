@@ -29,7 +29,7 @@ void main() async {
   //       storageDirectory: HydratedStorage.webStorageDirectory);
   // }
   // FlutterSecureStorage storage = const FlutterSecureStorage();
-  AuthRepository authRepository = AuthRepository();
+  AuthRepo authRepository = AuthRepo();
   ApiRepository apiRepository = ApiRepository();
   runApp(ClanChurnApp(
     authRepository: authRepository,
@@ -43,7 +43,7 @@ void main() async {
 class ClanChurnApp extends StatelessWidget {
   const ClanChurnApp(
       {super.key, required this.authRepository, required this.apiRepository});
-  final AuthRepository authRepository;
+  final AuthRepo authRepository;
   final ApiRepository apiRepository;
 
   @override

@@ -1,17 +1,20 @@
 import 'dart:convert';
 
-List<GetProThresholdValModel> projectThresholdValueModelFromJson(
-        String str) =>
-    List<GetProThresholdValModel>.from(
-        json.decode(str).map((x) => GetProThresholdValModel.fromJson(x)));
+List<GetProThresholdFormValModel> projectThresholdFormValueModelFromJson(
+    String str) {
+  List<dynamic> data = json.decode(str) as List<dynamic>;
+  return List<GetProThresholdFormValModel>.from(data.map((x) {
+    return GetProThresholdFormValModel.fromJson(x);
+  }));
+}
 
-String projectThresholdValueModelToJson(
-        List<GetProThresholdValModel> data) =>
+String projectThresholdFormValueModelToJson(
+        List<GetProThresholdFormValModel> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class GetProThresholdValModel {
+class GetProThresholdFormValModel {
   String id;
-  SheetName sheetName;
+  String sheetName;
   String columnName;
   bool isMandatory;
   bool isEditable;
@@ -19,7 +22,7 @@ class GetProThresholdValModel {
   String clientColumnName;
   ColumnDataType columnDataType;
 
-  GetProThresholdValModel({
+  GetProThresholdFormValModel({
     required this.id,
     required this.sheetName,
     required this.columnName,
@@ -30,10 +33,10 @@ class GetProThresholdValModel {
     required this.columnDataType,
   });
 
-  factory GetProThresholdValModel.fromJson(Map<String, dynamic> json) =>
-      GetProThresholdValModel(
+  factory GetProThresholdFormValModel.fromJson(Map<String, dynamic> json) =>
+      GetProThresholdFormValModel(
         id: json["id"],
-        sheetName: sheetNameValues.map[json["sheet_name"]]!,
+        sheetName: json["sheet_name"]!,
         columnName: json["column_name"],
         isMandatory: json["is_mandatory"],
         isEditable: json["is_editable"],
@@ -44,7 +47,7 @@ class GetProThresholdValModel {
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "sheet_name": sheetNameValues.reverse[sheetName],
+        "sheet_name": sheetName,
         "column_name": columnName,
         "is_mandatory": isMandatory,
         "is_editable": isEditable,
@@ -64,12 +67,6 @@ enum SheetName {
   customerEmployeeWorkData,
   customerPerformanceData
 }
-
-final sheetNameValues = EnumValues({
-  "Customer Employee Basic data": SheetName.customerEmployeeBasicData,
-  "Customer Employee Work data": SheetName.customerEmployeeWorkData,
-  "Customer performance data": SheetName.customerPerformanceData
-});
 
 class EnumValues<T> {
   Map<String, T> map;

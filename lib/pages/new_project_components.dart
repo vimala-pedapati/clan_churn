@@ -1,28 +1,18 @@
-import 'dart:developer';
-// ignore: avoid_web_libraries_in_flutter
-import 'dart:html';
-
 import 'package:clan_churn/api_repos/api_repo.dart';
-import 'package:clan_churn/api_repos/models/column_model.dart';
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
 import 'package:clan_churn/components/churn_continer.dart';
 import 'package:clan_churn/components/cus_text.dart';
-import 'package:clan_churn/components/dialogs.dart';
 import 'package:clan_churn/components/input_fields.dart';
 import 'package:clan_churn/components/input_sheet_columns.dart';
 import 'package:clan_churn/components/nav_bar.dart';
 import 'package:clan_churn/components/side_bar.dart';
 import 'package:clan_churn/components/wrap_profile.dart';
-import 'package:clan_churn/utils/routes.dart';
 import 'package:clan_churn/utils/spacing.dart';
 import 'package:clan_churn/utils/typography.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-import 'package:http/http.dart' as http;
-import 'package:url_launcher/url_launcher.dart';
 
 class CreateNewProject extends StatelessWidget {
   const CreateNewProject({super.key});
@@ -375,7 +365,6 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                         child: GetInputFields(
                             isCreatingNewProject: true,
                             onTap: () {
-                              print("....going to next page");
                               _goToNextPage();
                             }),
                       ),
@@ -391,107 +380,6 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
               )
             ],
           ),
-        );
-      },
-    );
-  }
-}
-
-Future<void> launchURL(String url) async {
-  if (await canLaunchUrl(Uri.parse(url))) {
-    await launchUrl(Uri.parse(url));
-  } else {
-    throw 'Could not launch $url';
-  }
-}
-
-void downloadFile(String url, BuildContext context) async {
-  try {
-    // Send an HTTP request to the URL
-    http.Response response = await http.get(Uri.parse(url));
-
-    // Get the file name from the URL
-    String fileName = url.split('/').last;
-
-    // Create a blob from the response body
-    Blob blob = Blob([response.bodyBytes]);
-
-    // Create an anchor element
-    AnchorElement anchorElement =
-        AnchorElement(href: Url.createObjectUrlFromBlob(blob));
-    anchorElement.download = fileName;
-    anchorElement.click(); // initiate download
-  } catch (e) {
-    log("Error downloading file: $e");
-  }
-  GoRouter.of(context).go(AppRoutes.home);
-}
-
-class ColumnsToChooseWidget extends StatelessWidget {
-  const ColumnsToChooseWidget(
-      {super.key, required this.projectName, required this.onBackPressed});
-  final String projectName;
-  final Function() onBackPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
-      builder: (context, state) {
-        return Column(
-          // mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.keyboard_backspace_outlined),
-                  onPressed: onBackPressed,
-                ),
-                ClanChurnSpacing.w20,
-                Text(
-                  "Columns to choose",
-                  style: ClanChurnTypography.font18600,
-                ),
-              ],
-            ),
-
-            // ClanChurnSpacing.h10,
-            Expanded(
-              child: AbsorbPointer(
-                absorbing: projectName.isEmpty,
-                child: Opacity(
-                  // opacity: (projectName.isEmpty) ? 0.4 : 1.0,
-                  opacity: (projectName.isEmpty || state.createdProject == null)
-                      ? 0.4
-                      : (state.createdProject!.id.isEmpty)
-                          ? 0.4
-                          : 1.0,
-                  child: InputSheetColumns(
-                      columnsList: state.columnsList,
-                      customerColumnNames: state.customerColumnNames),
-                ),
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                ElevatedButton(
-                  onPressed:
-                      (projectName.isEmpty || state.createdProject == null)
-                          ? null
-                          : (state.createdProject!.id.isEmpty)
-                              ? null
-                              : () {
-                                  context
-                                      .read<ProjectArchitectBloc>()
-                                      .add(AddColumnsToProjectEvent());
-                                  GetDialog.showDownloadDialog(context);
-                                },
-                  child: const Text("Next"),
-                ),
-              ],
-            )
-          ],
         );
       },
     );

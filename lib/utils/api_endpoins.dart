@@ -39,6 +39,7 @@ class ApiEndpoints {
   static String updateProjectName = "/project/update";
   static String projectInputHistory = "/project/project_input_history";
   static String archiveProject = '/project/archive_project';
+  static String getProThrDtls = "/project/get_poject_threshold_details";
 
   // Input
   static String getInputExcelSummary = "/input/get_input_excel_summary";

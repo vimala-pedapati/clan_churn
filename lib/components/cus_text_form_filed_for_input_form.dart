@@ -79,7 +79,7 @@ class CustomTextFormField extends StatelessWidget {
         children: [
           CusText(
               text: label ?? "",
-              textStyle: ClanChurnTypography.font15900,
+              textStyle: ClanChurnTypography.font14900,
               isNotRequired: !(isMandatory ?? true)),
           ClanChurnSpacing.h6,
           // Expanded(child: Container(),),

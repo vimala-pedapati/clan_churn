@@ -2,6 +2,7 @@ import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
 import 'package:clan_churn/components/churn_continer.dart';
 import 'package:clan_churn/components/input_fields.dart';
+import 'package:clan_churn/components/input_sheet_columns.dart';
 import 'package:clan_churn/components/nav_bar.dart';
 import 'package:clan_churn/components/side_bar.dart';
 import 'package:clan_churn/components/wrap_profile.dart';
@@ -57,53 +58,41 @@ class GetInputFieldsComponent extends StatelessWidget {
     final w = MediaQuery.of(context).size.width;
     return BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
       builder: (context, state) {
-        return ChurnContainer(
+        return const ChurnContainer(
           child: Column(
             children: [
-              Row(
-                children: [
-                  IconButton(
-                    icon: Icon(
-                      Icons.keyboard_backspace,
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                    onPressed: () {
-                      Navigator.pop(context);
-                      // GoRouter.of(context).go(AppRoutes.home);
-                    },
-                  ),
-                  ClanChurnSpacing.w10,
-                  Text(
-                    "Project Initialization",
-                    style: ClanChurnTypography.font18600,
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Text(
-                        "Select Initialization",
-                        style: ClanChurnTypography.font14500,
-                      ),
-                      ClanChurnSpacing.w15,
-                      // DropDown
-                      const GetInitializationDropDown(),
-                    ],
-                  ),
-                  ElevatedButton(
-                    child: const Text(
-                      "download input sheet",
-                    ),
-                    onPressed: () {
-                      launchURL(state.createdProject!.inputSheet ?? "");
-                    },
-                  )
-                ],
-              ),
-              const Expanded(child: GetInputFields()),
+              // Row(
+              //   children: [
+              //     IconButton(
+              //       icon: Icon(
+              //         Icons.keyboard_backspace,
+              //         color: Theme.of(context).colorScheme.secondary,
+              //       ),
+              //       onPressed: () {
+              //         Navigator.pop(context);
+              //         // GoRouter.of(context).go(AppRoutes.home);
+              //       },
+              //     ),
+              //     ClanChurnSpacing.w10,
+              //     Text(
+              //       "Project Initialization",
+              //       style: ClanChurnTypography.font18600,
+              //     ),
+              //     Expanded(
+              //       child: Container(),
+              //     ),
+              //     ElevatedButton(
+              //       child: const Text(
+              //         "download input sheet",
+              //       ),
+              //       onPressed: () {
+              //         launchURL(state.createdProject!.inputSheet ?? "");
+              //       },
+              //     )
+              //   ],
+              // ),
+              
+                Expanded(child: GetInputFields()),
             ],
           ),
         );
@@ -112,82 +101,82 @@ class GetInputFieldsComponent extends StatelessWidget {
   }
 }
 
-class GetInitializationDropDown extends StatefulWidget {
-  const GetInitializationDropDown({super.key});
+// class GetInitializationDropDown extends StatefulWidget {
+//   const GetInitializationDropDown({super.key});
 
-  @override
-  State<GetInitializationDropDown> createState() =>
-      _GetInitializationDropDownState();
-}
+//   @override
+//   State<GetInitializationDropDown> createState() =>
+//       _GetInitializationDropDownState();
+// }
 
-class _GetInitializationDropDownState extends State<GetInitializationDropDown> {
-  String dropdownvalue = 'Data cleaning initialization & reports';
-  var items = [
-    'Data cleaning initialization & reports',
-    'People Data Mart Fields',
-  ];
-  @override
-  Widget build(BuildContext context) {
-    final w = MediaQuery.of(context).size.width;
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Container(
-            height: 30,
-            width: w * 0.27,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5.0),
-              color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
-              border: Border.all(
-                  color: Theme.of(context).colorScheme.primary,
-                  style: BorderStyle.solid,
-                  width: 0.80),
-            ),
-            child: DropdownButtonHideUnderline(
-              child: DropdownButton2(
-                hint: Text(
-                  'Select Item',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Theme.of(context).hintColor,
-                  ),
-                ),
-                // customButton:Container(
-                //   color: Colors.amber,
-                //   width: 10,
-                //   height: 10,
-                //   child: Icon(Icons.keyboard_arrow_down_outlined)),
-                items: items
-                    .map((item) => DropdownMenuItem<String>(
-                          value: item,
-                          child: Text(
-                            item,
-                            style: const TextStyle(
-                              fontSize: 14,
-                            ),
-                          ),
-                        ))
-                    .toList(),
-                value: dropdownvalue,
-                onChanged: (String? newValue) {
-                  setState(() {
-                    dropdownvalue = newValue!;
-                  });
-                },
+// class _GetInitializationDropDownState extends State<GetInitializationDropDown> {
+//   String dropdownvalue = 'Data cleaning initialization & reports';
+//   var items = [
+//     'Data cleaning initialization & reports',
+//     'People Data Mart Fields',
+//   ];
+//   @override
+//   Widget build(BuildContext context) {
+//     final w = MediaQuery.of(context).size.width;
+//     return Column(
+//       mainAxisAlignment: MainAxisAlignment.start,
+//       children: [
+//         Container(
+//             height: 30,
+//             width: w * 0.27,
+//             decoration: BoxDecoration(
+//               borderRadius: BorderRadius.circular(5.0),
+//               color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+//               border: Border.all(
+//                   color: Theme.of(context).colorScheme.primary,
+//                   style: BorderStyle.solid,
+//                   width: 0.80),
+//             ),
+//             child: DropdownButtonHideUnderline(
+//               child: DropdownButton2(
+//                 hint: Text(
+//                   'Select Item',
+//                   style: TextStyle(
+//                     fontSize: 14,
+//                     color: Theme.of(context).hintColor,
+//                   ),
+//                 ),
+//                 // customButton:Container(
+//                 //   color: Colors.amber,
+//                 //   width: 10,
+//                 //   height: 10,
+//                 //   child: Icon(Icons.keyboard_arrow_down_outlined)),
+//                 items: items
+//                     .map((item) => DropdownMenuItem<String>(
+//                           value: item,
+//                           child: Text(
+//                             item,
+//                             style: const TextStyle(
+//                               fontSize: 14,
+//                             ),
+//                           ),
+//                         ))
+//                     .toList(),
+//                 value: dropdownvalue,
+//                 onChanged: (String? newValue) {
+//                   setState(() {
+//                     dropdownvalue = newValue!;
+//                   });
+//                 },
 
-                iconStyleData: IconStyleData(
-                  icon: Padding(
-                    padding: const EdgeInsets.only(right: 10.0),
-                    child: Icon(
-                      Icons.keyboard_arrow_down_outlined,
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                  ),
-                  iconSize: 18,
-                ),
-              ),
-            )),
-      ],
-    );
-  }
-}
+//                 iconStyleData: IconStyleData(
+//                   icon: Padding(
+//                     padding: const EdgeInsets.only(right: 10.0),
+//                     child: Icon(
+//                       Icons.keyboard_arrow_down_outlined,
+//                       color: Theme.of(context).colorScheme.secondary,
+//                     ),
+//                   ),
+//                   iconSize: 18,
+//                 ),
+//               ),
+//             )),
+//       ],
+//     );
+//   }
+// }

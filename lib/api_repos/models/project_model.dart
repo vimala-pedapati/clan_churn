@@ -231,6 +231,7 @@ class ProjectDetails extends Equatable {
         departments,
         unitForValPer,
         unitForQuaPerfor,
+        thresholdVals
       ];
 }
 
