@@ -4,6 +4,7 @@ import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.
 import 'package:clan_churn/components/cus_text_form_filed_for_input_form.dart';
 import 'package:clan_churn/components/upload_new_data.dart';
 import 'package:clan_churn/components/uploaded_excel_summary_report.dart';
+import 'package:clan_churn/utils/extensions.dart';
 import 'package:clan_churn/utils/input_field_strings.dart';
 import 'package:clan_churn/utils/spacing.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +34,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
   TextEditingController
       earliestDateForDateOfJoiningReleventForTheStudyController =
       TextEditingController();
-  TextEditingController endDateForDateOfJoiningReleventForTheStudyController =
+  TextEditingController endDateForDOJReleventForTheStudyController =
       TextEditingController();
   TextEditingController unitForValuePerformanceController =
       TextEditingController();
@@ -163,7 +164,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
           earliestDateForDateOfJoiningReleventForTheStudyController.text =
               pd.earliestDateForDateOfJoiningReleventForTheStudy ?? "";
 
-          endDateForDateOfJoiningReleventForTheStudyController.text =
+          endDateForDOJReleventForTheStudyController.text =
               pd.endDateForDateOfJoiningReleventForTheStudy ?? "";
 
           unitForValuePerformanceController.text =
@@ -382,7 +383,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
     studyPeriodBeginningDateController.dispose();
     studyPeriodEndDateController.dispose();
     earliestDateForDateOfJoiningReleventForTheStudyController.dispose();
-    endDateForDateOfJoiningReleventForTheStudyController.dispose();
+    endDateForDOJReleventForTheStudyController.dispose();
     unitForValuePerformanceController.dispose();
     unitForQuantityPerformanceController.dispose();
     projectMaximumResidencyMonthController.dispose();
@@ -443,7 +444,22 @@ class _GetInputFieldsState extends State<GetInputFields> {
     }
   }
 
-  bool areAllControllersNotEmpty() {
+  setEarliestDOJ() {
+    if (studyPeriodBeginningDateController.text.isNotEmpty &&
+        studyPeriodEndDateController.text.isNotEmpty) {
+      setState(() {
+        earliestDateForDateOfJoiningReleventForTheStudyController.text =
+            calculateEarliestDOJ(
+                    studyPeriodBeginningDateController.text.toDateTime(),
+                    studyPeriodEndDateController.text.toDateTime())
+                .toString()
+                .split(" ")
+                .first;
+      });
+    }
+  }
+
+  bool checkValidations() {
     if (projectOwnerController.text.trim().length < 2) {
       errorText = "Minimum Character Limit not met, please contact Admin";
       return false;
@@ -454,11 +470,10 @@ class _GetInputFieldsState extends State<GetInputFields> {
       studyPeriodBeginningDateController,
       studyPeriodEndDateController,
       earliestDateForDateOfJoiningReleventForTheStudyController,
-      endDateForDateOfJoiningReleventForTheStudyController,
+      endDateForDOJReleventForTheStudyController,
       // unitForValuePerformanceController,
       // unitForQuantityPerformanceController,
       if (departments.isNotEmpty) departments[0],
-
       if (designations.isNotEmpty) designations[0],
     ];
 
@@ -471,11 +486,22 @@ class _GetInputFieldsState extends State<GetInputFields> {
     return true;
   }
 
+  DateTime calculateEarliestDOJ(DateTime startDate, DateTime endDate) {
+    int durationInMonths = ((endDate.year - startDate.year) * 12) +
+        endDate.month -
+        startDate.month +
+        1;
+    DateTime earliestJoiningDate = DateTime(
+        endDate.year, endDate.month - (2 * durationInMonths), endDate.day);
+
+    return earliestJoiningDate;
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
       builder: (context, state) {
-        areAllControllersNotEmpty();
+        checkValidations();
         return PageView(
           physics: const NeverScrollableScrollPhysics(),
           controller: _pageController,
@@ -575,6 +601,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                         setState(() async {
                                           studyPeriodBeginningDateController
                                               .text = await selectDate(context);
+                                          setEarliestDOJ();
                                         });
                                       },
                                     ),
@@ -599,6 +626,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                         setState(() async {
                                           studyPeriodEndDateController.text =
                                               await selectDate(context);
+                                          setEarliestDOJ();
                                         });
                                       },
                                     ),
@@ -635,14 +663,14 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                     label: InputFieldLabels
                                         .endDateForDateOfJoiningRelevantForStudy,
                                     controller:
-                                        endDateForDateOfJoiningReleventForTheStudyController,
+                                        endDateForDOJReleventForTheStudyController,
                                     hintText: 'Select Date',
                                     suffixIcon: IconButton(
                                       icon: const Icon(Icons.calendar_month,
                                           size: 18),
                                       onPressed: () async {
                                         setState(() async {
-                                          endDateForDateOfJoiningReleventForTheStudyController
+                                          endDateForDOJReleventForTheStudyController
                                               .text = await selectDate(context);
                                         });
                                       },
@@ -1070,7 +1098,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
                   children: [
                     ElevatedButton(
                       onPressed: () {
-                        if (!areAllControllersNotEmpty()) {
+                        if (!checkValidations()) {
                           ApiRepository().handleWarningMessage(
                               errorText ??
                                   "Please fill in all the required fields before proceeding.",
@@ -1098,8 +1126,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                 earliestDateForDateOfJoiningReleventForTheStudyController
                                     .text,
                             endDateForDateOfJoiningReleventForTheStudy:
-                                endDateForDateOfJoiningReleventForTheStudyController
-                                    .text,
+                                endDateForDOJReleventForTheStudyController.text,
                             unitForValuePerformance:
                                 unitForValuePerformanceController.text,
                             unitForQuantityPerformance:
@@ -1108,10 +1135,10 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                 ? '0'
                                 : projectMaximumResidencyMonthController.text),
                             projectTopOutlierRankForResidencyMonthOfPerformanceMonth:
-                                int.parse(
-                                    projectTopOutlierRankForResidencyMonthOfPerformanceMonthController.text.isEmpty
-                                        ? '0'
-                                        : projectTopOutlierRankForResidencyMonthOfPerformanceMonthController.text),
+                                int.parse(projectTopOutlierRankForResidencyMonthOfPerformanceMonthController
+                                        .text.isEmpty
+                                    ? '0'
+                                    : projectTopOutlierRankForResidencyMonthOfPerformanceMonthController.text),
                             projectBottomOutlierRankForResidencyMonthOfPerformanceMonth: int.parse(projectBottomOutlierRankForResidencyMonthOfPerformanceMonthController.text.isEmpty ? '0' : projectBottomOutlierRankForResidencyMonthOfPerformanceMonthController.text),
                             projectMaxPerformanceValueTarget: int.parse(projectMaxPerformanceValueTargetController.text.isEmpty ? '0' : projectMaxPerformanceValueTargetController.text),
                             projectTopOutlierRankForMaximumPerformanceValueTarget: int.parse(projectTopOutlierRankForMaximumPerformanceValueTargetController.text.isEmpty ? '0' : projectTopOutlierRankForMaximumPerformanceValueTargetController.text),
