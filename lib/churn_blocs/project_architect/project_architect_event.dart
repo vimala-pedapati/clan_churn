@@ -8,10 +8,11 @@ class ProjectArchitectEvent extends Equatable {
 }
 
 class GetClientsEvent extends ProjectArchitectEvent {
- final OnErrorCallback onErrorCallback;
+  final OnErrorCallback onErrorCallback;
   final OnSuccessCallback onSuccessCallback;
 
-  const GetClientsEvent({required this.onErrorCallback, required this.onSuccessCallback});
+  const GetClientsEvent(
+      {required this.onErrorCallback, required this.onSuccessCallback});
 }
 
 class SideBarExpandedEvent extends ProjectArchitectEvent {
@@ -32,8 +33,10 @@ class GetProjectsListEvent extends ProjectArchitectEvent {
 class UpdateProjectDetailsEvent extends ProjectArchitectEvent {
   final String projectId;
   final ProjectDetails projectDetails;
+  final OnErrorCallback onErrorCallback;
+  final OnSuccessCallback onSuccessCallback;
   const UpdateProjectDetailsEvent(
-      {required this.projectId, required this.projectDetails});
+      {required this.projectId, required this.projectDetails, required this.onErrorCallback, required this.onSuccessCallback});
 }
 
 class GetProjectDetailsEvent extends ProjectArchitectEvent {

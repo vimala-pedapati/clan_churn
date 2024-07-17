@@ -29,7 +29,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
   TextEditingController projectOwnerController = TextEditingController();
   TextEditingController projectStartDateController = TextEditingController();
   TextEditingController stuPerBegDateController = TextEditingController();
-  TextEditingController studyPeriodEndDateController = TextEditingController();
+  TextEditingController stuPerEndDateController = TextEditingController();
   TextEditingController earDateForDOJController = TextEditingController();
   TextEditingController endDateForDOJController = TextEditingController();
   TextEditingController unitForValPerController = TextEditingController();
@@ -86,7 +86,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
           stuPerBegDateController.text =
               pd.studyPeriodBeginingDate?.split("T").first ?? "";
           projectOwnerController.text = pd.projectOwner ?? "";
-          studyPeriodEndDateController.text =
+          stuPerEndDateController.text =
               pd.studyPeriodEndDate?.split("T").first ?? "";
 
           earDateForDOJController.text =
@@ -198,7 +198,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
     projectOwnerController.dispose();
     projectStartDateController.dispose();
     stuPerBegDateController.dispose();
-    studyPeriodEndDateController.dispose();
+    stuPerEndDateController.dispose();
     earDateForDOJController.dispose();
     endDateForDOJController.dispose();
     unitForValPerController.dispose();
@@ -228,11 +228,11 @@ class _GetInputFieldsState extends State<GetInputFields> {
 
   void setEarliestDOJ() {
     if (stuPerBegDateController.text.isNotEmpty &&
-        studyPeriodEndDateController.text.isNotEmpty) {
+        stuPerEndDateController.text.isNotEmpty) {
       setState(() {
         earDateForDOJController.text = calculateEarliestDOJ(
                 stuPerBegDateController.text.toDateTime(),
-                studyPeriodEndDateController.text.toDateTime())
+                stuPerEndDateController.text.toDateTime())
             .toString()
             .split(" ")
             .first;
@@ -249,7 +249,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
     List<TextEditingController> controllers = [
       projectStartDateController,
       stuPerBegDateController,
-      studyPeriodEndDateController,
+      stuPerEndDateController,
       earDateForDOJController,
       endDateForDOJController,
       // unitForValuePerformanceController,
@@ -394,7 +394,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                   ),
                                   CustomTextFormField(
                                     label: InputFieldLabels.studyPeriodEndDate,
-                                    controller: studyPeriodEndDateController,
+                                    controller: stuPerEndDateController,
                                     textInputType: TextInputType.name,
                                     isObscureText: false,
                                     isEnabled: true,
@@ -404,8 +404,10 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                           size: 18),
                                       onPressed: () async {
                                         setState(() async {
-                                          studyPeriodEndDateController.text =
+                                          stuPerEndDateController.text =
                                               await selectDate(context);
+                                          endDateForDOJController.text =
+                                              stuPerEndDateController.text;
                                           setEarliestDOJ();
                                         });
                                       },
@@ -592,23 +594,33 @@ class _GetInputFieldsState extends State<GetInputFields> {
                           projectStartDate: projectStartDateController.text,
                           projectOwner: projectOwnerController.text,
                           studyPeriodBeginingDate: stuPerBegDateController.text,
-                          studyPeriodEndDate: studyPeriodEndDateController.text,
+                          studyPeriodEndDate: stuPerEndDateController.text,
                           earDateForDOJRel: earDateForDOJController.text,
                           endDateForDOJ: endDateForDOJController.text,
                           unitForValPer: unitForValPerController.text,
                           unitForQuaPerfor: unitForQuaPerforController.text,
                         );
                         // updating project details api
-                        context.read<ProjectArchitectBloc>().add(
-                            UpdateProjectDetailsEvent(
-                                projectId: context
-                                    .read<ProjectArchitectBloc>()
-                                    .state
-                                    .createdProject!
-                                    .id,
-                                projectDetails: a));
-                        print("project details that are going to update: $a");
-                        print(" ${widget.isCreatingNewProject}");
+                        context
+                            .read<ProjectArchitectBloc>()
+                            .add(UpdateProjectDetailsEvent(
+                              projectId: context
+                                  .read<ProjectArchitectBloc>()
+                                  .state
+                                  .createdProject!
+                                  .id,
+                              projectDetails: a,
+                              onErrorCallback: (errorMessage, errorCode) {},
+                              onSuccessCallback: (message) {
+                                context.read<ProjectArchitectBloc>().add(
+                                    GetProjectsListEvent(
+                                        clientId: context
+                                            .read<ProjectArchitectBloc>()
+                                            .state
+                                            .selectedClient!
+                                            .id));
+                              },
+                            ));
                         if (widget.isCreatingNewProject) {
                           widget.onTap!();
                         } else {

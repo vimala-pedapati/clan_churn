@@ -26,7 +26,7 @@ class ProjectArchitectBloc
     on<SetSelectedClientEvent>(_onSetSelectedClientEvent);
     on<GetProjectsListEvent>(_onGetProjectsListEvent);
     on<GetColumnsEvent>(_onGetColumnsEvent);
-    on<CreateProjectEvent>(_onCreateProjectEvent);                                                                             
+    on<CreateProjectEvent>(_onCreateProjectEvent);
     on<ClearCreateProjectEvent>(_onClearCreateProjectEvent);
     on<ReplaceColumnsEvent>(_onReplaceColumnsEvent);
     on<AddColumnsToProjectEvent>(_onAddColumnsToProjectEvent);
@@ -189,9 +189,8 @@ class ProjectArchitectBloc
     final result = await apiRepository.updateProjectDetails(
         projectId: event.projectId,
         projectDetails: event.projectDetails,
-        onErrorCallback: (String message, int errorCode) {
-          print("unable tp update the project details: $message");
-        });
+        onErrorCallback: event.onErrorCallback,
+        onSuccessCallback: event.onSuccessCallback);
     if (result != null) {
       emit(state.copyWith(createdProject: result));
     } else {

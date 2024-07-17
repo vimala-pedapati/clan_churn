@@ -232,6 +232,7 @@ class ApiRepository {
   Future<Project?> updateProjectDetails({
     required String projectId,
     required ProjectDetails projectDetails,
+    required OnSuccessCallback onSuccessCallback,
     required OnErrorCallback onErrorCallback,
   }) async {
     try {
@@ -264,6 +265,7 @@ class ApiRepository {
       if (response.statusCode == 200) {
         Project project = Project.fromJson(json.decode(response.body));
         print("Updated project:..... ${response.body}");
+        onSuccessCallback(response);
         return project;
       } else {
         _handleStatusCode(response.statusCode, response, onErrorCallback);
@@ -1195,8 +1197,7 @@ class ApiRepository {
     // }
   }
 
-  void handleWarningMessage(
-      String message, BuildContext context) {
+  void handleWarningMessage(String message, BuildContext context) {
     showTopSnackBar(
       Overlay.of(context),
       Row(
