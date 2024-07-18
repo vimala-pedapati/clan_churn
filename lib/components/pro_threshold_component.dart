@@ -3,6 +3,8 @@ import 'dart:js_util';
 
 import 'package:clan_churn/api_repos/api_repo.dart';
 import 'package:clan_churn/api_repos/models/get_pro_threshold_val_model.dart';
+import 'package:clan_churn/api_repos/models/project_model.dart';
+import 'package:clan_churn/api_repos/models/threshold_val_model.dart';
 import 'package:clan_churn/api_repos/models/update_threshold_val_model.dart';
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/components/cus_text_editing_controller.dart';
@@ -26,22 +28,38 @@ class ProjectThresholdComponent extends StatefulWidget {
 class _ProjectThresholdComponentState extends State<ProjectThresholdComponent> {
   List<String> ids = [];
   List<String> columnTypes = [];
-  List<String?> minValues = [];
-  List<String?> maxValues = [];
+  List<int?> minValues = [];
+  List<int?> maxValues = [];
 
   void addId(String id, String colType) {
-    ids.add(id);
-    columnTypes.add(colType);
-    minValues.add(null);
-    maxValues.add(null);
+    Project pro = context.read<ProjectArchitectBloc>().state.createdProject!;
+    ProjectDetails? proDetails = pro.projectDetails;
+    List<ProThreModel>? threVals = proDetails?.thresholdVals;
+    ProThreModel? threVal = (threVals)
+        ?.where(
+          (element) => element.columnId == id,
+        )
+        .first;
+
+    if (threVal == null) {
+      ids.add(id);
+      columnTypes.add(colType);
+      minValues.add(null);
+      maxValues.add(null);
+    } else {
+      ids.add(id);
+      columnTypes.add(colType);
+      minValues.add(threVal.minValue);
+      maxValues.add(threVal.maxValue);
+    }
   }
 
   void addMinValue(String id, String minValue) {
-    minValues[ids.indexOf(id)] = minValue;
+    minValues[ids.indexOf(id)] = int.parse(minValue);
   }
 
   void addMaxValue(String id, String maxValue) {
-    maxValues[ids.indexOf(id)] = maxValue;
+    maxValues[ids.indexOf(id)] = int.parse(maxValue);
   }
 
   @override
@@ -119,8 +137,8 @@ class _ProjectThresholdComponentState extends State<ProjectThresholdComponent> {
                         data.add(UpdateThresholdValModel(
                             columnId: ids[i],
                             columnType: columnTypes[i],
-                            minValue: int.parse(minValues[i]!),
-                            maxValue: int.parse(maxValues[i]!)));
+                            minValue: minValues[i]!,
+                            maxValue: maxValues[i]!));
                       }
                       print(data);
                       context
@@ -133,12 +151,14 @@ class _ProjectThresholdComponentState extends State<ProjectThresholdComponent> {
                                   .handleWarningMessage(errorMessage, context);
                             },
                             onSuccessCallback: (message) {
-                              print(message?.body);
+                              // print(message?.body);
+                              ApiRepository().handleSuccessMessage(
+                                  "successfully updated threshold values!.....",
+                                  context);
+                              widget.onNextTap();
                             },
                           ));
                     }
-
-                    // widget.onNextTap();
                   },
                   child: const Text("Next"),
                 )
@@ -165,6 +185,15 @@ class TheresholdComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
       builder: (context, state) {
+        Project pro = state.createdProject!;
+        ProjectDetails? proDetails = pro.projectDetails;
+        List<ProThreModel>? threVals = proDetails?.thresholdVals;
+        ProThreModel? threVal = (threVals)
+            ?.where(
+              (element) => element.columnId == thresholdFormVal.id,
+            )
+            .first;
+
         return Row(
           children: [
             Text(
@@ -183,7 +212,7 @@ class TheresholdComponent extends StatelessWidget {
                 CusThresholdFomField(
                   thresholdFormVal: thresholdFormVal,
                   onChanged: minValue,
-                  // value: ,
+                  value: threVal?.minValue,
                 )
               ],
             ),
@@ -197,6 +226,7 @@ class TheresholdComponent extends StatelessWidget {
                   thresholdFormVal: thresholdFormVal,
                   onChanged: maxValue,
                   textInputAction: TextInputAction.next,
+                  value: threVal?.maxValue,
                 )
               ],
             ),
@@ -219,7 +249,7 @@ class CusThresholdFomField extends StatefulWidget {
   final TextInputAction? textInputAction;
   final Function(String) onChanged;
   final bool? isEnabled;
-  final String? value;
+  final dynamic? value;
 
   @override
   State<CusThresholdFomField> createState() => _CusThresholdFomFieldState();
@@ -231,7 +261,7 @@ class _CusThresholdFomFieldState extends State<CusThresholdFomField> {
   @override
   void initState() {
     setState(() {
-      controller.text = widget.value ?? '';
+      controller.text = (widget.value ?? '').toString();
     });
     super.initState();
   }
