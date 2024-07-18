@@ -410,7 +410,7 @@ class ApiRepository {
         return null;
       }
     } catch (e) {
-      log('Network Error: $e');
+      print('Network Error: $e');
       onErrorCallback('Network Error: $e', 0);
       return null;
     }

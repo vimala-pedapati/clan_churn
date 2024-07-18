@@ -671,8 +671,11 @@ class _GetInputFieldsState extends State<GetInputFields> {
                     ],
                   ),
                   ProjectThresholdComponent(
-                    onTap: () {
+                    onBackTap: () {
                       goToPreviousPage();
+                    },
+                    onNextTap: () {
+                      goToNextPage();
                     },
                   ),
                   (state.createdProject!.latestInput == null ||
