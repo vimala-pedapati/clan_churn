@@ -184,3 +184,16 @@ class GetProThresholdValEvent extends ProjectArchitectEvent {
       required this.onErrorCallback,
       required this.onSuccessCallback});
 }
+
+class UpdateProThrValsEvent extends ProjectArchitectEvent {
+  final String projectId;
+  final List<UpdateThresholdValModel> data;
+  final OnErrorCallback onErrorCallback;
+  final OnSuccessCallback onSuccessCallback;
+
+  const UpdateProThrValsEvent(
+      {required this.projectId,
+      required this.data,
+      required this.onErrorCallback,
+      required this.onSuccessCallback});
+}

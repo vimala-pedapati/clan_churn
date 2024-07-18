@@ -6,6 +6,7 @@ import 'package:clan_churn/api_repos/models/column_model.dart';
 import 'package:clan_churn/api_repos/models/get_pro_threshold_val_model.dart';
 import 'package:clan_churn/api_repos/models/project_history_model.dart';
 import 'package:clan_churn/api_repos/models/project_model.dart';
+import 'package:clan_churn/api_repos/models/update_threshold_val_model.dart';
 import 'package:clan_churn/components/custom_snack_bar.dart';
 import 'package:clan_churn/components/show_top_snack_bar.dart';
 import 'package:file_picker/file_picker.dart';
@@ -1141,7 +1142,39 @@ class ApiRepository {
         _handleStatusCode(res.statusCode, res, onErrorCallback);
       }
     } catch (e) {
-      log("unable to getch project threshold values");
+      log("unable to fetch project threshold values");
+    }
+    return null;
+  }
+
+  Future<Project?> updateThresholdValue(
+      {required String projectId,
+      required List<UpdateThresholdValModel> data,
+      required OnSuccessCallback onSuccessCallback,
+      required OnErrorCallback onErrorCallback}) async {
+    try {
+      final AuthCred authCred = await AuthRepo().getTokens();
+      if (authCred.accessToken.isEmpty) {
+        onErrorCallback('Access token is empty', 0);
+        return null;
+      }
+
+      http.Response res = await http.post(
+          Uri.parse(
+            "${BaseUrl.baseUrl}${ApiEndpoints.updateProThrVals}?project_id=$projectId",
+          ),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ${authCred.accessToken}',
+          },
+          body: updateThresholdValModelToJson(data));
+      if (res.statusCode == 200) {
+        onSuccessCallback(res);
+        Project project = Project.fromJson(json.decode(res.body));
+        return project;
+      } else {}
+    } catch (e) {
+      log("unable to update project threshold values");
     }
     return null;
   }

@@ -3,6 +3,7 @@ import 'dart:js_util';
 
 import 'package:clan_churn/api_repos/api_repo.dart';
 import 'package:clan_churn/api_repos/models/get_pro_threshold_val_model.dart';
+import 'package:clan_churn/api_repos/models/update_threshold_val_model.dart';
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/components/cus_text_editing_controller.dart';
 import 'package:clan_churn/utils/spacing.dart';
@@ -24,11 +25,13 @@ class ProjectThresholdComponent extends StatefulWidget {
 
 class _ProjectThresholdComponentState extends State<ProjectThresholdComponent> {
   List<String> ids = [];
+  List<String> columnTypes = [];
   List<String?> minValues = [];
   List<String?> maxValues = [];
 
-  void addId(String id) {
+  void addId(String id, String colType) {
     ids.add(id);
+    columnTypes.add(colType);
     minValues.add(null);
     maxValues.add(null);
   }
@@ -52,7 +55,7 @@ class _ProjectThresholdComponentState extends State<ProjectThresholdComponent> {
               List<dynamic> data = json.decode(message.body) as List<dynamic>;
               for (int i = 0; i < data.length; i++) {
                 setState(() {
-                  addId(data[i]['id']);
+                  addId(data[i]['id'], data[i]['column_data_type']);
                 });
               }
             }
@@ -110,10 +113,29 @@ class _ProjectThresholdComponentState extends State<ProjectThresholdComponent> {
                       ApiRepository().handleWarningMessage(
                           "All fileds are mandatary to fill ", context);
                     } else {
+                      List<UpdateThresholdValModel> data = [];
                       for (int i = 0; i < ids.length; i++) {
-                        print(
-                            "$i)${ids[i]}: min:${minValues[i]} max:${maxValues[i]}");
+                        // print( "$i)${ids[i]}: min:${minValues[i]} max:${maxValues[i]}");
+                        data.add(UpdateThresholdValModel(
+                            columnId: ids[i],
+                            columnType: columnTypes[i],
+                            minValue: int.parse(minValues[i]!),
+                            maxValue: int.parse(maxValues[i]!)));
                       }
+                      print(data);
+                      context
+                          .read<ProjectArchitectBloc>()
+                          .add(UpdateProThrValsEvent(
+                            projectId: state.createdProject!.id,
+                            data: data,
+                            onErrorCallback: (errorMessage, errorCode) {
+                              ApiRepository()
+                                  .handleWarningMessage(errorMessage, context);
+                            },
+                            onSuccessCallback: (message) {
+                              print(message?.body);
+                            },
+                          ));
                     }
 
                     // widget.onNextTap();
