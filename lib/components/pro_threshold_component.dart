@@ -34,24 +34,30 @@ class _ProjectThresholdComponentState extends State<ProjectThresholdComponent> {
   void addId(String id, String colType) {
     Project pro = context.read<ProjectArchitectBloc>().state.createdProject!;
     ProjectDetails? proDetails = pro.projectDetails;
-    List<ProThreModel>? threVals = proDetails?.thresholdVals;
-    ProThreModel? threVal = (threVals)
-        ?.where(
-          (element) => element.columnId == id,
-        )
-        .first;
 
-    if (threVal == null) {
-      ids.add(id);
-      columnTypes.add(colType);
-      minValues.add(null);
-      maxValues.add(null);
-    } else {
-      ids.add(id);
-      columnTypes.add(colType);
-      minValues.add(threVal.minValue);
-      maxValues.add(threVal.maxValue);
+    List<ProThreModel> threVals = proDetails?.thresholdVals ?? [];
+
+    // Initialize the values to add to the lists
+    int? minValue;
+    int? maxValue;
+
+    if (threVals.isNotEmpty) {
+      List<ProThreModel> a = threVals
+          .where(
+            (element) => element.columnId == id,
+          )
+          .toList();
+
+      if (a.isNotEmpty) {
+        minValue = a[0].minValue;
+        maxValue = a[0].maxValue;
+      }
     }
+
+    ids.add(id);
+    columnTypes.add(colType);
+    minValues.add(minValue);
+    maxValues.add(maxValue);
   }
 
   void addMinValue(String id, String minValue) {
@@ -72,9 +78,9 @@ class _ProjectThresholdComponentState extends State<ProjectThresholdComponent> {
             if (message != null) {
               List<dynamic> data = json.decode(message.body) as List<dynamic>;
               for (int i = 0; i < data.length; i++) {
-                setState(() {
-                  addId(data[i]['id'], data[i]['column_data_type']);
-                });
+                // setState(() {
+                addId(data[i]['id'], data[i]['column_data_type']);
+                // });
               }
             }
           },
@@ -188,11 +194,11 @@ class TheresholdComponent extends StatelessWidget {
         Project pro = state.createdProject!;
         ProjectDetails? proDetails = pro.projectDetails;
         List<ProThreModel>? threVals = proDetails?.thresholdVals;
-        ProThreModel? threVal = (threVals)
+        List<ProThreModel>? a = (threVals)
             ?.where(
               (element) => element.columnId == thresholdFormVal.id,
             )
-            .first;
+            .toList();
 
         return Row(
           children: [
@@ -212,7 +218,11 @@ class TheresholdComponent extends StatelessWidget {
                 CusThresholdFomField(
                   thresholdFormVal: thresholdFormVal,
                   onChanged: minValue,
-                  value: threVal?.minValue,
+                  value: a == null
+                      ? null
+                      : a.isEmpty
+                          ? null
+                          : a[0].minValue,
                 )
               ],
             ),
@@ -226,7 +236,11 @@ class TheresholdComponent extends StatelessWidget {
                   thresholdFormVal: thresholdFormVal,
                   onChanged: maxValue,
                   textInputAction: TextInputAction.next,
-                  value: threVal?.maxValue,
+                  value: a == null
+                      ? null
+                      : a.isEmpty
+                          ? null
+                          : a[0].maxValue,
                 )
               ],
             ),
