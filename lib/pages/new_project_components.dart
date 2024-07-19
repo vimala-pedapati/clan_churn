@@ -121,7 +121,7 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                 '';
       });
     }
-    context.read<ProjectArchitectBloc>().add(const GetColumnsEvent());
+    context.read<ProjectArchitectBloc>().add(  GetColumnsEvent(context.read<ProjectArchitectBloc>().state.createdProject?.id));
     super.initState();
   }
 
@@ -318,6 +318,7 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                                           .add(CreateProjectEvent(
                                             clientId: state.selectedClient!.id,
                                             projectName: projectController.text,
+                                            projectId: state.createdProject?.id,
                                             onSuccessCallback: (message) {
                                               setState(() {
                                                 isProjectCreated = true;

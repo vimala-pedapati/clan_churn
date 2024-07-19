@@ -86,6 +86,7 @@ class ProjectArchitectBloc
   _onGetColumnsEvent(
       GetColumnsEvent event, Emitter<ProjectArchitectState> emit) async {
     final result = await apiRepository.getAllColumns(
+      projectId: event.projectId,
         onErrorCallback: (String message, int errorCode) {
       log(" $message");
     });
@@ -111,6 +112,7 @@ class ProjectArchitectBloc
     if (result != null) {
       emit(state.copyWith(createdProject: result));
       final columnsResult = await apiRepository.getAllColumns(
+        projectId: event.projectId,
           onErrorCallback: (String message, int errorCode) {
         log(" $message");
       });

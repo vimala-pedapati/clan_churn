@@ -347,7 +347,8 @@ class ApiRepository {
   }
 
   Future<List<ColumnDetails>?> getAllColumns(
-      {required OnErrorCallback onErrorCallback}) async {
+      {required String? projectId,
+      required OnErrorCallback onErrorCallback}) async {
     try {
       final AuthCred authCred = await AuthRepo().getTokens();
 
@@ -357,7 +358,8 @@ class ApiRepository {
       }
 
       http.Response response = await http.get(
-        Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.getAllColumns}"),
+        Uri.parse(
+            "${BaseUrl.baseUrl}${ApiEndpoints.getAllColumns}?project_id=$projectId"),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ${authCred.accessToken}',

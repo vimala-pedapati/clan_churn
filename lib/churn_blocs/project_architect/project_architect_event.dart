@@ -48,7 +48,8 @@ class GetProjectDetailsEvent extends ProjectArchitectEvent {
 }
 
 class GetColumnsEvent extends ProjectArchitectEvent {
-  const GetColumnsEvent();
+  final String? projectId;
+  const GetColumnsEvent(this.projectId);
 }
 
 class CustomerColumnNamesEvent extends ProjectArchitectEvent {
@@ -59,6 +60,7 @@ class CustomerColumnNamesEvent extends ProjectArchitectEvent {
 class CreateProjectEvent extends ProjectArchitectEvent {
   final String clientId;
   final String projectName;
+  final String? projectId;
   final OnErrorCallback onErrorCallback;
   final OnSuccessCallback onSuccessCallback;
   const CreateProjectEvent({
@@ -66,6 +68,7 @@ class CreateProjectEvent extends ProjectArchitectEvent {
     required this.projectName,
     required this.onErrorCallback,
     required this.onSuccessCallback,
+    required this.projectId
   });
 }
 
