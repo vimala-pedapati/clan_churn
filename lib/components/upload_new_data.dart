@@ -1,5 +1,6 @@
 import 'package:clan_churn/api_repos/api_repo.dart';
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
+import 'package:clan_churn/components/input_sheet_columns.dart';
 import 'package:clan_churn/pages/new_project_components.dart';
 import 'package:clan_churn/utils/spacing.dart';
 import 'package:clan_churn/utils/typography.dart';

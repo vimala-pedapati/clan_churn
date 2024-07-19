@@ -36,7 +36,10 @@ class UpdateProjectDetailsEvent extends ProjectArchitectEvent {
   final OnErrorCallback onErrorCallback;
   final OnSuccessCallback onSuccessCallback;
   const UpdateProjectDetailsEvent(
-      {required this.projectId, required this.projectDetails, required this.onErrorCallback, required this.onSuccessCallback});
+      {required this.projectId,
+      required this.projectDetails,
+      required this.onErrorCallback,
+      required this.onSuccessCallback});
 }
 
 class GetProjectDetailsEvent extends ProjectArchitectEvent {
@@ -169,4 +172,28 @@ class GetReportDataEvent extends ProjectArchitectEvent {
     required this.onErrorCallback,
     required this.onSuccessCallback,
   });
+}
+
+class GetProThresholdValEvent extends ProjectArchitectEvent {
+  final String projectId;
+  final OnErrorCallback onErrorCallback;
+  final OnSuccessCallback onSuccessCallback;
+
+  const GetProThresholdValEvent(
+      {required this.projectId,
+      required this.onErrorCallback,
+      required this.onSuccessCallback});
+}
+
+class UpdateProThrValsEvent extends ProjectArchitectEvent {
+  final String projectId;
+  final List<UpdateThresholdValModel> data;
+  final OnErrorCallback onErrorCallback;
+  final OnSuccessCallback onSuccessCallback;
+
+  const UpdateProThrValsEvent(
+      {required this.projectId,
+      required this.data,
+      required this.onErrorCallback,
+      required this.onSuccessCallback});
 }

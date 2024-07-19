@@ -3,8 +3,10 @@ import 'dart:developer';
 import 'package:clan_churn/api_repos/models/client_details.dart';
 import 'package:clan_churn/api_repos/models/client_logo_upload_res.dart';
 import 'package:clan_churn/api_repos/models/column_model.dart';
+import 'package:clan_churn/api_repos/models/get_pro_threshold_val_model.dart';
 import 'package:clan_churn/api_repos/models/project_history_model.dart';
 import 'package:clan_churn/api_repos/models/project_model.dart';
+import 'package:clan_churn/api_repos/models/update_threshold_val_model.dart';
 import 'package:clan_churn/components/custom_snack_bar.dart';
 import 'package:clan_churn/components/show_top_snack_bar.dart';
 import 'package:file_picker/file_picker.dart';
@@ -20,25 +22,22 @@ typedef OnSuccessCallback = void Function(http.Response? message);
 
 class ApiRepository {
   Future<String?> checkAuth({required OnErrorCallback onErrorCallback}) async {
-    final AuthCredentials authCredentials = await AuthRepository().getTokens();
+    final AuthCred authCred = await AuthRepo().getTokens();
 
-    if (authCredentials.accessToken.isEmpty) {
-      log('Access token is empty');
+    if (authCred.accessToken.isEmpty) {
       onErrorCallback('Access token is empty', 0);
       return null;
     } else {
-      return authCredentials.accessToken;
+      return authCred.accessToken;
     }
   }
 
   Future<User?> getUserDetails(
       {required OnErrorCallback onErrorCallback}) async {
     try {
-      final AuthCredentials authCredentials =
-          await AuthRepository().getTokens();
+      final AuthCred authCred = await AuthRepo().getTokens();
 
-      if (authCredentials.accessToken.isEmpty) {
-        log('Access token is empty');
+      if (authCred.accessToken.isEmpty) {
         onErrorCallback('Access token is empty', 0);
         return null;
       }
@@ -47,7 +46,7 @@ class ApiRepository {
         Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.getUserDetails}"),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ${authCredentials.accessToken}',
+          'Authorization': 'Bearer ${authCred.accessToken}',
         },
       );
 
@@ -72,11 +71,9 @@ class ApiRepository {
       {required OnErrorCallback onErrorCallback,
       required OnSuccessCallback onSuccessCallback}) async {
     try {
-      final AuthCredentials authCredentials =
-          await AuthRepository().getTokens();
+      final AuthCred authCred = await AuthRepo().getTokens();
 
-      if (authCredentials.accessToken.isEmpty) {
-        log('Access token is empty');
+      if (authCred.accessToken.isEmpty) {
         onErrorCallback('Access token is empty', 0);
         return null;
       }
@@ -88,7 +85,7 @@ class ApiRepository {
         Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.getAllUsers}"),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ${authCredentials.accessToken}',
+          'Authorization': 'Bearer ${authCred.accessToken}',
         },
       );
 
@@ -114,11 +111,9 @@ class ApiRepository {
       {required OnErrorCallback onErrorCallback,
       required OnSuccessCallback onSuccessCallback}) async {
     try {
-      final AuthCredentials authCredentials =
-          await AuthRepository().getTokens();
+      final AuthCred authCred = await AuthRepo().getTokens();
 
-      if (authCredentials.accessToken.isEmpty) {
-        log('Access token is empty');
+      if (authCred.accessToken.isEmpty) {
         onErrorCallback('Access token is empty', 0);
         return null;
       }
@@ -127,14 +122,14 @@ class ApiRepository {
         Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.clientsList}"),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ${authCredentials.accessToken}',
+          'Authorization': 'Bearer ${authCred.accessToken}',
         },
       );
 
       if (response.statusCode == 200) {
         List<ClientDetails> clientDetails =
             clientDetailsFromJson(response.body);
-        print("Clients:..... $clientDetails");
+        // print("Clients:..... $clientDetails");
         onSuccessCallback(response);
         return clientDetails;
       } else {
@@ -153,11 +148,9 @@ class ApiRepository {
     required OnErrorCallback onErrorCallback,
   }) async {
     try {
-      final AuthCredentials authCredentials =
-          await AuthRepository().getTokens();
+      final AuthCred authCred = await AuthRepo().getTokens();
 
-      if (authCredentials.accessToken.isEmpty) {
-        log('Access token is empty');
+      if (authCred.accessToken.isEmpty) {
         onErrorCallback('Access token is empty', 0);
         return null;
       }
@@ -166,14 +159,14 @@ class ApiRepository {
         Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.getAllProjects}"),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ${authCredentials.accessToken}',
+          'Authorization': 'Bearer ${authCred.accessToken}',
         },
         body: json.encode({"client_id": clientId}),
       );
 
       if (response.statusCode == 200) {
         List<Project> listOfProjects = projectFromJson(response.body);
-        print("List of Projects:..... $listOfProjects");
+        // print("List of Projects:..... $listOfProjects");
         return listOfProjects;
       } else {
         _handleStatusCode(response.statusCode, response, onErrorCallback);
@@ -194,12 +187,10 @@ class ApiRepository {
     log("......get error report $inputId");
     try {
       // Fetch auth credentials
-      final AuthCredentials authCredentials =
-          await AuthRepository().getTokens();
+      final AuthCred authCred = await AuthRepo().getTokens();
 
       // Check if auth credentials are null
-      if (authCredentials.accessToken.isEmpty) {
-        log('Access token is empty');
+      if (authCred.accessToken.isEmpty) {
         return null;
       }
 
@@ -208,7 +199,7 @@ class ApiRepository {
           Uri.parse('${BaseUrl.baseUrl}${ApiEndpoints.getErrorReport}'),
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ${authCredentials.accessToken}',
+            'Authorization': 'Bearer ${authCred.accessToken}',
           },
           body: json.encode(inputId));
 
@@ -236,11 +227,9 @@ class ApiRepository {
     required OnErrorCallback onErrorCallback,
   }) async {
     try {
-      final AuthCredentials authCredentials =
-          await AuthRepository().getTokens();
+      final AuthCred authCred = await AuthRepo().getTokens();
 
-      if (authCredentials.accessToken.isEmpty) {
-        log('Access token is empty');
+      if (authCred.accessToken.isEmpty) {
         onErrorCallback('Access token is empty', 0);
         return null;
       }
@@ -249,7 +238,7 @@ class ApiRepository {
         Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.updateProjectDetails}"),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ${authCredentials.accessToken}',
+          'Authorization': 'Bearer ${authCred.accessToken}',
         },
         body: json.encode({
           "project_id": projectId,
@@ -264,7 +253,7 @@ class ApiRepository {
 
       if (response.statusCode == 200) {
         Project project = Project.fromJson(json.decode(response.body));
-        print("Updated project:..... ${response.body}");
+        // print("Updated project:..... ${response.body}");
         onSuccessCallback(response);
         return project;
       } else {
@@ -283,11 +272,9 @@ class ApiRepository {
     required OnErrorCallback onErrorCallback,
   }) async {
     try {
-      final AuthCredentials authCredentials =
-          await AuthRepository().getTokens();
+      final AuthCred authCred = await AuthRepo().getTokens();
 
-      if (authCredentials.accessToken.isEmpty) {
-        log('Access token is empty');
+      if (authCred.accessToken.isEmpty) {
         onErrorCallback('Access token is empty', 0);
         return null;
       }
@@ -296,7 +283,7 @@ class ApiRepository {
         Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.getProjectDetails}"),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ${authCredentials.accessToken}',
+          'Authorization': 'Bearer ${authCred.accessToken}',
         },
         body: json.encode({
           "project_id": projectId,
@@ -327,11 +314,9 @@ class ApiRepository {
       required OnErrorCallback onErrorCallback,
       required OnSuccessCallback onSuccessCallback}) async {
     try {
-      final AuthCredentials authCredentials =
-          await AuthRepository().getTokens();
+      final AuthCred authCred = await AuthRepo().getTokens();
 
-      if (authCredentials.accessToken.isEmpty) {
-        log('Access token is empty');
+      if (authCred.accessToken.isEmpty) {
         onErrorCallback('Access token is empty', 0);
         return null;
       }
@@ -340,7 +325,7 @@ class ApiRepository {
         Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.addProject}"),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ${authCredentials.accessToken}',
+          'Authorization': 'Bearer ${authCred.accessToken}',
         },
         body: json.encode({"client_id": clientId, "name": projectName}),
       );
@@ -364,11 +349,9 @@ class ApiRepository {
   Future<List<ColumnDetails>?> getAllColumns(
       {required OnErrorCallback onErrorCallback}) async {
     try {
-      final AuthCredentials authCredentials =
-          await AuthRepository().getTokens();
+      final AuthCred authCred = await AuthRepo().getTokens();
 
-      if (authCredentials.accessToken.isEmpty) {
-        log('Access token is empty');
+      if (authCred.accessToken.isEmpty) {
         onErrorCallback('Access token is empty', 0);
         return null;
       }
@@ -377,7 +360,7 @@ class ApiRepository {
         Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.getAllColumns}"),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ${authCredentials.accessToken}',
+          'Authorization': 'Bearer ${authCred.accessToken}',
         },
       );
 
@@ -401,11 +384,9 @@ class ApiRepository {
     required OnErrorCallback onErrorCallback,
   }) async {
     try {
-      final AuthCredentials authCredentials =
-          await AuthRepository().getTokens();
+      final AuthCred authCred = await AuthRepo().getTokens();
 
-      if (authCredentials.accessToken.isEmpty) {
-        log('Access token is empty');
+      if (authCred.accessToken.isEmpty) {
         onErrorCallback('Access token is empty', 0);
         return null;
       }
@@ -414,7 +395,7 @@ class ApiRepository {
         Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.addColumnsToProject}"),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ${authCredentials.accessToken}',
+          'Authorization': 'Bearer ${authCred.accessToken}',
         },
         body: json.encode(columnsToAdd),
       );
@@ -430,7 +411,7 @@ class ApiRepository {
         return null;
       }
     } catch (e) {
-      log('Network Error: $e');
+      print('Network Error: $e');
       onErrorCallback('Network Error: $e', 0);
       return null;
     }
@@ -443,12 +424,10 @@ class ApiRepository {
       required OnSuccessCallback onSuccessCallback}) async {
     try {
       // Fetch auth credentials
-      final AuthCredentials authCredentials =
-          await AuthRepository().getTokens();
+      final AuthCred authCred = await AuthRepo().getTokens();
 
       // Check if auth credentials are null
-      if (authCredentials.accessToken.isEmpty) {
-        log('Access token is empty');
+      if (authCred.accessToken.isEmpty) {
         return null;
       }
 
@@ -457,7 +436,7 @@ class ApiRepository {
         Uri.parse('${BaseUrl.baseUrl}${ApiEndpoints.updateProjectName}'),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ${authCredentials.accessToken}',
+          'Authorization': 'Bearer ${authCred.accessToken}',
         },
         body: json.encode({
           "project_id": projectId,
@@ -491,20 +470,16 @@ class ApiRepository {
       required OnSuccessCallback onSuccessCallback}) async {
     try {
       // Fetch auth credentials
-      final AuthCredentials authCredentials =
-          await AuthRepository().getTokens();
+      final AuthCred authCred = await AuthRepo().getTokens();
 
       // Check if auth credentials are null
-      if (authCredentials.accessToken.isEmpty) {
-        log('Access token is empty');
+      if (authCred.accessToken.isEmpty) {
         return null;
       }
 
       if (filePickerResult.files.isNotEmpty) {
         PlatformFile file = filePickerResult.files.first;
-        var headers = {
-          'Authorization': 'Bearer ${authCredentials.accessToken}'
-        };
+        var headers = {'Authorization': 'Bearer ${authCred.accessToken}'};
         var request = http.MultipartRequest(
           'POST',
           Uri.parse('${BaseUrl.baseUrl}${ApiEndpoints.uploadFile}'),
@@ -547,11 +522,9 @@ class ApiRepository {
       required OnErrorCallback onErrorCallback,
       required OnSuccessCallback onSuccessCallback}) async {
     try {
-      final AuthCredentials authCredentials =
-          await AuthRepository().getTokens();
+      final AuthCred authCred = await AuthRepo().getTokens();
 
-      if (authCredentials.accessToken.isEmpty) {
-        log('Access token is empty');
+      if (authCred.accessToken.isEmpty) {
         onErrorCallback('Access token is empty', 0);
         return null;
       }
@@ -560,7 +533,7 @@ class ApiRepository {
           Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.getInputExcelSummary}"),
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ${authCredentials.accessToken}',
+            'Authorization': 'Bearer ${authCred.accessToken}',
           },
           body: json.encode(inputId));
 
@@ -579,11 +552,9 @@ class ApiRepository {
       required OnErrorCallback onErrorCallback,
       required OnSuccessCallback onSuccessCallback}) async {
     try {
-      final AuthCredentials authCredentials =
-          await AuthRepository().getTokens();
+      final AuthCred authCred = await AuthRepo().getTokens();
 
-      if (authCredentials.accessToken.isEmpty) {
-        log('Access token is empty');
+      if (authCred.accessToken.isEmpty) {
         onErrorCallback('Access token is empty', 0);
         return null;
       }
@@ -592,7 +563,7 @@ class ApiRepository {
           Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.projectInputHistory}"),
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ${authCredentials.accessToken}',
+            'Authorization': 'Bearer ${authCred.accessToken}',
           },
           body: json.encode(projectId));
       if (response.statusCode == 200) {
@@ -617,12 +588,10 @@ class ApiRepository {
     log("......get error report $inputId");
     try {
       // Fetch auth credentials
-      final AuthCredentials authCredentials =
-          await AuthRepository().getTokens();
+      final AuthCred authCred = await AuthRepo().getTokens();
 
       // Check if auth credentials are null
-      if (authCredentials.accessToken.isEmpty) {
-        log('Access token is empty');
+      if (authCred.accessToken.isEmpty) {
         return null;
       }
 
@@ -631,7 +600,7 @@ class ApiRepository {
           Uri.parse('${BaseUrl.baseUrl}${ApiEndpoints.generateMarts}'),
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ${authCredentials.accessToken}',
+            'Authorization': 'Bearer ${authCred.accessToken}',
           },
           body: json.encode(inputId));
 
@@ -658,11 +627,10 @@ class ApiRepository {
       required OnErrorCallback onErrorCallback,
       required OnSuccessCallback onSuccessCallback}) async {
     // Fetch auth credentials
-    final AuthCredentials authCredentials = await AuthRepository().getTokens();
+    final AuthCred authCred = await AuthRepo().getTokens();
 
     // Check if auth credentials are null
-    if (authCredentials.accessToken.isEmpty) {
-      log('Access token is empty');
+    if (authCred.accessToken.isEmpty) {
       return null;
     }
 
@@ -673,7 +641,7 @@ class ApiRepository {
             '${BaseUrl.baseUrl}${ApiEndpoints.getReportData}?report_name=$reportname&input_id=$inputId'),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ${authCredentials.accessToken}',
+          'Authorization': 'Bearer ${authCred.accessToken}',
         },
       );
 
@@ -703,11 +671,9 @@ class ApiRepository {
       required OnErrorCallback onErrorCallback,
       required OnSuccessCallback onSuccessCallback}) async {
     try {
-      final AuthCredentials authCredentials =
-          await AuthRepository().getTokens();
+      final AuthCred authCred = await AuthRepo().getTokens();
 
-      if (authCredentials.accessToken.isEmpty) {
-        log('Access token is empty');
+      if (authCred.accessToken.isEmpty) {
         onErrorCallback('Access token is empty', 0);
         return null;
       }
@@ -716,7 +682,7 @@ class ApiRepository {
           Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.clientCreate}"),
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ${authCredentials.accessToken}',
+            'Authorization': 'Bearer ${authCred.accessToken}',
           },
           body: json.encode({
             "name": clientName,
@@ -759,11 +725,9 @@ class ApiRepository {
       required OnErrorCallback onErrorCallback,
       required OnSuccessCallback onSuccessCallback}) async {
     try {
-      final AuthCredentials authCredentials =
-          await AuthRepository().getTokens();
+      final AuthCred authCred = await AuthRepo().getTokens();
 
-      if (authCredentials.accessToken.isEmpty) {
-        log('Access token is empty');
+      if (authCred.accessToken.isEmpty) {
         onErrorCallback('Access token is empty', 0);
         return null;
       }
@@ -772,7 +736,7 @@ class ApiRepository {
           Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.clientUpdate}"),
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ${authCredentials.accessToken}',
+            'Authorization': 'Bearer ${authCred.accessToken}',
           },
           body: json.encode({
             "client_id": clientId,
@@ -807,20 +771,16 @@ class ApiRepository {
       required OnSuccessCallback onSuccessCallback}) async {
     try {
       // Fetch auth credentials
-      final AuthCredentials authCredentials =
-          await AuthRepository().getTokens();
+      final AuthCred authCred = await AuthRepo().getTokens();
 
       // Check if auth credentials are null
-      if (authCredentials.accessToken.isEmpty) {
-        log('Access token is empty');
+      if (authCred.accessToken.isEmpty) {
         return null;
       }
 
       if (filePickerResult.files.isNotEmpty) {
         PlatformFile file = filePickerResult.files.first;
-        var headers = {
-          'Authorization': 'Bearer ${authCredentials.accessToken}'
-        };
+        var headers = {'Authorization': 'Bearer ${authCred.accessToken}'};
         var request = http.MultipartRequest(
           'POST',
           Uri.parse(
@@ -867,11 +827,9 @@ class ApiRepository {
       required OnErrorCallback onErrorCallback,
       required OnSuccessCallback onSuccessCallback}) async {
     try {
-      final AuthCredentials authCredentials =
-          await AuthRepository().getTokens();
+      final AuthCred authCred = await AuthRepo().getTokens();
 
-      if (authCredentials.accessToken.isEmpty) {
-        log('Access token is empty');
+      if (authCred.accessToken.isEmpty) {
         onErrorCallback('Access token is empty', 0);
         return null;
       }
@@ -881,7 +839,7 @@ class ApiRepository {
             "${BaseUrl.baseUrl}${ApiEndpoints.deleteClient}?client_id=$clientId"),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ${authCredentials.accessToken}',
+          'Authorization': 'Bearer ${authCred.accessToken}',
         },
       );
 
@@ -909,11 +867,9 @@ class ApiRepository {
       required OnErrorCallback onErrorCallback,
       required OnSuccessCallback onSuccessCallback}) async {
     try {
-      final AuthCredentials authCredentials =
-          await AuthRepository().getTokens();
+      final AuthCred authCred = await AuthRepo().getTokens();
 
-      if (authCredentials.accessToken.isEmpty) {
-        log('Access token is empty');
+      if (authCred.accessToken.isEmpty) {
         onErrorCallback('Access token is empty', 0);
         return null;
       }
@@ -922,7 +878,7 @@ class ApiRepository {
           Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.addUser}"),
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ${authCredentials.accessToken}',
+            'Authorization': 'Bearer ${authCred.accessToken}',
           },
           body: json.encode({
             "client_id": null,
@@ -957,10 +913,8 @@ class ApiRepository {
       required OnErrorCallback onErrorCallback,
       required OnSuccessCallback onSuccessCallback}) async {
     try {
-      final AuthCredentials authCredentials =
-          await AuthRepository().getTokens();
-      if (authCredentials.accessToken.isEmpty) {
-        log('Access token is empty');
+      final AuthCred authCred = await AuthRepo().getTokens();
+      if (authCred.accessToken.isEmpty) {
         onErrorCallback('Access token is empty', 0);
         return null;
       }
@@ -968,7 +922,7 @@ class ApiRepository {
           Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.updateUser}"),
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ${authCredentials.accessToken}',
+            'Authorization': 'Bearer ${authCred.accessToken}',
           },
           body: json.encode({
             "client_id": null,
@@ -1000,20 +954,16 @@ class ApiRepository {
       required OnSuccessCallback onSuccessCallback}) async {
     try {
       // Fetch auth credentials
-      final AuthCredentials authCredentials =
-          await AuthRepository().getTokens();
+      final AuthCred authCred = await AuthRepo().getTokens();
 
       // Check if auth credentials are null
-      if (authCredentials.accessToken.isEmpty) {
-        log('Access token is empty');
+      if (authCred.accessToken.isEmpty) {
         return null;
       }
 
       if (filePickerResult.files.isNotEmpty) {
         PlatformFile file = filePickerResult.files.first;
-        var headers = {
-          'Authorization': 'Bearer ${authCredentials.accessToken}'
-        };
+        var headers = {'Authorization': 'Bearer ${authCred.accessToken}'};
         var request = http.MultipartRequest(
           'POST',
           Uri.parse(
@@ -1058,11 +1008,9 @@ class ApiRepository {
       {required OnErrorCallback onErrorCallback,
       required OnSuccessCallback onSuccessCallback}) async {
     try {
-      final AuthCredentials authCredentials =
-          await AuthRepository().getTokens();
+      final AuthCred authCred = await AuthRepo().getTokens();
 
-      if (authCredentials.accessToken.isEmpty) {
-        log('Access token is empty');
+      if (authCred.accessToken.isEmpty) {
         onErrorCallback('Access token is empty', 0);
         return null;
       }
@@ -1071,7 +1019,7 @@ class ApiRepository {
         Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.getUserTypes}"),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ${authCredentials.accessToken}',
+          'Authorization': 'Bearer ${authCred.accessToken}',
         },
       );
       print(response);
@@ -1101,11 +1049,9 @@ class ApiRepository {
       required OnErrorCallback onErrorCallback,
       required OnSuccessCallback onSuccessCallback}) async {
     try {
-      final AuthCredentials authCredentials =
-          await AuthRepository().getTokens();
+      final AuthCred authCred = await AuthRepo().getTokens();
 
-      if (authCredentials.accessToken.isEmpty) {
-        log('Access token is empty');
+      if (authCred.accessToken.isEmpty) {
         onErrorCallback('Access token is empty', 0);
         return null;
       }
@@ -1115,7 +1061,7 @@ class ApiRepository {
             "${BaseUrl.baseUrl}${ApiEndpoints.deleteUser}?user_id=$userId"),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ${authCredentials.accessToken}',
+          'Authorization': 'Bearer ${authCred.accessToken}',
         },
       );
 
@@ -1136,11 +1082,9 @@ class ApiRepository {
       required OnErrorCallback onErrorCallback,
       required OnSuccessCallback onSuccessCallback}) async {
     try {
-      final AuthCredentials authCredentials =
-          await AuthRepository().getTokens();
+      final AuthCred authCred = await AuthRepo().getTokens();
 
-      if (authCredentials.accessToken.isEmpty) {
-        log('Access token is empty');
+      if (authCred.accessToken.isEmpty) {
         onErrorCallback('Access token is empty', 0);
         return null;
       }
@@ -1150,7 +1094,7 @@ class ApiRepository {
             "${BaseUrl.baseUrl}${ApiEndpoints.archiveProject}?project_id=$projectId"),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ${authCredentials.accessToken}',
+          'Authorization': 'Bearer ${authCred.accessToken}',
         },
       );
 
@@ -1164,6 +1108,75 @@ class ApiRepository {
       log("archive project: $e");
     }
     return false;
+  }
+
+  Future<List<GetProThresholdFormValModel>?> getProThresholdValues(
+      {required String projectId,
+      required OnErrorCallback onErrorCallback,
+      required OnSuccessCallback onSuccessCallback}) async {
+    try {
+      final AuthCred authCred = await AuthRepo().getTokens();
+
+      if (authCred.accessToken.isEmpty) {
+        onErrorCallback('Access token is empty', 0);
+        return null;
+      }
+
+      http.Response res = await http.post(
+        Uri.parse(
+          "${BaseUrl.baseUrl}${ApiEndpoints.getProThrDtls}?project_id=$projectId",
+        ),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${authCred.accessToken}',
+        },
+      );
+      if (res.statusCode == 200) {
+        onSuccessCallback(res);
+        print("......");
+        List<GetProThresholdFormValModel> data =
+            projectThresholdFormValueModelFromJson(res.body);
+        print("......$data");
+        return data;
+      } else {
+        _handleStatusCode(res.statusCode, res, onErrorCallback);
+      }
+    } catch (e) {
+      log("unable to fetch project threshold values");
+    }
+    return null;
+  }
+
+  Future<Project?> updateThresholdValue(
+      {required String projectId,
+      required List<UpdateThresholdValModel> data,
+      required OnSuccessCallback onSuccessCallback,
+      required OnErrorCallback onErrorCallback}) async {
+    try {
+      final AuthCred authCred = await AuthRepo().getTokens();
+      if (authCred.accessToken.isEmpty) {
+        onErrorCallback('Access token is empty', 0);
+        return null;
+      }
+
+      http.Response res = await http.post(
+          Uri.parse(
+            "${BaseUrl.baseUrl}${ApiEndpoints.updateProThrVals}?project_id=$projectId",
+          ),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ${authCred.accessToken}',
+          },
+          body: updateThresholdValModelToJson(data));
+      if (res.statusCode == 200) {
+        onSuccessCallback(res);
+        Project project = Project.fromJson(json.decode(res.body));
+        return project;
+      } else {}
+    } catch (e) {
+      log("unable to update project threshold values");
+    }
+    return null;
   }
 
   void _handleStatusCode(

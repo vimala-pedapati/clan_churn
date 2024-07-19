@@ -4,10 +4,12 @@ import 'package:bloc/bloc.dart';
 import 'package:clan_churn/api_repos/api_repo.dart';
 import 'package:clan_churn/api_repos/models/client_details.dart';
 import 'package:clan_churn/api_repos/models/column_model.dart';
+import 'package:clan_churn/api_repos/models/get_pro_threshold_val_model.dart';
 import 'package:clan_churn/api_repos/models/project_history_model.dart';
 import 'package:clan_churn/api_repos/models/project_model.dart';
-import 'package:clan_churn/api_repos/models/user_model.dart';
+import 'package:clan_churn/api_repos/models/update_threshold_val_model.dart';
 import 'package:clan_churn/components/dialogs.dart';
+import 'package:clan_churn/components/input_sheet_columns.dart';
 import 'package:clan_churn/pages/new_project_components.dart';
 import 'package:equatable/equatable.dart';
 import 'package:file_picker/file_picker.dart';
@@ -41,6 +43,8 @@ class ProjectArchitectBloc
     on<ProjectInputHistoryEvent>(_onProjectInputHistoryEvent);
     on<GenerateMartsEvent>(_onGenerateMartsEvent);
     on<GetReportDataEvent>(_onGetReportDataEvent);
+    on<GetProThresholdValEvent>(_onGetProThresholdValEvent);
+    on<UpdateProThrValsEvent>(_onUpdateProThrValsEvent);
   }
 
   _onClientsEvent(
@@ -364,5 +368,30 @@ class ProjectArchitectBloc
         reportname: event.reportName,
         onErrorCallback: event.onErrorCallback,
         onSuccessCallback: event.onSuccessCallback);
+  }
+
+  _onGetProThresholdValEvent(GetProThresholdValEvent event,
+      Emitter<ProjectArchitectState> emit) async {
+    final result = await apiRepository.getProThresholdValues(
+        projectId: event.projectId,
+        onErrorCallback: event.onErrorCallback,
+        onSuccessCallback: event.onSuccessCallback);
+    if (result != null) {
+      emit(state.copyWith(projectThesholdFormfields: result));
+    } else {
+      emit(state.copyWith(projectThesholdFormfields: []));
+    }
+  }
+
+  _onUpdateProThrValsEvent(
+      UpdateProThrValsEvent event, Emitter<ProjectArchitectState> emit) async {
+    final result = await apiRepository.updateThresholdValue(
+        projectId: event.projectId,
+        data: event.data,
+        onErrorCallback: event.onErrorCallback,
+        onSuccessCallback: event.onSuccessCallback);
+    if (result != null) {
+      emit(state.copyWith(createdProject: result));
+    }
   }
 }

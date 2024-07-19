@@ -1,21 +1,20 @@
-// To parse this JSON data, do
-//
-//     final projectThresholdValueModel = projectThresholdValueModelFromJson(jsonString);
-
 import 'dart:convert';
 
-List<ProjectThresholdValueModel> projectThresholdValueModelFromJson(
-        String str) =>
-    List<ProjectThresholdValueModel>.from(
-        json.decode(str).map((x) => ProjectThresholdValueModel.fromJson(x)));
+List<GetProThresholdFormValModel> projectThresholdFormValueModelFromJson(
+    String str) {
+  List<dynamic> data = json.decode(str) as List<dynamic>;
+  return List<GetProThresholdFormValModel>.from(data.map((x) {
+    return GetProThresholdFormValModel.fromJson(x);
+  }));
+}
 
-String projectThresholdValueModelToJson(
-        List<ProjectThresholdValueModel> data) =>
+String projectThresholdFormValueModelToJson(
+        List<GetProThresholdFormValModel> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class ProjectThresholdValueModel {
+class GetProThresholdFormValModel {
   String id;
-  SheetName sheetName;
+  String sheetName;
   String columnName;
   bool isMandatory;
   bool isEditable;
@@ -23,7 +22,7 @@ class ProjectThresholdValueModel {
   String clientColumnName;
   ColumnDataType columnDataType;
 
-  ProjectThresholdValueModel({
+  GetProThresholdFormValModel({
     required this.id,
     required this.sheetName,
     required this.columnName,
@@ -34,10 +33,10 @@ class ProjectThresholdValueModel {
     required this.columnDataType,
   });
 
-  factory ProjectThresholdValueModel.fromJson(Map<String, dynamic> json) =>
-      ProjectThresholdValueModel(
+  factory GetProThresholdFormValModel.fromJson(Map<String, dynamic> json) =>
+      GetProThresholdFormValModel(
         id: json["id"],
-        sheetName: sheetNameValues.map[json["sheet_name"]]!,
+        sheetName: json["sheet_name"]!,
         columnName: json["column_name"],
         isMandatory: json["is_mandatory"],
         isEditable: json["is_editable"],
@@ -48,7 +47,7 @@ class ProjectThresholdValueModel {
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "sheet_name": sheetNameValues.reverse[sheetName],
+        "sheet_name": sheetName,
         "column_name": columnName,
         "is_mandatory": isMandatory,
         "is_editable": isEditable,
@@ -58,22 +57,16 @@ class ProjectThresholdValueModel {
       };
 }
 
-enum ColumnDataType { DATE, NUMERIC }
+enum ColumnDataType { date, numeric }
 
 final columnDataTypeValues = EnumValues(
-    {"date": ColumnDataType.DATE, "numeric": ColumnDataType.NUMERIC});
+    {"date": ColumnDataType.date, "numeric": ColumnDataType.numeric});
 
 enum SheetName {
   customerEmployeeBasicData,
   customerEmployeeWorkData,
   customerPerformanceData
 }
-
-final sheetNameValues = EnumValues({
-  "Customer Employee Basic data": SheetName.customerEmployeeBasicData,
-  "Customer Employee Work data": SheetName.customerEmployeeWorkData,
-  "Customer performance data": SheetName.customerPerformanceData
-});
 
 class EnumValues<T> {
   Map<String, T> map;
