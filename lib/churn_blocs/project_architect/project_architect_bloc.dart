@@ -85,11 +85,12 @@ class ProjectArchitectBloc
 
   _onGetColumnsEvent(
       GetColumnsEvent event, Emitter<ProjectArchitectState> emit) async {
+        print("...2");
     final result = await apiRepository.getAllColumns(
-      projectId: event.projectId,
+        projectId: event.projectId,
         onErrorCallback: (String message, int errorCode) {
-      log(" $message");
-    });
+          log(" $message");
+        });
     if (result != null) {
       emit(state.copyWith(columnsList: result));
       List<TextEditingController> a = [];
@@ -111,11 +112,12 @@ class ProjectArchitectBloc
         onSuccessCallback: event.onSuccessCallback);
     if (result != null) {
       emit(state.copyWith(createdProject: result));
+      print("...1 ${result.id}");
       final columnsResult = await apiRepository.getAllColumns(
-        projectId: event.projectId,
+          projectId: result.id,
           onErrorCallback: (String message, int errorCode) {
-        log(" $message");
-      });
+            log(" $message");
+          });
       if (columnsResult != null) {
         emit(state.copyWith(columnsList: columnsResult));
       } else {

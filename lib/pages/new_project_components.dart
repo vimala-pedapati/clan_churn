@@ -121,7 +121,8 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                 '';
       });
     }
-    context.read<ProjectArchitectBloc>().add(  GetColumnsEvent(context.read<ProjectArchitectBloc>().state.createdProject?.id));
+    context.read<ProjectArchitectBloc>().add(GetColumnsEvent(
+        context.read<ProjectArchitectBloc>().state.createdProject?.id));
     super.initState();
   }
 
@@ -286,7 +287,6 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                           ElevatedButton(
                             onPressed: (projectName.trim().isEmpty ||
                                     projectName.trim().length < 2 ||
-                                    state.columnsList.isEmpty ||
                                     projectName == previousName)
                                 ? null
                                 : () {
