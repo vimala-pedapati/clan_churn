@@ -85,7 +85,7 @@ class ProjectArchitectBloc
 
   _onGetColumnsEvent(
       GetColumnsEvent event, Emitter<ProjectArchitectState> emit) async {
-        print("...2");
+    print("...2");
     final result = await apiRepository.getAllColumns(
         projectId: event.projectId,
         onErrorCallback: (String message, int errorCode) {
