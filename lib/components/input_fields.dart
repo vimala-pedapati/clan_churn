@@ -654,6 +654,12 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                                   .state
                                                   .selectedClient!
                                                   .id));
+                                      context.read<ProjectArchitectBloc>().add(
+                                          GetColumnsEvent(context
+                                              .read<ProjectArchitectBloc>()
+                                              .state
+                                              .createdProject
+                                              ?.id));
                                     },
                                   ));
                               if (widget.isCreatingNewProject) {

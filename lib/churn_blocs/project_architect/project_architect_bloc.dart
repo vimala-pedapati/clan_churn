@@ -112,17 +112,17 @@ class ProjectArchitectBloc
         onSuccessCallback: event.onSuccessCallback);
     if (result != null) {
       emit(state.copyWith(createdProject: result));
-      print("...1 ${result.id}");
-      final columnsResult = await apiRepository.getAllColumns(
-          projectId: result.id,
-          onErrorCallback: (String message, int errorCode) {
-            log(" $message");
-          });
-      if (columnsResult != null) {
-        emit(state.copyWith(columnsList: columnsResult));
-      } else {
-        emit(state.copyWith(columnsList: []));
-      }
+      
+      // final columnsResult = await apiRepository.getAllColumns(
+      //     projectId: result.id,
+      //     onErrorCallback: (String message, int errorCode) {
+      //       log(" $message");
+      //     });
+      // if (columnsResult != null) {
+      //   emit(state.copyWith(columnsList: columnsResult));
+      // } else {
+      //   emit(state.copyWith(columnsList: []));
+      // }
     } else {
       emit(state.copyWith(
           createdProject: const Project(

@@ -67,18 +67,16 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
   final PageController _pageController = PageController();
 
   void _goToNextPage() {
-    print("....$_currentPage");
     if (_currentPage < 2) {
       setState(() {
         _currentPage++;
       });
-      print("....$_currentPage");
+
       _pageController.animateToPage(
         _currentPage,
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
       );
-      print("....$_currentPage");
     }
   }
 
