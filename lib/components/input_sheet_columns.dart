@@ -159,7 +159,8 @@ class InputSheetColumns extends StatelessWidget {
                     children: [
                       Checkbox(
                         value: column.isUserCheckedIn,
-                        onChanged: column.isMandatory && !hasDependentColumns(column, columnsList)
+                        onChanged: column.isMandatory &&
+                                !hasDependentColumns(column, columnsList)
                             ? null
                             : (value) {
                                 List<ColumnDetails> updatedList =
@@ -170,11 +171,65 @@ class InputSheetColumns extends StatelessWidget {
                                 // Update the current column
                                 updatedList[globalIndex] = updatedColumn;
 
-                                // Handle dependencies
+                                // Define the dependencies
+                                Set<String> set1 = {
+                                  '6643391d355afb7ee8285ebc', // Performance Value Target
+                                  '664338ec355afb7ee8285eba', // Actual Performance Value
+                                };
+                                Set<String> set2 = {
+                                  '6643390b355afb7ee8285ebb', // Performance Quantity Target
+                                  '66433931355afb7ee8285ebd', // Actual Performance Quantity
+                                };
+
+                                // Function to check if at least one set is selected
+                                bool isValidSelection(
+                                    List<ColumnDetails> columns) {
+                                  bool set1Selected = set1.any((id) => columns
+                                      .firstWhere((col) => col.id == id)
+                                      .isUserCheckedIn);
+                                  bool set2Selected = set2.any((id) => columns
+                                      .firstWhere((col) => col.id == id)
+                                      .isUserCheckedIn);
+                                  return set1Selected || set2Selected;
+                                }
+
+                                // Check if the column is mandatory and does not have dependencies
+                                if (column.isMandatory &&
+                                    !hasDependentColumns(column, columnsList)) {
+                                  // Allow only if mandatory and no dependencies
+                                  return;
+                                }
+
+                                // Check if unselecting is valid
                                 if (value == false) {
                                   // Uncheck dependent columns if unchecked
                                   updatedList = handleDependencies(
                                       updatedList, updatedColumn.id, false);
+
+                                  // Check if remaining columns satisfy the condition
+                                  if (!isValidSelection(updatedList)) {
+                                    // Show a warning message if not valid
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) => AlertDialog(
+                                        title: const Text('Warning'),
+                                        content: const Text(
+                                          'Please select at least one column from each of the following groups to proceed:\n\n'
+                                          '1. Performance Value Target and Actual Performance Value, or\n'
+                                          '2. Performance Quantity Target and Actual Performance Quantity.\n\n'
+                                          'Ensure that at least one column from each group is checked.',
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () =>
+                                                Navigator.of(context).pop(),
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                    return; // Exit the method to prevent unselecting
+                                  }
                                 } else {
                                   // Check dependent columns if checked
                                   updatedList = handleDependencies(
@@ -187,6 +242,38 @@ class InputSheetColumns extends StatelessWidget {
                                         index: globalIndex));
                               },
                       ),
+                      // Checkbox(
+                      //   value: column.isUserCheckedIn,
+                      //   onChanged: column.isMandatory &&
+                      //           !hasDependentColumns(column, columnsList)
+                      //       ? null
+                      //       : (value) {
+                      //           List<ColumnDetails> updatedList =
+                      //               columnsList.toList();
+                      //           ColumnDetails updatedColumn =
+                      //               column.copyWith(isUserCheckedIn: value);
+
+                      //           // Update the current column
+                      //           updatedList[globalIndex] = updatedColumn;
+
+                      //           // Handle dependencies
+                      //           if (value == false) {
+                      //             // Uncheck dependent columns if unchecked
+                      //             updatedList = handleDependencies(
+                      //                 updatedList, updatedColumn.id, false);
+                      //           } else {
+                      //             // Check dependent columns if checked
+                      //             updatedList = handleDependencies(
+                      //                 updatedList, updatedColumn.id, true);
+                      //           }
+
+                      //           context.read<ProjectArchitectBloc>().add(
+                      //               ReplaceColumnsEvent(
+                      //                   columns: updatedList,
+                      //                   index: globalIndex));
+                      //         },
+                      // ),
+
                       Expanded(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
