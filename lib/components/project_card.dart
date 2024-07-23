@@ -20,7 +20,7 @@ class ProjectCard extends StatelessWidget {
       builder: (context, state) {
         return Container(
           height: 200,
-        width: 180,
+          width: 180,
           padding:
               const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 20),
           decoration: BoxDecoration(
@@ -64,7 +64,7 @@ class ProjectCard extends StatelessWidget {
                   ],
                 ),
                 SizedBox(
-                width: 180,
+                  width: 180,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.only(left: 20, right: 20),

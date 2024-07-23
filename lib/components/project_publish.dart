@@ -213,7 +213,8 @@ class _GetPublishButtonState extends State<GetPublishButton> {
                               onErrorCallback: (errorMessage, errorCode) {
                                 print(
                                     "Marts Report...${state.createdProject!.latestInput}..$errorMessage $errorCode");
-                                GetDialog.failedErrorReport(context, errorMessage);
+                                GetDialog.failedErrorReport(
+                                    context, errorMessage);
                               },
                             ),
                           );
@@ -236,7 +237,7 @@ class _GetPublishButtonState extends State<GetPublishButton> {
           width: 50,
         ),
         SizedBox(
-          height: 50,
+          height: 30,
           child: ElevatedButton(
             onPressed: value
                 ? () {

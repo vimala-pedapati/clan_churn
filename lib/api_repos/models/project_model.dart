@@ -95,6 +95,7 @@ class Project extends Equatable {
         name,
         inputColumns,
         projectStatus,
+        inputSheet,
         projectDetails,
         allInputs,
         latestInput,
@@ -102,6 +103,15 @@ class Project extends Equatable {
       ];
 }
 
+//  final String id;
+//   final String? name;
+//   final List<InputColumn>? inputColumns;
+//   final String? projectStatus;
+//   final String? inputSheet;
+//   final ProjectDetails? projectDetails;
+//   final List<String>? allInputs;
+//   final String? latestInput;
+//   final LatestInputModel? latestInputModel;
 class InputColumn extends Equatable {
   final String id;
   final String? sheetName;

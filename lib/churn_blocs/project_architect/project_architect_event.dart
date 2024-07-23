@@ -63,13 +63,12 @@ class CreateProjectEvent extends ProjectArchitectEvent {
   final String? projectId;
   final OnErrorCallback onErrorCallback;
   final OnSuccessCallback onSuccessCallback;
-  const CreateProjectEvent({
-    required this.clientId,
-    required this.projectName,
-    required this.onErrorCallback,
-    required this.onSuccessCallback,
-    required this.projectId
-  });
+  const CreateProjectEvent(
+      {required this.clientId,
+      required this.projectName,
+      required this.onErrorCallback,
+      required this.onSuccessCallback,
+      required this.projectId});
 }
 
 class ClearCreateProjectEvent extends ProjectArchitectEvent {}
@@ -80,7 +79,11 @@ class ReplaceColumnsEvent extends ProjectArchitectEvent {
   const ReplaceColumnsEvent({required this.columns, required this.index});
 }
 
-class AddColumnsToProjectEvent extends ProjectArchitectEvent {}
+class AddColumnsToProjectEvent extends ProjectArchitectEvent {
+  final OnErrorCallback onErrorCallback;
+  final OnSuccessCallback onSuccessCallback;
+  const AddColumnsToProjectEvent({required this.onErrorCallback, required this.onSuccessCallback});
+}
 
 class SetCreatedProjectEvent extends ProjectArchitectEvent {
   final Project createdProject;

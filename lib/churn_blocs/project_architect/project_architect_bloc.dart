@@ -174,9 +174,8 @@ class ProjectArchitectBloc
       // print(a);
       final result = await apiRepository.addColumnsToProject(
           columnsToAdd: a,
-          onErrorCallback: (String message, int errorCode) {
-            log(" $message");
-          });
+          onErrorCallback: event.onErrorCallback,
+          onSuccessCallback: event.onSuccessCallback);
       if (result != null) {
         emit(state.copyWith(createdProject: result, projectCreating: false));
       }
@@ -223,7 +222,7 @@ class ProjectArchitectBloc
         });
 
     if (result != null) {
-      log("get project details result if case");
+      print("get project details result if case $result");
       emit(state.copyWith(createdProject: result));
     } else {
       log("get project details result else case");
