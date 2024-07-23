@@ -62,7 +62,7 @@ class ApiRepository {
       }
     } catch (e) {
       log('Network Error: $e');
-      onErrorCallback('Network Error: $e', 0);
+      onErrorCallback('unable to fetch user details please contact admin', 0);
       return null;
     }
   }
@@ -102,7 +102,7 @@ class ApiRepository {
       }
     } catch (e) {
       log('Network Error: $e');
-      onErrorCallback('Network Error: $e', 0);
+      onErrorCallback('Unable to fetch all users please contact admin', 0);
       return null;
     }
   }
@@ -138,7 +138,7 @@ class ApiRepository {
       }
     } catch (e) {
       log('Network Error: $e');
-      onErrorCallback('Network Error: $e', 0);
+      onErrorCallback('unable to fetch clients list please contact admin', 0);
       return null;
     }
   }
@@ -174,7 +174,7 @@ class ApiRepository {
       }
     } catch (e) {
       log('Network Error: $e');
-      onErrorCallback('Network Error: $e', 0);
+      onErrorCallback('unable to fetch existing projects please contact admin', 0);
       return null;
     }
   }
@@ -216,6 +216,7 @@ class ApiRepository {
       }
     } catch (e) {
       log('${ApiEndpoints.getErrorReport}:  Network Error: $e');
+       onErrorCallback('Unable to fetch error report for input sheet please contact admin', 0);
     }
     return null;
   }
@@ -262,7 +263,7 @@ class ApiRepository {
       }
     } catch (e) {
       log('Network Error: $e');
-      onErrorCallback('Network Error: $e', 0);
+      onErrorCallback('unable to update project details please contact admin', 0);
       return null;
     }
   }
@@ -303,7 +304,7 @@ class ApiRepository {
       }
     } catch (e) {
       log('Network Error: $e');
-      onErrorCallback('Network Error: $e', 0);
+      onErrorCallback('unable to fectch the project details, please contact admin', 0);
       return null;
     }
   }
@@ -341,7 +342,7 @@ class ApiRepository {
       }
     } catch (e) {
       log('Network Error: $e');
-      onErrorCallback('Network Error: $e', 0);
+      onErrorCallback('Unable to create project, please contact admin', 0);
       return null;
     }
   }
@@ -376,7 +377,7 @@ class ApiRepository {
       }
     } catch (e) {
       log('Network Error: $e');
-      onErrorCallback('Network Error: $e', 0);
+      onErrorCallback('Unable to get columns, please contact admin', 0);
       return null;
     }
   }
@@ -414,7 +415,7 @@ class ApiRepository {
       }
     } catch (e) {
       print('Network Error: $e');
-      onErrorCallback('Network Error: $e', 0);
+      onErrorCallback('unable to add columns to the project please contact admin', 0);
       return null;
     }
   }
@@ -459,7 +460,7 @@ class ApiRepository {
       }
     } catch (e) {
       log("updateProjectName exception: $e");
-      onErrorCallback('Network Error: $e', 0);
+      onErrorCallback('unable to update project name/project name already exists please contact admin', 0);
       return null;
     }
   }
@@ -514,7 +515,7 @@ class ApiRepository {
       }
     } catch (e) {
       log('Network Error: $e');
-      onErrorCallback('Network Error: $e', 0);
+      onErrorCallback('unable to update file please contact admin', 0);
     }
     return null;
   }
@@ -546,6 +547,7 @@ class ApiRepository {
       }
     } catch (e) {
       log("get summary report: $e");
+      onErrorCallback('unable to fetch input excel summary report please contact admin', 0);
     }
   }
 
@@ -578,6 +580,7 @@ class ApiRepository {
       }
     } catch (e) {
       log("Project Input History: $e");
+      onErrorCallback('unable to get the project history please contact admin', 0);
     }
     return null;
   }
@@ -619,6 +622,7 @@ class ApiRepository {
       }
     } catch (e) {
       print('${ApiEndpoints.generateMarts}:  Network Error: $e');
+      onErrorCallback('Unable to genetate marts please contact admin', 0);
     }
     return null;
   }
@@ -656,6 +660,7 @@ class ApiRepository {
       }
     } catch (e) {
       print(e);
+      onErrorCallback('Unable to get report data please contact admin', 0);
       return null;
     }
   }
@@ -709,6 +714,7 @@ class ApiRepository {
       }
     } catch (e) {
       log("get summary report: $e");
+      onErrorCallback('Unable to create client please contact admin', 0);
     }
     return null;
   }
@@ -763,6 +769,7 @@ class ApiRepository {
       }
     } catch (e) {
       log("get summary report: $e");
+      onErrorCallback('Unable to update file please contact admin', 0);
     }
     return null;
   }
@@ -819,7 +826,7 @@ class ApiRepository {
       }
     } catch (e) {
       log('Network Error: $e');
-      onErrorCallback('Network Error: $e', 0);
+      onErrorCallback('Unable to upload client logo please contact admin', 0);
     }
     return null;
   }
@@ -854,6 +861,7 @@ class ApiRepository {
       }
     } catch (e) {
       log("delete client: $e");
+      onErrorCallback('Unable to delete client please contact admin', 0);
     }
     return false;
   }
@@ -900,6 +908,7 @@ class ApiRepository {
       }
     } catch (e) {
       log("add user: $e");
+      onErrorCallback('Unable to add user please contact admin', 0);
     }
     return false;
   }
@@ -946,6 +955,7 @@ class ApiRepository {
       }
     } catch (e) {
       log("update user: $e");
+      onErrorCallback('Unable to update user please contact admin', 0);
     }
     return false;
   }
@@ -1001,7 +1011,7 @@ class ApiRepository {
       }
     } catch (e) {
       log('Network Error: $e');
-      onErrorCallback('Network Error: $e', 0);
+      onErrorCallback('Unable to upload profile pic please contact admin', 0);
     }
     return null;
   }
@@ -1042,6 +1052,7 @@ class ApiRepository {
       }
     } catch (e) {
       log(" get user types : $e");
+      onErrorCallback('Unable to fetch user types please contact admin', 0);
     }
     return null;
   }
@@ -1075,6 +1086,7 @@ class ApiRepository {
       }
     } catch (e) {
       log("delete user: $e");
+      onErrorCallback('Unable to delete user please contact admin', 0);
     }
     return false;
   }
@@ -1108,6 +1120,7 @@ class ApiRepository {
       }
     } catch (e) {
       log("archive project: $e");
+      onErrorCallback('Unable to archive the project please contact admin', 0);
     }
     return false;
   }
@@ -1177,6 +1190,7 @@ class ApiRepository {
       } else {}
     } catch (e) {
       log("unable to update project threshold values");
+      onErrorCallback('Unable to update threshold values please contact admin', 0);
     }
     return null;
   }
@@ -1185,31 +1199,32 @@ class ApiRepository {
       int statusCode, Response response, OnErrorCallback onErrorCallback) {
     String reason =
         "${(json.decode(response.body) as Map<String, dynamic>)["detail"]}";
-    return onErrorCallback(reason, statusCode);
-    // switch (statusCode) {
-    //   case 400:
-    //     onErrorCallback('Bad request: $response', 400);
-    //     break;
-    //   case 401:
-    //     onErrorCallback('Unauthorized: $response', 401);
-    //     break;
-    //   case 403:
-    //     onErrorCallback('Forbidden: $response', 403);
-    //     break;
-    //   case 404:
-    //     onErrorCallback('Not found: $response', 404);
-    //     break;
-    //   case 422:
-    //     onErrorCallback(
-    //         'Invalid format. Please check your input and try again.: $response',
-    //         422);
-    //     break;
-    //   case 500:
-    //     onErrorCallback('Internal server error: $response', statusCode);
-    //     break;
-    //   default:
-    //     onErrorCallback('$response', statusCode);
-    // }
+
+    switch (statusCode) {
+      // case 400:
+      //   onErrorCallback('Bad request: $response', 400);
+      //   break;
+      // case 401:
+      //   onErrorCallback('Unauthorized: $response', 401);
+      //   break;
+      // case 403:
+      //   onErrorCallback('Forbidden: $response', 403);
+      //   break;
+      // case 404:
+      //   onErrorCallback('Not found: $response', 404);
+      //   break;
+      // case 422:
+      //   onErrorCallback(
+      //       'Invalid format. Please check your input and try again.: $response',
+      //       422);
+      //   break;
+      case 500:
+        onErrorCallback('Internal server error: $response', statusCode);
+        break;
+      default:
+        onErrorCallback(reason, statusCode);
+    }
+        
   }
 
   void handleWarningMessage(String message, BuildContext context) {
