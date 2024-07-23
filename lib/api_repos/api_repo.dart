@@ -174,7 +174,8 @@ class ApiRepository {
       }
     } catch (e) {
       log('Network Error: $e');
-      onErrorCallback('unable to fetch existing projects please contact admin', 0);
+      onErrorCallback(
+          'unable to fetch existing projects please contact admin', 0);
       return null;
     }
   }
@@ -216,7 +217,9 @@ class ApiRepository {
       }
     } catch (e) {
       log('${ApiEndpoints.getErrorReport}:  Network Error: $e');
-       onErrorCallback('Unable to fetch error report for input sheet please contact admin', 0);
+      onErrorCallback(
+          'Unable to fetch error report for input sheet please contact admin',
+          0);
     }
     return null;
   }
@@ -263,7 +266,8 @@ class ApiRepository {
       }
     } catch (e) {
       log('Network Error: $e');
-      onErrorCallback('unable to update project details please contact admin', 0);
+      onErrorCallback(
+          'unable to update project details please contact admin', 0);
       return null;
     }
   }
@@ -304,7 +308,8 @@ class ApiRepository {
       }
     } catch (e) {
       log('Network Error: $e');
-      onErrorCallback('unable to fectch the project details, please contact admin', 0);
+      onErrorCallback(
+          'unable to fectch the project details, please contact admin', 0);
       return null;
     }
   }
@@ -415,7 +420,8 @@ class ApiRepository {
       }
     } catch (e) {
       print('Network Error: $e');
-      onErrorCallback('unable to add columns to the project please contact admin', 0);
+      onErrorCallback(
+          'unable to add columns to the project please contact admin', 0);
       return null;
     }
   }
@@ -460,7 +466,9 @@ class ApiRepository {
       }
     } catch (e) {
       log("updateProjectName exception: $e");
-      onErrorCallback('unable to update project name/project name already exists please contact admin', 0);
+      onErrorCallback(
+          'unable to update project name/project name already exists please contact admin',
+          0);
       return null;
     }
   }
@@ -547,7 +555,8 @@ class ApiRepository {
       }
     } catch (e) {
       log("get summary report: $e");
-      onErrorCallback('unable to fetch input excel summary report please contact admin', 0);
+      onErrorCallback(
+          'unable to fetch input excel summary report please contact admin', 0);
     }
   }
 
@@ -580,7 +589,8 @@ class ApiRepository {
       }
     } catch (e) {
       log("Project Input History: $e");
-      onErrorCallback('unable to get the project history please contact admin', 0);
+      onErrorCallback(
+          'unable to get the project history please contact admin', 0);
     }
     return null;
   }
@@ -651,15 +661,17 @@ class ApiRepository {
         },
       );
 
+      print("...${response.statusCode}..$response");
+
       if (response.statusCode == 200) {
         onSuccessCallback(response);
-        return json.decode(response.body);
+
+        return response.body;
       } else {
         _handleStatusCode(response.statusCode, response, onErrorCallback);
         return null;
       }
     } catch (e) {
-      print(e);
       onErrorCallback('Unable to get report data please contact admin', 0);
       return null;
     }
@@ -1190,7 +1202,8 @@ class ApiRepository {
       } else {}
     } catch (e) {
       log("unable to update project threshold values");
-      onErrorCallback('Unable to update threshold values please contact admin', 0);
+      onErrorCallback(
+          'Unable to update threshold values please contact admin', 0);
     }
     return null;
   }
@@ -1224,7 +1237,6 @@ class ApiRepository {
       default:
         onErrorCallback(reason, statusCode);
     }
-        
   }
 
   void handleWarningMessage(String message, BuildContext context) {
