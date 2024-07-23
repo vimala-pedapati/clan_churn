@@ -169,7 +169,7 @@ class _GetPublishButtonState extends State<GetPublishButton> {
         ),
         Text(
           "I confirm the data is correct",
-          style: ClanChurnTypography.font18500,
+          style: ClanChurnTypography.font14900,
         ),
       ],
     );
@@ -188,7 +188,7 @@ class _GetPublishButtonState extends State<GetPublishButton> {
     return Row(
       children: [
         SizedBox(
-          height: 50,
+          height: 30,
           child: ElevatedButton(
             onPressed: value
                 ? () {
@@ -224,7 +224,7 @@ class _GetPublishButtonState extends State<GetPublishButton> {
               children: [
                 Text(
                   "Publish",
-                  style: ClanChurnTypography.font18600,
+                  style: ClanChurnTypography.font14900,
                 ),
                 ClanChurnSpacing.w10,
                 const Icon(Icons.arrow_circle_right_outlined),
@@ -269,7 +269,7 @@ class _GetPublishButtonState extends State<GetPublishButton> {
               children: [
                 Text(
                   "Reports",
-                  style: ClanChurnTypography.font18600,
+                  style: ClanChurnTypography.font14900,
                 ),
               ],
             ),

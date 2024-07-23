@@ -34,10 +34,10 @@ class _OutlinedButtonTemplateState extends State<OutlinedButtonTemplate> {
         });
       },
       child: SizedBox(
-        height: 52,
+        height: 35,
         child: OutlinedButton(
           style: OutlinedButton.styleFrom(
-            padding: const EdgeInsets.only(left: 20, right: 20),
+            padding: const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
             backgroundColor: hovered
                 ? Theme.of(context).colorScheme.primary
                 : Theme.of(context).colorScheme.background,
@@ -57,11 +57,12 @@ class _OutlinedButtonTemplateState extends State<OutlinedButtonTemplate> {
             children: [
               Icon(
                 widget.icon,
+                size: 20,
               ),
               ClanChurnSpacing.w10,
               Text(
                hovered? widget.onHoverTextChange ?? widget.title :  widget.title,
-                style: ClanChurnTypography.font18600, // Custom text style
+                style: ClanChurnTypography.font14900, // Custom text style
               ),
             ],
           ),

@@ -814,7 +814,7 @@ class _UploadedExcelSummaryReportState
             ClanChurnSpacing.w10,
             SelectableText(
               "Upload Data",
-              style: ClanChurnTypography.font18600,
+              style: ClanChurnTypography.font16600,
             ),
           ],
         ),
@@ -826,8 +826,8 @@ class _UploadedExcelSummaryReportState
   // Widget for history button
   Widget buildHistoryButton() {
     return SizedBox(
-      height: 45,
-      width: 130,
+      height: 30,
+      width: 120,
       child: OutlinedButton(
         style: OutlinedButton.styleFrom(
           padding: const EdgeInsets.all(0),
@@ -840,10 +840,10 @@ class _UploadedExcelSummaryReportState
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            const Icon(Icons.history),
+            const Icon(Icons.history, size: 20,),
             Text(
               "History",
-              style: ClanChurnTypography.font18600
+              style: ClanChurnTypography.font14900
                   .copyWith(color: Theme.of(context).colorScheme.primary),
             ),
           ],
@@ -873,7 +873,7 @@ class _UploadedExcelSummaryReportState
             buildSheetsAndColumnsDropdowns(),
             buildSummaryDetails(),
             buildActionButtons(),
-            ClanChurnSpacing.h50,
+            ClanChurnSpacing.h20,
             const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -890,7 +890,7 @@ class _UploadedExcelSummaryReportState
   // Widgets for sheets and columns dropdowns
   Widget buildSheetsAndColumnsDropdowns() {
     return Padding(
-      padding: const EdgeInsets.only(left: 0, right: 50, top: 10, bottom: 30),
+      padding: const EdgeInsets.only(left: 0, right: 0, top: 10, bottom: 20),
       child: Row(
         children: [
           // Sheets Dropdown
@@ -905,24 +905,25 @@ class _UploadedExcelSummaryReportState
 
   // Widget for sheets dropdown
   Widget buildSheetsDropdown() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Text(
           "Select Sheet",
-          style: ClanChurnTypography.font18500,
+          style:  ClanChurnTypography.font14900,
         ),
-        ClanChurnSpacing.h10,
+        ClanChurnSpacing.w10,
         SizedBox(
-          width: 400,
+          width: 300,
+          height: 30,
           child: DropdownButtonHideUnderline(
             child: DropdownButton2<String>(
               isExpanded: true,
               hint: Row(children: [
                 Text(
                   'Select Sheet',
-                  style: ClanChurnTypography.font18500,
+                  style:  ClanChurnTypography.font14900,
                   overflow: TextOverflow.ellipsis,
                 )
               ]),
@@ -931,7 +932,7 @@ class _UploadedExcelSummaryReportState
                         value: item,
                         child: Text(
                           item,
-                          style: ClanChurnTypography.font18500.copyWith(
+                          style:  ClanChurnTypography.font14900.copyWith(
                               color: Theme.of(context).colorScheme.background),
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -949,7 +950,7 @@ class _UploadedExcelSummaryReportState
                       children: [
                         Text(
                           item,
-                          style: ClanChurnTypography.font18500.copyWith(
+                          style: ClanChurnTypography.font14900.copyWith(
                               color: Theme.of(context).colorScheme.secondary),
                         ),
                       ],
@@ -1005,17 +1006,18 @@ class _UploadedExcelSummaryReportState
 
   // Widget for columns dropdown
   Widget buildColumnsDropdown() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Text(
           "Select Column",
-          style: ClanChurnTypography.font18500,
+          style:  ClanChurnTypography.font14900,
         ),
-        ClanChurnSpacing.h10,
+        ClanChurnSpacing.w10,
         SizedBox(
-          width: 400,
+          height: 30,
+          width: 300,
           child: DropdownButtonHideUnderline(
             child: DropdownButton2<String>(
               isExpanded: true,
@@ -1023,7 +1025,7 @@ class _UploadedExcelSummaryReportState
                 children: [
                   Text(
                     'Select Column',
-                    style: ClanChurnTypography.font18500,
+                    style:  ClanChurnTypography.font14900,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ],
@@ -1033,7 +1035,7 @@ class _UploadedExcelSummaryReportState
                         value: item,
                         child: Text(
                           item,
-                          style: ClanChurnTypography.font18500.copyWith(
+                          style:  ClanChurnTypography.font14900.copyWith(
                               color: Theme.of(context).colorScheme.background),
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -1047,7 +1049,7 @@ class _UploadedExcelSummaryReportState
                       children: [
                         Text(
                           item,
-                          style: ClanChurnTypography.font18500.copyWith(
+                          style:  ClanChurnTypography.font14900.copyWith(
                               color: Theme.of(context).colorScheme.secondary),
                         ),
                       ],
@@ -1109,9 +1111,10 @@ class _UploadedExcelSummaryReportState
   // Widget for summary details
   Widget buildSummaryDetails() {
     return Padding(
-      padding: const EdgeInsets.only(left: 0, right: 0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      padding: const EdgeInsets.only(left: 0, right: 0, bottom: 20),
+      child: Wrap(
+        runSpacing: 10,
+       
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
