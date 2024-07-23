@@ -1,6 +1,8 @@
+import 'package:clan_churn/api_repos/models/user_model.dart';
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/churn_blocs/sign_in_bloc/sign_in_bloc.dart';
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
+import 'package:clan_churn/components/project_card.dart';
 import 'package:clan_churn/utils/spacing.dart';
 import 'package:clan_churn/utils/typography.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +18,7 @@ class ProfileWidget extends StatefulWidget {
 
 class _ProfileWidgetState extends State<ProfileWidget>
     with SingleTickerProviderStateMixin {
-  bool isExpanded = false;
+  bool isNotExpanded = false;
 
   double rotationAngle = 0;
 
@@ -43,16 +45,16 @@ class _ProfileWidgetState extends State<ProfileWidget>
                   ClanChurnSpacing.w10,
                   AnimatedContainer(
                     duration: const Duration(milliseconds: 300),
-                    height: isExpanded ? 120 : 60,
+                    height: isNotExpanded ? 120 : 60,
                     padding: const EdgeInsets.only(
                         left: 10, right: 10, top: 10, bottom: 10),
                     decoration: BoxDecoration(
                         color: Theme.of(context)
                             .colorScheme
                             .primary
-                            .withOpacity(0.1),
+                            .withOpacity(1),
                         borderRadius:
-                            BorderRadius.circular(isExpanded ? 30 : 30)),
+                            BorderRadius.circular(isNotExpanded ? 30 : 30)),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -62,8 +64,8 @@ class _ProfileWidgetState extends State<ProfileWidget>
                             child: IconButton(
                                 onPressed: () {
                                   setState(() {
-                                    isExpanded = !isExpanded;
-                                    if (isExpanded) {
+                                    isNotExpanded = !isNotExpanded;
+                                    if (isNotExpanded) {
                                       rotationAngle += 180;
                                     } else {
                                       rotationAngle -= 180;
@@ -73,8 +75,11 @@ class _ProfileWidgetState extends State<ProfileWidget>
                                 icon: AnimatedRotation(
                                   turns: rotationAngle / 360,
                                   duration: const Duration(milliseconds: 300),
-                                  child: const Icon(
+                                  child: Icon(
                                     Icons.expand_circle_down_outlined,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .background,
                                   ),
                                 )),
                           ),
@@ -86,37 +91,49 @@ class _ProfileWidgetState extends State<ProfileWidget>
                               BlocBuilder<UserBloc, UserState>(
                                 builder: (context, state) {
                                   return Text(
-                                    "${state.user!.firstName} ${state.user!.lastName}",
+                                    "${state.user?.firstName} ${state.user?.lastName}",
                                     style: ClanChurnTypography.font15600
                                         .copyWith(
                                             color: Theme.of(context)
                                                 .colorScheme
-                                                .primary),
+                                                .background),
                                   );
                                 },
                               ),
                               Text(
-                                "${state.user!.userType} - ${state.user!.clientDetails!.name}",
+                                "${state.user?.userType.value}",
                                 style: ClanChurnTypography.font10600.copyWith(
-                                    color:
-                                        Theme.of(context).colorScheme.primary),
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .background),
                               )
                             ],
                           ),
                           ClanChurnSpacing.w5,
                           CircleAvatar(
                             radius: 18,
-                            backgroundColor: Theme.of(context)
-                                .colorScheme
-                                .primary
-                                .withOpacity(0.1),
-                            child: Icon(
-                              Icons.person,
-                              color: Theme.of(context).colorScheme.primary,
+                            backgroundColor:
+                                Theme.of(context).colorScheme.background,
+                            child: Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: Image.network(
+                                "${state.user!.image}",
+                                // loadingBuilder:
+                                //     ((context, child, loadingProgress) {
+                                //   return const CircularProgressIndicator();
+                                // }),
+                                errorBuilder: (context, error, stackTrace) {
+                                  return ClipOval(
+                                      child: Image.network(
+                                    image,
+                                    scale: 2,
+                                  ));
+                                },
+                              ),
                             ),
-                          )
+                          ),
                         ]),
-                        isExpanded
+                        isNotExpanded
                             ? InkWell(
                                 onTap: () {
                                   context
@@ -136,17 +153,16 @@ class _ProfileWidgetState extends State<ProfileWidget>
                                           const Icon(Icons.logout_outlined,
                                               color: Colors.red),
                                           ClanChurnSpacing.w10,
-                                           AnimatedContainer(
-                                                  duration: const Duration(
-                                                      seconds: 1),
-                                                  child: Text(
-                                                    "Log Out",
-                                                    style: ClanChurnTypography
-                                                        .font18600
-                                                        .copyWith(
-                                                            color: Colors.red),
-                                                  ),
-                                                )
+                                          AnimatedContainer(
+                                            duration:
+                                                const Duration(seconds: 1),
+                                            child: Text(
+                                              "Log Out",
+                                              style: ClanChurnTypography
+                                                  .font18600
+                                                  .copyWith(color: Colors.red),
+                                            ),
+                                          )
                                         ],
                                       ),
                                     );
@@ -202,7 +218,7 @@ class MyDrawer extends StatelessWidget {
                         children: [
                           const Icon(Icons.logout_outlined, color: Colors.red),
                           ClanChurnSpacing.w10,
-                          state.isExpanded
+                          state.isNotExpanded
                               ? Container()
                               : AnimatedContainer(
                                   duration: const Duration(seconds: 1),

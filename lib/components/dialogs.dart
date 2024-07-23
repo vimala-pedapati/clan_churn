@@ -1,5 +1,6 @@
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
+import 'package:clan_churn/components/input_sheet_columns.dart';
 import 'package:clan_churn/pages/new_project_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,8 +26,10 @@ class GetDialog {
                       : ElevatedButton(
                           onPressed: () {
                             // fetching all project list once the project is created
-                            context.read<ProjectArchitectBloc>().add(GetProjectsListEvent(clientId: state.selectedClient!.id));
-                            
+                            context.read<ProjectArchitectBloc>().add(
+                                GetProjectsListEvent(
+                                    clientId: state.selectedClient!.id));
+
                             launchURL(state.createdProject!.inputSheet!);
                             Navigator.pop(context);
                             Navigator.pop(context);
@@ -71,7 +74,8 @@ class GetDialog {
     );
   }
 
-  static Future<void> failedErrorReport(BuildContext context) async {
+  static Future<void> failedErrorReport(
+      BuildContext context, String errorMessage) async {
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
@@ -79,10 +83,10 @@ class GetDialog {
           builder: (context, state) {
             return AlertDialog(
               title: const Text("Something went wrong"),
-              content: const Column(
+              content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text("Failed to prepare error report to download"),
+                  Text(errorMessage),
                 ],
               ),
               actions: [
@@ -97,6 +101,15 @@ class GetDialog {
           },
         );
       },
+    );
+  }
+
+  void showBootomMessage(String message, BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.red.withOpacity(0.9),
+      ),
     );
   }
 }

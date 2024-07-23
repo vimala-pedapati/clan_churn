@@ -1,11 +1,18 @@
 import 'package:clan_churn/api_repos/api_repo.dart';
 import 'package:clan_churn/api_repos/auth_repo.dart';
+import 'package:clan_churn/api_repos/models/user_model.dart';
+import 'package:clan_churn/churn_blocs/client/client_bloc.dart';
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/churn_blocs/sign_in_bloc/sign_in_bloc.dart';
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
+import 'package:clan_churn/components/reports.dart';
 import 'package:clan_churn/components/step_tracker.dart';
+import 'package:clan_churn/pages/admin_home_page.dart';
+import 'package:clan_churn/pages/create_client.dart';
+import 'package:clan_churn/pages/forgot_password_screen.dart';
 import 'package:clan_churn/pages/home_page.dart';
 import 'package:clan_churn/pages/client_projects_view.dart';
+import 'package:clan_churn/pages/reset_password_link.dart';
 import 'package:clan_churn/pages/saved_projects.dart';
 import 'package:clan_churn/pages/sign_page.dart';
 import 'package:clan_churn/utils/routes.dart';
@@ -22,7 +29,7 @@ void main() async {
   //       storageDirectory: HydratedStorage.webStorageDirectory);
   // }
   // FlutterSecureStorage storage = const FlutterSecureStorage();
-  AuthRepository authRepository = AuthRepository();
+  AuthRepo authRepository = AuthRepo();
   ApiRepository apiRepository = ApiRepository();
   runApp(ClanChurnApp(
     authRepository: authRepository,
@@ -36,7 +43,7 @@ void main() async {
 class ClanChurnApp extends StatelessWidget {
   const ClanChurnApp(
       {super.key, required this.authRepository, required this.apiRepository});
-  final AuthRepository authRepository;
+  final AuthRepo authRepository;
   final ApiRepository apiRepository;
 
   @override
@@ -66,12 +73,31 @@ class ClanChurnApp extends StatelessWidget {
         GoRoute(
           path: AppRoutes.home,
           pageBuilder: (context, state) => customPageRouteForGoRouter<void>(
-              context: context, state: state, child: const HomePage()),
+              context: context,
+              state: state,
+              child: BlocBuilder<UserBloc, UserState>(
+                builder: (context, state) {
+                  return state.user?.userType == UserType.admin
+                      ? const AdminHomePage()
+                      : const HomePage();
+                },
+              )),
         ),
+
+        // GoRoute(
+        //   path: AppRoutes.savedProjects,
+        //   pageBuilder: (context, state) => customPageRouteForGoRouter<void>(
+        //       context: context, state: state, child: const PerformanceReport()),
+        // ),
         GoRoute(
           path: AppRoutes.savedProjects,
           pageBuilder: (context, state) => customPageRouteForGoRouter<void>(
-              context: context, state: state, child: const SavedProjects()),
+              context: context, state: state, child: Container()),
+        ),
+        GoRoute(
+          path: AppRoutes.createClient,
+          pageBuilder: (context, state) => customPageRouteForGoRouter<void>(
+              context: context, state: state, child: const CreateClient()),
         ),
         GoRoute(
           path: AppRoutes.clientProjects,
@@ -84,6 +110,26 @@ class ClanChurnApp extends StatelessWidget {
           path: '/myApp',
           pageBuilder: (context, state) => customPageRouteForGoRouter<void>(
               context: context, state: state, child: const MyApp()),
+        ),
+        GoRoute(
+          path: AppRoutes.forgotPassword,
+          pageBuilder: (context, state) => customPageRouteForGoRouter<void>(
+              context: context,
+              state: state,
+              child: const ForgotPasswordScreen()),
+        ),
+        GoRoute(
+          path: AppRoutes.resetPassword,
+          // pageBuilder: (context, state) {
+          //   print("...............................");
+          //   final String? token = state.uri.queryParameters['token'];
+          //    print('matched location Parameters: ${state.uri.queryParameters}');
+          //   return MaterialPage(child: ResetPasswordScreen(token));
+          // },
+          pageBuilder: (context, state) => customPageRouteForGoRouter<void>(
+              context: context,
+              state: state,
+              child: ResetPasswordScreen(state.uri.queryParameters['token'])),
         ),
       ],
     );
@@ -98,6 +144,9 @@ class ClanChurnApp extends StatelessWidget {
         BlocProvider(
           create: (_) => ProjectArchitectBloc(apiRepository: apiRepository),
         ),
+        BlocProvider(
+          create: (_) => ClientBloc(apiRepository: apiRepository),
+        ),
       ],
       child: MaterialApp.router(
         theme: ThemeData(
@@ -111,6 +160,8 @@ class ClanChurnApp extends StatelessWidget {
             tertiary: const Color.fromRGBO(199, 199, 199, 1),
             background: const Color(0xffFFFFFF),
             shadow: const Color.fromRGBO(0, 0, 0, 0.15),
+            onBackground: Colors.black,
+            error: const Color.fromRGBO(230, 36, 36, 1),
           ),
           elevatedButtonTheme: ElevatedButtonThemeData(
             style: ElevatedButton.styleFrom(

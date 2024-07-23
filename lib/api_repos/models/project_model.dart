@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:clan_churn/api_repos/models/threshold_val_model.dart';
 import 'package:clan_churn/api_repos/models/user_model.dart';
 import 'package:equatable/equatable.dart';
 
@@ -53,6 +54,7 @@ class Project extends Equatable {
       latestInputModel: latestInputModel ?? this.latestInputModel,
     );
   }
+
   factory Project.fromJson(Map<String, dynamic> json) => Project(
       id: json["id"],
       name: json["name"],
@@ -69,7 +71,9 @@ class Project extends Equatable {
           ? null
           : List<String>.from(json["all_inputs"].map((x) => x)),
       latestInput: json["latest_input"],
-      latestInputModel:json["latest_input_model"] == null ? null: LatestInputModel.fromJson(json["latest_input_model"]));
+      latestInputModel: json["latest_input_model"] == null
+          ? null
+          : LatestInputModel.fromJson(json["latest_input_model"]));
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -138,121 +142,45 @@ class ProjectDetails extends Equatable {
   final String? projectStartDate;
   final String? studyPeriodBeginingDate;
   final String? studyPeriodEndDate;
-  final String? earliestDateForDateOfJoiningReleventForTheStudy;
-  final String? endDateForDateOfJoiningReleventForTheStudy;
+  final String? projectOwner;
+  final String? earDateForDOJRel;
+  final String? endDateForDOJ;
   final List<String>? designations;
   final List<String>? departments;
-  final String? unitForValuePerformance;
-  final String? unitForQuantityPerformance;
-  final int? projectMaximumResidencyMonth;
-  final int? projectTopOutlierRankForResidencyMonthOfPerformanceMonth;
-  final int? projectBottomOutlierRankForResidencyMonthOfPerformanceMonth;
-  final int? projectMaxPerformanceValueTarget;
-  final int? projectTopOutlierRankForMaximumPerformanceValueTarget;
-  final int? projectBottomOutlierRankForMaximumPerformanceValueTarget;
-  final int? projectMaximumPerformanceValueActual;
-  final int? projectTopOutlierRankForMaximumPerformanceValueActual;
-  final int? projectBottomOutlierRankForMaximumPerformanceValueActual;
-  final int? projectMaximumPerformanceQuantityTarget;
-  final int? projectTopOutlierRankForMaximumPerformanceQuantityTarget;
-  final int? projectBottomOutlierRankForMaximumPerformanceQuantityTarget;
-  final int? projectMaximumOverAllPerformanceAchievementPer;
-  final int? projectTopOutlierRankForMaximumOverAllPerformanceAchievementPer;
-  final int? projectBottomOutlierRankForMaximumOverAllPerformanceAchievementPer;
-  final int? projectMaximumMonthlyFixedSalaryIndex;
-  final int? projectTopOutlierRankForMaximumMonthlyFixedSalaryIndex;
-  final int? projectBottomOutlierRankForMaximumMonthlyFixedSalaryIndex;
-  final int? projectMaximumMonthlyIncentive;
-  final int? projectTopOutlierRankForMaximumMonthlyIncentive;
-  final int? projectBottomOutlierRankForMaximumMonthlyIncentive;
+  final String? unitForValPer;
+  final String? unitForQuaPerfor;
+  final List<ProThreModel>? thresholdVals;
 
-  const ProjectDetails({
-    required this.projectStartDate,
-    required this.studyPeriodBeginingDate,
-    required this.studyPeriodEndDate,
-    required this.earliestDateForDateOfJoiningReleventForTheStudy,
-    required this.endDateForDateOfJoiningReleventForTheStudy,
-    required this.designations,
-    required this.departments,
-    required this.unitForValuePerformance,
-    required this.unitForQuantityPerformance,
-    required this.projectMaximumResidencyMonth,
-    required this.projectTopOutlierRankForResidencyMonthOfPerformanceMonth,
-    required this.projectBottomOutlierRankForResidencyMonthOfPerformanceMonth,
-    required this.projectMaxPerformanceValueTarget,
-    required this.projectTopOutlierRankForMaximumPerformanceValueTarget,
-    required this.projectBottomOutlierRankForMaximumPerformanceValueTarget,
-    required this.projectMaximumPerformanceValueActual,
-    required this.projectTopOutlierRankForMaximumPerformanceValueActual,
-    required this.projectBottomOutlierRankForMaximumPerformanceValueActual,
-    required this.projectMaximumPerformanceQuantityTarget,
-    required this.projectTopOutlierRankForMaximumPerformanceQuantityTarget,
-    required this.projectBottomOutlierRankForMaximumPerformanceQuantityTarget,
-    required this.projectMaximumOverAllPerformanceAchievementPer,
-    required this.projectTopOutlierRankForMaximumOverAllPerformanceAchievementPer,
-    required this.projectBottomOutlierRankForMaximumOverAllPerformanceAchievementPer,
-    required this.projectMaximumMonthlyFixedSalaryIndex,
-    required this.projectTopOutlierRankForMaximumMonthlyFixedSalaryIndex,
-    required this.projectBottomOutlierRankForMaximumMonthlyFixedSalaryIndex,
-    required this.projectMaximumMonthlyIncentive,
-    required this.projectTopOutlierRankForMaximumMonthlyIncentive,
-    required this.projectBottomOutlierRankForMaximumMonthlyIncentive,
-  });
+  const ProjectDetails(
+      {required this.projectStartDate,
+      required this.studyPeriodBeginingDate,
+      required this.studyPeriodEndDate,
+      required this.projectOwner,
+      required this.earDateForDOJRel,
+      required this.endDateForDOJ,
+      required this.designations,
+      required this.departments,
+      required this.unitForValPer,
+      required this.unitForQuaPerfor,
+      required this.thresholdVals});
 
   factory ProjectDetails.fromJson(Map<String, dynamic> json) => ProjectDetails(
-        projectStartDate: json["project_start_date"],
-        studyPeriodBeginingDate: json["study_period_begining_date"],
-        studyPeriodEndDate: json["study_period_end_date"],
-        earliestDateForDateOfJoiningReleventForTheStudy:
-            json["earliest_date_for_date_of_joining_relevent_for_the_study"],
-        endDateForDateOfJoiningReleventForTheStudy:
-            json["end_date_for_date_of_joining_relevent_for_the_study"],
-        designations: List<String>.from(json["designations"].map((x) => x)),
-        departments: List<String>.from(json["departments"].map((x) => x)),
-        unitForValuePerformance: json["unit_for_value_performance"],
-        unitForQuantityPerformance: json["unit_for_quantity_performance"],
-        projectMaximumResidencyMonth: json["project_maximum_residency_month"],
-        projectTopOutlierRankForResidencyMonthOfPerformanceMonth: json[
-            "project_top_outlier_rank_for_residency_month_of_performance_month"],
-        projectBottomOutlierRankForResidencyMonthOfPerformanceMonth: json[
-            "project_bottom_outlier_rank_for_residency_month_of_performance_month"],
-        projectMaxPerformanceValueTarget:
-            json["project_max_performance_value_target"],
-        projectTopOutlierRankForMaximumPerformanceValueTarget: json[
-            "project_top_outlier_rank_for_maximum_performance_value_target"],
-        projectBottomOutlierRankForMaximumPerformanceValueTarget: json[
-            "project_bottom_outlier_rank_for_maximum_performance_value_target"],
-        projectMaximumPerformanceValueActual:
-            json["project_maximum_performance_value_actual"],
-        projectTopOutlierRankForMaximumPerformanceValueActual: json[
-            "project_top_outlier_rank_for_maximum_performance_value_actual"],
-        projectBottomOutlierRankForMaximumPerformanceValueActual: json[
-            "project_bottom_outlier_rank_for_maximum_performance_value_actual"],
-        projectMaximumPerformanceQuantityTarget:
-            json["project_maximum_performance_quantity_target"],
-        projectTopOutlierRankForMaximumPerformanceQuantityTarget: json[
-            "project_top_outlier_rank_for_maximum_performance_quantity_target"],
-        projectBottomOutlierRankForMaximumPerformanceQuantityTarget: json[
-            "project_bottom_outlier_rank_for_maximum_performance_quantity_target"],
-        projectMaximumOverAllPerformanceAchievementPer:
-            json["project_maximum_over_all_performance_achievement_per"],
-        projectTopOutlierRankForMaximumOverAllPerformanceAchievementPer: json[
-            "project_top_outlier_rank_for_maximum_over_all_performance_achievement_per"],
-        projectBottomOutlierRankForMaximumOverAllPerformanceAchievementPer: json[
-            "project_bottom_outlier_rank_for_maximum_over_all_performance_achievement_per"],
-        projectMaximumMonthlyFixedSalaryIndex:
-            json["project_maximum_monthly_fixed_salary_index"],
-        projectTopOutlierRankForMaximumMonthlyFixedSalaryIndex: json[
-            "project_top_outlier_rank_for_maximum_monthly_fixed_salary_index"],
-        projectBottomOutlierRankForMaximumMonthlyFixedSalaryIndex: json[
-            "project_bottom_outlier_rank_for_maximum_monthly_fixed_salary_index"],
-        projectMaximumMonthlyIncentive:
-            json["project_maximum_monthly_incentive"],
-        projectTopOutlierRankForMaximumMonthlyIncentive:
-            json["project_top_outlier_rank_for_maximum_monthly_incentive"],
-        projectBottomOutlierRankForMaximumMonthlyIncentive:
-            json["project_bottom_outlier_rank_for_maximum_monthly_incentive"],
-      );
+      projectStartDate: json["project_start_date"],
+      studyPeriodBeginingDate: json["study_period_begining_date"],
+      studyPeriodEndDate: json["study_period_end_date"],
+      projectOwner: json["project_owner"],
+      earDateForDOJRel:
+          json["earliest_date_for_date_of_joining_relevent_for_the_study"],
+      endDateForDOJ:
+          json["end_date_for_date_of_joining_relevent_for_the_study"],
+      designations: List<String>.from(json["designations"].map((x) => x)),
+      departments: List<String>.from(json["departments"].map((x) => x)),
+      unitForValPer: json["unit_for_value_performance"],
+      unitForQuaPerfor: json["unit_for_quantity_performance"],
+      thresholdVals:
+          List<ProThreModel>.from((json["threshold_details"] ?? []).map(
+        (e) => ProThreModel.fromJson(e),
+      )));
 
   Map<String, dynamic> toJson() => {
         "project_start_date": projectStartDate == null
@@ -265,67 +193,30 @@ class ProjectDetails extends Equatable {
             : studyPeriodBeginingDate!.isEmpty
                 ? null
                 : studyPeriodBeginingDate,
+        "project_owner": projectOwner,
         "study_period_end_date": studyPeriodEndDate == null
             ? studyPeriodEndDate
             : studyPeriodEndDate!.isEmpty
                 ? null
                 : studyPeriodEndDate,
         "earliest_date_for_date_of_joining_relevent_for_the_study":
-            earliestDateForDateOfJoiningReleventForTheStudy == null
-                ? earliestDateForDateOfJoiningReleventForTheStudy
-                : earliestDateForDateOfJoiningReleventForTheStudy!.isEmpty
+            earDateForDOJRel == null
+                ? earDateForDOJRel
+                : earDateForDOJRel!.isEmpty
                     ? null
-                    : earliestDateForDateOfJoiningReleventForTheStudy,
+                    : earDateForDOJRel,
         "end_date_for_date_of_joining_relevent_for_the_study":
-            endDateForDateOfJoiningReleventForTheStudy == null
-                ? endDateForDateOfJoiningReleventForTheStudy
-                : endDateForDateOfJoiningReleventForTheStudy!.isEmpty
+            endDateForDOJ == null
+                ? endDateForDOJ
+                : endDateForDOJ!.isEmpty
                     ? null
-                    : endDateForDateOfJoiningReleventForTheStudy,
+                    : endDateForDOJ,
         "designations": List<dynamic>.from((designations ?? []).map((x) => x)),
         "departments": List<dynamic>.from((departments ?? []).map((x) => x)),
-        "unit_for_value_performance": unitForValuePerformance,
-        "unit_for_quantity_performance": unitForQuantityPerformance,
-        "project_maximum_residency_month": projectMaximumResidencyMonth,
-        "project_top_outlier_rank_for_residency_month_of_performance_month":
-            projectTopOutlierRankForResidencyMonthOfPerformanceMonth,
-        "project_bottom_outlier_rank_for_residency_month_of_performance_month":
-            projectBottomOutlierRankForResidencyMonthOfPerformanceMonth,
-        "project_max_performance_value_target":
-            projectMaxPerformanceValueTarget,
-        "project_top_outlier_rank_for_maximum_performance_value_target":
-            projectTopOutlierRankForMaximumPerformanceValueTarget,
-        "project_bottom_outlier_rank_for_maximum_performance_value_target":
-            projectBottomOutlierRankForMaximumPerformanceValueTarget,
-        "project_maximum_performance_value_actual":
-            projectMaximumPerformanceValueActual,
-        "project_top_outlier_rank_for_maximum_performance_value_actual":
-            projectTopOutlierRankForMaximumPerformanceValueActual,
-        "project_bottom_outlier_rank_for_maximum_performance_value_actual":
-            projectBottomOutlierRankForMaximumPerformanceValueActual,
-        "project_maximum_performance_quantity_target":
-            projectMaximumPerformanceQuantityTarget,
-        "project_top_outlier_rank_for_maximum_performance_quantity_target":
-            projectTopOutlierRankForMaximumPerformanceQuantityTarget,
-        "project_bottom_outlier_rank_for_maximum_performance_quantity_target":
-            projectBottomOutlierRankForMaximumPerformanceQuantityTarget,
-        "project_maximum_over_all_performance_achievement_per":
-            projectMaximumOverAllPerformanceAchievementPer,
-        "project_top_outlier_rank_for_maximum_over_all_performance_achievement_per":
-            projectTopOutlierRankForMaximumOverAllPerformanceAchievementPer,
-        "project_bottom_outlier_rank_for_maximum_over_all_performance_achievement_per":
-            projectBottomOutlierRankForMaximumOverAllPerformanceAchievementPer,
-        "project_maximum_monthly_fixed_salary_index":
-            projectMaximumMonthlyFixedSalaryIndex,
-        "project_top_outlier_rank_for_maximum_monthly_fixed_salary_index":
-            projectTopOutlierRankForMaximumMonthlyFixedSalaryIndex,
-        "project_bottom_outlier_rank_for_maximum_monthly_fixed_salary_index":
-            projectBottomOutlierRankForMaximumMonthlyFixedSalaryIndex,
-        "project_maximum_monthly_incentive": projectMaximumMonthlyIncentive,
-        "project_top_outlier_rank_for_maximum_monthly_incentive":
-            projectTopOutlierRankForMaximumMonthlyIncentive,
-        "project_bottom_outlier_rank_for_maximum_monthly_incentive":
-            projectBottomOutlierRankForMaximumMonthlyIncentive,
+        "unit_for_value_performance": unitForValPer,
+        "unit_for_quantity_performance": unitForQuaPerfor,
+        "threshold_details":
+            List<dynamic>.from((thresholdVals ?? []).map((e) => e.toJson()))
       };
 
   @override
@@ -333,33 +224,14 @@ class ProjectDetails extends Equatable {
         projectStartDate,
         studyPeriodBeginingDate,
         studyPeriodEndDate,
-        earliestDateForDateOfJoiningReleventForTheStudy,
-        endDateForDateOfJoiningReleventForTheStudy,
+        projectOwner,
+        earDateForDOJRel,
+        endDateForDOJ,
         designations,
         departments,
-        unitForValuePerformance,
-        unitForQuantityPerformance,
-        projectMaximumResidencyMonth,
-        projectTopOutlierRankForResidencyMonthOfPerformanceMonth,
-        projectBottomOutlierRankForResidencyMonthOfPerformanceMonth,
-        projectMaxPerformanceValueTarget,
-        projectTopOutlierRankForMaximumPerformanceValueTarget,
-        projectBottomOutlierRankForMaximumPerformanceValueTarget,
-        projectMaximumPerformanceValueActual,
-        projectTopOutlierRankForMaximumPerformanceValueActual,
-        projectBottomOutlierRankForMaximumPerformanceValueActual,
-        projectMaximumPerformanceQuantityTarget,
-        projectTopOutlierRankForMaximumPerformanceQuantityTarget,
-        projectBottomOutlierRankForMaximumPerformanceQuantityTarget,
-        projectMaximumOverAllPerformanceAchievementPer,
-        projectTopOutlierRankForMaximumOverAllPerformanceAchievementPer,
-        projectBottomOutlierRankForMaximumOverAllPerformanceAchievementPer,
-        projectMaximumMonthlyFixedSalaryIndex,
-        projectTopOutlierRankForMaximumMonthlyFixedSalaryIndex,
-        projectBottomOutlierRankForMaximumMonthlyFixedSalaryIndex,
-        projectMaximumMonthlyIncentive,
-        projectTopOutlierRankForMaximumMonthlyIncentive,
-        projectBottomOutlierRankForMaximumMonthlyIncentive,
+        unitForValPer,
+        unitForQuaPerfor,
+        thresholdVals
       ];
 }
 
@@ -372,7 +244,7 @@ String latestInputModelToJson(LatestInputModel data) =>
 class LatestInputModel extends Equatable {
   final String id;
   final String? inputSheetUplodedTime;
-  final LatestInputStatus? inputStatus;
+  final InputStatus? inputStatus;
   final String? errorSheetUrl;
   final String? martsSheetUrl;
   final User? createdBy;
@@ -400,7 +272,7 @@ class LatestInputModel extends Equatable {
   Map<String, dynamic> toJson() => {
         "id": id,
         "input_sheet_uploded_time": inputSheetUplodedTime,
-        "input_status": inputStatus?.value ,
+        "input_status": inputStatus?.value,
         "created_by": createdBy!.toJson(),
       };
 
@@ -415,7 +287,7 @@ class LatestInputModel extends Equatable {
       ];
 }
 
-enum LatestInputStatus {
+enum InputStatus {
   unknown,
   uploadedDataSuccessful,
   uploadedDataUnsuccessful,
@@ -425,42 +297,61 @@ enum LatestInputStatus {
   uploadedDataDataMartsCannotBeGenerated,
 }
 
-extension InputStatusExtension on LatestInputStatus {
+extension InputStatusExtension on InputStatus {
   String get value {
     switch (this) {
-      case LatestInputStatus.uploadedDataSuccessful:
+      case InputStatus.uploadedDataSuccessful:
         return "uploded_data_successfull";
-      case LatestInputStatus.uploadedDataUnsuccessful:
+      case InputStatus.uploadedDataUnsuccessful:
         return "uploded_data_unsucessfull";
-      case LatestInputStatus.uploadedDataHasErrors:
+      case InputStatus.uploadedDataHasErrors:
         return "uploded_data_has_errors";
-      case LatestInputStatus.uploadedDataHasNoErrors:
+      case InputStatus.uploadedDataHasNoErrors:
         return "uploded_data_has_no_errors";
-      case LatestInputStatus.uploadedDataDataMartsGenerated:
+      case InputStatus.uploadedDataDataMartsGenerated:
         return "uploded_data_data_marts_generated";
-      case LatestInputStatus.uploadedDataDataMartsCannotBeGenerated:
+      case InputStatus.uploadedDataDataMartsCannotBeGenerated:
         return "uploded_data_data_marts_connot_be_genrated";
       default:
         return "unknown";
     }
   }
 
-  static LatestInputStatus fromString(String value) {
+  String get properValue {
+    switch (this) {
+      case InputStatus.uploadedDataSuccessful:
+        return "uploded data successfull";
+      case InputStatus.uploadedDataUnsuccessful:
+        return "uploded data unsucessfull";
+      case InputStatus.uploadedDataHasErrors:
+        return "uploded data has errors";
+      case InputStatus.uploadedDataHasNoErrors:
+        return "uploded data has no errors";
+      case InputStatus.uploadedDataDataMartsGenerated:
+        return "uploded data data marts generated";
+      case InputStatus.uploadedDataDataMartsCannotBeGenerated:
+        return "uploded data data marts connot be genrated";
+      default:
+        return "unknown";
+    }
+  }
+
+  static InputStatus fromString(String value) {
     switch (value) {
       case "uploded_data_successfull":
-        return LatestInputStatus.uploadedDataSuccessful;
+        return InputStatus.uploadedDataSuccessful;
       case "uploded_data_unsucessfull":
-        return LatestInputStatus.uploadedDataUnsuccessful;
+        return InputStatus.uploadedDataUnsuccessful;
       case "uploded_data_has_errors":
-        return LatestInputStatus.uploadedDataHasErrors;
+        return InputStatus.uploadedDataHasErrors;
       case "uploded_data_has_no_errors":
-        return LatestInputStatus.uploadedDataHasNoErrors;
+        return InputStatus.uploadedDataHasNoErrors;
       case "uploded_data_data_marts_generated":
-        return LatestInputStatus.uploadedDataDataMartsGenerated;
+        return InputStatus.uploadedDataDataMartsGenerated;
       case "uploded_data_data_marts_connot_be_genrated":
-        return LatestInputStatus.uploadedDataDataMartsCannotBeGenerated;
+        return InputStatus.uploadedDataDataMartsCannotBeGenerated;
       default:
-        throw  LatestInputStatus.unknown;
+        throw InputStatus.unknown;
     }
   }
 }

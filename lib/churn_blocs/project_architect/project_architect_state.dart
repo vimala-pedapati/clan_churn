@@ -4,7 +4,7 @@ class ProjectArchitectState extends Equatable {
   const ProjectArchitectState.initial()
       : this(
             clientList: const [],
-            isExpanded: false,
+            isNotExpanded: false,
             selectedClient: null,
             projectsList: const [],
             columnsList: const [],
@@ -14,10 +14,11 @@ class ProjectArchitectState extends Equatable {
             uploadingFile: false,
             errorReport: null,
             uploadNewSheetRequested: false,
-            projectHistory: const []);
+            projectHistory: const [],
+            projectThesholdFormfields: const []);
 
   final List<ClientDetails> clientList;
-  final bool isExpanded;
+  final bool isNotExpanded;
   final ClientDetails? selectedClient;
   final List<Project> projectsList;
   final List<ColumnDetails> columnsList;
@@ -28,9 +29,10 @@ class ProjectArchitectState extends Equatable {
   final String? errorReport;
   final bool uploadNewSheetRequested;
   final List<ProjectHistoryModel> projectHistory;
+  final List<GetProThresholdFormValModel> projectThesholdFormfields;
   const ProjectArchitectState(
       {required this.clientList,
-      required this.isExpanded,
+      required this.isNotExpanded,
       required this.selectedClient,
       required this.projectsList,
       required this.columnsList,
@@ -40,11 +42,12 @@ class ProjectArchitectState extends Equatable {
       required this.uploadingFile,
       required this.errorReport,
       required this.uploadNewSheetRequested,
-      required this.projectHistory});
+      required this.projectHistory,
+      required this.projectThesholdFormfields});
 
   ProjectArchitectState copyWith(
       {List<ClientDetails>? clientList,
-      bool? isExpanded,
+      bool? isNotExpanded,
       ClientDetails? selectedClient,
       List<Project>? projectsList,
       List<ColumnDetails>? columnsList,
@@ -54,13 +57,11 @@ class ProjectArchitectState extends Equatable {
       bool? uploadingFile,
       String? errorReport,
       bool? uploadNewSheetRequested,
-      List<ProjectHistoryModel>? projectHistory}) {
-    if (kDebugMode) {
-      print("${createdProject?.latestInputModel}");
-    }
+      List<ProjectHistoryModel>? projectHistory,
+      List<GetProThresholdFormValModel>? projectThesholdFormfields}) {
     return ProjectArchitectState(
         clientList: clientList ?? this.clientList,
-        isExpanded: isExpanded ?? this.isExpanded,
+        isNotExpanded: isNotExpanded ?? this.isNotExpanded,
         selectedClient: selectedClient ?? this.selectedClient,
         projectsList: projectsList ?? this.projectsList,
         columnsList: columnsList ?? this.columnsList,
@@ -71,13 +72,14 @@ class ProjectArchitectState extends Equatable {
         errorReport: errorReport ?? this.errorReport,
         uploadNewSheetRequested:
             uploadNewSheetRequested ?? this.uploadNewSheetRequested,
-        projectHistory: projectHistory ?? this.projectHistory);
+        projectHistory: projectHistory ?? this.projectHistory,
+        projectThesholdFormfields:  projectThesholdFormfields ?? this.projectThesholdFormfields);
   }
 
   @override
   List<Object?> get props => [
         clientList,
-        isExpanded,
+        isNotExpanded,
         selectedClient,
         projectsList,
         columnsList,
@@ -87,6 +89,7 @@ class ProjectArchitectState extends Equatable {
         uploadingFile,
         errorReport,
         uploadNewSheetRequested,
-        projectHistory
+        projectHistory,
+        projectThesholdFormfields
       ];
 }

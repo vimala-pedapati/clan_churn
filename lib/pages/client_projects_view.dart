@@ -1,4 +1,4 @@
-import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart'; 
+import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/components/projects_view_component.dart';
 import 'package:clan_churn/components/nav_bar.dart';
 import 'package:clan_churn/components/side_bar.dart';
@@ -21,31 +21,29 @@ class _ClientProjectsViewState extends State<ClientProjectsView> {
     return Scaffold(
         backgroundColor:
             Theme.of(context).colorScheme.primary.withOpacity(0.05),
-        body: SingleChildScrollView(
-          child: BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
-            builder: (context, state) {
-              return WrapProfile(
-                child: Column(children: [
-                  // Nav bar
-                  const NavBar(),
-                  SizedBox(height: h * 0.01),
-                  // Text("${MediaQuery.of(context).size}"),
-                  Row(
+        body: BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
+          builder: (context, state) {
+            return const WrapProfile(
+              child: Column(children: [
+                // Nav bar
+                NavBar(),
+                SizedBox(height: 10),
+                // Text("${MediaQuery.of(context).size}"),
+                Expanded(
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SideBar(
+                      SideBar(
                         selectedRoute: SelectedRoute.home,
                       ),
-                      ProjectsViewComponent(
-                        width: state.isExpanded ? w * 0.89 : w * 0.8,
-                      )
+                      Expanded(child: ProjectsViewComponent())
                     ],
                   ),
-                ]),
-              );
-            },
-          ),
+                ),
+              ]),
+            );
+          },
         ));
   }
 }

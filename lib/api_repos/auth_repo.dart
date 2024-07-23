@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-enum AuthenticationStatus {
+enum AuthStatus {
   unknown,
   authenticated,
   unauthenticated,
@@ -15,18 +15,18 @@ enum AuthenticationStatus {
   pageNotFound
 }
 
-class AuthCredentials extends Equatable {
+class AuthCred extends Equatable {
   final String accessToken;
   final String refreshToken;
-  const AuthCredentials(
+  const AuthCred(
       {required this.accessToken, required this.refreshToken});
 
   @override
   List<Object?> get props => [accessToken, refreshToken];
 }
 
-class AuthRepository {
-  final String apiUrl = BaseUrl.baseUrl + ApiEndpoints.signIn;
+class AuthRepo {
+  final String signIn = BaseUrl.baseUrl + ApiEndpoints.signIn;
 
   Future<void> storeTokens(
       {required String accessToken, required String refreshToken}) async {
@@ -35,14 +35,14 @@ class AuthRepository {
     await prefs.setString('refreshToken', refreshToken);
   }
 
-  Future<AuthCredentials> getTokens() async {
+  Future<AuthCred> getTokens() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String accessToken = prefs.getString('accessToken') ?? '';
     String refreshToken = prefs.getString('refreshToken') ?? '';
     if (kDebugMode) {
       print(accessToken);
     }
-    return AuthCredentials(
+    return AuthCred(
         accessToken: accessToken, refreshToken: refreshToken);
   }
 
@@ -67,7 +67,7 @@ class AuthRepository {
     return false;
   }
 
-  Future<AuthenticationStatus> signInApiCall(
+  Future<AuthStatus> signInApiCall(
       {required email, required password}) async {
     final Map<String, dynamic> requestBody = {
       "email": email,
@@ -75,7 +75,7 @@ class AuthRepository {
     };
     try {
       final http.Response response = await http.post(
-        Uri.parse(apiUrl),
+        Uri.parse(signIn),
         headers: BaseUrl.headers,
         body: json.encode(requestBody),
       );
@@ -86,24 +86,25 @@ class AuthRepository {
             accessToken: data['access_token'],
             refreshToken: data['refresh_token']);
         log("1)${data['access_token']}");
-        return AuthenticationStatus.authenticated;
+        return AuthStatus.authenticated;
       } else {
         log('Status Code: ${response.statusCode}');
         if (response.statusCode == 401) {
           log('Unauthorized - Please check your credentials');
-          return AuthenticationStatus.unauthenticated;
+          return AuthStatus.unauthenticated;
         } else if (response.statusCode == 404) {
           log('API endpoint not found');
-          return AuthenticationStatus.pageNotFound;
+          return AuthStatus.pageNotFound;
         } else {
           log('Unexpected Error');
-          return AuthenticationStatus.unknown;
+          return AuthStatus.unknown;
         }
       }
       // return AuthenticationStatus.unauthenticated;
     } catch (e) {
       log('Network Error: $e');
-      return AuthenticationStatus.exception;
+      return AuthStatus.exception;
     }
   }
+
 }

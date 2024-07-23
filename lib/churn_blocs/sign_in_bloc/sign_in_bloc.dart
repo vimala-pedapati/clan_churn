@@ -11,7 +11,7 @@ part 'sign_in_event.dart';
 part 'sign_in_state.dart';
 
 class SignInBloc extends Bloc<SignInBlocEvent, SignInBlocState> {
-  AuthRepository authRepository;
+  AuthRepo authRepository;
   SignInBloc({required this.authRepository})
       : super(const SignInBlocState.initial()) {
     on<SignInEvent>(_onSignInEvent);
@@ -20,18 +20,18 @@ class SignInBloc extends Bloc<SignInBlocEvent, SignInBlocState> {
   _onSignInEvent(SignInEvent event, Emitter<SignInBlocState> emit) async {
     final result = await authRepository.signInApiCall(
         email: event.email, password: event.password);
-    log("........sign in output $result ${result == AuthenticationStatus.authenticated}");
-    if (result == AuthenticationStatus.authenticated) {
-      emit(state.copyWith(status: AuthenticationStatus.authenticated));
+    log("........sign in output $result ${result == AuthStatus.authenticated}");
+    if (result == AuthStatus.authenticated) {
+      emit(state.copyWith(status: AuthStatus.authenticated));
       GoRouter.of(event.context).go(AppRoutes.home);
-    } else if (result == AuthenticationStatus.unauthenticated) {
-      emit(state.copyWith(status: AuthenticationStatus.unauthenticated));
+    } else if (result == AuthStatus.unauthenticated) {
+      emit(state.copyWith(status: AuthStatus.unauthenticated));
       signInFail(
           context: event.context,
           message1: "Authentication Failed",
           message2: "Please check your credentials");
     } else {
-      emit(state.copyWith(status: AuthenticationStatus.unauthenticated));
+      emit(state.copyWith(status: AuthStatus.unauthenticated));
       signInFail(context: event.context);
     }
   }
@@ -58,9 +58,13 @@ Future<void> signInFail(
   return showDialog<void>(
     context: context,
     barrierDismissible: false, // user must tap button!
+
     builder: (BuildContext context) {
       return AlertDialog(
         title: Text(message1),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(08),
+        ),
         content: SingleChildScrollView(
           child: ListBody(
             children: <Widget>[

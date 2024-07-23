@@ -19,8 +19,8 @@ class _SummaryCardState extends State<SummaryCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 80,
-      width: 243,
+      height: 60,
+      width: 200,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(05),
           color: widget.isDisabled
@@ -31,10 +31,10 @@ class _SummaryCardState extends State<SummaryCard> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(widget.isDisabled ? "--" : widget.value,
-              style: ClanChurnTypography.font22600
+              style: ClanChurnTypography.font15900
                   .copyWith(color: Theme.of(context).colorScheme.background)),
           Text(widget.header,
-              style: ClanChurnTypography.font18500
+              style: ClanChurnTypography.font14900
                   .copyWith(color: Theme.of(context).colorScheme.background))
         ],
       ),

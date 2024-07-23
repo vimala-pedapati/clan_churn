@@ -7,11 +7,17 @@ class ProjectArchitectEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class GetClientsEvent extends ProjectArchitectEvent {}
+class GetClientsEvent extends ProjectArchitectEvent {
+  final OnErrorCallback onErrorCallback;
+  final OnSuccessCallback onSuccessCallback;
+
+  const GetClientsEvent(
+      {required this.onErrorCallback, required this.onSuccessCallback});
+}
 
 class SideBarExpandedEvent extends ProjectArchitectEvent {
-  final bool isExpanded;
-  const SideBarExpandedEvent({required this.isExpanded});
+  final bool isNotExpanded;
+  const SideBarExpandedEvent({required this.isNotExpanded});
 }
 
 class SetSelectedClientEvent extends ProjectArchitectEvent {
@@ -27,8 +33,13 @@ class GetProjectsListEvent extends ProjectArchitectEvent {
 class UpdateProjectDetailsEvent extends ProjectArchitectEvent {
   final String projectId;
   final ProjectDetails projectDetails;
+  final OnErrorCallback onErrorCallback;
+  final OnSuccessCallback onSuccessCallback;
   const UpdateProjectDetailsEvent(
-      {required this.projectId, required this.projectDetails});
+      {required this.projectId,
+      required this.projectDetails,
+      required this.onErrorCallback,
+      required this.onSuccessCallback});
 }
 
 class GetProjectDetailsEvent extends ProjectArchitectEvent {
@@ -37,7 +48,8 @@ class GetProjectDetailsEvent extends ProjectArchitectEvent {
 }
 
 class GetColumnsEvent extends ProjectArchitectEvent {
-  const GetColumnsEvent();
+  final String? projectId;
+  const GetColumnsEvent(this.projectId);
 }
 
 class CustomerColumnNamesEvent extends ProjectArchitectEvent {
@@ -48,6 +60,7 @@ class CustomerColumnNamesEvent extends ProjectArchitectEvent {
 class CreateProjectEvent extends ProjectArchitectEvent {
   final String clientId;
   final String projectName;
+  final String? projectId;
   final OnErrorCallback onErrorCallback;
   final OnSuccessCallback onSuccessCallback;
   const CreateProjectEvent({
@@ -55,6 +68,7 @@ class CreateProjectEvent extends ProjectArchitectEvent {
     required this.projectName,
     required this.onErrorCallback,
     required this.onSuccessCallback,
+    required this.projectId
   });
 }
 
@@ -146,6 +160,43 @@ class GenerateMartsEvent extends ProjectArchitectEvent {
   final OnSuccessCallback onSuccessCallback;
   const GenerateMartsEvent(
       {required this.inputId,
+      required this.onErrorCallback,
+      required this.onSuccessCallback});
+}
+
+class GetReportDataEvent extends ProjectArchitectEvent {
+  final String reportName;
+  final String inputId;
+  final OnErrorCallback onErrorCallback;
+  final OnSuccessCallback onSuccessCallback;
+  const GetReportDataEvent({
+    required this.reportName,
+    required this.inputId,
+    required this.onErrorCallback,
+    required this.onSuccessCallback,
+  });
+}
+
+class GetProThresholdValEvent extends ProjectArchitectEvent {
+  final String projectId;
+  final OnErrorCallback onErrorCallback;
+  final OnSuccessCallback onSuccessCallback;
+
+  const GetProThresholdValEvent(
+      {required this.projectId,
+      required this.onErrorCallback,
+      required this.onSuccessCallback});
+}
+
+class UpdateProThrValsEvent extends ProjectArchitectEvent {
+  final String projectId;
+  final List<UpdateThresholdValModel> data;
+  final OnErrorCallback onErrorCallback;
+  final OnSuccessCallback onSuccessCallback;
+
+  const UpdateProThrValsEvent(
+      {required this.projectId,
+      required this.data,
       required this.onErrorCallback,
       required this.onSuccessCallback});
 }

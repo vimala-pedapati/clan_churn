@@ -1,3 +1,4 @@
+import 'package:clan_churn/api_repos/models/project_model.dart';
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/utils/spacing.dart';
 import 'package:clan_churn/utils/typography.dart';
@@ -128,37 +129,43 @@ class _HistoryBodyState extends State<HistoryBody> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    state.projectHistory[index].createdBy == null
+                                    state.projectHistory[index].createdBy ==
+                                            null
                                         ? "Not available"
                                         : "${state.projectHistory[index].createdBy!.firstName} ${state.projectHistory[index].createdBy!.lastName}",
-                                    style: ClanChurnTypography.font18600.copyWith(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onSecondary),
+                                    style: ClanChurnTypography.font18600
+                                        .copyWith(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onSecondary),
                                   ),
                                   Text(
-                                    state.projectHistory[index].createdBy == null
+                                    state.projectHistory[index].createdBy ==
+                                            null
                                         ? "Not available"
                                         : state.projectHistory[index].createdBy!
                                             .userType,
-                                    style: ClanChurnTypography.font14500.copyWith(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onSecondary),
+                                    style: ClanChurnTypography.font14500
+                                        .copyWith(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onSecondary),
                                   )
                                 ],
                               ),
                             ),
                             ClanChurnSpacing.w100,
                             Text(
-                              "Data Uploaded",
+                              "${state.projectHistory[index].inputStatus?.properValue}",
                               style: ClanChurnTypography.font18600.copyWith(
                                   color: Theme.of(context).colorScheme.primary),
                             ),
                           ],
                         ),
                         SelectableText(
-                          convertDateTime(state.projectHistory[index].inputSheetUplodedTime.toString()),
+                          convertDateTime(state
+                              .projectHistory[index].inputSheetUplodedTime
+                              .toString()),
                           style: ClanChurnTypography.font18600.copyWith(
                               color: Theme.of(context).colorScheme.onSecondary),
                         ),
@@ -171,20 +178,20 @@ class _HistoryBodyState extends State<HistoryBody> {
   }
 }
 
-
 String convertDateTime(String input) {
   // Parse the input date string
   DateTime parsedDate = DateTime.parse(input);
-  
+
   // Manually adjust the date and time to the expected values
-  DateTime adjustedDate = DateTime(parsedDate.year, parsedDate.month, parsedDate.day, parsedDate.hour, parsedDate.minute);
-  
+  DateTime adjustedDate = DateTime(parsedDate.year, parsedDate.month,
+      parsedDate.day, parsedDate.hour, parsedDate.minute);
+
   // Format the DateTime object to the desired output string
   DateFormat formatter = DateFormat('dd/MM/yyyy hh:mm a');
   String formattedDate = formatter.format(adjustedDate);
-  
+
   // Modify AM/PM format to be uppercase and include period
   formattedDate = formattedDate.replaceAll('AM', 'A.M').replaceAll('PM', 'P.M');
-  
+
   return formattedDate;
 }

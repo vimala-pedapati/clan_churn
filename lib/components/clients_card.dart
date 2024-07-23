@@ -1,20 +1,22 @@
+import 'package:clan_churn/api_repos/models/client_details.dart';
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
+import 'package:clan_churn/components/project_card.dart';
 import 'package:clan_churn/pages/client_projects_view.dart';
 import 'package:clan_churn/utils/typography.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ClientsCard extends StatelessWidget {
-  const ClientsCard({super.key, required this.index});
-  final int index;
+  const ClientsCard({super.key, required this.client});
+  final ClientDetails client;
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
       builder: (context, state) {
         return Container(
-          height: 190,
-          width: 160,
+          height: 230,
+          width: 180,
           padding:
               const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 20),
           decoration: BoxDecoration(
@@ -23,30 +25,42 @@ class ClientsCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(10)),
           child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+             
               children: [
                 CircleAvatar(
-                  radius: state.isExpanded? 35: 40,
+                  radius: state.isNotExpanded ? 40 : 35,
                   backgroundColor: Theme.of(context).colorScheme.background,
-                  child: Icon(
-                    Icons.person,
-                    color: Theme.of(context).colorScheme.primary,
-                    size: state.isExpanded? 35: 40,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Image.network(
+                      "${client.image}",
+                      // loadingBuilder: ((context, child, loadingProgress) {
+                      //   return const CircularProgressIndicator();
+                      // }),
+                      errorBuilder: (context, error, stackTrace) {
+                        return ClipOval(
+                            child: Image.network(
+                          image,
+                          scale: 2,
+                        ));
+                      },
+                    ),
                   ),
                 ),
-                Column(
-                  children: [
-                    Text(
-                      state.clientList[index].name,
+                Container(
+              
+                  child: Center(
+                    child: Text(
+                      client.name,
+                      maxLines: 3,
+                      textAlign: TextAlign.center,
+                       overflow: TextOverflow.ellipsis,
                       style: ClanChurnTypography.font15600,
                     ),
-                    // Text(
-                    //   "${state.clientList[index].role}",
-                    //   style: ClanChurnTypography.font12500,
-                    // ),
-                  ],
+                  ),
                 ),
                 SizedBox(
-                  width: 160,
+                width: 180,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.only(left: 20, right: 20),
@@ -56,9 +70,9 @@ class ClientsCard extends StatelessWidget {
                       style: ClanChurnTypography.font15600,
                     ),
                     onPressed: () {
-                      context.read<ProjectArchitectBloc>().add(
-                          SetSelectedClientEvent(
-                              selectedClient: state.clientList[index]));
+                      context
+                          .read<ProjectArchitectBloc>()
+                          .add(SetSelectedClientEvent(selectedClient: client));
                       // GoRouter.of(context).go(AppRoutes.clientProjects);
                       Navigator.push(
                           context,

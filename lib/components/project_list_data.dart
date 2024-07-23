@@ -33,94 +33,116 @@ class _ProjectsListDataState extends State<ProjectsListData> {
     final w = MediaQuery.of(context).size.width;
     return BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
       builder: (context, state) {
-        return SizedBox(
-            width: double.infinity,
-            child: Column(
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.filter_alt_outlined,
-                          color: Theme.of(context).colorScheme.secondary,
-                          size: 18,
-                        ),
-                        Text(
-                          " Filters:",
-                          style: ClanChurnTypography.font14500,
-                        ),
-                        ClanChurnSpacing.w15,
-                        // DropDown
-                        const GetFiltersDropDown(),
-                      ],
+                    Icon(
+                      Icons.filter_alt_outlined,
+                      color: Theme.of(context).colorScheme.secondary,
+                      size: 18,
                     ),
-                    // Search
-                    SizedBox(
-                      height: 30,
-                      width: w * 0.2,
-                      child: TextField(
-                        controller: controller,
-                        cursorHeight: 17,
-                        decoration: InputDecoration(
-                            contentPadding:
-                                const EdgeInsets.only(left: 10, right: 10),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .secondary
-                                      .withOpacity(0.6),
-                                  width: 1.0),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .secondary
-                                      .withOpacity(0.6),
-                                  width: 1.0),
-                            ),
-                            hintText: "Enter something to filter"),
-                        onChanged: (value) {
-                          // setState(() {
-                          //   myData = filterData!
-                          //       .where((element) =>
-                          //           element.projectDoneBy.contains(value))
-                          //       .toList();
-                          // });
-                        },
-                      ),
+                    Text(
+                      " Filters:",
+                      style: ClanChurnTypography.font14500,
                     ),
+                    ClanChurnSpacing.w15,
+                    // DropDown
+                    const GetFiltersDropDown(),
                   ],
                 ),
-                ClanChurnSpacing.h20,
-                state.projectsList.isEmpty
-                    ? Text("No projects are created yet")
-                    : SingleChildScrollView(
-                        child: GridView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: GetDeviceType.getCount(
-                                      context: context,
-                                      isExpanded: state.isExpanded),
-                                  childAspectRatio: 1,
-                                  crossAxisSpacing: 15,
-                                  mainAxisSpacing: 15),
-                          itemCount: state.projectsList.length,
-                          itemBuilder: (context, index) {
-                            return ProjectCard(
-                              index: index,
+                // Search
+                SizedBox(
+                  height: 30,
+                  width: w * 0.2,
+                  child: TextField(
+                    controller: controller,
+                    cursorHeight: 17,
+                    decoration: InputDecoration(
+                        contentPadding:
+                            const EdgeInsets.only(left: 10, right: 10),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .secondary
+                                  .withOpacity(0.6),
+                              width: 1.0),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .secondary
+                                  .withOpacity(0.6),
+                              width: 1.0),
+                        ),
+                        hintText: "Enter something to filter"),
+                    onChanged: (value) {
+                      // setState(() {
+                      //   myData = filterData!
+                      //       .where((element) =>
+                      //           element.projectDoneBy.contains(value))
+                      //       .toList();
+                      // });
+                    },
+                  ),
+                ),
+              ],
+            ),
+            ClanChurnSpacing.h20,
+            state.projectsList.isEmpty
+                ? const Center(child: Text("No projects are created yet"))
+                : Expanded(
+                    child: SingleChildScrollView(
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        child: BlocBuilder<ProjectArchitectBloc,
+                            ProjectArchitectState>(
+                          builder: (context, state) {
+                            return Wrap(
+                              runSpacing: 10,
+                              spacing: 10,
+                              children: state.projectsList.map((p) {
+                                return ProjectCard(
+                                  project: p,
+                                );
+                              }).toList(),
                             );
                           },
                         ),
-                      )
-              ],
-            ));
+                      ),
+                    ),
+                  )
+
+            //  SingleChildScrollView(
+            //     child: GridView.builder(
+            //       physics: const NeverScrollableScrollPhysics(),
+            //       shrinkWrap: true,
+            //       gridDelegate:
+            //           SliverGridDelegateWithFixedCrossAxisCount(
+            //               crossAxisCount: HomePageRespUi.getCount1(
+            //                   context: context,
+            //                   isNotExpanded: state.isNotExpanded),
+            //               childAspectRatio: 1,
+            //               crossAxisSpacing: 15,
+            //               mainAxisSpacing: 15),
+            //       itemCount: state.projectsList.length,
+            //       itemBuilder: (context, index) {
+            //         return ProjectCard(
+            //           index: index,
+            //         );
+            //       },
+            //     ),
+            //   )
+          ],
+        );
       },
     );
   }

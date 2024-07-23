@@ -2,15 +2,16 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:clan_churn/api_repos/api_repo.dart';
+import 'package:clan_churn/api_repos/models/client_details.dart';
 import 'package:clan_churn/api_repos/models/column_model.dart';
+import 'package:clan_churn/api_repos/models/get_pro_threshold_val_model.dart';
 import 'package:clan_churn/api_repos/models/project_history_model.dart';
 import 'package:clan_churn/api_repos/models/project_model.dart';
-import 'package:clan_churn/api_repos/models/user_model.dart';
+import 'package:clan_churn/api_repos/models/update_threshold_val_model.dart';
 import 'package:clan_churn/components/dialogs.dart';
-import 'package:clan_churn/pages/new_project_components.dart';
+import 'package:clan_churn/components/input_sheet_columns.dart';
 import 'package:equatable/equatable.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 part 'project_architect_event.dart';
 part 'project_architect_state.dart';
@@ -39,14 +40,16 @@ class ProjectArchitectBloc
     on<UploadNewSheetRequestedEvent>(_onUploadNewSheetRequestedEvent);
     on<ProjectInputHistoryEvent>(_onProjectInputHistoryEvent);
     on<GenerateMartsEvent>(_onGenerateMartsEvent);
+    on<GetReportDataEvent>(_onGetReportDataEvent);
+    on<GetProThresholdValEvent>(_onGetProThresholdValEvent);
+    on<UpdateProThrValsEvent>(_onUpdateProThrValsEvent);
   }
 
   _onClientsEvent(
       GetClientsEvent event, Emitter<ProjectArchitectState> emit) async {
     final result = await apiRepository.getClientsList(
-        onErrorCallback: (String message, int errorCode) {
-      log(" $message");
-    });
+        onErrorCallback: event.onErrorCallback,
+        onSuccessCallback: event.onSuccessCallback);
     if (result != null) {
       emit(state.copyWith(clientList: result));
     } else {
@@ -56,7 +59,7 @@ class ProjectArchitectBloc
 
   _onSideBarExpandedEvent(
       SideBarExpandedEvent event, Emitter<ProjectArchitectState> emit) {
-    emit(state.copyWith(isExpanded: event.isExpanded));
+    emit(state.copyWith(isNotExpanded: event.isNotExpanded));
   }
 
   _onSetSelectedClientEvent(
@@ -80,10 +83,12 @@ class ProjectArchitectBloc
 
   _onGetColumnsEvent(
       GetColumnsEvent event, Emitter<ProjectArchitectState> emit) async {
+    print("...2");
     final result = await apiRepository.getAllColumns(
+        projectId: event.projectId,
         onErrorCallback: (String message, int errorCode) {
-      log(" $message");
-    });
+          log(" $message");
+        });
     if (result != null) {
       emit(state.copyWith(columnsList: result));
       List<TextEditingController> a = [];
@@ -105,15 +110,17 @@ class ProjectArchitectBloc
         onSuccessCallback: event.onSuccessCallback);
     if (result != null) {
       emit(state.copyWith(createdProject: result));
-      final columnsResult = await apiRepository.getAllColumns(
-          onErrorCallback: (String message, int errorCode) {
-        log(" $message");
-      });
-      if (columnsResult != null) {
-        emit(state.copyWith(columnsList: columnsResult));
-      } else {
-        emit(state.copyWith(columnsList: []));
-      }
+      
+      // final columnsResult = await apiRepository.getAllColumns(
+      //     projectId: result.id,
+      //     onErrorCallback: (String message, int errorCode) {
+      //       log(" $message");
+      //     });
+      // if (columnsResult != null) {
+      //   emit(state.copyWith(columnsList: columnsResult));
+      // } else {
+      //   emit(state.copyWith(columnsList: []));
+      // }
     } else {
       emit(state.copyWith(
           createdProject: const Project(
@@ -164,7 +171,7 @@ class ProjectArchitectBloc
         });
         // }
       }
-      // log(a);
+      // print(a);
       final result = await apiRepository.addColumnsToProject(
           columnsToAdd: a,
           onErrorCallback: (String message, int errorCode) {
@@ -188,9 +195,8 @@ class ProjectArchitectBloc
     final result = await apiRepository.updateProjectDetails(
         projectId: event.projectId,
         projectDetails: event.projectDetails,
-        onErrorCallback: (String message, int errorCode) {
-          log(" $message");
-        });
+        onErrorCallback: event.onErrorCallback,
+        onSuccessCallback: event.onSuccessCallback);
     if (result != null) {
       emit(state.copyWith(createdProject: result));
     } else {
@@ -287,7 +293,7 @@ class ProjectArchitectBloc
                 borderRadius: BorderRadius.circular(08),
               ),
               title: Text(pro.latestInputModel?.inputStatus ==
-                      LatestInputStatus.uploadedDataHasNoErrors
+                      InputStatus.uploadedDataHasNoErrors
                   ? "No errors in the uploaded data ready to publish"
                   : "something went wrong to download"),
             );
@@ -354,6 +360,40 @@ class ProjectArchitectBloc
       // }
       // launchURL(pro.latestInputModel!.martsSheetUrl!);
       // emit(state.copyWith(createdProject: pro));
+    }
+  }
+
+  _onGetReportDataEvent(
+      GetReportDataEvent event, Emitter<ProjectArchitectState> emit) async {
+    await apiRepository.getReportData(
+        inputId: event.inputId,
+        reportname: event.reportName,
+        onErrorCallback: event.onErrorCallback,
+        onSuccessCallback: event.onSuccessCallback);
+  }
+
+  _onGetProThresholdValEvent(GetProThresholdValEvent event,
+      Emitter<ProjectArchitectState> emit) async {
+    final result = await apiRepository.getProThresholdValues(
+        projectId: event.projectId,
+        onErrorCallback: event.onErrorCallback,
+        onSuccessCallback: event.onSuccessCallback);
+    if (result != null) {
+      emit(state.copyWith(projectThesholdFormfields: result));
+    } else {
+      emit(state.copyWith(projectThesholdFormfields: []));
+    }
+  }
+
+  _onUpdateProThrValsEvent(
+      UpdateProThrValsEvent event, Emitter<ProjectArchitectState> emit) async {
+    final result = await apiRepository.updateThresholdValue(
+        projectId: event.projectId,
+        data: event.data,
+        onErrorCallback: event.onErrorCallback,
+        onSuccessCallback: event.onSuccessCallback);
+    if (result != null) {
+      emit(state.copyWith(createdProject: result));
     }
   }
 }
