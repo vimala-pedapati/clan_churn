@@ -318,7 +318,8 @@ class _PerformanceReportState extends State<PerformanceReport> {
                                                       ],
                                                     ),
                                                     SizedBox(
-                                                      width: 400,
+                                                      height: 35,
+                                                      width: 300,
                                                       child:
                                                           DropdownButtonHideUnderline(
                                                         child: DropdownButton2<
@@ -329,7 +330,7 @@ class _PerformanceReportState extends State<PerformanceReport> {
                                                               Text(
                                                                 'Select Column',
                                                                 style: ClanChurnTypography
-                                                                    .font18500,
+                                                                    .font14900,
                                                                 overflow:
                                                                     TextOverflow
                                                                         .ellipsis,
@@ -345,7 +346,7 @@ class _PerformanceReportState extends State<PerformanceReport> {
                                                                     child: Text(
                                                                       item,
                                                                       style: ClanChurnTypography
-                                                                          .font18500
+                                                                          .font14900
                                                                           .copyWith(
                                                                               color: Theme.of(context).colorScheme.background),
                                                                       overflow:
@@ -369,7 +370,7 @@ class _PerformanceReportState extends State<PerformanceReport> {
                                                                     Text(
                                                                       item,
                                                                       style: ClanChurnTypography
-                                                                          .font18500
+                                                                          .font14900
                                                                           .copyWith(
                                                                               color: Theme.of(context).colorScheme.secondary),
                                                                     ),
