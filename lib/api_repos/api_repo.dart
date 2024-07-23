@@ -295,12 +295,12 @@ class ApiRepository {
         }),
       );
 
-      log("get project:..... $response");
+      print("get project:..... $response");
 
       if (response.statusCode == 200) {
         Project project = Project.fromJson(json.decode(response.body));
-        log("get project:..... ${response.body}");
-        log("get project:..... $project");
+        print("get project:..... ${response.body}");
+        print ("get project:..... $project");
         return project;
       } else {
         _handleStatusCode(response.statusCode, response, onErrorCallback);
@@ -387,10 +387,10 @@ class ApiRepository {
     }
   }
 
-  Future<Project?> addColumnsToProject({
-    required List columnsToAdd,
-    required OnErrorCallback onErrorCallback,
-  }) async {
+  Future<Project?> addColumnsToProject(
+      {required List columnsToAdd,
+      required OnErrorCallback onErrorCallback,
+      required OnSuccessCallback onSuccessCallback}) async {
     try {
       final AuthCred authCred = await AuthRepo().getTokens();
 
@@ -413,6 +413,7 @@ class ApiRepository {
       if (response.statusCode == 200) {
         Project updatedProject = Project.fromJson(json.decode(response.body));
         log("Updated project with columns:..... $updatedProject");
+        onSuccessCallback(response);
         return updatedProject;
       } else {
         _handleStatusCode(response.statusCode, response, onErrorCallback);

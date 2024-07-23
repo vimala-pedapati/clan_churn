@@ -94,17 +94,30 @@ class ColumnsToChooseWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 ElevatedButton(
-                  onPressed:
-                      (projectName.isEmpty || state.createdProject == null)
+                  onPressed: (projectName.isEmpty ||
+                          state.createdProject == null)
+                      ? null
+                      : (state.createdProject!.id.isEmpty)
                           ? null
-                          : (state.createdProject!.id.isEmpty)
-                              ? null
-                              : () {
-                                  context
-                                      .read<ProjectArchitectBloc>()
-                                      .add(AddColumnsToProjectEvent());
-                                  GetDialog.showDownloadDialog(context);
-                                },
+                          : () {
+                              context
+                                  .read<ProjectArchitectBloc>()
+                                  .add(AddColumnsToProjectEvent(
+                                    onErrorCallback:
+                                        (errorMessage, errorCode) {},
+                                    onSuccessCallback: (message) {
+                                      context.read<ProjectArchitectBloc>().add(
+                                          GetProjectsListEvent(
+                                              clientId: context
+                                                  .read<ProjectArchitectBloc>()
+                                                  .state
+                                                  .selectedClient!
+                                                  .id));
+                                    },
+                                  ));
+
+                              GetDialog.showDownloadDialog(context);
+                            },
                   child: const Text("Next"),
                 ),
               ],
