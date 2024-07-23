@@ -1280,7 +1280,7 @@ class _UploadedExcelSummaryReportState
                         onErrorCallback: (errorMessage, errorCode) {
                           print(
                               "Download Error Report...${state.createdProject!.latestInput}..$errorMessage $errorCode");
-                          GetDialog.failedErrorReport(context);
+                          GetDialog.failedErrorReport(context, errorMessage);
                         },
                       ));
                 },

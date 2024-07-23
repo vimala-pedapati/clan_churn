@@ -213,7 +213,7 @@ class _GetPublishButtonState extends State<GetPublishButton> {
                               onErrorCallback: (errorMessage, errorCode) {
                                 print(
                                     "Marts Report...${state.createdProject!.latestInput}..$errorMessage $errorCode");
-                                GetDialog.failedErrorReport(context);
+                                GetDialog.failedErrorReport(context, errorMessage);
                               },
                             ),
                           );

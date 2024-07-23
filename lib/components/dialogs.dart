@@ -74,7 +74,8 @@ class GetDialog {
     );
   }
 
-  static Future<void> failedErrorReport(BuildContext context) async {
+  static Future<void> failedErrorReport(
+      BuildContext context, String errorMessage) async {
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
@@ -82,10 +83,10 @@ class GetDialog {
           builder: (context, state) {
             return AlertDialog(
               title: const Text("Something went wrong"),
-              content: const Column(
+              content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text("Failed to prepare error report to download"),
+                  Text(errorMessage),
                 ],
               ),
               actions: [
