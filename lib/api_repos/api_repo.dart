@@ -300,7 +300,7 @@ class ApiRepository {
       if (response.statusCode == 200) {
         Project project = Project.fromJson(json.decode(response.body));
         print("get project:..... ${response.body}");
-        print ("get project:..... $project");
+        print("get project:..... $project");
         return project;
       } else {
         _handleStatusCode(response.statusCode, response, onErrorCallback);
@@ -1200,6 +1200,40 @@ class ApiRepository {
         onSuccessCallback(res);
         Project project = Project.fromJson(json.decode(res.body));
         return project;
+      } else {}
+    } catch (e) {
+      log("unable to update project threshold values");
+      onErrorCallback(
+          'Unable to update threshold values please contact admin', 0);
+    }
+    return null;
+  }
+
+  Future<List<String>?> getAllReports(
+      {required OnSuccessCallback onSuccessCallback,
+      required OnErrorCallback onErrorCallback}) async {
+    try {
+      final AuthCred authCred = await AuthRepo().getTokens();
+      if (authCred.accessToken.isEmpty) {
+        onErrorCallback('Access token is empty', 0);
+        return null;
+      }
+
+      http.Response res = await http.post(
+        Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.getAllReports}"),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${authCred.accessToken}',
+        },
+      );
+      if (res.statusCode == 200) {
+        onSuccessCallback(res);
+        List<String> allReports = (json.decode(res.body) as Iterable)
+            .map(
+              (e) => e.toString(),
+            )
+            .toList();
+        return allReports;
       } else {}
     } catch (e) {
       log("unable to update project threshold values");

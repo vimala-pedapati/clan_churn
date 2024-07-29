@@ -43,6 +43,7 @@ class ProjectArchitectBloc
     on<GetReportDataEvent>(_onGetReportDataEvent);
     on<GetProThresholdValEvent>(_onGetProThresholdValEvent);
     on<UpdateProThrValsEvent>(_onUpdateProThrValsEvent);
+    on<GetAllReportsEvent>(_onGetAllReports);
   }
 
   _onClientsEvent(
@@ -110,7 +111,7 @@ class ProjectArchitectBloc
         onSuccessCallback: event.onSuccessCallback);
     if (result != null) {
       emit(state.copyWith(createdProject: result));
-      
+
       // final columnsResult = await apiRepository.getAllColumns(
       //     projectId: result.id,
       //     onErrorCallback: (String message, int errorCode) {
@@ -393,6 +394,16 @@ class ProjectArchitectBloc
         onSuccessCallback: event.onSuccessCallback);
     if (result != null) {
       emit(state.copyWith(createdProject: result));
+    }
+  }
+
+  _onGetAllReports(
+      GetAllReportsEvent event, Emitter<ProjectArchitectState> emit) async {
+    final result = await apiRepository.getAllReports(
+        onErrorCallback: event.onErrorCallback,
+        onSuccessCallback: event.onSuccessCallback);
+    if (result != null) {
+      emit(state.copyWith(allReports: result));
     }
   }
 }

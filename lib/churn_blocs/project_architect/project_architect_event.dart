@@ -203,3 +203,10 @@ class UpdateProThrValsEvent extends ProjectArchitectEvent {
       required this.onErrorCallback,
       required this.onSuccessCallback});
 }
+class GetAllReportsEvent extends ProjectArchitectEvent {
+  final OnErrorCallback onErrorCallback;
+  final OnSuccessCallback onSuccessCallback;
+  const GetAllReportsEvent(
+      {required this.onErrorCallback, required this.onSuccessCallback});
+  
+}

@@ -63,7 +63,6 @@ class _PerformanceReportState extends State<PerformanceReport> {
   final _columnController = ScrollController();
   bool fetching = false;
   bool apiError = false;
-  List<String> reportNames = ["BPP-1", "BPP-2"];
   String selectedItem = "";
 
   @override
@@ -71,38 +70,41 @@ class _PerformanceReportState extends State<PerformanceReport> {
     super.initState();
     setState(() {
       fetching = true;
-      selectedItem = reportNames[0];
     });
-    context.read<ProjectArchitectBloc>().add(GetReportDataEvent(
-        inputId: widget.inputId,
-        reportName: reportNames[0],
-        onErrorCallback: (errorMessage, errorCode) {
-          print(" on error $errorCode, $errorMessage");
-          setState(() {
-            apiError = true;
-          });
-        },
-        onSuccessCallback: (message) {
-          setState(() {
-            fetching = false;
-          });
-          if (message != null) {
-            // print("get report data: ${json.decode(message!.body)}");
-            // print("get report data: ${json.decode(message.body).runtimeType}");
-            // var a = json.decode(message.body);
-            Map<String, dynamic> jsonObject = json.decode(message.body);
-            // print(jsonObject.runtimeType);
-            setState(() {
-              data = jsonObject;
-              selectedMonths = data.keys.toList();
-              selectedMonthsTemp = data.keys.toList();
-              metrics = (data[selectedMonths[0]] as Map<String, dynamic>)
-                  .keys
-                  .toList();
-            });
-            // print(".......metrics.....$metrics");
-          }
-        }));
+
+    context.read<ProjectArchitectBloc>().add(GetAllReportsEvent(
+          onErrorCallback: (errorMessage, errorCode) {},
+          onSuccessCallback: (message) {
+            selectedItem = (json.decode(message!.body) as Iterable)
+                .map((e) => e.toString())
+                .toList()[0];
+            context.read<ProjectArchitectBloc>().add(GetReportDataEvent(
+                inputId: widget.inputId,
+                reportName: selectedItem,
+                onErrorCallback: (errorMessage, errorCode) {
+                  setState(() {
+                    apiError = true;
+                  });
+                },
+                onSuccessCallback: (message) {
+                  setState(() {
+                    fetching = false;
+                  });
+                  if (message != null) {
+                    Map<String, dynamic> jsonObject = json.decode(message.body);
+                    setState(() {
+                      data = jsonObject;
+                      selectedMonths = data.keys.toList();
+                      selectedMonthsTemp = data.keys.toList();
+                      metrics =
+                          (data[selectedMonths[0]] as Map<String, dynamic>)
+                              .keys
+                              .toList();
+                    });
+                  }
+                }));
+          },
+        ));
 
     _subTableYController.addListener(() {
       _columnController.jumpTo(_subTableYController.position.pixels);
@@ -233,66 +235,35 @@ class _PerformanceReportState extends State<PerformanceReport> {
     final w = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.05),
-      body: WrapProfile(
-        child: Column(
-          children: [
-            const NavBar(),
-            const SizedBox(height: 10),
-            Expanded(
-              child: Row(
-                children: [
-                  const SideBar(
-                    selectedRoute: SelectedRoute.home,
-                  ),
-                  Expanded(
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: ChurnContainer(
-                              child: fetching
-                                  ? Center(
-                                      child: Image.asset(
-                                        "assets/loading.gif",
-                                        width: 40,
-                                        height: 40,
-                                      ),
-                                    )
-                                  : Container(
-                                      child: apiError
-                                          ? Column(
-                                              children: [
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    IconButton(
-                                                      icon: Icon(
-                                                        Icons
-                                                            .keyboard_backspace,
-                                                        color: Theme.of(context)
-                                                            .colorScheme
-                                                            .secondary,
-                                                      ),
-                                                      onPressed: () {
-                                                        Navigator.pop(context);
-                                                        // GoRouter.of(context).go(AppRoutes.home);
-                                                      },
-                                                    ),
-                                                    Container()
-                                                  ],
-                                                ),
-                                                Center(
-                                                    child: Text(
-                                                        "Unable to fetch report data $apiError  ")),
-                                              ],
-                                            )
-                                          : Column(
-                                              children: [
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
+      body: BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
+        builder: (context, state) {
+          return WrapProfile(
+            child: Column(
+              children: [
+                const NavBar(),
+                const SizedBox(height: 10),
+                Expanded(
+                  child: Row(
+                    children: [
+                      const SideBar(
+                        selectedRoute: SelectedRoute.home,
+                      ),
+                      Expanded(
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: ChurnContainer(
+                                  child: fetching
+                                      ? Center(
+                                          child: Image.asset(
+                                            "assets/loading.gif",
+                                            width: 40,
+                                            height: 40,
+                                          ),
+                                        )
+                                      : Container(
+                                          child: apiError
+                                              ? Column(
                                                   children: [
                                                     Row(
                                                       mainAxisAlignment:
@@ -317,260 +288,296 @@ class _PerformanceReportState extends State<PerformanceReport> {
                                                         Container()
                                                       ],
                                                     ),
-                                                    SizedBox(
-                                                      height: 35,
-                                                      width: 300,
-                                                      child:
-                                                          DropdownButtonHideUnderline(
-                                                        child: DropdownButton2<
-                                                            String>(
-                                                          isExpanded: true,
-                                                          hint: Row(
-                                                            children: [
-                                                              Text(
-                                                                'Select Column',
-                                                                style: ClanChurnTypography
-                                                                    .font14900,
-                                                                overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          items: reportNames
-                                                              .map((String
-                                                                      item) =>
-                                                                  DropdownMenuItem<
-                                                                      String>(
-                                                                    value: item,
-                                                                    child: Text(
-                                                                      item,
-                                                                      style: ClanChurnTypography
-                                                                          .font14900
-                                                                          .copyWith(
-                                                                              color: Theme.of(context).colorScheme.background),
-                                                                      overflow:
-                                                                          TextOverflow
-                                                                              .ellipsis,
-                                                                    ),
-                                                                  ))
-                                                              .toList(),
-                                                          selectedItemBuilder:
-                                                              (BuildContext
-                                                                  context) {
-                                                            return reportNames
-                                                                .map((String
-                                                                    item) {
-                                                              return Center(
-                                                                child: Row(
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .start,
-                                                                  children: [
-                                                                    Text(
-                                                                      item,
-                                                                      style: ClanChurnTypography
-                                                                          .font14900
-                                                                          .copyWith(
-                                                                              color: Theme.of(context).colorScheme.secondary),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                              );
-                                                            }).toList();
-                                                          },
-                                                          value: selectedItem,
-                                                          onChanged: (value) {
-                                                            setState(() {
-                                                              selectedItem =
-                                                                  value!;
-                                                            });
-                                                            context.read<ProjectArchitectBloc>().add(
-                                                                GetReportDataEvent(
-                                                                    inputId: widget
-                                                                        .inputId,
-                                                                    reportName:
-                                                                        value!,
-                                                                    onErrorCallback:
-                                                                        (errorMessage,
-                                                                            errorCode) {
-                                                                      print(
-                                                                          " on error $errorCode, $errorMessage");
-                                                                      setState(
-                                                                          () {
-                                                                        apiError =
-                                                                            true;
-                                                                      });
-                                                                    },
-                                                                    onSuccessCallback:
-                                                                        (message) {
-                                                                      setState(
-                                                                          () {
-                                                                        fetching =
-                                                                            false;
-                                                                      });
-                                                                      if (message !=
-                                                                          null) {
-                                                                        // print("get report data: ${json.decode(message!.body)}");
-                                                                        // print("get report data: ${json.decode(message.body).runtimeType}");
-                                                                        // var a = json.decode(message.body);
-                                                                        Map<String,
-                                                                                dynamic>
-                                                                            jsonObject =
-                                                                            json.decode(message.body);
-                                                                        // print(jsonObject.runtimeType);
-                                                                        setState(
-                                                                            () {
-                                                                          data =
-                                                                              jsonObject;
-                                                                          selectedMonths = data
-                                                                              .keys
-                                                                              .toList();
-                                                                          selectedMonthsTemp = data
-                                                                              .keys
-                                                                              .toList();
-                                                                          metrics = (data[selectedMonths[0]] as Map<String, dynamic>)
-                                                                              .keys
-                                                                              .toList();
-                                                                        });
-                                                                        // print(".......metrics.....$metrics");
-                                                                      }
-                                                                    }));
-                                                          },
-                                                          buttonStyleData:
-                                                              ButtonStyleData(
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          8),
-                                                              border: Border.all(
-                                                                  color: Theme.of(
-                                                                          context)
-                                                                      .colorScheme
-                                                                      .primary
-                                                                      .withOpacity(
-                                                                          0.6)),
-                                                              color: Theme.of(
-                                                                      context)
-                                                                  .colorScheme
-                                                                  .primary
-                                                                  .withOpacity(
-                                                                      0.2),
-                                                            ),
-                                                            elevation: 0,
-                                                          ),
-                                                          iconStyleData:
-                                                              IconStyleData(
-                                                            icon: const Icon(Icons
-                                                                .keyboard_arrow_down),
-                                                            iconSize: 25,
-                                                            iconEnabledColor:
-                                                                Theme.of(
+                                                    Center(
+                                                        child: Text(
+                                                            "Unable to fetch report data $apiError  ")),
+                                                  ],
+                                                )
+                                              : Column(
+                                                  children: [
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            IconButton(
+                                                              icon: Icon(
+                                                                Icons
+                                                                    .keyboard_backspace,
+                                                                color: Theme.of(
                                                                         context)
                                                                     .colorScheme
                                                                     .secondary,
-                                                            iconDisabledColor:
-                                                                Colors.grey,
-                                                          ),
-                                                          dropdownStyleData:
-                                                              DropdownStyleData(
-                                                            elevation: 0,
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          8),
-                                                              border: Border.all(
+                                                              ),
+                                                              onPressed: () {
+                                                                Navigator.pop(
+                                                                    context);
+                                                                // GoRouter.of(context).go(AppRoutes.home);
+                                                              },
+                                                            ),
+                                                            Container()
+                                                          ],
+                                                        ),
+                                                        SizedBox(
+                                                          height: 35,
+                                                          width: 300,
+                                                          child:
+                                                              DropdownButtonHideUnderline(
+                                                            child:
+                                                                DropdownButton2<
+                                                                    String>(
+                                                              isExpanded: true,
+                                                              hint: Row(
+                                                                children: [
+                                                                  Text(
+                                                                    'Select Column',
+                                                                    style: ClanChurnTypography
+                                                                        .font14900,
+                                                                    overflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                              items: state
+                                                                  .allReports
+                                                                  .map((String
+                                                                          item) =>
+                                                                      DropdownMenuItem<
+                                                                          String>(
+                                                                        value:
+                                                                            item,
+                                                                        child:
+                                                                            Text(
+                                                                          item,
+                                                                          style: ClanChurnTypography
+                                                                              .font14900
+                                                                              .copyWith(color: Theme.of(context).colorScheme.background),
+                                                                          overflow:
+                                                                              TextOverflow.ellipsis,
+                                                                        ),
+                                                                      ))
+                                                                  .toList(),
+                                                              selectedItemBuilder:
+                                                                  (BuildContext
+                                                                      context) {
+                                                                return state
+                                                                    .allReports
+                                                                    .map((String
+                                                                        item) {
+                                                                  return Center(
+                                                                    child: Row(
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .start,
+                                                                      children: [
+                                                                        Text(
+                                                                          item,
+                                                                          style: ClanChurnTypography
+                                                                              .font14900
+                                                                              .copyWith(color: Theme.of(context).colorScheme.secondary),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  );
+                                                                }).toList();
+                                                              },
+                                                              value:
+                                                                  selectedItem,
+                                                              onChanged:
+                                                                  (value) {
+                                                                setState(() {
+                                                                  selectedItem =
+                                                                      value!;
+                                                                });
+                                                                context.read<ProjectArchitectBloc>().add(
+                                                                    GetReportDataEvent(
+                                                                        inputId:
+                                                                            widget
+                                                                                .inputId,
+                                                                        reportName:
+                                                                            value!,
+                                                                        onErrorCallback:
+                                                                            (errorMessage,
+                                                                                errorCode) {
+                                                                          print(
+                                                                              " on error $errorCode, $errorMessage");
+                                                                          setState(
+                                                                              () {
+                                                                            apiError =
+                                                                                true;
+                                                                          });
+                                                                        },
+                                                                        onSuccessCallback:
+                                                                            (message) {
+                                                                          setState(
+                                                                              () {
+                                                                            fetching =
+                                                                                false;
+                                                                          });
+                                                                          if (message !=
+                                                                              null) {
+                                                                            // print("get report data: ${json.decode(message!.body)}");
+                                                                            // print("get report data: ${json.decode(message.body).runtimeType}");
+                                                                            // var a = json.decode(message.body);
+                                                                            Map<String, dynamic>
+                                                                                jsonObject =
+                                                                                json.decode(message.body);
+                                                                            // print(jsonObject.runtimeType);
+                                                                            setState(() {
+                                                                              data = jsonObject;
+                                                                              selectedMonths = data.keys.toList();
+                                                                              selectedMonthsTemp = data.keys.toList();
+                                                                              metrics = (data[selectedMonths[0]] as Map<String, dynamic>).keys.toList();
+                                                                            });
+                                                                            // print(".......metrics.....$metrics");
+                                                                          }
+                                                                        }));
+                                                              },
+                                                              buttonStyleData:
+                                                                  ButtonStyleData(
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              8),
+                                                                  border: Border.all(
+                                                                      color: Theme.of(
+                                                                              context)
+                                                                          .colorScheme
+                                                                          .primary
+                                                                          .withOpacity(
+                                                                              0.6)),
                                                                   color: Theme.of(
                                                                           context)
                                                                       .colorScheme
                                                                       .primary
                                                                       .withOpacity(
-                                                                          0.6)),
-                                                              color: Theme.of(
-                                                                      context)
-                                                                  .colorScheme
-                                                                  .primary
-                                                                  .withOpacity(
-                                                                      1.0),
-                                                            ),
-                                                            scrollbarTheme:
-                                                                ScrollbarThemeData(
-                                                              radius:
-                                                                  const Radius
+                                                                          0.2),
+                                                                ),
+                                                                elevation: 0,
+                                                              ),
+                                                              iconStyleData:
+                                                                  IconStyleData(
+                                                                icon: const Icon(
+                                                                    Icons
+                                                                        .keyboard_arrow_down),
+                                                                iconSize: 25,
+                                                                iconEnabledColor: Theme.of(
+                                                                        context)
+                                                                    .colorScheme
+                                                                    .secondary,
+                                                                iconDisabledColor:
+                                                                    Colors.grey,
+                                                              ),
+                                                              dropdownStyleData:
+                                                                  DropdownStyleData(
+                                                                elevation: 0,
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              8),
+                                                                  border: Border.all(
+                                                                      color: Theme.of(
+                                                                              context)
+                                                                          .colorScheme
+                                                                          .primary
+                                                                          .withOpacity(
+                                                                              0.6)),
+                                                                  color: Theme.of(
+                                                                          context)
+                                                                      .colorScheme
+                                                                      .primary
+                                                                      .withOpacity(
+                                                                          1.0),
+                                                                ),
+                                                                scrollbarTheme:
+                                                                    ScrollbarThemeData(
+                                                                  radius: const Radius
                                                                       .circular(
                                                                       40),
-                                                              thickness:
-                                                                  MaterialStateProperty
-                                                                      .all(6),
-                                                              thumbVisibility:
-                                                                  MaterialStateProperty
-                                                                      .all(
-                                                                          true),
+                                                                  thickness:
+                                                                      MaterialStateProperty
+                                                                          .all(
+                                                                              6),
+                                                                  thumbVisibility:
+                                                                      MaterialStateProperty
+                                                                          .all(
+                                                                              true),
+                                                                ),
+                                                              ),
+                                                              menuItemStyleData:
+                                                                  const MenuItemStyleData(
+                                                                height: 40,
+                                                                padding: EdgeInsets
+                                                                    .only(
+                                                                        left:
+                                                                            14,
+                                                                        right:
+                                                                            14),
+                                                              ),
                                                             ),
                                                           ),
-                                                          menuItemStyleData:
-                                                              const MenuItemStyleData(
-                                                            height: 40,
-                                                            padding:
-                                                                EdgeInsets.only(
-                                                                    left: 14,
-                                                                    right: 14),
-                                                          ),
                                                         ),
+                                                      ],
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    FittedBox(
+                                                      child: Row(
+                                                        children: [
+                                                          buildFrezeedColumn(
+                                                            onHeaderSort:
+                                                                onHeaderSort,
+                                                          ),
+                                                          Container(
+                                                            width: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width *
+                                                                0.65,
+                                                            child:
+                                                                ReportsDataTable(
+                                                              metrics: metrics,
+                                                              months:
+                                                                  selectedMonths,
+                                                              data: data,
+                                                              sortColumnIndex:
+                                                                  sortColumnIndex,
+                                                              sortAscending:
+                                                                  sortAscending,
+                                                              // onHeaderSort: onHeaderSort,
+                                                              onColumnsSort:
+                                                                  onColumnsSort,
+                                                            ),
+                                                          ),
+                                                        ],
                                                       ),
                                                     ),
                                                   ],
                                                 ),
-                                                const SizedBox(
-                                                  height: 10,
-                                                ),
-                                                FittedBox(
-                                                  child: Row(
-                                                    children: [
-                                                      buildFrezeedColumn(
-                                                        onHeaderSort:
-                                                            onHeaderSort,
-                                                      ),
-                                                      Container(
-                                                        width: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .width *
-                                                            0.65,
-                                                        child: ReportsDataTable(
-                                                          metrics: metrics,
-                                                          months:
-                                                              selectedMonths,
-                                                          data: data,
-                                                          sortColumnIndex:
-                                                              sortColumnIndex,
-                                                          sortAscending:
-                                                              sortAscending,
-                                                          // onHeaderSort: onHeaderSort,
-                                                          onColumnsSort:
-                                                              onColumnsSort,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                    )),
+                                        )),
+                            ),
+                            const Filter()
+                          ],
                         ),
-                        const Filter()
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
+          );
+        },
       ),
       endDrawer: Drawer(
           width: MediaQuery.of(context).size.width * 0.21,

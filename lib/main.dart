@@ -154,11 +154,11 @@ class ClanChurnApp extends StatelessWidget {
           textTheme: GoogleFonts.montserratTextTheme().copyWith(),
           colorScheme: ColorScheme.fromSeed(
             seedColor: const Color.fromRGBO(108, 63, 235, 1),
-            primary: const Color.fromRGBO(108, 63, 235, 1),
+            primary: const Color(0xFF6C3FEB),
             secondary: const Color.fromRGBO(56, 56, 56, 1),
             onSecondary: const Color.fromRGBO(125, 125, 125, 1),
             tertiary: const Color.fromRGBO(199, 199, 199, 1),
-            background: const Color(0xffFFFFFF),
+            background: const Color.fromRGBO(255, 255, 255, 1),
             shadow: const Color.fromRGBO(0, 0, 0, 0.15),
             onBackground: Colors.black,
             error: const Color.fromRGBO(230, 36, 36, 1),

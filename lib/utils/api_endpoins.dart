@@ -3,7 +3,8 @@ class BaseUrl {
   // static String baseUrl = "https://churnapi.clanonline.in";
 
   // production url
-  static String baseUrl = "https://r3gswwmrfrkssko3e3wz6zfpce0hzlqt.lambda-url.ap-south-1.on.aws/";
+  static String baseUrl =
+      "https://r3gswwmrfrkssko3e3wz6zfpce0hzlqt.lambda-url.ap-south-1.on.aws/";
   static Map<String, String> headers = {
     'Content-Type': 'application/json',
   };
@@ -53,4 +54,5 @@ class ApiEndpoints {
 
   // reports
   static String getReportData = "/reports/get_report_data";
+  static String getAllReports = "/reports/get_all_reports";
 }

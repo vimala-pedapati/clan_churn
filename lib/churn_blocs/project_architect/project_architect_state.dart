@@ -15,7 +15,8 @@ class ProjectArchitectState extends Equatable {
             errorReport: null,
             uploadNewSheetRequested: false,
             projectHistory: const [],
-            projectThesholdFormfields: const []);
+            projectThesholdFormfields: const [],
+            allReports: const []);
 
   final List<ClientDetails> clientList;
   final bool isNotExpanded;
@@ -30,6 +31,7 @@ class ProjectArchitectState extends Equatable {
   final bool uploadNewSheetRequested;
   final List<ProjectHistoryModel> projectHistory;
   final List<GetProThresholdFormValModel> projectThesholdFormfields;
+  final List<String> allReports;
   const ProjectArchitectState(
       {required this.clientList,
       required this.isNotExpanded,
@@ -43,7 +45,8 @@ class ProjectArchitectState extends Equatable {
       required this.errorReport,
       required this.uploadNewSheetRequested,
       required this.projectHistory,
-      required this.projectThesholdFormfields});
+      required this.projectThesholdFormfields,
+      required this.allReports});
 
   ProjectArchitectState copyWith(
       {List<ClientDetails>? clientList,
@@ -58,7 +61,8 @@ class ProjectArchitectState extends Equatable {
       String? errorReport,
       bool? uploadNewSheetRequested,
       List<ProjectHistoryModel>? projectHistory,
-      List<GetProThresholdFormValModel>? projectThesholdFormfields}) {
+      List<GetProThresholdFormValModel>? projectThesholdFormfields,
+      List<String>? allReports}) {
     return ProjectArchitectState(
         clientList: clientList ?? this.clientList,
         isNotExpanded: isNotExpanded ?? this.isNotExpanded,
@@ -73,7 +77,9 @@ class ProjectArchitectState extends Equatable {
         uploadNewSheetRequested:
             uploadNewSheetRequested ?? this.uploadNewSheetRequested,
         projectHistory: projectHistory ?? this.projectHistory,
-        projectThesholdFormfields:  projectThesholdFormfields ?? this.projectThesholdFormfields);
+        projectThesholdFormfields:
+            projectThesholdFormfields ?? this.projectThesholdFormfields,
+        allReports: allReports ?? this.allReports);
   }
 
   @override
@@ -90,6 +96,7 @@ class ProjectArchitectState extends Equatable {
         errorReport,
         uploadNewSheetRequested,
         projectHistory,
-        projectThesholdFormfields
+        projectThesholdFormfields,
+        allReports
       ];
 }
