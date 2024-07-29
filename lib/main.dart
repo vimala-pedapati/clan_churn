@@ -5,7 +5,6 @@ import 'package:clan_churn/churn_blocs/client/client_bloc.dart';
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/churn_blocs/sign_in_bloc/sign_in_bloc.dart';
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
-import 'package:clan_churn/components/reports.dart';
 import 'package:clan_churn/components/step_tracker.dart';
 import 'package:clan_churn/pages/admin_home_page.dart';
 import 'package:clan_churn/pages/create_client.dart';
@@ -13,7 +12,6 @@ import 'package:clan_churn/pages/forgot_password_screen.dart';
 import 'package:clan_churn/pages/home_page.dart';
 import 'package:clan_churn/pages/client_projects_view.dart';
 import 'package:clan_churn/pages/reset_password_link.dart';
-import 'package:clan_churn/pages/saved_projects.dart';
 import 'package:clan_churn/pages/sign_page.dart';
 import 'package:clan_churn/utils/routes.dart';
 import 'package:flutter/material.dart';
@@ -21,23 +19,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+import 'package:flutter_web_plugins/flutter_web_plugins.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // if (kIsWeb) {
-  //   HydratedBloc.storage = await HydratedStorage.build(
-  //       storageDirectory: HydratedStorage.webStorageDirectory);
-  // }
-  // FlutterSecureStorage storage = const FlutterSecureStorage();
+  setUrlStrategy(PathUrlStrategy()); 
   AuthRepo authRepository = AuthRepo();
   ApiRepository apiRepository = ApiRepository();
   runApp(ClanChurnApp(
     authRepository: authRepository,
     apiRepository: apiRepository,
   ));
-  // if (kIsWeb) {
-  //   setUrlStrategy( PathUrlStrategy());
-  // }
 }
 
 class ClanChurnApp extends StatelessWidget {
@@ -51,20 +44,40 @@ class ClanChurnApp extends StatelessWidget {
     final GoRouter router = GoRouter(
       routes: <GoRoute>[
         GoRoute(
-          path: AppRoutes.intial,
-          // builder: (BuildContext context, GoRouterState state) =>
-          //     BlocBuilder<SignInBloc, SignInBlocState>(
-          //       builder: (context, state) {
-          //         return const ClanChurnSignInPage();
-          //       },
-          //     )
-          pageBuilder: (context, state) => customPageRouteForGoRouter<void>(
+          path: AppRoutes.signIn,
+          pageBuilder: (context, state) {
+            return customPageRouteForGoRouter<void>(
               context: context,
               state: state,
-              child: const ClanChurnSignInPage()),
+              child: FutureBuilder<AuthCred>(
+                future: AuthRepo().getTokens(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return const Center(child: Text('Error occurred'));
+                  } else if (snapshot.hasData) {
+                    final AuthCred authCred = snapshot.data!;
+                    if (authCred.accessToken.isNotEmpty) {
+                      // Navigate to the home page if the access token is not empty
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        context.go(AppRoutes.home);
+                      });
+                      return const SizedBox(); // Return an empty widget as we're navigating
+                    }
+                    return const ClanChurnSignInPage();
+                  } else {
+                    return const Center(child: Text('No data'));
+                  }
+                },
+              ),
+            );
+          },
         ),
+
+      
         GoRoute(
-          path: AppRoutes.signIn,
+          path: AppRoutes.intial,
           pageBuilder: (context, state) => customPageRouteForGoRouter<void>(
               context: context,
               state: state,
