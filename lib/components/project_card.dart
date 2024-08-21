@@ -30,11 +30,11 @@ class ProjectCard extends StatelessWidget {
           child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                
                 CircleAvatar(
                   radius: state.isNotExpanded ? 40 : 35,
                   backgroundColor: Theme.of(context).colorScheme.background,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                  child: ClipOval(
                     child: Image.network(
                       "${state.selectedClient?.image}",
                       // loadingBuilder: ((context, child, loadingProgress) {
