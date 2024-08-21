@@ -292,12 +292,21 @@ class _CusThresholdFomFieldState extends State<CusThresholdFomField> {
         child: TextFormField(
           controller: controller, // Use the passed controller here
           textInputAction: widget.textInputAction,
-          onChanged: widget.onChanged,
+          onChanged: (value) {
+            String val = value == "-" ? "0" : value;
+            print("********************$val******************");
+            widget.onChanged(val);
+          },
           enabled: widget.isEnabled,
           inputFormatters: [
-            FilteringTextInputFormatter.digitsOnly,
+            FilteringTextInputFormatter.allow(RegExp(r'^-?\d*')),
             LengthLimitingTextInputFormatter(9),
           ],
+
+          // inputFormatters: [
+          //   FilteringTextInputFormatter.digitsOnly,
+          //   LengthLimitingTextInputFormatter(9),
+          // ],
           decoration: InputDecoration(
               hintText: "0",
               hintStyle: ClanChurnTypography.font18500.copyWith(

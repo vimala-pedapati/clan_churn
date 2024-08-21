@@ -21,10 +21,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  setUrlStrategy(PathUrlStrategy()); 
+  // setUrlStrategy(PathUrlStrategy());
   AuthRepo authRepository = AuthRepo();
   ApiRepository apiRepository = ApiRepository();
   runApp(ClanChurnApp(
@@ -75,7 +74,6 @@ class ClanChurnApp extends StatelessWidget {
           },
         ),
 
-      
         GoRoute(
           path: AppRoutes.intial,
           pageBuilder: (context, state) => customPageRouteForGoRouter<void>(
