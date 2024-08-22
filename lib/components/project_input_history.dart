@@ -20,38 +20,40 @@ void showHistory(BuildContext context) {
             borderRadius: BorderRadius.all(
           Radius.circular(0.0),
         )),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    IconButton(
-                      padding: EdgeInsets.zero,
-                      constraints: const BoxConstraints(),
-                      icon: Icon(
-                        Icons.keyboard_backspace,
-                        color: Theme.of(context).colorScheme.secondary,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      IconButton(
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints(),
+                        icon: Icon(
+                          Icons.keyboard_backspace,
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
                       ),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                    ClanChurnSpacing.w10,
-                    SelectableText(
-                      "History",
-                      style: ClanChurnTypography.font24600,
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            ClanChurnSpacing.h20,
-            const HistoryBody()
-          ],
+                      ClanChurnSpacing.w10,
+                      SelectableText(
+                        "History",
+                        style: ClanChurnTypography.font24600,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              ClanChurnSpacing.h20,
+              const HistoryBody()
+            ],
+          ),
         ),
       ),
     ),

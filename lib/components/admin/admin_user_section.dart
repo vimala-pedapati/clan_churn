@@ -60,7 +60,6 @@ class _UsersCardState extends State<UsersCard> {
   void initState() {
     context.read<UserBloc>().add(GetUserDetailsEvent(context: context));
     context.read<UserBloc>().add(GetAllUsersEvent(
-       
           onErrorCallback: (errorMessage, errorCode) {},
           onSuccessCallback: (message) {},
         ));
@@ -159,10 +158,9 @@ class UserCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CircleAvatar(
-                  radius: state.isNotExpanded ? 40 : 35,
+                  radius: 40,
                   backgroundColor: Theme.of(context).colorScheme.background,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                  child: ClipOval(
                     child: Image.network(
                       "${user.image}",
                       // loadingBuilder: ((context, child, loadingProgress) {

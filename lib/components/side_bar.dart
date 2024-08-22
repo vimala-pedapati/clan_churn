@@ -157,7 +157,7 @@ class _SideBarState extends State<SideBar> {
       onTap: widget.selectedRoute == SelectedRoute.savedReports
           ? null
           : () {
-              GoRouter.of(context).go(AppRoutes.savedProjects);
+              GoRouter.of(context).go(AppRoutes.savedReports);
             },
       child: buildButtonContainer(
         icon: Icons.save,

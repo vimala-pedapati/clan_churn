@@ -27,10 +27,9 @@ class AdminClientCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CircleAvatar(
-                  radius: state.isNotExpanded ? 40 : 35,
+                  radius: 40,
                   backgroundColor: Theme.of(context).colorScheme.background,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                  child: ClipOval(
                     child: Image.network(
                       "${client.image}",
                       // loadingBuilder: ((context, child, loadingProgress) {

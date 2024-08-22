@@ -114,8 +114,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                             radius: 18,
                             backgroundColor:
                                 Theme.of(context).colorScheme.background,
-                            child: Padding(
-                              padding: const EdgeInsets.all(5.0),
+                            child: ClipOval(
                               child: Image.network(
                                 "${state.user!.image}",
                                 // loadingBuilder:

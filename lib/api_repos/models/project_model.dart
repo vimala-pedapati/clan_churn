@@ -330,9 +330,9 @@ extension InputStatusExtension on InputStatus {
   String get properValue {
     switch (this) {
       case InputStatus.uploadedDataSuccessful:
-        return "uploded data successfull";
+        return "uploded data successful";
       case InputStatus.uploadedDataUnsuccessful:
-        return "uploded data unsucessfull";
+        return "uploded data unsucessful";
       case InputStatus.uploadedDataHasErrors:
         return "uploded data has errors";
       case InputStatus.uploadedDataHasNoErrors:
