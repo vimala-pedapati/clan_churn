@@ -313,7 +313,7 @@ class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
                     ),
                   ),
                 ),
-                Text("$isPasswordVisible"),
+
                 // submit
                 ShowUpAnimation(
                   delayStart: const Duration(milliseconds: 2000),
