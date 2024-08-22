@@ -256,9 +256,8 @@ class _PerformanceReportState extends State<PerformanceReport> {
                                   child: fetching
                                       ? Center(
                                           child: Image.asset(
-                                            "assets/loading.gif",
-                                            width: 40,
-                                            height: 40,
+                                              "assets/upload.gif",
+                                              width: 100
                                           ),
                                         )
                                       : Container(

@@ -792,7 +792,7 @@ class _UploadedExcelSummaryReportState
             jsonObject == null ? buildLoadingIndicator() : buildDataView(),
           ],
         ),
-          // PerformanceReport()
+        // PerformanceReport()
       ],
     );
   }
@@ -840,7 +840,10 @@ class _UploadedExcelSummaryReportState
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            const Icon(Icons.history, size: 20,),
+            const Icon(
+              Icons.history,
+              size: 20,
+            ),
             Text(
               "History",
               style: ClanChurnTypography.font14900
@@ -859,7 +862,7 @@ class _UploadedExcelSummaryReportState
   Widget buildLoadingIndicator() {
     return Expanded(
       child: Center(
-        child: Image.asset("assets/loading.gif", width: 30),
+        child: Image.asset("assets/upload.gif", width: 100),
       ),
     );
   }
@@ -911,7 +914,7 @@ class _UploadedExcelSummaryReportState
       children: [
         Text(
           "Select Sheet",
-          style:  ClanChurnTypography.font14900,
+          style: ClanChurnTypography.font14900,
         ),
         ClanChurnSpacing.w10,
         SizedBox(
@@ -923,7 +926,7 @@ class _UploadedExcelSummaryReportState
               hint: Row(children: [
                 Text(
                   'Select Sheet',
-                  style:  ClanChurnTypography.font14900,
+                  style: ClanChurnTypography.font14900,
                   overflow: TextOverflow.ellipsis,
                 )
               ]),
@@ -932,7 +935,7 @@ class _UploadedExcelSummaryReportState
                         value: item,
                         child: Text(
                           item,
-                          style:  ClanChurnTypography.font14900.copyWith(
+                          style: ClanChurnTypography.font14900.copyWith(
                               color: Theme.of(context).colorScheme.background),
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -1012,7 +1015,7 @@ class _UploadedExcelSummaryReportState
       children: [
         Text(
           "Select Column",
-          style:  ClanChurnTypography.font14900,
+          style: ClanChurnTypography.font14900,
         ),
         ClanChurnSpacing.w10,
         SizedBox(
@@ -1025,7 +1028,7 @@ class _UploadedExcelSummaryReportState
                 children: [
                   Text(
                     'Select Column',
-                    style:  ClanChurnTypography.font14900,
+                    style: ClanChurnTypography.font14900,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ],
@@ -1035,7 +1038,7 @@ class _UploadedExcelSummaryReportState
                         value: item,
                         child: Text(
                           item,
-                          style:  ClanChurnTypography.font14900.copyWith(
+                          style: ClanChurnTypography.font14900.copyWith(
                               color: Theme.of(context).colorScheme.background),
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -1049,7 +1052,7 @@ class _UploadedExcelSummaryReportState
                       children: [
                         Text(
                           item,
-                          style:  ClanChurnTypography.font14900.copyWith(
+                          style: ClanChurnTypography.font14900.copyWith(
                               color: Theme.of(context).colorScheme.secondary),
                         ),
                       ],
@@ -1114,7 +1117,6 @@ class _UploadedExcelSummaryReportState
       padding: const EdgeInsets.only(left: 0, right: 0, bottom: 20),
       child: Wrap(
         runSpacing: 10,
-       
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1266,6 +1268,7 @@ class _UploadedExcelSummaryReportState
                 title: "View Error Report",
                 onHoverTextChange: "Download Error Report",
                 onPressed: () {
+                  GetDialog.uploadFile(context);
                   context
                       .read<ProjectArchitectBloc>()
                       .add(DownloadErrorReportEvent(
@@ -1276,8 +1279,11 @@ class _UploadedExcelSummaryReportState
                                 .createdProject!
                                 .latestInput ??
                             "",
-                        onSuccessCallback: (message) {},
+                        onSuccessCallback: (message) {
+                          Navigator.pop(context);
+                        },
                         onErrorCallback: (errorMessage, errorCode) {
+                          Navigator.pop(context);
                           print(
                               "Download Error Report...${state.createdProject!.latestInput}..$errorMessage $errorCode");
                           GetDialog.failedErrorReport(context, errorMessage);
