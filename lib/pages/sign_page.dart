@@ -26,6 +26,7 @@ class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
   String password = '';
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _isHovered = false;
+  bool isPasswordVisible = false;
   void _onHover(bool isHovered) {
     setState(() {
       _isHovered = isHovered;
@@ -39,6 +40,7 @@ class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
     final shadowColor = Theme.of(context).colorScheme.shadow;
     final background = Theme.of(context).colorScheme.background;
     final secondary2 = Theme.of(context).colorScheme.onSecondary;
+
     return ResponsiveBuilder(builder: (context, sizingInformation) {
       Widget a = Container(
         // color: Colors.amber,
@@ -198,6 +200,57 @@ class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
                   ),
                 ),
                 // password input field
+                // ShowUpAnimation(
+                //   delayStart: const Duration(milliseconds: 1500),
+                //   animationDuration: const Duration(seconds: 2),
+                //   curve: Curves.easeInOutCubicEmphasized,
+                //   direction: Direction.horizontal,
+                //   offset: 0.9,
+                //   child: Container(
+                //     width: w * 0.3,
+                //     // height: h * 0.05,
+                //     decoration: BoxDecoration(
+                //         // color: const Color.fromRGBO(56, 56, 56, 0.1),
+                //         borderRadius: BorderRadius.circular(8.0)),
+                //     margin: const EdgeInsets.only(top: 5, bottom: 25),
+                //     child: TextFormField(
+                //       controller: passwordController,
+                //       keyboardType: TextInputType.emailAddress,
+                //       autofocus: false,
+                //       obscureText: true,
+                //       textInputAction: TextInputAction.next,
+                //       obscuringCharacter: '*',
+                //       style: ClanChurnTypography.font18500.copyWith(
+                //           fontSize: SignInRespUi.respSignFont(context, 18)),
+                //       decoration: InputDecoration(
+                //         hintText: 'Enter Password',
+                //         hintStyle: ClanChurnTypography.font18500
+                //             .copyWith(color: secondary2),
+                //         contentPadding:
+                //             const EdgeInsets.only(top: 10, left: 10, right: 10),
+                //         errorBorder: OutlineInputBorder(
+                //             gapPadding: 0,
+                //             borderRadius: BorderRadius.circular(8.0)),
+                //         border: OutlineInputBorder(
+                //             borderRadius: BorderRadius.circular(8.0)),
+                //       ),
+                //       onChanged: (value) {
+                //         setState(() {
+                //           password = value;
+                //         });
+                //       },
+                //       validator: (String? val) {
+                //         // if (val == null || val.isEmpty) {
+                //         //   return "Password shouldn't be empty";
+                //         // }
+                //         // return null;
+                //       },
+                //       onSaved: (String? val) {
+                //         // You can add functionality here if needed
+                //       },
+                //     ),
+                //   ),
+                // ),
                 ShowUpAnimation(
                   delayStart: const Duration(milliseconds: 1500),
                   animationDuration: const Duration(seconds: 2),
@@ -206,20 +259,20 @@ class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
                   offset: 0.9,
                   child: Container(
                     width: w * 0.3,
-                    // height: h * 0.05,
                     decoration: BoxDecoration(
-                        // color: const Color.fromRGBO(56, 56, 56, 0.1),
-                        borderRadius: BorderRadius.circular(8.0)),
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
                     margin: const EdgeInsets.only(top: 5, bottom: 25),
                     child: TextFormField(
                       controller: passwordController,
-                      keyboardType: TextInputType.emailAddress,
+                      keyboardType: TextInputType.text,
                       autofocus: false,
-                      obscureText: true,
+                      obscureText: !isPasswordVisible, // Toggle visibility
                       textInputAction: TextInputAction.next,
                       obscuringCharacter: '*',
                       style: ClanChurnTypography.font18500.copyWith(
-                          fontSize: SignInRespUi.respSignFont(context, 18)),
+                        fontSize: SignInRespUi.respSignFont(context, 18),
+                      ),
                       decoration: InputDecoration(
                         hintText: 'Enter Password',
                         hintStyle: ClanChurnTypography.font18500
@@ -227,10 +280,24 @@ class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
                         contentPadding:
                             const EdgeInsets.only(top: 10, left: 10, right: 10),
                         errorBorder: OutlineInputBorder(
-                            gapPadding: 0,
-                            borderRadius: BorderRadius.circular(8.0)),
+                          gapPadding: 0,
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
                         border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8.0)),
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            isPasswordVisible
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              isPasswordVisible = !isPasswordVisible;
+                            });
+                          },
+                        ),
                       ),
                       onChanged: (value) {
                         setState(() {
@@ -238,17 +305,15 @@ class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
                         });
                       },
                       validator: (String? val) {
-                        // if (val == null || val.isEmpty) {
-                        //   return "Password shouldn't be empty";
-                        // }
-                        // return null;
+                        // You can add validation logic here
                       },
                       onSaved: (String? val) {
-                        // You can add functionality here if needed
+                        // You can add save functionality here if needed
                       },
                     ),
                   ),
                 ),
+                Text("$isPasswordVisible"),
                 // submit
                 ShowUpAnimation(
                   delayStart: const Duration(milliseconds: 2000),
@@ -318,14 +383,15 @@ class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         InkWell(
-                          onTap: (){
-                              GoRouter.of(context).go(AppRoutes.forgotPassword);
+                          onTap: () {
+                            GoRouter.of(context).go(AppRoutes.forgotPassword);
                           },
                           child: Text("Forgot Password?",
                               style: ClanChurnTypography.font18500.copyWith(
                                   fontSize:
                                       SignInRespUi.respSignFont(context, 18),
-                                  color: Theme.of(context).colorScheme.primary)),
+                                  color:
+                                      Theme.of(context).colorScheme.primary)),
                         ),
                       ],
                     ),
