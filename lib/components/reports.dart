@@ -71,40 +71,70 @@ class _PerformanceReportState extends State<PerformanceReport> {
     setState(() {
       fetching = true;
     });
+    
+    setState(() {
+      selectedItem = widget.reportName;
+    });
 
-    context.read<ProjectArchitectBloc>().add(GetAllReportsEvent(
-          onErrorCallback: (errorMessage, errorCode) {},
-          onSuccessCallback: (message) {
-            selectedItem = (json.decode(message!.body) as Iterable)
-                .map((e) => e.toString())
-                .toList()[0];
-            context.read<ProjectArchitectBloc>().add(GetReportDataEvent(
-                inputId: widget.inputId,
-                reportName: selectedItem,
-                onErrorCallback: (errorMessage, errorCode) {
-                  setState(() {
-                    apiError = true;
-                  });
-                },
-                onSuccessCallback: (message) {
-                  setState(() {
-                    fetching = false;
-                  });
-                  if (message != null) {
-                    Map<String, dynamic> jsonObject = json.decode(message.body);
-                    setState(() {
-                      data = jsonObject;
-                      selectedMonths = data.keys.toList();
-                      selectedMonthsTemp = data.keys.toList();
-                      metrics =
-                          (data[selectedMonths[0]] as Map<String, dynamic>)
-                              .keys
-                              .toList();
-                    });
-                  }
-                }));
-          },
-        ));
+    context.read<ProjectArchitectBloc>().add(GetReportDataEvent(
+        inputId: widget.inputId,
+        reportName: widget.reportName,
+        onErrorCallback: (errorMessage, errorCode) {
+          setState(() {
+            apiError = true;
+          });
+        },
+        onSuccessCallback: (message) {
+          setState(() {
+            fetching = false;
+          });
+          if (message != null) {
+            Map<String, dynamic> jsonObject = json.decode(message.body);
+            setState(() {
+              data = jsonObject;
+              selectedMonths = data.keys.toList();
+              selectedMonthsTemp = data.keys.toList();
+              metrics = (data[selectedMonths[0]] as Map<String, dynamic>)
+                  .keys
+                  .toList();
+            });
+          }
+        }));
+
+
+    // context.read<ProjectArchitectBloc>().add(GetAllReportsEvent(
+    //       onErrorCallback: (errorMessage, errorCode) {},
+    //       onSuccessCallback: (message) {
+    //         selectedItem = (json.decode(message!.body) as Iterable)
+    //             .map((e) => e.toString())
+    //             .toList()[0];
+    //         context.read<ProjectArchitectBloc>().add(GetReportDataEvent(
+    //             inputId: widget.inputId,
+    //             reportName: selectedItem,
+    //             onErrorCallback: (errorMessage, errorCode) {
+    //               setState(() {
+    //                 apiError = true;
+    //               });
+    //             },
+    //             onSuccessCallback: (message) {
+    //               setState(() {
+    //                 fetching = false;
+    //               });
+    //               if (message != null) {
+    //                 Map<String, dynamic> jsonObject = json.decode(message.body);
+    //                 setState(() {
+    //                   data = jsonObject;
+    //                   selectedMonths = data.keys.toList();
+    //                   selectedMonthsTemp = data.keys.toList();
+    //                   metrics =
+    //                       (data[selectedMonths[0]] as Map<String, dynamic>)
+    //                           .keys
+    //                           .toList();
+    //                 });
+    //               }
+    //             }));
+    //       },
+    //     ));
 
     _subTableYController.addListener(() {
       _columnController.jumpTo(_subTableYController.position.pixels);
@@ -257,8 +287,7 @@ class _PerformanceReportState extends State<PerformanceReport> {
                                       ? Center(
                                           child: Image.asset(
                                               "assets/upload.gif",
-                                              width: 100
-                                          ),
+                                              width: 100),
                                         )
                                       : Container(
                                           child: apiError

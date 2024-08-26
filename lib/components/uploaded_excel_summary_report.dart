@@ -657,6 +657,10 @@ class _UploadedExcelSummaryReportState
   void initState() {
     super.initState();
     initializeData();
+    context.read<ProjectArchitectBloc>().add(GetAllReportsEvent(
+          onErrorCallback: (errorMessage, errorCode) {},
+          onSuccessCallback: (message) {},
+        ));
   }
 
   // void goToNextPage() {

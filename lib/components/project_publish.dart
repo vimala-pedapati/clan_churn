@@ -255,14 +255,17 @@ class _GetPublishButtonState extends State<GetPublishButton> {
                             InputStatus.uploadedDataHasNoErrors ||
                         state.createdProject?.latestInputModel?.inputStatus ==
                             InputStatus.uploadedDataDataMartsGenerated) {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const PerformanceReport(
-                              inputId: "666ad1898a6200fad12f7ae3",
-                              reportName: "sample",
-                            ),
-                          ));
+                      if (state.allReports.isNotEmpty) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PerformanceReport(
+                                inputId: state.createdProject!.id,
+                                reportName: state.allReports.first,
+                              ),
+                            ));
+                      }
+                      
                     }
                   }
                 : null,
