@@ -1,6 +1,7 @@
 class BaseUrl {
   // test url
-  static String baseUrl = "https://churnapi.clanonline.in";
+  // static String baseUrl = "https://churnapi.clanonline.in";
+  static String baseUrl = "https://churn-120996668109.asia-south1.run.app";
 
   // production url
   // static String baseUrl =
