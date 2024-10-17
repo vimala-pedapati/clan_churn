@@ -8,6 +8,7 @@ class ProjectArchitectState extends Equatable {
             selectedClient: null,
             projectsList: const [],
             columnsList: const [],
+            columnsFetching: false,
             createdProject: null,
             projectCreating: false,
             customerColumnNames: const [],
@@ -23,6 +24,7 @@ class ProjectArchitectState extends Equatable {
   final ClientDetails? selectedClient;
   final List<Project> projectsList;
   final List<ColumnDetails> columnsList;
+  final bool columnsFetching;
   final Project? createdProject;
   final bool projectCreating;
   final List<TextEditingController> customerColumnNames;
@@ -38,6 +40,7 @@ class ProjectArchitectState extends Equatable {
       required this.selectedClient,
       required this.projectsList,
       required this.columnsList,
+      required this.columnsFetching,
       required this.createdProject,
       required this.projectCreating,
       required this.customerColumnNames,
@@ -48,37 +51,38 @@ class ProjectArchitectState extends Equatable {
       required this.projectThesholdFormfields,
       required this.allReports});
 
-  ProjectArchitectState copyWith(
-      {List<ClientDetails>? clientList,
-      bool? isNotExpanded,
-      ClientDetails? selectedClient,
-      List<Project>? projectsList,
-      List<ColumnDetails>? columnsList,
-      Project? createdProject,
-      bool? projectCreating,
-      List<TextEditingController>? customerColumnNames,
-      bool? uploadingFile,
-      String? errorReport,
-      bool? uploadNewSheetRequested,
-      List<ProjectHistoryModel>? projectHistory,
-      List<GetProThresholdFormValModel>? projectThesholdFormfields,
-      List<String>? allReports}) {
+  ProjectArchitectState copyWith({
+    List<ClientDetails>? clientList,
+    bool? isNotExpanded,
+    ClientDetails? selectedClient,
+    List<Project>? projectsList,
+    List<ColumnDetails>? columnsList,
+    bool? columnsFetching,
+    Project? createdProject,
+    bool? projectCreating,
+    List<TextEditingController>? customerColumnNames,
+    bool? uploadingFile,
+    String? errorReport,
+    bool? uploadNewSheetRequested,
+    List<ProjectHistoryModel>? projectHistory,
+    List<GetProThresholdFormValModel>? projectThesholdFormfields,
+    List<String>? allReports,
+  }) {
     return ProjectArchitectState(
         clientList: clientList ?? this.clientList,
         isNotExpanded: isNotExpanded ?? this.isNotExpanded,
         selectedClient: selectedClient ?? this.selectedClient,
         projectsList: projectsList ?? this.projectsList,
         columnsList: columnsList ?? this.columnsList,
+        columnsFetching: columnsFetching ?? this.columnsFetching,
         createdProject: createdProject ?? this.createdProject,
         projectCreating: projectCreating ?? this.projectCreating,
         customerColumnNames: customerColumnNames ?? this.customerColumnNames,
         uploadingFile: uploadingFile ?? this.uploadingFile,
         errorReport: errorReport ?? this.errorReport,
-        uploadNewSheetRequested:
-            uploadNewSheetRequested ?? this.uploadNewSheetRequested,
+        uploadNewSheetRequested: uploadNewSheetRequested ?? this.uploadNewSheetRequested,
         projectHistory: projectHistory ?? this.projectHistory,
-        projectThesholdFormfields:
-            projectThesholdFormfields ?? this.projectThesholdFormfields,
+        projectThesholdFormfields: projectThesholdFormfields ?? this.projectThesholdFormfields,
         allReports: allReports ?? this.allReports);
   }
 
@@ -89,6 +93,7 @@ class ProjectArchitectState extends Equatable {
         selectedClient,
         projectsList,
         columnsList,
+        columnsFetching,
         createdProject,
         projectCreating,
         customerColumnNames,
@@ -97,6 +102,6 @@ class ProjectArchitectState extends Equatable {
         uploadNewSheetRequested,
         projectHistory,
         projectThesholdFormfields,
-        allReports
+        allReports,
       ];
 }

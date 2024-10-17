@@ -34,8 +34,7 @@ void downloadFile(String url, BuildContext context) async {
     Blob blob = Blob([response.bodyBytes]);
 
     // Create an anchor element
-    AnchorElement anchorElement =
-        AnchorElement(href: Url.createObjectUrlFromBlob(blob));
+    AnchorElement anchorElement = AnchorElement(href: Url.createObjectUrlFromBlob(blob));
     anchorElement.download = fileName;
     anchorElement.click(); // initiate download
   } catch (e) {
@@ -46,8 +45,7 @@ void downloadFile(String url, BuildContext context) async {
 }
 
 class ColumnsToChooseWidget extends StatelessWidget {
-  const ColumnsToChooseWidget(
-      {super.key, required this.projectName, required this.onBackPressed});
+  const ColumnsToChooseWidget({super.key, required this.projectName, required this.onBackPressed});
   final String projectName;
   final Function() onBackPressed;
 
@@ -84,9 +82,12 @@ class ColumnsToChooseWidget extends StatelessWidget {
                       : (state.createdProject!.id.isEmpty)
                           ? 0.4
                           : 1.0,
-                  child: InputSheetColumns(
-                      columnsList: state.columnsList,
-                      customerColumnNames: state.customerColumnNames),
+                  child: state.columnsFetching
+                      ? const Center(child: CircularProgressIndicator())
+                      : InputSheetColumns(
+                          columnsList: state.columnsList,
+                          customerColumnNames: state.customerColumnNames,
+                        ),
                 ),
               ),
             ),
@@ -94,25 +95,15 @@ class ColumnsToChooseWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 ElevatedButton(
-                  onPressed: (projectName.isEmpty ||
-                          state.createdProject == null)
+                  onPressed: (projectName.isEmpty || state.createdProject == null)
                       ? null
                       : (state.createdProject!.id.isEmpty)
                           ? null
                           : () {
-                              context
-                                  .read<ProjectArchitectBloc>()
-                                  .add(AddColumnsToProjectEvent(
-                                    onErrorCallback:
-                                        (errorMessage, errorCode) {},
+                              context.read<ProjectArchitectBloc>().add(AddColumnsToProjectEvent(
+                                    onErrorCallback: (errorMessage, errorCode) {},
                                     onSuccessCallback: (message) {
-                                      context.read<ProjectArchitectBloc>().add(
-                                          GetProjectsListEvent(
-                                              clientId: context
-                                                  .read<ProjectArchitectBloc>()
-                                                  .state
-                                                  .selectedClient!
-                                                  .id));
+                                      context.read<ProjectArchitectBloc>().add(GetProjectsListEvent(clientId: context.read<ProjectArchitectBloc>().state.selectedClient!.id));
                                     },
                                   ));
 
@@ -142,8 +133,7 @@ class InputSheetColumns extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Grouping the columns by sheetName
-    Map<String, List<ColumnDetails>> groupedColumns =
-        groupBySheetName(columnsList);
+    Map<String, List<ColumnDetails>> groupedColumns = groupBySheetName(columnsList);
 
     return SingleChildScrollView(
       child: Column(
@@ -158,8 +148,7 @@ class InputSheetColumns extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: Text(
                   "\n $sheetName",
-                  style: const TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ),
               Wrap(
@@ -172,14 +161,11 @@ class InputSheetColumns extends StatelessWidget {
                     children: [
                       Checkbox(
                         value: column.isUserCheckedIn,
-                        onChanged: column.isMandatory &&
-                                !hasDependentColumns(column, columnsList)
+                        onChanged: column.isMandatory && !hasDependentColumns(column, columnsList)
                             ? null
                             : (value) {
-                                List<ColumnDetails> updatedList =
-                                    columnsList.toList();
-                                ColumnDetails updatedColumn =
-                                    column.copyWith(isUserCheckedIn: value);
+                                List<ColumnDetails> updatedList = columnsList.toList();
+                                ColumnDetails updatedColumn = column.copyWith(isUserCheckedIn: value);
 
                                 // Update the current column
                                 updatedList[globalIndex] = updatedColumn;
@@ -195,20 +181,14 @@ class InputSheetColumns extends StatelessWidget {
                                 };
 
                                 // Function to check if at least one set is selected
-                                bool isValidSelection(
-                                    List<ColumnDetails> columns) {
-                                  bool set1Selected = set1.any((id) => columns
-                                      .firstWhere((col) => col.id == id)
-                                      .isUserCheckedIn);
-                                  bool set2Selected = set2.any((id) => columns
-                                      .firstWhere((col) => col.id == id)
-                                      .isUserCheckedIn);
+                                bool isValidSelection(List<ColumnDetails> columns) {
+                                  bool set1Selected = set1.any((id) => columns.firstWhere((col) => col.id == id).isUserCheckedIn);
+                                  bool set2Selected = set2.any((id) => columns.firstWhere((col) => col.id == id).isUserCheckedIn);
                                   return set1Selected || set2Selected;
                                 }
 
                                 // Check if the column is mandatory and does not have dependencies
-                                if (column.isMandatory &&
-                                    !hasDependentColumns(column, columnsList)) {
+                                if (column.isMandatory && !hasDependentColumns(column, columnsList)) {
                                   // Allow only if mandatory and no dependencies
                                   return;
                                 }
@@ -216,8 +196,7 @@ class InputSheetColumns extends StatelessWidget {
                                 // Check if unselecting is valid
                                 if (value == false) {
                                   // Uncheck dependent columns if unchecked
-                                  updatedList = handleDependencies(
-                                      updatedList, updatedColumn.id, false);
+                                  updatedList = handleDependencies(updatedList, updatedColumn.id, false);
 
                                   // Check if remaining columns satisfy the condition
                                   if (!isValidSelection(updatedList)) {
@@ -234,8 +213,7 @@ class InputSheetColumns extends StatelessWidget {
                                         ),
                                         actions: <Widget>[
                                           TextButton(
-                                            onPressed: () =>
-                                                Navigator.of(context).pop(),
+                                            onPressed: () => Navigator.of(context).pop(),
                                             child: const Text('OK'),
                                           ),
                                         ],
@@ -245,14 +223,10 @@ class InputSheetColumns extends StatelessWidget {
                                   }
                                 } else {
                                   // Check dependent columns if checked
-                                  updatedList = handleDependencies(
-                                      updatedList, updatedColumn.id, true);
+                                  updatedList = handleDependencies(updatedList, updatedColumn.id, true);
                                 }
 
-                                context.read<ProjectArchitectBloc>().add(
-                                    ReplaceColumnsEvent(
-                                        columns: updatedList,
-                                        index: globalIndex));
+                                context.read<ProjectArchitectBloc>().add(ReplaceColumnsEvent(columns: updatedList, index: globalIndex));
                               },
                       ),
                       // Checkbox(
@@ -308,11 +282,7 @@ class InputSheetColumns extends StatelessWidget {
                                 onChanged: (value) {
                                   customerColumnNames[globalIndex].text = value;
                                 },
-                                decoration: InputDecoration(
-                                    hintText: "$globalIndex ${column.id}",
-                                    contentPadding: const EdgeInsets.only(
-                                        left: 10, right: 10),
-                                    border: const OutlineInputBorder()),
+                                decoration: InputDecoration(hintText: "$globalIndex ${column.id}", contentPadding: const EdgeInsets.only(left: 10, right: 10), border: const OutlineInputBorder()),
                               ),
                             ),
                           ],
@@ -330,14 +300,12 @@ class InputSheetColumns extends StatelessWidget {
   }
 
   bool hasDependentColumns(ColumnDetails column, List<ColumnDetails> columns) {
-    List<ColumnDetails> dependentColumns =
-        columns.where((col) => col.depends == column.id).toList();
+    List<ColumnDetails> dependentColumns = columns.where((col) => col.depends == column.id).toList();
     return dependentColumns.isNotEmpty;
   }
 
   // Function to group ColumnDetails by sheetName
-  Map<String, List<ColumnDetails>> groupBySheetName(
-      List<ColumnDetails> columns) {
+  Map<String, List<ColumnDetails>> groupBySheetName(List<ColumnDetails> columns) {
     Map<String, List<ColumnDetails>> groupedColumns = {};
     for (var column in columns) {
       if (!groupedColumns.containsKey(column.sheetName)) {
@@ -348,8 +316,7 @@ class InputSheetColumns extends StatelessWidget {
     return groupedColumns;
   }
 
-  List<ColumnDetails> handleDependencies(
-      List<ColumnDetails> columnsList, String columnId, bool isChecked) {
+  List<ColumnDetails> handleDependencies(List<ColumnDetails> columnsList, String columnId, bool isChecked) {
     List<ColumnDetails> updatedList = columnsList.toList();
 
     for (int i = 0; i < updatedList.length; i++) {
@@ -357,8 +324,7 @@ class InputSheetColumns extends StatelessWidget {
         updatedList[i] = updatedList[i].copyWith(isUserCheckedIn: isChecked);
         if (!isChecked) {
           // If unchecking, recursively uncheck dependents
-          updatedList =
-              handleDependencies(updatedList, updatedList[i].id, false);
+          updatedList = handleDependencies(updatedList, updatedList[i].id, false);
         }
       }
     }
