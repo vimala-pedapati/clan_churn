@@ -282,7 +282,11 @@ class InputSheetColumns extends StatelessWidget {
                                 onChanged: (value) {
                                   customerColumnNames[globalIndex].text = value;
                                 },
-                                decoration: InputDecoration(hintText: "$globalIndex ${column.id}", contentPadding: const EdgeInsets.only(left: 10, right: 10), border: const OutlineInputBorder()),
+                                decoration: const InputDecoration(
+                                  hintText: "",
+                                  contentPadding: EdgeInsets.only(left: 10, right: 10),
+                                  border: OutlineInputBorder(),
+                                ),
                               ),
                             ),
                           ],
