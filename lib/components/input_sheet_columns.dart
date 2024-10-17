@@ -280,7 +280,7 @@ class InputSheetColumns extends StatelessWidget {
                                 enabled: column.isUserCheckedIn,
                                 cursorHeight: 15,
                                 onChanged: (value) {
-                                  customerColumnNames[globalIndex].text = value;
+                                  // customerColumnNames[globalIndex].text = value;
                                 },
                                 decoration: const InputDecoration(
                                   hintText: "",
