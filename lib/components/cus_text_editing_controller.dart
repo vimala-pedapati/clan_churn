@@ -68,12 +68,10 @@ class CusTextEditingController extends StatelessWidget {
             )),
         SizedBox(
           width: width ?? 400,
-          child: Flexible(
-            child: Text(
-              errorText ?? "",
-              overflow: TextOverflow.ellipsis,
-              style: ClanChurnTypography.font12600.copyWith(color: Theme.of(context).colorScheme.error, fontWeight: FontWeight.normal),
-            ),
+          child: Text(
+            errorText ?? "",
+            overflow: TextOverflow.ellipsis,
+            style: ClanChurnTypography.font12600.copyWith(color: Theme.of(context).colorScheme.error, fontWeight: FontWeight.normal),
           ),
         )
       ],

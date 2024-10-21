@@ -470,12 +470,10 @@ class _UpdateClientBodyState extends State<UpdateClientBody> {
                                   ),
                                   SizedBox(
                                     width: 400,
-                                    child: Flexible(
-                                      child: Text(
-                                        assignedProjectArchitects.isEmpty ? "A project architect should be assigned." : "",
-                                        overflow: TextOverflow.ellipsis,
-                                        style: ClanChurnTypography.font12600.copyWith(color: Theme.of(context).colorScheme.error, fontWeight: FontWeight.normal),
-                                      ),
+                                    child: Text(
+                                      assignedProjectArchitects.isEmpty ? "A project architect should be assigned." : "",
+                                      overflow: TextOverflow.ellipsis,
+                                      style: ClanChurnTypography.font12600.copyWith(color: Theme.of(context).colorScheme.error, fontWeight: FontWeight.normal),
                                     ),
                                   )
                                 ],
