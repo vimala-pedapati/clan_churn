@@ -1,7 +1,7 @@
 class Validation {
   static String? validateCustomerName(String value) {
     if (value.trim().isEmpty) {
-      return 'Clinet name cannot be empty';
+      return 'Client name cannot be empty';
     }
     if (value.length < 10) {
       return 'Minimum Character Limit not met, please contact Admin';
