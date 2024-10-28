@@ -128,9 +128,28 @@ class User extends Equatable {
         "user_type": userType.value,
         "image": image,
       };
+  User copyWith({
+    ClientDetails? clientDetails,
+    String? firstName,
+    String? lastName,
+    String? email,
+    String? userId,
+    UserType? userType,
+    String? image,
+  }) {
+    return User(
+      clientDetails: clientDetails ?? this.clientDetails,
+      firstName: firstName ?? this.firstName,
+      lastName: lastName ?? this.lastName,
+      email: email ?? this.email,
+      userId: userId ?? this.userId,
+      userType: userType ?? this.userType,
+      image: image ?? this.image,
+    );
+  }
 
   @override
-  List<Object?> get props => [userId, firstName, lastName, email, userType, clientDetails];
+  List<Object?> get props => [userId, firstName, lastName, email, userType, clientDetails, image];
   // List<Object?> get props => [
   //       userId,
   //     ];

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:clan_churn/api_repos/api_repo.dart';
 import 'package:clan_churn/api_repos/models/user_model.dart';
 import 'package:clan_churn/churn_blocs/client/client_bloc.dart';
@@ -5,7 +7,6 @@ import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
 import 'package:clan_churn/components/cus_text.dart';
 import 'package:clan_churn/components/cus_text_editing_controller.dart';
 import 'package:clan_churn/components/dialogs.dart';
-import 'package:clan_churn/components/project_card.dart';
 import 'package:clan_churn/pages/create_client.dart';
 import 'package:clan_churn/utils/routes.dart';
 import 'package:clan_churn/utils/typography.dart';
@@ -18,8 +19,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class UpdateUser extends StatefulWidget {
-  const UpdateUser({super.key, required this.user});
+  const UpdateUser({super.key, required this.user, required this.index});
   final User user;
+  final int index;
 
   @override
   State<UpdateUser> createState() => _UpdateUserState();
@@ -48,13 +50,11 @@ class _UpdateUserState extends State<UpdateUser> {
     if (selectedType == null) {
       return 'Should select one type';
     }
-    if (context.read<ClientBloc>().state.clientUploadLogoResponse == null &&
-        selectedType == null) {
+    if (context.read<ClientBloc>().state.clientUploadLogoResponse == null && selectedType == null) {
       return 'Profile pic is required';
     }
     if (password.text.isNotEmpty) {
-      if (!(password.text.length >= 6 &&
-          password.text == confirmPassword.text)) {
+      if (!(password.text.length >= 6 && password.text == confirmPassword.text)) {
         return 'Password is too weak';
       }
     }
@@ -86,12 +86,10 @@ class _UpdateUserState extends State<UpdateUser> {
     password.addListener(_validateForm);
     context.read<UserBloc>().add(GetUserTypesEvent(
           onErrorCallback: (errorMessage, errorCode) {
-            print(
-                'on error call back for getting user types: $errorMessage, $errorCode');
+            print('on error call back for getting user types: $errorMessage, $errorCode');
           },
           onSuccessCallback: (message) {
-            print(
-                'on success call back for get user data types ${message?.body}');
+            print('on success call back for get user data types ${message?.body}');
           },
         ));
     setState(() {
@@ -124,7 +122,7 @@ class _UpdateUserState extends State<UpdateUser> {
               width: 30,
             ),
             Text(
-              "Update User",
+              "Update User ",
               style: ClanChurnTypography.font20600,
             )
           ],
@@ -134,74 +132,115 @@ class _UpdateUserState extends State<UpdateUser> {
         ),
         Expanded(
           flex: 1,
-          child: InkWell(
-            onTap: () async {
-              if (kIsWeb) {
-                await FilePickerWeb.platform.pickFiles(
-                  type: FileType.custom,
-                  allowedExtensions: ['png', 'jpg', 'jpeg'],
-                ).then(
-                  (value) {
-                    setState(() {
-                      isImageUploading = true;
-                    });
-                    if (value != null) {
-                      GetDialog.uploadFile(context);
-                      context.read<UserBloc>().add(UploadUserProfileEvent(
-                            filePickerResult: value,
-                            onErrorCallback: (errorMessage, errorCode) {
-                              setState(() {
-                                isImageUploading = false;
-                                imageUploadFailed = true;
-                              });
-                            },
-                            onSuccessCallback: (message) {
-                              setState(() {
-                                isImageUploading = false;
-                              });
-                              // add get all users api
-                            },
-                          ));
-                      Navigator.pop(context);
-                    }
-                  },
-                );
-              }
-            },
-            child: BlocBuilder<UserBloc, UserState>(
-              builder: (context, state) {
-                return ClipOval(
-                    // radius: 50,
-                    child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Image.network(
-                    "${widget.user.image}",
-                    // loadingBuilder: ((context, child, loadingProgress) {
-                    //   return const CircularProgressIndicator();
-                    // }),
-                    errorBuilder: (context, error, stackTrace) {
-                      return ClipOval(
-                          child: Image.network(
-                        image,
-                        scale: 1,
-                      ));
-                    },
-                  ),
-                ));
-                // return CircleAvatar(
-                //     radius: 50,
-                //     foregroundImage: state.user == null
-                //         ? null
-                //         : NetworkImage(
-                //             state.clientUploadLogoResponse!.imageUrl,
-                //           ),
-                //     child: Icon(
-                //       Icons.add_photo_alternate_outlined,
-                //       size: 40,
-                //       color: Theme.of(context).colorScheme.background,
-                //     ));
-              },
-            ),
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              BlocBuilder<UserBloc, UserState>(
+                builder: (context, state) {
+                  return InkWell(
+                    onTap: isImageUploading
+                        ? null
+                        : () async {
+                            if (kIsWeb) {
+                              await FilePickerWeb.platform.pickFiles(
+                                type: FileType.custom,
+                                allowedExtensions: ['png', 'jpg', 'jpeg'],
+                              ).then(
+                                (value) {
+                                  setState(() {
+                                    isImageUploading = true;
+                                  });
+                                  if (value != null) {
+                                    GetDialog.uploadFile(context);
+                                    context.read<UserBloc>().add(UploadUserProfileEvent(
+                                          filePickerResult: value,
+                                          onErrorCallback: (errorMessage, errorCode) {
+                                            setState(() {
+                                              isImageUploading = false;
+                                              imageUploadFailed = true;
+                                            });
+                                          },
+                                          onSuccessCallback: (message) {
+                                            if (message != null) {
+                                              if (json.decode(message.body)["image_url"] != null) {
+                                                if (json.decode(message.body)["image_url"].isNotEmpty) {
+                                                  context.read<UserBloc>().add(
+                                                        UpdateUserProfilePictureEvent(
+                                                          index: widget.index,
+                                                          image: json.decode(message.body)["image_url"],
+                                                          onDone: () {
+                                                            context.read<UserBloc>().add(UpdateUserEvent(
+                                                                  clientId: state.listOfUsers[widget.index].clientDetails?.id,
+                                                                  firstName: state.listOfUsers[widget.index].firstName ?? '',
+                                                                  lastName: state.listOfUsers[widget.index].lastName,
+                                                                  image: json.decode(message.body)["filename"],
+                                                                  userId: state.listOfUsers[widget.index].userId,
+                                                                  password: null,
+                                                                  userType: state.listOfUsers[widget.index].userType.value,
+                                                                  onErrorCallback: (errorMessage, errorCode) {},
+                                                                  onSuccessCallback: (message) {
+                                                                    // Navigator.pushReplacement(context, customPageRouteForNavigation(const CreateClient()));
+                                                                  },
+                                                                ));
+                                                          },
+                                                        ),
+                                                      );
+                                                }
+                                              }
+                                            }
+                                            setState(() {
+                                              isImageUploading = false;
+                                            });
+                                            // // add get all users api
+                                            // context.read<UserBloc>().add(GetAllUsersEvent(
+                                            //       onErrorCallback: (errorMessage, errorCode) {},
+                                            //       onSuccessCallback: (message) {},
+                                            //     ));
+                                          },
+                                        ));
+                                    Navigator.pop(context);
+                                  }
+                                },
+                              );
+                            }
+                          },
+                    child: BlocBuilder<UserBloc, UserState>(
+                      builder: (context, state) {
+                        return CircleAvatar(
+                            radius: 60,
+                            // backgroundImage: NetworkImage(image),
+                            foregroundImage: NetworkImage(
+                              "${state.listOfUsers[widget.index].image}",
+                              // loadingBuilder: ((context, child, loadingProgress) {
+                              //   return const CircularProgressIndicator();
+                              // }),
+                              // errorBuilder: (context, error, stackTrace) {
+                              //   return ClipOval(
+                              //       child: Image.network(
+                              //     image,
+                              //     scale: 1,
+                              //   ));
+                              // },
+                            ));
+                        // return CircleAvatar(
+                        //     radius: 50,
+                        //     foregroundImage: state.user == null
+                        //         ? null
+                        //         : NetworkImage(
+                        //             state.clientUploadLogoResponse!.imageUrl,
+                        //           ),
+                        //     child: Icon(
+                        //       Icons.add_photo_alternate_outlined,
+                        //       size: 40,
+                        //       color: Theme.of(context).colorScheme.background,
+                        //     ));
+                      },
+                    ),
+                  );
+                },
+              ),
+              if (isImageUploading) const CircularProgressIndicator()
+            ],
           ),
         ),
         const SizedBox(
@@ -274,17 +313,11 @@ class _UpdateUserState extends State<UpdateUser> {
                                       )
                                     ]),
                                     items: state.userTypes
-                                        .map((String item) =>
-                                            DropdownMenuItem<String>(
+                                        .map((String item) => DropdownMenuItem<String>(
                                               value: item,
                                               child: Text(
                                                 item,
-                                                style: ClanChurnTypography
-                                                    .font18500
-                                                    .copyWith(
-                                                        color: Theme.of(context)
-                                                            .colorScheme
-                                                            .background),
+                                                style: ClanChurnTypography.font18500.copyWith(color: Theme.of(context).colorScheme.background),
                                                 overflow: TextOverflow.ellipsis,
                                               ),
                                             ))
@@ -295,22 +328,15 @@ class _UpdateUserState extends State<UpdateUser> {
                                         selectedType = value;
                                       });
                                     },
-                                    selectedItemBuilder:
-                                        (BuildContext context) {
+                                    selectedItemBuilder: (BuildContext context) {
                                       return state.userTypes.map((String item) {
                                         return Center(
                                           child: Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                               Text(
                                                 item,
-                                                style: ClanChurnTypography
-                                                    .font18500
-                                                    .copyWith(
-                                                        color: Theme.of(context)
-                                                            .colorScheme
-                                                            .secondary),
+                                                style: ClanChurnTypography.font18500.copyWith(color: Theme.of(context).colorScheme.secondary),
                                               ),
                                             ],
                                           ),
@@ -320,52 +346,33 @@ class _UpdateUserState extends State<UpdateUser> {
                                     buttonStyleData: ButtonStyleData(
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(8),
-                                        border: Border.all(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .primary
-                                                .withOpacity(0.6)),
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .primary
-                                            .withOpacity(0.2),
+                                        border: Border.all(color: Theme.of(context).colorScheme.primary.withOpacity(0.6)),
+                                        color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
                                       ),
                                       elevation: 0,
                                     ),
                                     iconStyleData: IconStyleData(
-                                      icon:
-                                          const Icon(Icons.keyboard_arrow_down),
+                                      icon: const Icon(Icons.keyboard_arrow_down),
                                       iconSize: 25,
-                                      iconEnabledColor: Theme.of(context)
-                                          .colorScheme
-                                          .secondary,
+                                      iconEnabledColor: Theme.of(context).colorScheme.secondary,
                                       iconDisabledColor: Colors.grey,
                                     ),
                                     dropdownStyleData: DropdownStyleData(
                                       elevation: 0,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(8),
-                                        border: Border.all(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .primary
-                                                .withOpacity(0.6)),
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .primary
-                                            .withOpacity(1.0),
+                                        border: Border.all(color: Theme.of(context).colorScheme.primary.withOpacity(0.6)),
+                                        color: Theme.of(context).colorScheme.primary.withOpacity(1.0),
                                       ),
                                       scrollbarTheme: ScrollbarThemeData(
                                         radius: const Radius.circular(40),
                                         thickness: MaterialStateProperty.all(6),
-                                        thumbVisibility:
-                                            MaterialStateProperty.all(true),
+                                        thumbVisibility: MaterialStateProperty.all(true),
                                       ),
                                     ),
                                     menuItemStyleData: const MenuItemStyleData(
                                       height: 40,
-                                      padding:
-                                          EdgeInsets.only(left: 14, right: 14),
+                                      padding: EdgeInsets.only(left: 14, right: 14),
                                     ),
                                   ),
                                 );
@@ -453,119 +460,103 @@ class _UpdateUserState extends State<UpdateUser> {
         ),
         Expanded(
           flex: 1,
-          child: Column(
+          child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, children: [
+            if (password.text.trim().isNotEmpty)
+              if (checkConfirmPassword() != null)
+                Text(
+                  "${checkConfirmPassword()}",
+                  style: ClanChurnTypography.font12600.copyWith(color: Theme.of(context).colorScheme.error),
+                ),
+            Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                if (password.text.trim().isNotEmpty)
-                  if (checkConfirmPassword() != null)
-                    Text(
-                      "${checkConfirmPassword()}",
-                      style: ClanChurnTypography.font12600
-                          .copyWith(color: Theme.of(context).colorScheme.error),
-                    ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    BlocBuilder<UserBloc, UserState>(
-                      builder: (context, state) {
-                        return ElevatedButton(
-                          onPressed: checkValidation()
-                              ? () {
-                                  context.read<UserBloc>().add(UpdateUserEvent(
-                                        clientId: '',
-                                        firstName: fullName.text,
-                                        lastName: null,
-                                        image:
-                                            state.uploadLogoResponse?.filename,
-                                        // email: mailId.text,
-                                        userId: widget.user.userId,
-                                        password: password.text.trim().isEmpty
-                                            ? null
-                                            : password.text,
-                                        userType: selectedType!,
-                                        onErrorCallback:
-                                            (errorMessage, errorCode) {
-                                          print(
-                                              "error response from update user: $errorMessage, $errorCode");
-                                        },
-                                        onSuccessCallback: (message) {
-                                          print(
-                                              "success response from update user: ${message?.body}");
-                                          Navigator.pushReplacement(
-                                              context,
-                                              customPageRouteForNavigation(
-                                                  const CreateClient()));
-                                        },
-                                      ));
-                                }
-                              : null,
-                          child: Row(
-                            children: [
-                              const Icon(Icons.arrow_circle_right_outlined),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              FittedBox(
-                                child: Text(
-                                  "Update User",
-                                  style: ClanChurnTypography.font15600,
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        context.read<UserBloc>().add(
-                              DeleteUserEvent(
-                                userId: widget.user.userId,
-                                onErrorCallback: (errorMessage, errorCode) {
-                                  ApiRepository().handleWarningMessage(
-                                      errorMessage, context);
-                                },
-                                onSuccessCallback: (message) {
-                                  Navigator.pop(context);
-                                  context.read<UserBloc>().add(GetAllUsersEvent(
-                                        onErrorCallback:
-                                            (errorMessage, errorCode) {
-                                          ApiRepository().handleWarningMessage(
-                                              "Unable to fetch updated user details",
-                                              context,
-                                            );
-                                        },
-                                        onSuccessCallback: (message) {},
-                                      ));
-                                },
-                              ),
-                            );
-                      },
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Theme.of(context).colorScheme.error),
+                BlocBuilder<UserBloc, UserState>(
+                  builder: (context, state) {
+                    return ElevatedButton(
+                      onPressed: checkValidation()
+                          ? () {
+                              context.read<UserBloc>().add(UpdateUserEvent(
+                                    clientId: '',
+                                    firstName: fullName.text,
+                                    lastName: null,
+                                    image: state.uploadLogoResponse?.filename,
+                                    // email: mailId.text,
+                                    userId: widget.user.userId,
+                                    password: password.text.trim().isEmpty ? null : password.text,
+                                    userType: selectedType!,
+                                    onErrorCallback: (errorMessage, errorCode) {
+                                      print("error response from update user: $errorMessage, $errorCode");
+                                    },
+                                    onSuccessCallback: (message) {
+                                      print("success response from update user: ${message?.body}");
+                                      Navigator.pushReplacement(context, customPageRouteForNavigation(const CreateClient()));
+                                    },
+                                  ));
+                            }
+                          : null,
                       child: Row(
                         children: [
-                          const Icon(Icons.delete_outline_outlined),
+                          const Icon(Icons.arrow_circle_right_outlined),
                           const SizedBox(
                             width: 10,
                           ),
                           FittedBox(
                             child: Text(
-                              "Delete",
+                              "Update User",
                               style: ClanChurnTypography.font15600,
                             ),
                           ),
                         ],
                       ),
-                    )
-                  ],
+                    );
+                  },
+                ),
+                const SizedBox(
+                  width: 20,
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    context.read<UserBloc>().add(
+                          DeleteUserEvent(
+                            userId: widget.user.userId,
+                            onErrorCallback: (errorMessage, errorCode) {
+                              ApiRepository().handleWarningMessage(errorMessage, context);
+                            },
+                            onSuccessCallback: (message) {
+                              Navigator.pop(context);
+                              context.read<UserBloc>().add(GetAllUsersEvent(
+                                    onErrorCallback: (errorMessage, errorCode) {
+                                      ApiRepository().handleWarningMessage(
+                                        "Unable to fetch updated user details",
+                                        context,
+                                      );
+                                    },
+                                    onSuccessCallback: (message) {},
+                                  ));
+                            },
+                          ),
+                        );
+                  },
+                  style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).colorScheme.error),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.delete_outline_outlined),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      FittedBox(
+                        child: Text(
+                          "Delete",
+                          style: ClanChurnTypography.font15600,
+                        ),
+                      ),
+                    ],
+                  ),
                 )
-              ]),
+              ],
+            )
+          ]),
         )
       ],
     );

@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
+
+import 'package:clan_churn/api_repos/auth_repo.dart';
 import 'package:clan_churn/api_repos/models/client_details.dart';
 import 'package:clan_churn/api_repos/models/client_logo_upload_res.dart';
 import 'package:clan_churn/api_repos/models/column_model.dart';
@@ -7,14 +9,13 @@ import 'package:clan_churn/api_repos/models/get_pro_threshold_val_model.dart';
 import 'package:clan_churn/api_repos/models/project_history_model.dart';
 import 'package:clan_churn/api_repos/models/project_model.dart';
 import 'package:clan_churn/api_repos/models/update_threshold_val_model.dart';
+import 'package:clan_churn/api_repos/models/user_model.dart';
 import 'package:clan_churn/components/custom_snack_bar.dart';
 import 'package:clan_churn/components/show_top_snack_bar.dart';
+import 'package:clan_churn/utils/api_endpoins.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:clan_churn/api_repos/auth_repo.dart';
-import 'package:clan_churn/api_repos/models/user_model.dart';
-import 'package:clan_churn/utils/api_endpoins.dart';
 import 'package:http/http.dart';
 
 typedef OnErrorCallback = void Function(String errorMessage, int errorCode);
@@ -32,8 +33,7 @@ class ApiRepository {
     }
   }
 
-  Future<User?> getUserDetails(
-      {required OnErrorCallback onErrorCallback}) async {
+  Future<User?> getUserDetails({required OnErrorCallback onErrorCallback}) async {
     try {
       final AuthCred authCred = await AuthRepo().getTokens();
 
@@ -57,7 +57,7 @@ class ApiRepository {
         return user;
       } else {
         _handleStatusCode(response.statusCode, response, onErrorCallback);
-        onErrorCallback('${response}', response.statusCode);
+        onErrorCallback('$response', response.statusCode);
         return null;
       }
     } catch (e) {
@@ -67,9 +67,7 @@ class ApiRepository {
     }
   }
 
-  Future<List<User>?> getAllUsers(
-      {required OnErrorCallback onErrorCallback,
-      required OnSuccessCallback onSuccessCallback}) async {
+  Future<List<User>?> getAllUsers({required OnErrorCallback onErrorCallback, required OnSuccessCallback onSuccessCallback}) async {
     try {
       final AuthCred authCred = await AuthRepo().getTokens();
 
@@ -97,7 +95,7 @@ class ApiRepository {
         return users;
       } else {
         _handleStatusCode(response.statusCode, response, onErrorCallback);
-        onErrorCallback('${response}', response.statusCode);
+        onErrorCallback('$response', response.statusCode);
         return null;
       }
     } catch (e) {
@@ -107,9 +105,7 @@ class ApiRepository {
     }
   }
 
-  Future<List<ClientDetails>?> getClientsList(
-      {required OnErrorCallback onErrorCallback,
-      required OnSuccessCallback onSuccessCallback}) async {
+  Future<List<ClientDetails>?> getClientsList({required OnErrorCallback onErrorCallback, required OnSuccessCallback onSuccessCallback}) async {
     try {
       final AuthCred authCred = await AuthRepo().getTokens();
 
@@ -127,8 +123,7 @@ class ApiRepository {
       );
 
       if (response.statusCode == 200) {
-        List<ClientDetails> clientDetails =
-            clientDetailsFromJson(response.body);
+        List<ClientDetails> clientDetails = clientDetailsFromJson(response.body);
         // print("Clients:..... $clientDetails");
         onSuccessCallback(response);
         return clientDetails;
@@ -174,17 +169,13 @@ class ApiRepository {
       }
     } catch (e) {
       log('Network Error: $e');
-      onErrorCallback(
-          'unable to fetch existing projects please contact admin', 0);
+      onErrorCallback('unable to fetch existing projects please contact admin', 0);
       return null;
     }
   }
 
   // Get error report for a specific input
-  Future<LatestInputModel?> getErrorReportForInput(
-      {required String inputId,
-      required OnErrorCallback onErrorCallback,
-      required OnSuccessCallback onSuccessCallback}) async {
+  Future<LatestInputModel?> getErrorReportForInput({required String inputId, required OnErrorCallback onErrorCallback, required OnSuccessCallback onSuccessCallback}) async {
     log("......get error report $inputId");
     try {
       // Fetch auth credentials
@@ -196,8 +187,7 @@ class ApiRepository {
       }
 
       // Make API call with access token
-      http.Response response = await http.post(
-          Uri.parse('${BaseUrl.baseUrl}${ApiEndpoints.getErrorReport}'),
+      http.Response response = await http.post(Uri.parse('${BaseUrl.baseUrl}${ApiEndpoints.getErrorReport}'),
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ${authCred.accessToken}',
@@ -206,8 +196,7 @@ class ApiRepository {
 
       log("${ApiEndpoints.getErrorReport} api response : $response");
       if (response.statusCode == 200) {
-        LatestInputModel res =
-            LatestInputModel.fromJson(json.decode(response.body));
+        LatestInputModel res = LatestInputModel.fromJson(json.decode(response.body));
         log("${ApiEndpoints.getErrorReport} response : $res");
         onSuccessCallback(response);
         return res;
@@ -217,9 +206,7 @@ class ApiRepository {
       }
     } catch (e) {
       log('${ApiEndpoints.getErrorReport}:  Network Error: $e');
-      onErrorCallback(
-          'Unable to fetch error report for input sheet please contact admin',
-          0);
+      onErrorCallback('Unable to fetch error report for input sheet please contact admin', 0);
     }
     return null;
   }
@@ -244,16 +231,10 @@ class ApiRepository {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ${authCred.accessToken}',
         },
-        body: json.encode({
-          "project_id": projectId,
-          "project_details": projectDetails.toJson()
-        }),
+        body: json.encode({"project_id": projectId, "project_details": projectDetails.toJson()}),
       );
 
-      print(json.encode({
-        "project_id": projectId,
-        "project_details": projectDetails.toJson()
-      }));
+      print(json.encode({"project_id": projectId, "project_details": projectDetails.toJson()}));
 
       if (response.statusCode == 200) {
         Project project = Project.fromJson(json.decode(response.body));
@@ -266,8 +247,7 @@ class ApiRepository {
       }
     } catch (e) {
       log('Network Error: $e');
-      onErrorCallback(
-          'unable to update project details please contact admin', 0);
+      onErrorCallback('unable to update project details please contact admin', 0);
       return null;
     }
   }
@@ -308,17 +288,12 @@ class ApiRepository {
       }
     } catch (e) {
       log('Network Error: $e');
-      onErrorCallback(
-          'unable to fectch the project details, please contact admin', 0);
+      onErrorCallback('unable to fectch the project details, please contact admin', 0);
       return null;
     }
   }
 
-  Future<Project?> createProject(
-      {required String clientId,
-      required String projectName,
-      required OnErrorCallback onErrorCallback,
-      required OnSuccessCallback onSuccessCallback}) async {
+  Future<Project?> createProject({required String clientId, required String projectName, required OnErrorCallback onErrorCallback, required OnSuccessCallback onSuccessCallback}) async {
     try {
       final AuthCred authCred = await AuthRepo().getTokens();
 
@@ -352,9 +327,7 @@ class ApiRepository {
     }
   }
 
-  Future<List<ColumnDetails>?> getAllColumns(
-      {required String? projectId,
-      required OnErrorCallback onErrorCallback}) async {
+  Future<List<ColumnDetails>?> getAllColumns({required String? projectId, required OnErrorCallback onErrorCallback}) async {
     try {
       final AuthCred authCred = await AuthRepo().getTokens();
 
@@ -364,8 +337,7 @@ class ApiRepository {
       }
 
       http.Response response = await http.get(
-        Uri.parse(
-            "${BaseUrl.baseUrl}${ApiEndpoints.getAllColumns}?project_id=$projectId"),
+        Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.getAllColumns}?project_id=$projectId"),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ${authCred.accessToken}',
@@ -387,10 +359,7 @@ class ApiRepository {
     }
   }
 
-  Future<Project?> addColumnsToProject(
-      {required List columnsToAdd,
-      required OnErrorCallback onErrorCallback,
-      required OnSuccessCallback onSuccessCallback}) async {
+  Future<Project?> addColumnsToProject({required List columnsToAdd, required OnErrorCallback onErrorCallback, required OnSuccessCallback onSuccessCallback}) async {
     try {
       final AuthCred authCred = await AuthRepo().getTokens();
 
@@ -421,17 +390,12 @@ class ApiRepository {
       }
     } catch (e) {
       print('Network Error: $e');
-      onErrorCallback(
-          'unable to add columns to the project please contact admin', 0);
+      onErrorCallback('unable to add columns to the project please contact admin', 0);
       return null;
     }
   }
 
-  Future<Project?> updateProjectName(
-      {required OnErrorCallback onErrorCallback,
-      required String updatedProjectName,
-      required String projectId,
-      required OnSuccessCallback onSuccessCallback}) async {
+  Future<Project?> updateProjectName({required OnErrorCallback onErrorCallback, required String updatedProjectName, required String projectId, required OnSuccessCallback onSuccessCallback}) async {
     try {
       // Fetch auth credentials
       final AuthCred authCred = await AuthRepo().getTokens();
@@ -467,19 +431,13 @@ class ApiRepository {
       }
     } catch (e) {
       log("updateProjectName exception: $e");
-      onErrorCallback(
-          'unable to update project name/project name already exists please contact admin',
-          0);
+      onErrorCallback('unable to update project name/project name already exists please contact admin', 0);
       return null;
     }
   }
 
   // Upload a file for a project
-  Future<Project?> uploadFile(
-      {required String projectId,
-      required FilePickerResult filePickerResult,
-      required OnErrorCallback onErrorCallback,
-      required OnSuccessCallback onSuccessCallback}) async {
+  Future<Project?> uploadFile({required String projectId, required FilePickerResult filePickerResult, required OnErrorCallback onErrorCallback, required OnSuccessCallback onSuccessCallback}) async {
     try {
       // Fetch auth credentials
       final AuthCred authCred = await AuthRepo().getTokens();
@@ -515,8 +473,7 @@ class ApiRepository {
           onSuccessCallback(null);
           return project;
         } else {
-          _handleStatusCode(response.statusCode,
-              await http.Response.fromStream(response), onErrorCallback);
+          _handleStatusCode(response.statusCode, await http.Response.fromStream(response), onErrorCallback);
           return null;
         }
       } else {
@@ -529,10 +486,7 @@ class ApiRepository {
     return null;
   }
 
-  Future getInputExcelSummaryReport(
-      {required String inputId,
-      required OnErrorCallback onErrorCallback,
-      required OnSuccessCallback onSuccessCallback}) async {
+  Future getInputExcelSummaryReport({required String inputId, required OnErrorCallback onErrorCallback, required OnSuccessCallback onSuccessCallback}) async {
     try {
       final AuthCred authCred = await AuthRepo().getTokens();
 
@@ -541,8 +495,7 @@ class ApiRepository {
         return null;
       }
 
-      http.Response response = await http.post(
-          Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.getInputExcelSummary}"),
+      http.Response response = await http.post(Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.getInputExcelSummary}"),
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ${authCred.accessToken}',
@@ -556,15 +509,11 @@ class ApiRepository {
       }
     } catch (e) {
       log("get summary report: $e");
-      onErrorCallback(
-          'unable to fetch input excel summary report please contact admin', 0);
+      onErrorCallback('unable to fetch input excel summary report please contact admin', 0);
     }
   }
 
-  Future<List<ProjectHistoryModel>?> getProjectHistoryDetails(
-      {required String projectId,
-      required OnErrorCallback onErrorCallback,
-      required OnSuccessCallback onSuccessCallback}) async {
+  Future<List<ProjectHistoryModel>?> getProjectHistoryDetails({required String projectId, required OnErrorCallback onErrorCallback, required OnSuccessCallback onSuccessCallback}) async {
     try {
       final AuthCred authCred = await AuthRepo().getTokens();
 
@@ -573,8 +522,7 @@ class ApiRepository {
         return null;
       }
 
-      http.Response response = await http.post(
-          Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.projectInputHistory}"),
+      http.Response response = await http.post(Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.projectInputHistory}"),
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ${authCred.accessToken}',
@@ -582,25 +530,20 @@ class ApiRepository {
           body: json.encode(projectId));
       if (response.statusCode == 200) {
         onSuccessCallback(response);
-        List<ProjectHistoryModel> history =
-            projectHistoryModelFromJson(response.body);
+        List<ProjectHistoryModel> history = projectHistoryModelFromJson(response.body);
         return history;
       } else {
         _handleStatusCode(response.statusCode, response, onErrorCallback);
       }
     } catch (e) {
       log("Project Input History: $e");
-      onErrorCallback(
-          'unable to get the project history please contact admin', 0);
+      onErrorCallback('unable to get the project history please contact admin', 0);
     }
     return null;
   }
 
   // Get error report for a specific input
-  Future<String?> generateMarts(
-      {required String inputId,
-      required OnErrorCallback onErrorCallback,
-      required OnSuccessCallback onSuccessCallback}) async {
+  Future<String?> generateMarts({required String inputId, required OnErrorCallback onErrorCallback, required OnSuccessCallback onSuccessCallback}) async {
     log("......get error report $inputId");
     try {
       // Fetch auth credentials
@@ -612,8 +555,7 @@ class ApiRepository {
       }
 
       // Make API call with access token
-      http.Response response = await http.post(
-          Uri.parse('${BaseUrl.baseUrl}${ApiEndpoints.generateMarts}'),
+      http.Response response = await http.post(Uri.parse('${BaseUrl.baseUrl}${ApiEndpoints.generateMarts}'),
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ${authCred.accessToken}',
@@ -638,11 +580,7 @@ class ApiRepository {
     return null;
   }
 
-  Future<String?> getReportData(
-      {required String reportname,
-      required String inputId,
-      required OnErrorCallback onErrorCallback,
-      required OnSuccessCallback onSuccessCallback}) async {
+  Future<String?> getReportData({required String reportname, required String inputId, required OnErrorCallback onErrorCallback, required OnSuccessCallback onSuccessCallback}) async {
     // Fetch auth credentials
     final AuthCred authCred = await AuthRepo().getTokens();
 
@@ -654,8 +592,7 @@ class ApiRepository {
     try {
       // Make API call with access token
       http.Response response = await http.post(
-        Uri.parse(
-            '${BaseUrl.baseUrl}${ApiEndpoints.getReportData}?report_name=$reportname&input_id=$inputId'),
+        Uri.parse('${BaseUrl.baseUrl}${ApiEndpoints.getReportData}?report_name=$reportname&input_id=$inputId'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ${authCred.accessToken}',
@@ -698,23 +635,12 @@ class ApiRepository {
         return null;
       }
 
-      http.Response response = await http.post(
-          Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.clientCreate}"),
+      http.Response response = await http.post(Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.clientCreate}"),
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ${authCred.accessToken}',
           },
-          body: json.encode({
-            "name": clientName,
-            "role": roleName,
-            "address_1": address1,
-            "address_2": address2,
-            "poc_name": pocName,
-            "poc_contact_number": pocContactNumber,
-            "poc_mail_id": pocMailId,
-            "image": image,
-            "assigned_users": assignedProjectArc
-          }));
+          body: json.encode({"name": clientName, "role": roleName, "address_1": address1, "address_2": address2, "poc_name": pocName, "poc_contact_number": pocContactNumber, "poc_mail_id": pocMailId, "image": image, "assigned_users": assignedProjectArc}));
       print(" create client reponse: $response");
       if (response.statusCode == 200) {
         onSuccessCallback(response);
@@ -753,28 +679,15 @@ class ApiRepository {
         return null;
       }
 
-      http.Response response = await http.post(
-          Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.clientUpdate}"),
+      http.Response response = await http.post(Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.clientUpdate}"),
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ${authCred.accessToken}',
           },
-          body: json.encode({
-            "client_id": clientId,
-            "name": clientName,
-            "role": roleName,
-            "address_1": address1,
-            "address_2": address2,
-            "poc_name": pocName,
-            "poc_contact_number": pocContactNumber,
-            "poc_mail_id": pocMailId,
-            "image": image,
-            "assigned_users": assignedProjectArc
-          }));
+          body: json.encode({"client_id": clientId, "name": clientName, "role": roleName, "address_1": address1, "address_2": address2, "poc_name": pocName, "poc_contact_number": pocContactNumber, "poc_mail_id": pocMailId, "image": image, "assigned_users": assignedProjectArc}));
 
       if (response.statusCode == 200) {
-        ClientDetails clientDetails =
-            ClientDetails.fromJson(json.decode(response.body));
+        ClientDetails clientDetails = ClientDetails.fromJson(json.decode(response.body));
         onSuccessCallback(response);
         return clientDetails;
       } else {
@@ -787,10 +700,7 @@ class ApiRepository {
     return null;
   }
 
-  Future<UploadLogoResponse?> uploadClientLogo(
-      {required FilePickerResult filePickerResult,
-      required OnErrorCallback onErrorCallback,
-      required OnSuccessCallback onSuccessCallback}) async {
+  Future<UploadLogoResponse?> uploadClientLogo({required FilePickerResult filePickerResult, required OnErrorCallback onErrorCallback, required OnSuccessCallback onSuccessCallback}) async {
     try {
       // Fetch auth credentials
       final AuthCred authCred = await AuthRepo().getTokens();
@@ -805,8 +715,7 @@ class ApiRepository {
         var headers = {'Authorization': 'Bearer ${authCred.accessToken}'};
         var request = http.MultipartRequest(
           'POST',
-          Uri.parse(
-              '${BaseUrl.baseUrl}${ApiEndpoints.uploadLogo}?document_type=client'),
+          Uri.parse('${BaseUrl.baseUrl}${ApiEndpoints.uploadLogo}?document_type=client'),
         );
         // request.fields.addAll({'project_id': projectId});
 
@@ -824,14 +733,12 @@ class ApiRepository {
         if (response.statusCode == 200) {
           String responseString = await response.stream.bytesToString();
           print(responseString);
-          UploadLogoResponse imageUrl =
-              UploadLogoResponse.fromJson(json.decode(responseString));
+          UploadLogoResponse imageUrl = UploadLogoResponse.fromJson(json.decode(responseString));
           print(imageUrl);
           onSuccessCallback(null);
           return imageUrl;
         } else {
-          _handleStatusCode(response.statusCode,
-              await http.Response.fromStream(response), onErrorCallback);
+          _handleStatusCode(response.statusCode, await http.Response.fromStream(response), onErrorCallback);
           return null;
         }
       } else {
@@ -844,10 +751,7 @@ class ApiRepository {
     return null;
   }
 
-  Future<bool?> deleteClient(
-      {required String clientId,
-      required OnErrorCallback onErrorCallback,
-      required OnSuccessCallback onSuccessCallback}) async {
+  Future<bool?> deleteClient({required String clientId, required OnErrorCallback onErrorCallback, required OnSuccessCallback onSuccessCallback}) async {
     try {
       final AuthCred authCred = await AuthRepo().getTokens();
 
@@ -857,8 +761,7 @@ class ApiRepository {
       }
 
       http.Response response = await http.delete(
-        Uri.parse(
-            "${BaseUrl.baseUrl}${ApiEndpoints.deleteClient}?client_id=$clientId"),
+        Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.deleteClient}?client_id=$clientId"),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ${authCred.accessToken}',
@@ -879,16 +782,7 @@ class ApiRepository {
     return false;
   }
 
-  Future<bool?> addUser(
-      {required String? clientId,
-      required String firstName,
-      required String? lastName,
-      required String email,
-      required String password,
-      required String userType,
-      required String? image,
-      required OnErrorCallback onErrorCallback,
-      required OnSuccessCallback onSuccessCallback}) async {
+  Future<bool?> addUser({required String? clientId, required String firstName, required String? lastName, required String email, required String password, required String userType, required String? image, required OnErrorCallback onErrorCallback, required OnSuccessCallback onSuccessCallback}) async {
     try {
       final AuthCred authCred = await AuthRepo().getTokens();
 
@@ -897,21 +791,12 @@ class ApiRepository {
         return null;
       }
       print("................BEfore making api cal");
-      http.Response response = await http.post(
-          Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.addUser}"),
+      http.Response response = await http.post(Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.addUser}"),
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ${authCred.accessToken}',
           },
-          body: json.encode({
-            "client_id": null,
-            "first_name": firstName,
-            "last_name": lastName,
-            "email": email,
-            "password": password,
-            "user_type": userType,
-            'image_url': image
-          }));
+          body: json.encode({"client_id": null, "first_name": firstName, "last_name": lastName, "email": email, "password": password, "user_type": userType, 'image_url': image}));
       print("................BEfore making api cal");
       if (response.statusCode == 200) {
         onSuccessCallback(response);
@@ -926,37 +811,19 @@ class ApiRepository {
     return false;
   }
 
-  Future<bool?> updateUser(
-      {required String? clientId,
-      required String firstName,
-      required String? lastName,
-      required String userId,
-      required String? password,
-      required String userType,
-      required String? image,
-      required OnErrorCallback onErrorCallback,
-      required OnSuccessCallback onSuccessCallback}) async {
+  Future<bool?> updateUser({required String? clientId, required String firstName, required String? lastName, required String userId, required String? password, required String userType, required String? image, required OnErrorCallback onErrorCallback, required OnSuccessCallback onSuccessCallback}) async {
     try {
       final AuthCred authCred = await AuthRepo().getTokens();
       if (authCred.accessToken.isEmpty) {
         onErrorCallback('Access token is empty', 0);
         return null;
       }
-      http.Response response = await http.post(
-          Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.updateUser}"),
+      http.Response response = await http.post(Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.updateUser}"),
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ${authCred.accessToken}',
           },
-          body: json.encode({
-            "client_id": null,
-            "first_name": firstName,
-            "last_name": null,
-            "user_id": userId,
-            "password": password,
-            "user_type": userType,
-            "image_url": image
-          }));
+          body: json.encode({"client_id": null, "first_name": firstName, "last_name": null, "user_id": userId, "password": password, "user_type": userType, "image_url": image}));
 
       print("update user response : $response");
       if (response.statusCode == 200) {
@@ -973,10 +840,7 @@ class ApiRepository {
     return false;
   }
 
-  Future<UploadLogoResponse?> uploadUserPic(
-      {required FilePickerResult filePickerResult,
-      required OnErrorCallback onErrorCallback,
-      required OnSuccessCallback onSuccessCallback}) async {
+  Future<UploadLogoResponse?> uploadUserPic({required FilePickerResult filePickerResult, required OnErrorCallback onErrorCallback, required OnSuccessCallback onSuccessCallback}) async {
     try {
       // Fetch auth credentials
       final AuthCred authCred = await AuthRepo().getTokens();
@@ -991,8 +855,7 @@ class ApiRepository {
         var headers = {'Authorization': 'Bearer ${authCred.accessToken}'};
         var request = http.MultipartRequest(
           'POST',
-          Uri.parse(
-              '${BaseUrl.baseUrl}${ApiEndpoints.uploadLogo}?document_type=user'),
+          Uri.parse('${BaseUrl.baseUrl}${ApiEndpoints.uploadLogo}?document_type=user'),
         );
         // request.fields.addAll({'project_id': projectId});
 
@@ -1009,14 +872,12 @@ class ApiRepository {
         if (response.statusCode == 200) {
           String responseString = await response.stream.bytesToString();
           print(responseString);
-          UploadLogoResponse imageUrl =
-              UploadLogoResponse.fromJson(json.decode(responseString));
+          UploadLogoResponse imageUrl = UploadLogoResponse.fromJson(json.decode(responseString));
           print(imageUrl);
-          onSuccessCallback(null);
+          onSuccessCallback(Response(responseString, response.statusCode));
           return imageUrl;
         } else {
-          _handleStatusCode(response.statusCode,
-              await http.Response.fromStream(response), onErrorCallback);
+          _handleStatusCode(response.statusCode, await http.Response.fromStream(response), onErrorCallback);
           return null;
         }
       } else {
@@ -1029,9 +890,7 @@ class ApiRepository {
     return null;
   }
 
-  Future<List<String>?> getUserTypes(
-      {required OnErrorCallback onErrorCallback,
-      required OnSuccessCallback onSuccessCallback}) async {
+  Future<List<String>?> getUserTypes({required OnErrorCallback onErrorCallback, required OnSuccessCallback onSuccessCallback}) async {
     try {
       final AuthCred authCred = await AuthRepo().getTokens();
 
@@ -1070,10 +929,7 @@ class ApiRepository {
     return null;
   }
 
-  Future<bool?> deleteUser(
-      {required String userId,
-      required OnErrorCallback onErrorCallback,
-      required OnSuccessCallback onSuccessCallback}) async {
+  Future<bool?> deleteUser({required String userId, required OnErrorCallback onErrorCallback, required OnSuccessCallback onSuccessCallback}) async {
     try {
       final AuthCred authCred = await AuthRepo().getTokens();
 
@@ -1083,8 +939,7 @@ class ApiRepository {
       }
 
       http.Response response = await http.delete(
-        Uri.parse(
-            "${BaseUrl.baseUrl}${ApiEndpoints.deleteUser}?user_id=$userId"),
+        Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.deleteUser}?user_id=$userId"),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ${authCred.accessToken}',
@@ -1104,10 +959,7 @@ class ApiRepository {
     return false;
   }
 
-  Future<bool?> archiveProject(
-      {required String projectId,
-      required OnErrorCallback onErrorCallback,
-      required OnSuccessCallback onSuccessCallback}) async {
+  Future<bool?> archiveProject({required String projectId, required OnErrorCallback onErrorCallback, required OnSuccessCallback onSuccessCallback}) async {
     try {
       final AuthCred authCred = await AuthRepo().getTokens();
 
@@ -1117,8 +969,7 @@ class ApiRepository {
       }
 
       http.Response response = await http.post(
-        Uri.parse(
-            "${BaseUrl.baseUrl}${ApiEndpoints.archiveProject}?project_id=$projectId"),
+        Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.archiveProject}?project_id=$projectId"),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ${authCred.accessToken}',
@@ -1138,10 +989,7 @@ class ApiRepository {
     return false;
   }
 
-  Future<List<GetProThresholdFormValModel>?> getProThresholdValues(
-      {required String projectId,
-      required OnErrorCallback onErrorCallback,
-      required OnSuccessCallback onSuccessCallback}) async {
+  Future<List<GetProThresholdFormValModel>?> getProThresholdValues({required String projectId, required OnErrorCallback onErrorCallback, required OnSuccessCallback onSuccessCallback}) async {
     try {
       final AuthCred authCred = await AuthRepo().getTokens();
 
@@ -1162,8 +1010,7 @@ class ApiRepository {
       if (res.statusCode == 200) {
         onSuccessCallback(res);
         print("......");
-        List<GetProThresholdFormValModel> data =
-            projectThresholdFormValueModelFromJson(res.body);
+        List<GetProThresholdFormValModel> data = projectThresholdFormValueModelFromJson(res.body);
         print("......$data");
         return data;
       } else {
@@ -1175,11 +1022,7 @@ class ApiRepository {
     return null;
   }
 
-  Future<Project?> updateThresholdValue(
-      {required String projectId,
-      required List<UpdateThresholdValModel> data,
-      required OnSuccessCallback onSuccessCallback,
-      required OnErrorCallback onErrorCallback}) async {
+  Future<Project?> updateThresholdValue({required String projectId, required List<UpdateThresholdValModel> data, required OnSuccessCallback onSuccessCallback, required OnErrorCallback onErrorCallback}) async {
     try {
       final AuthCred authCred = await AuthRepo().getTokens();
       if (authCred.accessToken.isEmpty) {
@@ -1203,15 +1046,12 @@ class ApiRepository {
       } else {}
     } catch (e) {
       log("unable to update project threshold values");
-      onErrorCallback(
-          'Unable to update threshold values please contact admin', 0);
+      onErrorCallback('Unable to update threshold values please contact admin', 0);
     }
     return null;
   }
 
-  Future<List<String>?> getAllReports(
-      {required OnSuccessCallback onSuccessCallback,
-      required OnErrorCallback onErrorCallback}) async {
+  Future<List<String>?> getAllReports({required OnSuccessCallback onSuccessCallback, required OnErrorCallback onErrorCallback}) async {
     try {
       final AuthCred authCred = await AuthRepo().getTokens();
       if (authCred.accessToken.isEmpty) {
@@ -1237,16 +1077,13 @@ class ApiRepository {
       } else {}
     } catch (e) {
       log("unable to update project threshold values");
-      onErrorCallback(
-          'Unable to update threshold values please contact admin', 0);
+      onErrorCallback('Unable to update threshold values please contact admin', 0);
     }
     return null;
   }
 
-  void _handleStatusCode(
-      int statusCode, Response response, OnErrorCallback onErrorCallback) {
-    String reason =
-        "${(json.decode(response.body) as Map<String, dynamic>)["detail"]}";
+  void _handleStatusCode(int statusCode, Response response, OnErrorCallback onErrorCallback) {
+    String reason = "${(json.decode(response.body) as Map<String, dynamic>)["detail"]}";
 
     switch (statusCode) {
       // case 400:
