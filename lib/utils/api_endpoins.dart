@@ -1,9 +1,11 @@
 class BaseUrl {
   // test url
-  static String baseUrl = "https://churnapi.clanonline.in";
-  // static String baseUrl = "https://churn-120996668109.asia-south1.run.app";
+  // static String baseUrl = "https://churnapi.clanonline.in";
 
-  // production url
+  // Shashank Paisa // production gcp
+  static String baseUrl = "https://churn-120996668109.asia-south1.run.app";
+
+  // Krishna Paisa //production lambda
   // static String baseUrl =
   //     "https://r3gswwmrfrkssko3e3wz6zfpce0hzlqt.lambda-url.ap-south-1.on.aws/";
   static Map<String, String> headers = {

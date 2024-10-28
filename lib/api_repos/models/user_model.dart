@@ -12,13 +12,13 @@ extension UserTypesExtension on UserType {
   String get value {
     switch (this) {
       case UserType.admin:
-        return 'admin';
+        return 'Admin';
       case UserType.projectArchitect:
         return 'Project Architect';
       case UserType.clientHead:
-        return 'client_head';
+        return 'Client Head';
       case UserType.client:
-        return 'client';
+        return 'Client';
       default:
         return "";
     }
@@ -28,13 +28,13 @@ extension UserTypesExtension on UserType {
 extension UserTypesParsing on String {
   UserType get toUserType {
     switch (this) {
-      case 'admin':
+      case 'Admin':
         return UserType.admin;
       case 'Project Architect':
         return UserType.projectArchitect;
-      case 'client_head':
+      case 'Client Head':
         return UserType.clientHead;
-      case 'client':
+      case 'Client':
         return UserType.client;
       default:
         throw ArgumentError('Invalid UserType string: $this');
