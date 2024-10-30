@@ -16,8 +16,7 @@ class ProfileWidget extends StatefulWidget {
   State<ProfileWidget> createState() => _ProfileWidgetState();
 }
 
-class _ProfileWidgetState extends State<ProfileWidget>
-    with SingleTickerProviderStateMixin {
+class _ProfileWidgetState extends State<ProfileWidget> with SingleTickerProviderStateMixin {
   bool isNotExpanded = false;
 
   double rotationAngle = 0;
@@ -46,15 +45,8 @@ class _ProfileWidgetState extends State<ProfileWidget>
                   AnimatedContainer(
                     duration: const Duration(milliseconds: 300),
                     height: isNotExpanded ? 120 : 60,
-                    padding: const EdgeInsets.only(
-                        left: 10, right: 10, top: 10, bottom: 10),
-                    decoration: BoxDecoration(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .primary
-                            .withOpacity(1),
-                        borderRadius:
-                            BorderRadius.circular(isNotExpanded ? 30 : 30)),
+                    padding: const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
+                    decoration: BoxDecoration(color: Theme.of(context).colorScheme.primary.withOpacity(1), borderRadius: BorderRadius.circular(isNotExpanded ? 30 : 30)),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -77,9 +69,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                                   duration: const Duration(milliseconds: 300),
                                   child: Icon(
                                     Icons.expand_circle_down_outlined,
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .background,
+                                    color: Theme.of(context).colorScheme.background,
                                   ),
                                 )),
                           ),
@@ -92,74 +82,55 @@ class _ProfileWidgetState extends State<ProfileWidget>
                                 builder: (context, state) {
                                   return Text(
                                     "${state.user?.firstName} ${state.user?.lastName}",
-                                    style: ClanChurnTypography.font15600
-                                        .copyWith(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .background),
+                                    style: ClanChurnTypography.font15600.copyWith(color: Theme.of(context).colorScheme.background),
                                   );
                                 },
                               ),
                               Text(
                                 "${state.user?.userType.value}",
-                                style: ClanChurnTypography.font10600.copyWith(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .background),
+                                style: ClanChurnTypography.font10600.copyWith(color: Theme.of(context).colorScheme.background),
                               )
                             ],
                           ),
                           ClanChurnSpacing.w5,
                           CircleAvatar(
                             radius: 18,
-                            backgroundColor:
-                                Theme.of(context).colorScheme.background,
-                            child: ClipOval(
-                              child: Image.network(
-                                "${state.user!.image}",
-                                // loadingBuilder:
-                                //     ((context, child, loadingProgress) {
-                                //   return const CircularProgressIndicator();
-                                // }),
-                                errorBuilder: (context, error, stackTrace) {
-                                  return ClipOval(
-                                      child: Image.network(
-                                    image,
-                                    scale: 2,
-                                  ));
-                                },
-                              ),
+                            backgroundColor: Theme.of(context).colorScheme.background,
+                            foregroundImage: NetworkImage(
+                              "${state.user!.image}",
+                              // loadingBuilder:
+                              //     ((context, child, loadingProgress) {
+                              //   return const CircularProgressIndicator();
+                              // }),
                             ),
+                            onForegroundImageError: (context, error) {
+                              ClipOval(
+                                  child: Image.network(
+                                image,
+                                scale: 2,
+                              ));
+                            },
                           ),
                         ]),
                         isNotExpanded
                             ? InkWell(
                                 onTap: () {
-                                  context
-                                      .read<SignInBloc>()
-                                      .add(SignOutEvent(context: context));
+                                  context.read<SignInBloc>().add(SignOutEvent(context: context));
                                 },
-                                child: BlocBuilder<ProjectArchitectBloc,
-                                    ProjectArchitectState>(
+                                child: BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
                                   builder: (context, state) {
                                     return AnimatedContainer(
-                                      duration:
-                                          const Duration(milliseconds: 500),
-                                      padding: const EdgeInsets.only(
-                                          left: 10, right: 10, top: 20),
+                                      duration: const Duration(milliseconds: 500),
+                                      padding: const EdgeInsets.only(left: 10, right: 10, top: 20),
                                       child: Row(
                                         children: [
-                                          const Icon(Icons.logout_outlined,
-                                              color: Colors.red),
+                                          const Icon(Icons.logout_outlined, color: Colors.red),
                                           ClanChurnSpacing.w10,
                                           AnimatedContainer(
-                                            duration:
-                                                const Duration(seconds: 1),
+                                            duration: const Duration(seconds: 1),
                                             child: Text(
                                               "Log Out",
-                                              style: ClanChurnTypography
-                                                  .font18600
-                                                  .copyWith(color: Colors.red),
+                                              style: ClanChurnTypography.font18600.copyWith(color: Colors.red),
                                             ),
                                           )
                                         ],
@@ -201,17 +172,13 @@ class MyDrawer extends StatelessWidget {
               ),
               InkWell(
                 onTap: () {
-                  context
-                      .read<SignInBloc>()
-                      .add(SignOutEvent(context: context));
+                  context.read<SignInBloc>().add(SignOutEvent(context: context));
                 },
                 focusNode: null,
                 child: Container(
-                  margin: const EdgeInsets.only(
-                      left: 10, top: 10, bottom: 10, right: 10),
+                  margin: const EdgeInsets.only(left: 10, top: 10, bottom: 10, right: 10),
                   padding: const EdgeInsets.only(left: 20, top: 10, bottom: 10),
-                  child:
-                      BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
+                  child: BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
                     builder: (context, state) {
                       return Row(
                         children: [
@@ -223,8 +190,7 @@ class MyDrawer extends StatelessWidget {
                                   duration: const Duration(seconds: 1),
                                   child: Text(
                                     "Log Out",
-                                    style: ClanChurnTypography.font16700
-                                        .copyWith(color: Colors.red),
+                                    style: ClanChurnTypography.font16700.copyWith(color: Colors.red),
                                   ),
                                 )
                         ],
