@@ -3,12 +3,12 @@ import 'package:clan_churn/utils/typography.dart';
 import 'package:flutter/material.dart';
 
 class GetCalendar {
-  Future<String> selectDate(BuildContext context) async {
+  Future<String> selectDate(BuildContext context, {DateTime? firstDate, DateTime? lastDate}) async {
     var results = await showCalendarDatePicker2Dialog(
       context: context,
       config: CalendarDatePicker2WithActionButtonsConfig(
-        firstDate: null,
-        lastDate: null,
+        firstDate: firstDate,
+        lastDate: lastDate,
         currentDate: DateTime.now(),
         // weekdayLabelBuilder: customWeekdayBuilder,
         calendarType: CalendarDatePicker2Type.single,
