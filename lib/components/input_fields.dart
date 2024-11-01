@@ -79,7 +79,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
         if (pd != null) {
           projectStartDateController.text = pd.projectStartDate?.split("T").first ?? "";
           stuPerBegDateController.text = pd.studyPeriodBeginingDate?.split("T").first ?? "";
-          projectOwnerController.text = pd.projectOwner ?? "";
+          projectOwnerController.text = pd.projectSpocName ?? "";
           stuPerEndDateController.text = pd.studyPeriodEndDate?.split("T").first ?? "";
 
           earDateForDOJController.text = pd.earDateForDOJRel?.split("T").first ?? "";
@@ -286,7 +286,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                           ),
                                         // if (!widget.isCreatingNewProject)
                                         CustomTextFormField(
-                                          label: InputFieldLabels.projectOwner,
+                                          label: InputFieldLabels.projectSpocName,
                                           controller: projectOwnerController,
                                           textInputType: TextInputType.name,
                                           isObscureText: false,
@@ -510,6 +510,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                   designations: design,
                                   projectStartDate: projectStartDateController.text,
                                   projectOwner: projectOwnerController.text,
+                                  projectSpocName: projectOwnerController.text,
                                   studyPeriodBeginingDate: stuPerBegDateController.text,
                                   studyPeriodEndDate: stuPerEndDateController.text,
                                   earDateForDOJRel: earDateForDOJController.text,

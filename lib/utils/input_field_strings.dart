@@ -2,19 +2,15 @@ class InputFieldLabels {
   static String customerName = "Customer Name";
   static String projectName = "Project Name";
   static String projectOwner = "Project Owner";
+  static String projectSpocName = "Project SPOC Name";
   static String projectStartDate = "Project Start Date";
   static String studyPeriodBeginningDate = "Study Period Beginning Date";
   static String studyPeriodEndDate = "Study Period End Date";
-  static String earliestDateForDateOfJoiningRelevantForStudy =
-      "Earliest Date for DOJ Relevant for Study";
-  static String endDateForDateOfJoiningRelevantForStudy =
-      "End Date for DOJ Relevant for Study";
-  static String noOfDesignationsCoveredinTheStudy =
-      "No of Designations Covered in the Study";
-  static String designationCoveredInTheStudy =
-      "Designation # 1 Covered in the Study";
-  static String noOfDepartmentCoveredinTheStudy =
-      "No of Departments Covered in the Study";
+  static String earliestDateForDateOfJoiningRelevantForStudy = "Earliest Date for DOJ Relevant for Study";
+  static String endDateForDateOfJoiningRelevantForStudy = "End Date for DOJ Relevant for Study";
+  static String noOfDesignationsCoveredinTheStudy = "No of Designations Covered in the Study";
+  static String designationCoveredInTheStudy = "Designation # 1 Covered in the Study";
+  static String noOfDepartmentCoveredinTheStudy = "No of Departments Covered in the Study";
   static String unitForValuePerformance = "Unit for Value Performance";
   static String unitForQuantityPerformance = "Unit for Quantity Performance";
   // static String projectMaximumResidencyMonth =
@@ -67,8 +63,3 @@ class InputFieldLabels {
   // static String projectBottomOutlierRankMaximumMonthlyIncentive =
   //     "Project Bottom outlier rank Maximum Monthly Incentive";
 }
-
-
-
-
-
