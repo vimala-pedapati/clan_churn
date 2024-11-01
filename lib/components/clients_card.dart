@@ -37,7 +37,7 @@ class ClientsCard extends StatelessWidget {
             Container(
               child: Center(
                 child: Text(
-                  "${client.name}vimala",
+                  client.name,
                   maxLines: 3,
                   textAlign: TextAlign.center,
                   overflow: TextOverflow.ellipsis,
