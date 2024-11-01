@@ -1,8 +1,8 @@
 class BaseUrl {
-  // test url
+  // test url // lense.clanonline.in
   static String baseUrl = "https://churnapi.clanonline.in";
 
-  // Shashank Paisa // production gcp
+  // Shashank Paisa // production gcp // lense.quantapeople.com
   // static String baseUrl = "https://churn-120996668109.asia-south1.run.app";
 
   // Krishna Paisa //production lambda
