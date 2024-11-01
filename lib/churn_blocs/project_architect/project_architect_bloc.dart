@@ -63,6 +63,7 @@ class ProjectArchitectBloc extends Bloc<ProjectArchitectEvent, ProjectArchitectS
   }
 
   _onGetProjectsListEvent(GetProjectsListEvent event, Emitter<ProjectArchitectState> emit) async {
+    emit(state.copyWith(projectsListLoading: true));
     final result = await apiRepository.getAllProjectDetails(
         clientId: event.clientId,
         onErrorCallback: (String message, int errorCode) {
@@ -73,6 +74,7 @@ class ProjectArchitectBloc extends Bloc<ProjectArchitectEvent, ProjectArchitectS
     } else {
       emit(state.copyWith(projectsList: []));
     }
+    emit(state.copyWith(projectsListLoading: false));
   }
 
   _onGetColumnsEvent(GetColumnsEvent event, Emitter<ProjectArchitectState> emit) async {

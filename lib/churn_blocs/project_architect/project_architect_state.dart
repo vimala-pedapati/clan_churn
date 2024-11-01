@@ -7,6 +7,7 @@ class ProjectArchitectState extends Equatable {
             isNotExpanded: false,
             selectedClient: null,
             projectsList: const [],
+            projectsListLoading: false,
             columnsList: const [],
             columnsFetching: false,
             createdProject: null,
@@ -23,6 +24,7 @@ class ProjectArchitectState extends Equatable {
   final bool isNotExpanded;
   final ClientDetails? selectedClient;
   final List<Project> projectsList;
+  final bool projectsListLoading;
   final List<ColumnDetails> columnsList;
   final bool columnsFetching;
   final Project? createdProject;
@@ -39,6 +41,7 @@ class ProjectArchitectState extends Equatable {
       required this.isNotExpanded,
       required this.selectedClient,
       required this.projectsList,
+      required this.projectsListLoading,
       required this.columnsList,
       required this.columnsFetching,
       required this.createdProject,
@@ -67,12 +70,14 @@ class ProjectArchitectState extends Equatable {
     List<ProjectHistoryModel>? projectHistory,
     List<GetProThresholdFormValModel>? projectThesholdFormfields,
     List<String>? allReports,
+    bool? projectsListLoading,
   }) {
     return ProjectArchitectState(
         clientList: clientList ?? this.clientList,
         isNotExpanded: isNotExpanded ?? this.isNotExpanded,
         selectedClient: selectedClient ?? this.selectedClient,
         projectsList: projectsList ?? this.projectsList,
+        projectsListLoading: projectsListLoading ?? this.projectsListLoading,
         columnsList: columnsList ?? this.columnsList,
         columnsFetching: columnsFetching ?? this.columnsFetching,
         createdProject: createdProject ?? this.createdProject,
@@ -91,6 +96,7 @@ class ProjectArchitectState extends Equatable {
         clientList,
         isNotExpanded,
         selectedClient,
+        projectsListLoading,
         projectsList,
         columnsList,
         columnsFetching,

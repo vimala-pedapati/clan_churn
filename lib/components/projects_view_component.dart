@@ -2,9 +2,9 @@ import 'dart:developer';
 
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/components/churn_continer.dart';
-import 'package:clan_churn/pages/new_project_components.dart';
 import 'package:clan_churn/components/project_list_data.dart';
 import 'package:clan_churn/components/search.dart';
+import 'package:clan_churn/pages/new_project_components.dart';
 import 'package:clan_churn/utils/routes.dart';
 import 'package:clan_churn/utils/spacing.dart';
 import 'package:clan_churn/utils/typography.dart';
@@ -26,9 +26,7 @@ class _ProjectsViewComponentState extends State<ProjectsViewComponent> {
   @override
   void initState() {
     if (context.read<ProjectArchitectBloc>().state.selectedClient != null) {
-      context.read<ProjectArchitectBloc>().add(GetProjectsListEvent(
-          clientId:
-              context.read<ProjectArchitectBloc>().state.selectedClient!.id));
+      context.read<ProjectArchitectBloc>().add(GetProjectsListEvent(clientId: context.read<ProjectArchitectBloc>().state.selectedClient!.id));
     }
     super.initState();
   }
@@ -55,8 +53,7 @@ class _ProjectsViewComponentState extends State<ProjectsViewComponent> {
                           children: [
                             TextSpan(
                               text: state.selectedClient!.name,
-                              style: ClanChurnTypography.font12600.copyWith(
-                                  color: Theme.of(context).colorScheme.primary),
+                              style: ClanChurnTypography.font12600.copyWith(color: Theme.of(context).colorScheme.primary),
                             ),
                           ],
                         ),
@@ -66,73 +63,63 @@ class _ProjectsViewComponentState extends State<ProjectsViewComponent> {
                   ClanChurnSpacing.h10,
                   Expanded(
                     child: ChurnContainer(
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Container(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Expanded(
-                                    child: Row(
-                                      children: [
-                                        IconButton(
-                                          icon: Icon(
-                                            Icons.keyboard_backspace,
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .secondary,
-                                          ),
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                            // GoRouter.of(context).go(AppRoutes.home);
-                                          },
-                                        ),
-                                        ClanChurnSpacing.w10,
-                                        Expanded(
-                                          child: Text(
-                                            state.selectedClient!.name,
-                                            maxLines: 2,
-                                            style: ClanChurnTypography.font18600,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      context
-                                          .read<ProjectArchitectBloc>()
-                                          .add(ClearCreateProjectEvent());
-                                      Navigator.push(
-                                          context,
-                                          customPageRouteForNavigation(
-                                              const CreateNewProject()));
-                                    },
-                                    child: Row(children: [
-                                      const Icon(
-                                        Icons.add_box_outlined,
-                                        size: 18,
+                      child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.start, children: [
+                        Container(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: Row(
+                                  children: [
+                                    IconButton(
+                                      icon: Icon(
+                                        Icons.keyboard_backspace,
+                                        color: Theme.of(context).colorScheme.secondary,
                                       ),
-                                      ClanChurnSpacing.w5,
-                                      Text(
-                                        "Start New Project",
-                                        style: ClanChurnTypography.font14600,
-                                      )
-                                    ]),
-                                  )
-                                ],
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                        // GoRouter.of(context).go(AppRoutes.home);
+                                      },
+                                    ),
+                                    ClanChurnSpacing.w10,
+                                    Expanded(
+                                      child: Text(
+                                        state.selectedClient!.name,
+                                        maxLines: 2,
+                                        style: ClanChurnTypography.font18600,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                            ClanChurnSpacing.h20,
-                            Text(
-                              "Project History",
-                              style: ClanChurnTypography.font15600,
-                            ),
-                            ClanChurnSpacing.h10,
-                            const Expanded(child: ProjectsListData())
-                          ]),
+                              ElevatedButton(
+                                onPressed: () {
+                                  context.read<ProjectArchitectBloc>().add(ClearCreateProjectEvent());
+                                  Navigator.push(context, customPageRouteForNavigation(const CreateNewProject()));
+                                },
+                                child: Row(children: [
+                                  const Icon(
+                                    Icons.add_box_outlined,
+                                    size: 18,
+                                  ),
+                                  ClanChurnSpacing.w5,
+                                  Text(
+                                    "Start New Project",
+                                    style: ClanChurnTypography.font14600,
+                                  )
+                                ]),
+                              )
+                            ],
+                          ),
+                        ),
+                        ClanChurnSpacing.h20,
+                        Text(
+                          "Project History",
+                          style: ClanChurnTypography.font15600,
+                        ),
+                        ClanChurnSpacing.h10,
+                        Expanded(child: state.projectsListLoading ? const Center(child: CircularProgressIndicator()) : const ProjectsListData())
+                      ]),
                     ),
                   ),
                 ],
@@ -164,10 +151,7 @@ class _GetFiltersDropDownState extends State<GetFiltersDropDown> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5.0),
               color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
-              border: Border.all(
-                  color: Theme.of(context).colorScheme.primary,
-                  style: BorderStyle.solid,
-                  width: 0.80),
+              border: Border.all(color: Theme.of(context).colorScheme.primary, style: BorderStyle.solid, width: 0.80),
             ),
             child: DropdownButtonHideUnderline(
               child: DropdownButton2(
@@ -254,10 +238,7 @@ class _GetSearchWidgetState extends State<GetSearchWidget> {
           margin: EdgeInsets.zero,
           controller: controller,
           searchQueryBuilder: (query, list) => list.where((item) {
-                return item!
-                    .toString()
-                    .toLowerCase()
-                    .contains(query.toLowerCase());
+                return item!.toString().toLowerCase().contains(query.toLowerCase());
               }).toList(),
           overlaySearchListItemBuilder: (dynamic item) {
             // log('$item');
