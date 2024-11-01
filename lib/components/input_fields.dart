@@ -8,6 +8,7 @@ import 'package:clan_churn/components/upload_new_data.dart';
 import 'package:clan_churn/components/uploaded_excel_summary_report.dart';
 import 'package:clan_churn/utils/extensions.dart';
 import 'package:clan_churn/utils/input_field_strings.dart';
+import 'package:clan_churn/utils/lense_calendar.dart';
 import 'package:clan_churn/utils/spacing.dart';
 import 'package:clan_churn/utils/typography.dart';
 import 'package:flutter/material.dart';
@@ -184,20 +185,6 @@ class _GetInputFieldsState extends State<GetInputFields> {
     super.dispose();
   }
 
-  Future<String> selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(1900),
-      lastDate: DateTime.now(),
-    );
-    if (picked != null) {
-      return picked.toString().split(" ").first;
-    } else {
-      return '';
-    }
-  }
-
   void setEarliestDOJ() {
     if (stuPerBegDateController.text.isNotEmpty && stuPerEndDateController.text.isNotEmpty) {
       setState(() {
@@ -315,7 +302,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                             icon: const Icon(Icons.calendar_month, size: 18),
                                             onPressed: () async {
                                               setState(() async {
-                                                projectStartDateController.text = await selectDate(context);
+                                                projectStartDateController.text = await GetCalendar().selectDate(context);
                                               });
                                             },
                                           ),
@@ -338,7 +325,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                             ),
                                             onPressed: () async {
                                               setState(() async {
-                                                stuPerBegDateController.text = await selectDate(context);
+                                                stuPerBegDateController.text = await GetCalendar().selectDate(context);
                                                 setEarliestDOJ();
                                               });
                                             },
@@ -360,7 +347,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                             icon: const Icon(Icons.calendar_month, size: 18),
                                             onPressed: () async {
                                               setState(() async {
-                                                stuPerEndDateController.text = await selectDate(context);
+                                                stuPerEndDateController.text = await GetCalendar().selectDate(context);
                                                 endDateForDOJController.text = stuPerEndDateController.text;
                                                 setEarliestDOJ();
                                               });
@@ -379,7 +366,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                             icon: const Icon(Icons.calendar_month, size: 18),
                                             onPressed: () async {
                                               setState(() async {
-                                                earDateForDOJController.text = await selectDate(context);
+                                                earDateForDOJController.text = await GetCalendar().selectDate(context);
                                               });
                                             },
                                           ),
@@ -397,7 +384,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                             icon: const Icon(Icons.calendar_month, size: 18),
                                             onPressed: () async {
                                               setState(() async {
-                                                endDateForDOJController.text = await selectDate(context);
+                                                endDateForDOJController.text = await GetCalendar().selectDate(context);
                                               });
                                             },
                                           ),
