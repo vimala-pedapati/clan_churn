@@ -594,9 +594,14 @@ class ProInitialHeader extends StatelessWidget {
               },
             ),
             ClanChurnSpacing.w10,
-            Text(
-              "Project Initialization",
-              style: ClanChurnTypography.font18600,
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.55,
+              child: Text(
+                "Project Initialization",
+                style: ClanChurnTypography.font18600,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+              ),
             ),
             Expanded(
               child: Container(),

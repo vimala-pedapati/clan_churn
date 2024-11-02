@@ -204,7 +204,7 @@ class _GetPublishButtonState extends State<GetPublishButton> {
                                 ?.inputStatus ==
                             InputStatus.uploadedDataHasNoErrors ||
                         state.createdProject?.latestInputModel?.inputStatus ==
-                            InputStatus.uploadedDataDataMartsGenerated) {
+                            InputStatus.uploadedDataDataMartsGenerated ) {
                       // Generate Marts event for successful case
                       context.read<ProjectArchitectBloc>().add(
                             GenerateMartsEvent(
