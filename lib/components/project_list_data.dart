@@ -2,7 +2,6 @@
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/components/project_card.dart';
 import 'package:clan_churn/components/projects_view_component.dart';
-import 'package:clan_churn/utils/device_types.dart';
 import 'package:clan_churn/utils/spacing.dart';
 import 'package:clan_churn/utils/typography.dart';
 import 'package:flutter/material.dart';
@@ -65,25 +64,14 @@ class _ProjectsListDataState extends State<ProjectsListData> {
                     controller: controller,
                     cursorHeight: 17,
                     decoration: InputDecoration(
-                        contentPadding:
-                            const EdgeInsets.only(left: 10, right: 10),
+                        contentPadding: const EdgeInsets.only(left: 10, right: 10),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .secondary
-                                  .withOpacity(0.6),
-                              width: 1.0),
+                          borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary.withOpacity(0.6), width: 1.0),
                         ),
                         enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .secondary
-                                  .withOpacity(0.6),
-                              width: 1.0),
+                          borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary.withOpacity(0.6), width: 1.0),
                         ),
-                        hintText: "Enter something to filter"),
+                        hintText: "Enter something to search"),
                     onChanged: (value) {
                       // setState(() {
                       //   myData = filterData!
@@ -103,8 +91,7 @@ class _ProjectsListDataState extends State<ProjectsListData> {
                     child: SingleChildScrollView(
                       child: SizedBox(
                         width: MediaQuery.of(context).size.width,
-                        child: BlocBuilder<ProjectArchitectBloc,
-                            ProjectArchitectState>(
+                        child: BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
                           builder: (context, state) {
                             return Wrap(
                               runSpacing: 10,
