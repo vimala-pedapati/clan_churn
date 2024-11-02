@@ -186,7 +186,7 @@ class TheresholdComponent extends StatelessWidget {
           children: [
             Expanded(
               child: Text(
-                "${thresholdFormVal.clientColumnName}sdajf djsv hv fdh vfahs ahf faeeh vehaf ehrf  s",
+                thresholdFormVal.clientColumnName,
                 style: ClanChurnTypography.font16700,
                 maxLines: 3,
               ),
