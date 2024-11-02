@@ -112,16 +112,14 @@
 //   }
 // }
 
-import 'dart:convert';
-
 import 'package:clan_churn/api_repos/models/project_model.dart';
-import 'package:clan_churn/components/reports.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/components/dialogs.dart';
+import 'package:clan_churn/components/reports.dart';
 import 'package:clan_churn/utils/spacing.dart';
 import 'package:clan_churn/utils/typography.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// Widget representing a Publish Button with stateful behavior.
 class GetPublishButton extends StatefulWidget {
@@ -193,28 +191,21 @@ class _GetPublishButtonState extends State<GetPublishButton> {
             onPressed: value
                 ? () {
                     // Check input status and perform actions accordingly
-                    if (state.createdProject?.latestInputModel?.inputStatus ==
-                        InputStatus.uploadedDataHasErrors) {
+                    if (state.createdProject?.latestInputModel?.inputStatus == InputStatus.uploadedDataHasErrors) {
                       // Show dialog for error case
                       showDialog(
                         context: context,
                         builder: (context) => buildErrorDialog(context),
                       );
-                    } else if (state.createdProject?.latestInputModel
-                                ?.inputStatus ==
-                            InputStatus.uploadedDataHasNoErrors ||
-                        state.createdProject?.latestInputModel?.inputStatus ==
-                            InputStatus.uploadedDataDataMartsGenerated ) {
+                    } else if (state.createdProject?.latestInputModel?.inputStatus == InputStatus.uploadedDataHasNoErrors || state.createdProject?.latestInputModel?.inputStatus == InputStatus.uploadedDataDataMartsGenerated || state.createdProject?.latestInputModel?.inputStatus == InputStatus.uploadedDataSuccessful) {
                       // Generate Marts event for successful case
                       context.read<ProjectArchitectBloc>().add(
                             GenerateMartsEvent(
                               inputId: state.createdProject!.latestInput ?? "",
                               onSuccessCallback: (message) {},
                               onErrorCallback: (errorMessage, errorCode) {
-                                print(
-                                    "Marts Report...${state.createdProject!.latestInput}..$errorMessage $errorCode");
-                                GetDialog.failedErrorReport(
-                                    context, errorMessage);
+                                print("Marts Report...${state.createdProject!.latestInput}..$errorMessage $errorCode");
+                                GetDialog.failedErrorReport(context, errorMessage);
                               },
                             ),
                           );
@@ -239,22 +230,18 @@ class _GetPublishButtonState extends State<GetPublishButton> {
         SizedBox(
           height: 30,
           child: ElevatedButton(
-            onPressed: value
+            onPressed: state.createdProject?.latestInputModel?.inputStatus == InputStatus.uploadedDataDataMartsGenerated
                 ? () {
                     // print("report ..........${state.createdProject?.latestInputModel?.inputStatus}");
                     // Check input status and perform actions accordingly
-                    if (state.createdProject?.latestInputModel?.inputStatus ==
-                        InputStatus.uploadedDataHasErrors) {
+                    if (state.createdProject?.latestInputModel?.inputStatus == InputStatus.uploadedDataHasErrors) {
                       // Show dialog for error case
                       showDialog(
                         context: context,
                         builder: (context) => buildErrorDialog(context),
                       );
-                    } else if (state.createdProject?.latestInputModel
-                                ?.inputStatus ==
-                            InputStatus.uploadedDataHasNoErrors ||
-                        state.createdProject?.latestInputModel?.inputStatus ==
-                            InputStatus.uploadedDataDataMartsGenerated) {
+                      // } else if (state.createdProject?.latestInputModel?.inputStatus == InputStatus.uploadedDataHasNoErrors || state.createdProject?.latestInputModel?.inputStatus == InputStatus.uploadedDataDataMartsGenerated) {
+                    } else if (state.createdProject?.latestInputModel?.inputStatus == InputStatus.uploadedDataDataMartsGenerated) {
                       if (state.allReports.isNotEmpty) {
                         Navigator.push(
                             context,
@@ -265,7 +252,6 @@ class _GetPublishButtonState extends State<GetPublishButton> {
                               ),
                             ));
                       }
-                      
                     }
                   }
                 : null,

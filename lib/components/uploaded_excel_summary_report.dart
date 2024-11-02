@@ -837,6 +837,11 @@ class _UploadedExcelSummaryReportState extends State<UploadedExcelSummaryReport>
                               disableCategorization: true,
                             ),
                             ClanChurnSpacing.h20,
+                            const Text(
+                              "⚠️ Note: The uploaded data has errors.\n📥 Please download the error sheet.\n✏️ Correct the errors and re-upload the data.",
+                              textAlign: TextAlign.center,
+                            ),
+                            ClanChurnSpacing.h20,
                             const Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -1324,7 +1329,7 @@ class _UploadedExcelSummaryReportState extends State<UploadedExcelSummaryReport>
           OutlinedButtonTemplate(
             icon: Icons.remove_red_eye_outlined,
             title: "Excel Summary",
-            onPressed: disableCategorization
+            onPressed: disableExcelSummary
                 ? null
                 : () {
                     viewErrorReport(context, jsonObject!, selectedSheet!);
