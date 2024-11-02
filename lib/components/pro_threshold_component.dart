@@ -181,14 +181,15 @@ class TheresholdComponent extends StatelessWidget {
             .toList();
 
         return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
-              thresholdFormVal.clientColumnName,
-              style: ClanChurnTypography.font16700,
-              maxLines: 3,
-            ),
             Expanded(
-              child: Container(),
+              child: Text(
+                "${thresholdFormVal.clientColumnName}sdajf djsv hv fdh vfahs ahf faeeh vehaf ehrf  s",
+                style: ClanChurnTypography.font16700,
+                maxLines: 3,
+              ),
             ),
             Row(
               children: [
