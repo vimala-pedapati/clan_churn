@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:js_util';
 
 import 'package:clan_churn/api_repos/api_repo.dart';
 import 'package:clan_churn/api_repos/models/get_pro_threshold_val_model.dart';
@@ -15,14 +14,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProjectThresholdComponent extends StatefulWidget {
-  const ProjectThresholdComponent(
-      {super.key, required this.onBackTap, required this.onNextTap});
+  const ProjectThresholdComponent({super.key, required this.onBackTap, required this.onNextTap});
   final Function() onBackTap;
   final Function() onNextTap;
 
   @override
-  State<ProjectThresholdComponent> createState() =>
-      _ProjectThresholdComponentState();
+  State<ProjectThresholdComponent> createState() => _ProjectThresholdComponentState();
 }
 
 class _ProjectThresholdComponentState extends State<ProjectThresholdComponent> {
@@ -71,8 +68,7 @@ class _ProjectThresholdComponentState extends State<ProjectThresholdComponent> {
   @override
   void initState() {
     context.read<ProjectArchitectBloc>().add(GetProThresholdValEvent(
-          projectId:
-              context.read<ProjectArchitectBloc>().state.createdProject!.id,
+          projectId: context.read<ProjectArchitectBloc>().state.createdProject!.id,
           onErrorCallback: (errorMessage, errorCode) {},
           onSuccessCallback: (message) {
             if (message != null) {
@@ -117,12 +113,10 @@ class _ProjectThresholdComponentState extends State<ProjectThresholdComponent> {
                   return TheresholdComponent(
                     thresholdFormVal: state.projectThesholdFormfields[index],
                     minValue: (minValue) {
-                      addMinValue(
-                          state.projectThesholdFormfields[index].id, minValue);
+                      addMinValue(state.projectThesholdFormfields[index].id, minValue);
                     },
                     maxValue: (maxValue) {
-                      addMaxValue(
-                          state.projectThesholdFormfields[index].id, maxValue);
+                      addMaxValue(state.projectThesholdFormfields[index].id, maxValue);
                     },
                   );
                 },
@@ -134,33 +128,23 @@ class _ProjectThresholdComponentState extends State<ProjectThresholdComponent> {
                 ElevatedButton(
                   onPressed: () {
                     if (minValues.contains(null) || maxValues.contains(null)) {
-                      ApiRepository().handleWarningMessage(
-                          "All fileds are mandatary to fill ", context);
+                      ApiRepository().handleWarningMessage("All fileds are mandatary to fill ", context);
                     } else {
                       List<UpdateThresholdValModel> data = [];
                       for (int i = 0; i < ids.length; i++) {
                         // print( "$i)${ids[i]}: min:${minValues[i]} max:${maxValues[i]}");
-                        data.add(UpdateThresholdValModel(
-                            columnId: ids[i],
-                            columnType: columnTypes[i],
-                            minValue: minValues[i]!,
-                            maxValue: maxValues[i]!));
+                        data.add(UpdateThresholdValModel(columnId: ids[i], columnType: columnTypes[i], minValue: minValues[i]!, maxValue: maxValues[i]!));
                       }
                       print(data);
-                      context
-                          .read<ProjectArchitectBloc>()
-                          .add(UpdateProThrValsEvent(
+                      context.read<ProjectArchitectBloc>().add(UpdateProThrValsEvent(
                             projectId: state.createdProject!.id,
                             data: data,
                             onErrorCallback: (errorMessage, errorCode) {
-                              ApiRepository()
-                                  .handleWarningMessage(errorMessage, context);
+                              ApiRepository().handleWarningMessage(errorMessage, context);
                             },
                             onSuccessCallback: (message) {
                               // print(message?.body);
-                              ApiRepository().handleSuccessMessage(
-                                  "successfully updated threshold values!.....",
-                                  context);
+                              ApiRepository().handleSuccessMessage("successfully updated threshold values!.....", context);
                               widget.onNextTap();
                             },
                           ));
@@ -178,11 +162,7 @@ class _ProjectThresholdComponentState extends State<ProjectThresholdComponent> {
 }
 
 class TheresholdComponent extends StatelessWidget {
-  const TheresholdComponent(
-      {super.key,
-      required this.thresholdFormVal,
-      required this.minValue,
-      required this.maxValue});
+  const TheresholdComponent({super.key, required this.thresholdFormVal, required this.minValue, required this.maxValue});
   final GetProThresholdFormValModel thresholdFormVal;
   final Function(String) minValue;
   final Function(String) maxValue;
@@ -205,6 +185,7 @@ class TheresholdComponent extends StatelessWidget {
             Text(
               thresholdFormVal.clientColumnName,
               style: ClanChurnTypography.font16700,
+              maxLines: 3,
             ),
             Expanded(
               child: Container(),
@@ -252,18 +233,12 @@ class TheresholdComponent extends StatelessWidget {
 }
 
 class CusThresholdFomField extends StatefulWidget {
-  const CusThresholdFomField(
-      {super.key,
-      required this.thresholdFormVal,
-      this.textInputAction,
-      required this.onChanged,
-      this.isEnabled,
-      this.value});
+  const CusThresholdFomField({super.key, required this.thresholdFormVal, this.textInputAction, required this.onChanged, this.isEnabled, this.value});
   final GetProThresholdFormValModel thresholdFormVal;
   final TextInputAction? textInputAction;
   final Function(String) onChanged;
   final bool? isEnabled;
-  final dynamic? value;
+  final dynamic value;
 
   @override
   State<CusThresholdFomField> createState() => _CusThresholdFomFieldState();
@@ -285,9 +260,7 @@ class _CusThresholdFomFieldState extends State<CusThresholdFomField> {
     return Container(
         height: 35,
         width: 150,
-        decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
-            borderRadius: BorderRadius.circular(08)),
+        decoration: BoxDecoration(color: Theme.of(context).colorScheme.primary.withOpacity(0.2), borderRadius: BorderRadius.circular(08)),
         margin: const EdgeInsets.only(right: 20, top: 10, bottom: 10),
         child: TextFormField(
           controller: controller, // Use the passed controller here
@@ -309,11 +282,7 @@ class _CusThresholdFomFieldState extends State<CusThresholdFomField> {
           // ],
           decoration: InputDecoration(
               hintText: "0",
-              hintStyle: ClanChurnTypography.font18500.copyWith(
-                  color: Theme.of(context)
-                      .colorScheme
-                      .onSecondary
-                      .withOpacity(0.8)),
+              hintStyle: ClanChurnTypography.font18500.copyWith(color: Theme.of(context).colorScheme.onSecondary.withOpacity(0.8)),
               contentPadding: const EdgeInsets.only(
                 left: 10,
                 right: 10,

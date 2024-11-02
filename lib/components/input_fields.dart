@@ -595,7 +595,6 @@ class ProInitialHeader extends StatelessWidget {
             ),
             ClanChurnSpacing.w10,
             SizedBox(
-              width: MediaQuery.of(context).size.width * 0.55,
               child: Text(
                 "Project Initialization",
                 style: ClanChurnTypography.font18600,
