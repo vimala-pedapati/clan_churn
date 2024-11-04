@@ -1227,13 +1227,29 @@ class _UploadedExcelSummaryReportState extends State<UploadedExcelSummaryReport>
                   ),
                 ],
               ),
+              // items: columns
+              //     .map((String item) => DropdownMenuItem<String>(
+              //           value: item,
+              //           child: Text(
+              //             item,
+              //             style: ClanChurnTypography.font14900.copyWith(color: Theme.of(context).colorScheme.background),
+              //             overflow: TextOverflow.ellipsis,
+              //           ),
+              //         ))
+              //     .toList(),
               items: columns
                   .map((String item) => DropdownMenuItem<String>(
                         value: item,
-                        child: Text(
-                          item,
-                          style: ClanChurnTypography.font14900.copyWith(color: Theme.of(context).colorScheme.background),
-                          overflow: TextOverflow.ellipsis,
+                        child: SizedBox(
+                          width: 260, // Set a fixed width to constrain the text
+                          child: Text(
+                            item,
+                            style: ClanChurnTypography.font14900.copyWith(
+                              color: Theme.of(context).colorScheme.background,
+                            ),
+                            overflow: TextOverflow.ellipsis, // Ellipsis to handle overflow
+                            maxLines: 1,
+                          ),
                         ),
                       ))
                   .toList(),
@@ -1243,9 +1259,14 @@ class _UploadedExcelSummaryReportState extends State<UploadedExcelSummaryReport>
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          item,
-                          style: ClanChurnTypography.font14900.copyWith(color: Theme.of(context).colorScheme.secondary),
+                        SizedBox(
+                          width: 240,
+                          child: Text(
+                            item,
+                            style: ClanChurnTypography.font14900.copyWith(color: Theme.of(context).colorScheme.secondary),
+                            overflow: TextOverflow.ellipsis, // Ellipsis to handle overflow
+                            maxLines: 1,
+                          ),
                         ),
                       ],
                     ),
