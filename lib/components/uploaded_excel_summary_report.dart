@@ -803,7 +803,10 @@ class _UploadedExcelSummaryReportState extends State<UploadedExcelSummaryReport>
                           // mainAxisSize: MainAxisSize.min,
                           children: [
                             const Text(
-                              "⚠️ Oops! We couldn’t fetch your project summary.\n📄 It looks like there might be an issue with the uploaded data.\n🔍 Please double-check your sheet to ensure everything was uploaded correctly.\n✅ Once confirmed, try accessing the summary again!",
+                              "⚠️ Oops! We couldn’t fetch your project summary.\n\n"
+                              "📄 It looks like there might be an issue with the uploaded data.\n\n"
+                              "🔍 Please double-check your sheet to ensure everything was uploaded correctly.\n\n"
+                              "✅ Once confirmed, try accessing the summary again!",
                               textAlign: TextAlign.center,
                             ),
                             buildActionButtons(
@@ -835,11 +838,12 @@ class _UploadedExcelSummaryReportState extends State<UploadedExcelSummaryReport>
                             buildSummaryDetails(),
                             buildActionButtons(
                               disableUploadNewSheet: true,
+                              disableCategorization: true,
                             ),
                             ClanChurnSpacing.h20,
                             const Text(
-                              "✅ Note: Your data upload was successful.\n\n"
-                              "📥 To proceed, click 'View Error Sheet' to generate any error reports.\n\n"
+                              "✅ Note: Your data upload was successful.\n"
+                              "📥 To proceed, click 'View Error Report' to generate any error reports.\n"
                               "✏️ If an error sheet is downloaded, review and correct the issues. After uploading the corrected sheet, the 'Publish' button will be enabled, allowing you to generate marts.",
                               textAlign: TextAlign.center,
                             ),
@@ -903,14 +907,17 @@ class _UploadedExcelSummaryReportState extends State<UploadedExcelSummaryReport>
                               disableViewErrorReport: true,
                             ),
                             ClanChurnSpacing.h20,
+                            const Text(
+                              "✅ Note: The uploaded data has no errors.\n"
+                              "📊 You can now proceed to generate the data marts by clicking 'Publish'.",
+                              textAlign: TextAlign.center,
+                            ),
+                            ClanChurnSpacing.h20,
                             const Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Opacity(
-                                  opacity: 0.5,
-                                  child: GetPublishButton(),
-                                ),
+                                GetPublishButton(),
                               ],
                             )
                           ],
@@ -930,14 +937,17 @@ class _UploadedExcelSummaryReportState extends State<UploadedExcelSummaryReport>
                               disableViewErrorReport: true,
                             ),
                             ClanChurnSpacing.h20,
+                            const Text(
+                              "✅ Note: Data marts have been successfully generated for the uploaded data.\n"
+                              "📊 You can now view the reports by clicking on 'Reports'.",
+                              textAlign: TextAlign.center,
+                            ),
+                            ClanChurnSpacing.h20,
                             const Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Opacity(
-                                  opacity: 0.5,
-                                  child: GetPublishButton(),
-                                ),
+                                GetPublishButton(),
                               ],
                             )
                           ],
@@ -945,31 +955,50 @@ class _UploadedExcelSummaryReportState extends State<UploadedExcelSummaryReport>
                       ),
                     )
                   else if (state.createdProject?.latestInputModel?.inputStatus == InputStatus.uploadedDataDataMartsCannotBeGenerated && jsonObject != null)
-                    const Text("Data marts cannot be  generated")
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            buildSheetsAndColumnsDropdowns(),
+                            buildSummaryDetails(),
+                            buildActionButtons(
+                              disableCategorization: true,
+                              disableViewErrorReport: true,
+                            ),
+                            ClanChurnSpacing.h20,
+                            const Text(
+                              "⚠️ Note: Data marts cannot be generated with the current data.\n\n"
+                              "📥 Please try uploading data that can be used to generate marts.",
+                              textAlign: TextAlign.center,
+                            ),
+                            ClanChurnSpacing.h20,
+                            const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                IgnorePointer(
+                                  child: Opacity(
+                                    opacity: 0.5,
+                                    child: GetPublishButton(),
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    )
                   else
-                    jsonObject == null
-                        ? Column(
-                            children: [
-                              const Text("Unable to fetch the summary report "),
-                              buildActionButtons(),
-                              ClanChurnSpacing.h20,
-                              const Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  GetPublishButton(),
-                                ],
-                              )
-                            ],
-                          )
-                        : buildDataView()
-                else
-                  Container(),
+                    const Center(
+                      child: Text(
+                        "⚠️ Unable to retrieve the status of your input sheet or summary of your input sheet. Please contact the admin for assistance.",
+                        textAlign: TextAlign.center,
+                      ),
+                    )
               ],
             );
           },
         ),
-        // PerformanceReport()
       ],
     );
   }
