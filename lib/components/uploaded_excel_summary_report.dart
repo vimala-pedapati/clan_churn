@@ -826,6 +826,39 @@ class _UploadedExcelSummaryReportState extends State<UploadedExcelSummaryReport>
                         ),
                       ),
                     )
+                  else if (state.createdProject?.latestInputModel?.inputStatus == InputStatus.uploadedDataSuccessful && jsonObject != null)
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            buildSheetsAndColumnsDropdowns(),
+                            buildSummaryDetails(),
+                            buildActionButtons(
+                              disableUploadNewSheet: true,
+                            ),
+                            ClanChurnSpacing.h20,
+                            const Text(
+                              "✅ Note: Your data upload was successful.\n\n"
+                              "📥 To proceed, click 'View Error Sheet' to generate any error reports.\n\n"
+                              "✏️ If an error sheet is downloaded, review and correct the issues. After uploading the corrected sheet, the 'Publish' button will be enabled, allowing you to generate marts.",
+                              textAlign: TextAlign.center,
+                            ),
+                            ClanChurnSpacing.h20,
+                            const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                IgnorePointer(
+                                    child: Opacity(
+                                  opacity: 0.5,
+                                  child: GetPublishButton(),
+                                )),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    )
                   else if (state.createdProject?.latestInputModel?.inputStatus == InputStatus.uploadedDataHasErrors && jsonObject != null)
                     Expanded(
                       child: SingleChildScrollView(

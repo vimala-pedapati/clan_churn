@@ -46,12 +46,14 @@ class ProjectArchitectBloc extends Bloc<ProjectArchitectEvent, ProjectArchitectS
   }
 
   _onClientsEvent(GetClientsEvent event, Emitter<ProjectArchitectState> emit) async {
+    emit(state.copyWith(clientListLoading: true));
     final result = await apiRepository.getClientsList(onErrorCallback: event.onErrorCallback, onSuccessCallback: event.onSuccessCallback);
     if (result != null) {
       emit(state.copyWith(clientList: result));
     } else {
       emit(state.copyWith(clientList: []));
     }
+    emit(state.copyWith(clientListLoading: false));
   }
 
   _onSideBarExpandedEvent(SideBarExpandedEvent event, Emitter<ProjectArchitectState> emit) {
