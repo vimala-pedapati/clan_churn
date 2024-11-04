@@ -254,367 +254,375 @@ class _GetInputFieldsState extends State<GetInputFields> {
     return BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
       builder: (context, state) {
         checkValidations();
-        return Column(
-          children: [
-            if (!(widget.isCreatingNewProject) && _currentPage == 0) const ProInitialHeader(),
-            Expanded(
-              child: PageView(
-                physics: const NeverScrollableScrollPhysics(),
-                controller: _pageController,
-                onPageChanged: (int page) {
-                  setState(() {
-                    _currentPage = page;
-                  });
-                },
+        return state.projectDetailsLoading
+            ? const Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Column(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          padding: const EdgeInsets.only(top: 10),
-                          child: SingleChildScrollView(
-                            child: Form(
-                                key: _formKey,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Wrap(
-                                      spacing: 10,
-                                      runSpacing: 10,
-                                      runAlignment: WrapAlignment.end,
-                                      // alignment: WrapAlignment.spaceBetween,
-                                      children: [
-                                        if (!widget.isCreatingNewProject)
-                                          CustomTextFormField(
-                                            label: InputFieldLabels.customerName,
-                                            controller: customerNameController,
-                                            textInputType: TextInputType.name,
-                                            isObscureText: false,
-                                            isEnabled: true,
-                                            textInputAction: TextInputAction.next,
-                                            textInputFormatterType: TextInputFormatterType.string,
-                                            readOnly: true,
-                                          ),
-                                        if (!widget.isCreatingNewProject)
-                                          CustomTextFormField(
-                                            label: InputFieldLabels.projectName,
-                                            controller: projectNameController,
-                                            textInputType: TextInputType.name,
-                                            isObscureText: false,
-                                            isEnabled: true,
-                                            textInputAction: TextInputAction.next,
-                                            textInputFormatterType: TextInputFormatterType.string,
-                                            readOnly: true,
-                                          ),
-                                        // if (!widget.isCreatingNewProject)
-                                        CustomTextFormField(
-                                          label: InputFieldLabels.projectSpocName,
-                                          controller: projectOwnerController,
-                                          textInputType: TextInputType.name,
-                                          isObscureText: false,
-                                          isEnabled: true,
-                                          textInputAction: TextInputAction.next,
-                                          textInputFormatterType: TextInputFormatterType.string,
-                                        ),
-                                        CustomTextFormField(
-                                          label: InputFieldLabels.projectStartDate,
-                                          controller: projectStartDateController,
-                                          hintText: 'Select Date',
-                                          suffixIcon: IconButton(
-                                            icon: const Icon(Icons.calendar_month, size: 18),
-                                            onPressed: () async {
-                                              setState(() async {
-                                                projectStartDateController.text = await GetCalendar().selectDate(context);
-                                              });
-                                            },
-                                          ),
-                                          readOnly: true,
-                                          textInputType: TextInputType.name,
-                                          isObscureText: false,
-                                          isEnabled: true,
-                                          textInputAction: TextInputAction.next,
-                                          textInputFormatterType: TextInputFormatterType.string,
-                                        ),
-                                        CustomTextFormField(
-                                          label: InputFieldLabels.studyPeriodBeginningDate,
-                                          controller: stuPerBegDateController,
-                                          textInputType: TextInputType.name,
-                                          hintText: 'Select Date',
-                                          suffixIcon: IconButton(
-                                            icon: const Icon(
-                                              Icons.calendar_month,
-                                              size: 18,
-                                            ),
-                                            onPressed: () async {
-                                              setState(() async {
-                                                stuPerBegDateController.text = await GetCalendar().selectDate(context);
-                                                setEarliestDOJ();
-                                              });
-                                            },
-                                          ),
-                                          readOnly: true,
-                                          isObscureText: false,
-                                          isEnabled: true,
-                                          textInputAction: TextInputAction.next,
-                                          textInputFormatterType: TextInputFormatterType.string,
-                                        ),
-                                        CustomTextFormField(
-                                          label: InputFieldLabels.studyPeriodEndDate,
-                                          controller: stuPerEndDateController,
-                                          textInputType: TextInputType.name,
-                                          isObscureText: false,
-                                          isEnabled: true,
-                                          hintText: 'Select Date',
-                                          suffixIcon: IconButton(
-                                            icon: const Icon(Icons.calendar_month, size: 18),
-                                            onPressed: () async {
-                                              setState(() async {
-                                                stuPerEndDateController.text = await GetCalendar().selectDate(context, firstDate: stuPerBegDateController.text.toDateTime());
-                                                endDateForDOJController.text = stuPerEndDateController.text;
-                                                setEarliestDOJ();
-                                              });
-                                            },
-                                          ),
-                                          readOnly: true,
-                                          textInputAction: TextInputAction.next,
-                                          textInputFormatterType: TextInputFormatterType.string,
-                                        ),
-                                        CustomTextFormField(
-                                          label: InputFieldLabels.earliestDateForDateOfJoiningRelevantForStudy,
-                                          controller: earDateForDOJController,
-                                          textInputType: TextInputType.name,
-                                          hintText: 'Select Date',
-                                          suffixIcon: IconButton(
-                                            icon: const Icon(Icons.calendar_month, size: 18),
-                                            onPressed: () async {
-                                              setState(() async {
-                                                earDateForDOJController.text = await GetCalendar().selectDate(context);
-                                              });
-                                            },
-                                          ),
-                                          readOnly: true,
-                                          isObscureText: false,
-                                          isEnabled: true,
-                                          textInputAction: TextInputAction.next,
-                                          textInputFormatterType: TextInputFormatterType.string,
-                                        ),
-                                        CustomTextFormField(
-                                          label: InputFieldLabels.endDateForDateOfJoiningRelevantForStudy,
-                                          controller: endDateForDOJController,
-                                          hintText: 'Select Date',
-                                          suffixIcon: IconButton(
-                                            icon: const Icon(Icons.calendar_month, size: 18),
-                                            onPressed: () async {
-                                              setState(() async {
-                                                endDateForDOJController.text = await GetCalendar().selectDate(context);
-                                              });
-                                            },
-                                          ),
-                                          readOnly: true,
-                                          textInputType: TextInputType.name,
-                                          isObscureText: false,
-                                          isEnabled: true,
-                                          textInputAction: TextInputAction.next,
-                                          textInputFormatterType: TextInputFormatterType.string,
-                                        ),
-                                        CustomTextFormField(
-                                          label: InputFieldLabels.unitForValuePerformance,
-                                          controller: unitForValPerController,
-                                          isMandatory: false,
-                                          textInputType: TextInputType.name,
-                                          isObscureText: false,
-                                          isEnabled: true,
-                                          textInputAction: TextInputAction.next,
-                                          textInputFormatterType: TextInputFormatterType.string,
-                                        ),
-                                        CustomTextFormField(
-                                          label: InputFieldLabels.unitForQuantityPerformance,
-                                          isMandatory: false,
-                                          controller: unitForQuaPerforController,
-                                          textInputType: TextInputType.name,
-                                          isObscureText: false,
-                                          isEnabled: true,
-                                          textInputAction: TextInputAction.next,
-                                          textInputFormatterType: TextInputFormatterType.string,
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Expanded(
-                                          child: Wrap(
-                                            spacing: 10,
-                                            runSpacing: 10,
-                                            children: [
-                                              ...departmentFields.map((e) {
-                                                int index = departmentFields.indexOf(e);
-                                                return e.copyWith(
-                                                  onDeletePressed: index == 0
-                                                      ? null
-                                                      : () {
-                                                          setState(() {
-                                                            departments.removeAt(index);
-                                                            departmentFields.removeAt(index);
-                                                          });
-                                                        },
-                                                );
-                                              }),
-                                            ],
-                                          ),
-                                        ),
-                                        TextButton(
-                                          child: const Text("Add Department"),
-                                          onPressed: () {
-                                            setState(() {
-                                              departments.add(TextEditingController());
-                                              departmentFields.add(CustomTextFormField(
-                                                label: "Department${departments.length - 1}",
-                                                controller: departments[departments.length - 1],
-                                                textInputType: TextInputType.name,
-                                                isObscureText: false,
-                                                isEnabled: true,
-                                                textInputAction: TextInputAction.next,
-                                                textInputFormatterType: TextInputFormatterType.string,
-                                                isMandatory: false,
-                                              ));
-                                            });
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Expanded(
-                                          child: Wrap(
-                                            spacing: 10,
-                                            runSpacing: 10,
-                                            children: [
-                                              ...designationFields.map((e) {
-                                                int index = designationFields.indexOf(e);
-                                                return e.copyWith(
-                                                  onDeletePressed: index == 0
-                                                      ? null
-                                                      : () {
-                                                          setState(() {
-                                                            designations.removeAt(index);
-                                                            designationFields.removeAt(index);
-                                                          });
-                                                        },
-                                                );
-                                              }),
-                                            ],
-                                          ),
-                                        ),
-                                        TextButton(
-                                          onPressed: () {
-                                            setState(() {
-                                              designations.add(TextEditingController());
-                                              designationFields.add(CustomTextFormField(
-                                                label: "Designation${designations.length - 1}",
-                                                controller: designations[designations.length - 1],
-                                                textInputType: TextInputType.name,
-                                                isObscureText: false,
-                                                isEnabled: true,
-                                                textInputAction: TextInputAction.next,
-                                                textInputFormatterType: TextInputFormatterType.string,
-                                                isMandatory: false,
-                                              ));
-                                            });
-                                          },
-                                          child: const Text("Add Designation"),
-                                        )
-                                      ],
-                                    ),
-                                  ],
-                                )),
-                          ),
-                        ),
-                      ),
-                      ClanChurnSpacing.h10,
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          ElevatedButton(
-                            onPressed: () {
-                              if (!checkValidations()) {
-                                ApiRepository().handleWarningMessage(errorText ?? "Please fill in all the required fields before proceeding.", context);
-                                return;
-                              }
-                              List<String> depart = [];
-                              List<String> design = [];
-                              for (var i in departments) {
-                                depart.add(i.text);
-                              }
-                              for (var i in designations) {
-                                design.add(i.text);
-                              }
-                              ProjectDetails a = ProjectDetails(
-                                  departments: depart,
-                                  designations: design,
-                                  projectStartDate: projectStartDateController.text,
-                                  projectOwner: projectOwnerController.text,
-                                  projectSpocName: projectOwnerController.text,
-                                  studyPeriodBeginingDate: stuPerBegDateController.text,
-                                  studyPeriodEndDate: stuPerEndDateController.text,
-                                  earDateForDOJRel: earDateForDOJController.text,
-                                  endDateForDOJ: endDateForDOJController.text,
-                                  unitForValPer: unitForValPerController.text,
-                                  unitForQuaPerfor: unitForQuaPerforController.text,
-                                  thresholdVals: null);
-                              // updating project details api
-                              context.read<ProjectArchitectBloc>().add(UpdateProjectDetailsEvent(
-                                    projectId: context.read<ProjectArchitectBloc>().state.createdProject!.id,
-                                    projectDetails: a,
-                                    onErrorCallback: (errorMessage, errorCode) {},
-                                    onSuccessCallback: (message) {
-                                      context.read<ProjectArchitectBloc>().add(GetProjectsListEvent(clientId: context.read<ProjectArchitectBloc>().state.selectedClient!.id));
-                                      context.read<ProjectArchitectBloc>().add(GetColumnsEvent(context.read<ProjectArchitectBloc>().state.createdProject?.id));
-                                    },
-                                  ));
-                              if (widget.isCreatingNewProject) {
-                                widget.onTap!();
-                              } else {
-                                goToNextPage();
-                              }
-
-                              // }
-                            },
-                            child: const Text("Next"),
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
-                  ProjectThresholdComponent(
-                    onBackTap: () {
-                      goToPreviousPage();
-                    },
-                    onNextTap: () {
-                      goToNextPage();
-                    },
-                  ),
-                  (state.createdProject!.latestInput == null || state.uploadNewSheetRequested)
-                      ? UploadNewData(
-                          onPressed: () {
-                            goToPreviousPage();
-                          },
-                        )
-                      : UploadedExcelSummaryReport(
-                          onPressed: () {
-                            goToPreviousPage();
-                          },
-                          uploadNewSheetRequested: () {
-                            context.read<ProjectArchitectBloc>().add(const UploadNewSheetRequestedEvent(uploadNewSheetRequested: true));
-                          },
-                        )
+                  CircularProgressIndicator(),
                 ],
-              ),
-            ),
-          ],
-        );
+              )
+            : Column(
+                children: [
+                  if (!(widget.isCreatingNewProject) && _currentPage == 0) const ProInitialHeader(),
+                  Expanded(
+                    child: PageView(
+                      physics: const NeverScrollableScrollPhysics(),
+                      controller: _pageController,
+                      onPageChanged: (int page) {
+                        setState(() {
+                          _currentPage = page;
+                        });
+                      },
+                      children: [
+                        Column(
+                          children: [
+                            Expanded(
+                              child: Container(
+                                padding: const EdgeInsets.only(top: 10),
+                                child: SingleChildScrollView(
+                                  child: Form(
+                                      key: _formKey,
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Wrap(
+                                            spacing: 10,
+                                            runSpacing: 10,
+                                            runAlignment: WrapAlignment.end,
+                                            // alignment: WrapAlignment.spaceBetween,
+                                            children: [
+                                              if (!widget.isCreatingNewProject)
+                                                CustomTextFormField(
+                                                  label: InputFieldLabels.customerName,
+                                                  controller: customerNameController,
+                                                  textInputType: TextInputType.name,
+                                                  isObscureText: false,
+                                                  isEnabled: true,
+                                                  textInputAction: TextInputAction.next,
+                                                  textInputFormatterType: TextInputFormatterType.string,
+                                                  readOnly: true,
+                                                ),
+                                              if (!widget.isCreatingNewProject)
+                                                CustomTextFormField(
+                                                  label: InputFieldLabels.projectName,
+                                                  controller: projectNameController,
+                                                  textInputType: TextInputType.name,
+                                                  isObscureText: false,
+                                                  isEnabled: true,
+                                                  textInputAction: TextInputAction.next,
+                                                  textInputFormatterType: TextInputFormatterType.string,
+                                                  readOnly: true,
+                                                ),
+                                              // if (!widget.isCreatingNewProject)
+                                              CustomTextFormField(
+                                                label: InputFieldLabels.projectSpocName,
+                                                controller: projectOwnerController,
+                                                textInputType: TextInputType.name,
+                                                isObscureText: false,
+                                                isEnabled: true,
+                                                textInputAction: TextInputAction.next,
+                                                textInputFormatterType: TextInputFormatterType.string,
+                                              ),
+                                              CustomTextFormField(
+                                                label: InputFieldLabels.projectStartDate,
+                                                controller: projectStartDateController,
+                                                hintText: 'Select Date',
+                                                suffixIcon: IconButton(
+                                                  icon: const Icon(Icons.calendar_month, size: 18),
+                                                  onPressed: () async {
+                                                    setState(() async {
+                                                      projectStartDateController.text = await GetCalendar().selectDate(context);
+                                                    });
+                                                  },
+                                                ),
+                                                readOnly: true,
+                                                textInputType: TextInputType.name,
+                                                isObscureText: false,
+                                                isEnabled: true,
+                                                textInputAction: TextInputAction.next,
+                                                textInputFormatterType: TextInputFormatterType.string,
+                                              ),
+                                              CustomTextFormField(
+                                                label: InputFieldLabels.studyPeriodBeginningDate,
+                                                controller: stuPerBegDateController,
+                                                textInputType: TextInputType.name,
+                                                hintText: 'Select Date',
+                                                suffixIcon: IconButton(
+                                                  icon: const Icon(
+                                                    Icons.calendar_month,
+                                                    size: 18,
+                                                  ),
+                                                  onPressed: () async {
+                                                    setState(() async {
+                                                      stuPerBegDateController.text = await GetCalendar().selectDate(context);
+                                                      setEarliestDOJ();
+                                                    });
+                                                  },
+                                                ),
+                                                readOnly: true,
+                                                isObscureText: false,
+                                                isEnabled: true,
+                                                textInputAction: TextInputAction.next,
+                                                textInputFormatterType: TextInputFormatterType.string,
+                                              ),
+                                              CustomTextFormField(
+                                                label: InputFieldLabels.studyPeriodEndDate,
+                                                controller: stuPerEndDateController,
+                                                textInputType: TextInputType.name,
+                                                isObscureText: false,
+                                                isEnabled: true,
+                                                hintText: 'Select Date',
+                                                suffixIcon: IconButton(
+                                                  icon: const Icon(Icons.calendar_month, size: 18),
+                                                  onPressed: () async {
+                                                    setState(() async {
+                                                      stuPerEndDateController.text = await GetCalendar().selectDate(context, firstDate: stuPerBegDateController.text.toDateTime());
+                                                      endDateForDOJController.text = stuPerEndDateController.text;
+                                                      setEarliestDOJ();
+                                                    });
+                                                  },
+                                                ),
+                                                readOnly: true,
+                                                textInputAction: TextInputAction.next,
+                                                textInputFormatterType: TextInputFormatterType.string,
+                                              ),
+                                              CustomTextFormField(
+                                                label: InputFieldLabels.earliestDateForDateOfJoiningRelevantForStudy,
+                                                controller: earDateForDOJController,
+                                                textInputType: TextInputType.name,
+                                                hintText: 'Select Date',
+                                                suffixIcon: IconButton(
+                                                  icon: const Icon(Icons.calendar_month, size: 18),
+                                                  onPressed: () async {
+                                                    setState(() async {
+                                                      earDateForDOJController.text = await GetCalendar().selectDate(context);
+                                                    });
+                                                  },
+                                                ),
+                                                readOnly: true,
+                                                isObscureText: false,
+                                                isEnabled: true,
+                                                textInputAction: TextInputAction.next,
+                                                textInputFormatterType: TextInputFormatterType.string,
+                                              ),
+                                              CustomTextFormField(
+                                                label: InputFieldLabels.endDateForDateOfJoiningRelevantForStudy,
+                                                controller: endDateForDOJController,
+                                                hintText: 'Select Date',
+                                                suffixIcon: IconButton(
+                                                  icon: const Icon(Icons.calendar_month, size: 18),
+                                                  onPressed: () async {
+                                                    setState(() async {
+                                                      endDateForDOJController.text = await GetCalendar().selectDate(context);
+                                                    });
+                                                  },
+                                                ),
+                                                readOnly: true,
+                                                textInputType: TextInputType.name,
+                                                isObscureText: false,
+                                                isEnabled: true,
+                                                textInputAction: TextInputAction.next,
+                                                textInputFormatterType: TextInputFormatterType.string,
+                                              ),
+                                              CustomTextFormField(
+                                                label: InputFieldLabels.unitForValuePerformance,
+                                                controller: unitForValPerController,
+                                                isMandatory: false,
+                                                textInputType: TextInputType.name,
+                                                isObscureText: false,
+                                                isEnabled: true,
+                                                textInputAction: TextInputAction.next,
+                                                textInputFormatterType: TextInputFormatterType.string,
+                                              ),
+                                              CustomTextFormField(
+                                                label: InputFieldLabels.unitForQuantityPerformance,
+                                                isMandatory: false,
+                                                controller: unitForQuaPerforController,
+                                                textInputType: TextInputType.name,
+                                                isObscureText: false,
+                                                isEnabled: true,
+                                                textInputAction: TextInputAction.next,
+                                                textInputFormatterType: TextInputFormatterType.string,
+                                              ),
+                                            ],
+                                          ),
+                                          Row(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Expanded(
+                                                child: Wrap(
+                                                  spacing: 10,
+                                                  runSpacing: 10,
+                                                  children: [
+                                                    ...departmentFields.map((e) {
+                                                      int index = departmentFields.indexOf(e);
+                                                      return e.copyWith(
+                                                        onDeletePressed: index == 0
+                                                            ? null
+                                                            : () {
+                                                                setState(() {
+                                                                  departments.removeAt(index);
+                                                                  departmentFields.removeAt(index);
+                                                                });
+                                                              },
+                                                      );
+                                                    }),
+                                                  ],
+                                                ),
+                                              ),
+                                              TextButton(
+                                                child: const Text("Add Department"),
+                                                onPressed: () {
+                                                  setState(() {
+                                                    departments.add(TextEditingController());
+                                                    departmentFields.add(CustomTextFormField(
+                                                      label: "Department${departments.length - 1}",
+                                                      controller: departments[departments.length - 1],
+                                                      textInputType: TextInputType.name,
+                                                      isObscureText: false,
+                                                      isEnabled: true,
+                                                      textInputAction: TextInputAction.next,
+                                                      textInputFormatterType: TextInputFormatterType.string,
+                                                      isMandatory: false,
+                                                    ));
+                                                  });
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                          Row(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Expanded(
+                                                child: Wrap(
+                                                  spacing: 10,
+                                                  runSpacing: 10,
+                                                  children: [
+                                                    ...designationFields.map((e) {
+                                                      int index = designationFields.indexOf(e);
+                                                      return e.copyWith(
+                                                        onDeletePressed: index == 0
+                                                            ? null
+                                                            : () {
+                                                                setState(() {
+                                                                  designations.removeAt(index);
+                                                                  designationFields.removeAt(index);
+                                                                });
+                                                              },
+                                                      );
+                                                    }),
+                                                  ],
+                                                ),
+                                              ),
+                                              TextButton(
+                                                onPressed: () {
+                                                  setState(() {
+                                                    designations.add(TextEditingController());
+                                                    designationFields.add(CustomTextFormField(
+                                                      label: "Designation${designations.length - 1}",
+                                                      controller: designations[designations.length - 1],
+                                                      textInputType: TextInputType.name,
+                                                      isObscureText: false,
+                                                      isEnabled: true,
+                                                      textInputAction: TextInputAction.next,
+                                                      textInputFormatterType: TextInputFormatterType.string,
+                                                      isMandatory: false,
+                                                    ));
+                                                  });
+                                                },
+                                                child: const Text("Add Designation"),
+                                              )
+                                            ],
+                                          ),
+                                        ],
+                                      )),
+                                ),
+                              ),
+                            ),
+                            ClanChurnSpacing.h10,
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                ElevatedButton(
+                                  onPressed: () {
+                                    if (!checkValidations()) {
+                                      ApiRepository().handleWarningMessage(errorText ?? "Please fill in all the required fields before proceeding.", context);
+                                      return;
+                                    }
+                                    List<String> depart = [];
+                                    List<String> design = [];
+                                    for (var i in departments) {
+                                      depart.add(i.text);
+                                    }
+                                    for (var i in designations) {
+                                      design.add(i.text);
+                                    }
+                                    ProjectDetails a = ProjectDetails(
+                                        departments: depart,
+                                        designations: design,
+                                        projectStartDate: projectStartDateController.text,
+                                        projectOwner: projectOwnerController.text,
+                                        projectSpocName: projectOwnerController.text,
+                                        studyPeriodBeginingDate: stuPerBegDateController.text,
+                                        studyPeriodEndDate: stuPerEndDateController.text,
+                                        earDateForDOJRel: earDateForDOJController.text,
+                                        endDateForDOJ: endDateForDOJController.text,
+                                        unitForValPer: unitForValPerController.text,
+                                        unitForQuaPerfor: unitForQuaPerforController.text,
+                                        thresholdVals: null);
+                                    // updating project details api
+                                    context.read<ProjectArchitectBloc>().add(UpdateProjectDetailsEvent(
+                                          projectId: context.read<ProjectArchitectBloc>().state.createdProject!.id,
+                                          projectDetails: a,
+                                          onErrorCallback: (errorMessage, errorCode) {},
+                                          onSuccessCallback: (message) {
+                                            context.read<ProjectArchitectBloc>().add(GetProjectsListEvent(clientId: context.read<ProjectArchitectBloc>().state.selectedClient!.id));
+                                            context.read<ProjectArchitectBloc>().add(GetColumnsEvent(context.read<ProjectArchitectBloc>().state.createdProject?.id));
+                                          },
+                                        ));
+                                    if (widget.isCreatingNewProject) {
+                                      widget.onTap!();
+                                    } else {
+                                      goToNextPage();
+                                    }
+
+                                    // }
+                                  },
+                                  child: const Text("Next"),
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                        ProjectThresholdComponent(
+                          onBackTap: () {
+                            goToPreviousPage();
+                          },
+                          onNextTap: () {
+                            goToNextPage();
+                          },
+                        ),
+                        (state.createdProject!.latestInput == null || state.uploadNewSheetRequested)
+                            ? UploadNewData(
+                                onPressed: () {
+                                  goToPreviousPage();
+                                },
+                              )
+                            : UploadedExcelSummaryReport(
+                                onPressed: () {
+                                  goToPreviousPage();
+                                },
+                                uploadNewSheetRequested: () {
+                                  context.read<ProjectArchitectBloc>().add(const UploadNewSheetRequestedEvent(uploadNewSheetRequested: true));
+                                },
+                              )
+                      ],
+                    ),
+                  ),
+                ],
+              );
       },
     );
   }

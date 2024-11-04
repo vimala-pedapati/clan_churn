@@ -158,6 +158,7 @@ class ProjectArchitectBloc extends Bloc<ProjectArchitectEvent, ProjectArchitectS
   }
 
   _onGetProjectDetailsEvent(GetProjectDetailsEvent event, Emitter<ProjectArchitectState> emit) async {
+    emit(state.copyWith(projectDetailsLoading: true));
     final result = await apiRepository.getProjectDetails(
         projectId: event.projectId,
         onErrorCallback: (String message, int errorCode) {
@@ -171,6 +172,7 @@ class ProjectArchitectBloc extends Bloc<ProjectArchitectEvent, ProjectArchitectS
       log("get project details result else case");
       emit(state.copyWith(createdProject: const Project(id: "", name: null, inputColumns: null, projectStatus: null, inputSheet: null, projectDetails: null, allInputs: null, latestInput: null, latestInputModel: null)));
     }
+    emit(state.copyWith(projectDetailsLoading: false));
   }
 
   _onUploadFileEvent(UploadFileEvent event, Emitter<ProjectArchitectState> emit) async {
