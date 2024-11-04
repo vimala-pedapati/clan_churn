@@ -110,27 +110,49 @@ class _GetInputFieldsState extends State<GetInputFields> {
               departments.add(TextEditingController(text: pd.departments![i]));
             }
             for (int i = 0; i < pd.departments!.length; i++) {
-              departmentFields.add(CustomTextFormField(label: "Department Covered in the Study", controller: departments[i], textInputType: TextInputType.name, isObscureText: false, isEnabled: true, textInputAction: TextInputAction.next, textInputFormatterType: TextInputFormatterType.string, isMandatory: i == 0 ? true : false));
+              departmentFields.add(CustomTextFormField(
+                label: "Department Covered in the Study",
+                controller: departments[i],
+                textInputType: TextInputType.name,
+                isObscureText: false,
+                isEnabled: true,
+                textInputAction: TextInputAction.next,
+                textInputFormatterType: TextInputFormatterType.string,
+                isMandatory: i == 0 ? true : false,
+              ));
             }
           }
 
           if (pd.designations == null) {
             designations.add(TextEditingController());
-            designationFields.add(CustomTextFormField(
-              label: "Designation Covered in the Study",
-              controller: designations[0],
-              textInputType: TextInputType.name,
-              isObscureText: false,
-              isEnabled: true,
-              textInputAction: TextInputAction.next,
-              textInputFormatterType: TextInputFormatterType.string,
-            ));
+            designationFields.add(
+              CustomTextFormField(
+                label: "Designation Covered in the Study",
+                controller: designations[0],
+                textInputType: TextInputType.name,
+                isObscureText: false,
+                isEnabled: true,
+                textInputAction: TextInputAction.next,
+                textInputFormatterType: TextInputFormatterType.string,
+              ),
+            );
           } else {
             for (int i = 0; i < pd.designations!.length; i++) {
               designations.add(TextEditingController(text: pd.designations![i]));
             }
             for (int i = 0; i < pd.designations!.length; i++) {
-              designationFields.add(CustomTextFormField(label: "Designation Covered in the Study", controller: designations[i], textInputType: TextInputType.name, isObscureText: false, isEnabled: true, textInputAction: TextInputAction.next, textInputFormatterType: TextInputFormatterType.string, isMandatory: i == 0 ? true : false));
+              designationFields.add(
+                CustomTextFormField(
+                  label: "Designation Covered in the Study",
+                  controller: designations[i],
+                  textInputType: TextInputType.name,
+                  isObscureText: false,
+                  isEnabled: true,
+                  textInputAction: TextInputAction.next,
+                  textInputFormatterType: TextInputFormatterType.string,
+                  isMandatory: i == 0 ? true : false,
+                ),
+              );
             }
           }
         } else {
@@ -425,7 +447,19 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                             spacing: 10,
                                             runSpacing: 10,
                                             children: [
-                                              ...departmentFields,
+                                              ...departmentFields.map((e) {
+                                                int index = departmentFields.indexOf(e);
+                                                return e.copyWith(
+                                                  onDeletePressed: index == 0
+                                                      ? null
+                                                      : () {
+                                                          setState(() {
+                                                            departments.removeAt(index);
+                                                            departmentFields.removeAt(index);
+                                                          });
+                                                        },
+                                                );
+                                              }),
                                             ],
                                           ),
                                         ),
@@ -435,7 +469,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                             setState(() {
                                               departments.add(TextEditingController());
                                               departmentFields.add(CustomTextFormField(
-                                                label: "Department",
+                                                label: "Department${departments.length - 1}",
                                                 controller: departments[departments.length - 1],
                                                 textInputType: TextInputType.name,
                                                 isObscureText: false,
@@ -457,7 +491,19 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                             spacing: 10,
                                             runSpacing: 10,
                                             children: [
-                                              ...designationFields,
+                                              ...designationFields.map((e) {
+                                                int index = designationFields.indexOf(e);
+                                                return e.copyWith(
+                                                  onDeletePressed: index == 0
+                                                      ? null
+                                                      : () {
+                                                          setState(() {
+                                                            designations.removeAt(index);
+                                                            designationFields.removeAt(index);
+                                                          });
+                                                        },
+                                                );
+                                              }),
                                             ],
                                           ),
                                         ),
@@ -466,7 +512,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                             setState(() {
                                               designations.add(TextEditingController());
                                               designationFields.add(CustomTextFormField(
-                                                label: "Designation",
+                                                label: "Designation${designations.length - 1}",
                                                 controller: designations[designations.length - 1],
                                                 textInputType: TextInputType.name,
                                                 isObscureText: false,
