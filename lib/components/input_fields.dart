@@ -377,7 +377,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                                   icon: const Icon(Icons.calendar_month, size: 18),
                                                   onPressed: () async {
                                                     setState(() async {
-                                                      stuPerEndDateController.text = await GetCalendar().selectDate(context, firstDate: stuPerBegDateController.text.toDateTime());
+                                                      stuPerEndDateController.text = await GetCalendar().selectDate(context, firstDate: stuPerBegDateController.text.toDateTime().add(const Duration(days: 1)));
                                                       endDateForDOJController.text = stuPerEndDateController.text;
                                                       setEarliestDOJ();
                                                     });
