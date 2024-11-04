@@ -20,6 +20,7 @@ class ProjectArchitectState extends Equatable {
           projectThesholdFormfields: const [],
           allReports: const [],
           projectDetailsLoading: false,
+          projectThresholdFormFieldsLoading: false,
         );
 
   final List<ClientDetails> clientList;
@@ -38,6 +39,7 @@ class ProjectArchitectState extends Equatable {
   final bool uploadNewSheetRequested;
   final List<ProjectHistoryModel> projectHistory;
   final List<GetProThresholdFormValModel> projectThesholdFormfields;
+  final bool projectThresholdFormFieldsLoading;
   final List<String> allReports;
   const ProjectArchitectState({
     required this.clientList,
@@ -57,6 +59,7 @@ class ProjectArchitectState extends Equatable {
     required this.projectThesholdFormfields,
     required this.allReports,
     required this.projectDetailsLoading,
+    required this.projectThresholdFormFieldsLoading,
   });
 
   ProjectArchitectState copyWith({
@@ -77,6 +80,7 @@ class ProjectArchitectState extends Equatable {
     List<String>? allReports,
     bool? projectsListLoading,
     bool? projectDetailsLoading,
+    bool? projectThresholdFormFieldsLoading,
   }) {
     return ProjectArchitectState(
       clientList: clientList ?? this.clientList,
@@ -96,6 +100,7 @@ class ProjectArchitectState extends Equatable {
       projectThesholdFormfields: projectThesholdFormfields ?? this.projectThesholdFormfields,
       allReports: allReports ?? this.allReports,
       projectDetailsLoading: projectDetailsLoading ?? this.projectDetailsLoading,
+      projectThresholdFormFieldsLoading: projectThresholdFormFieldsLoading ?? this.projectThresholdFormFieldsLoading,
     );
   }
 
@@ -118,5 +123,6 @@ class ProjectArchitectState extends Equatable {
         projectThesholdFormfields,
         allReports,
         projectDetailsLoading,
+        projectThesholdFormfields,
       ];
 }

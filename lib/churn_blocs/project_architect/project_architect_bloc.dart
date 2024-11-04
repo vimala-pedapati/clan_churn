@@ -271,12 +271,14 @@ class ProjectArchitectBloc extends Bloc<ProjectArchitectEvent, ProjectArchitectS
   }
 
   _onGetProThresholdValEvent(GetProThresholdValEvent event, Emitter<ProjectArchitectState> emit) async {
+    emit(state.copyWith(projectThresholdFormFieldsLoading: true));
     final result = await apiRepository.getProThresholdValues(projectId: event.projectId, onErrorCallback: event.onErrorCallback, onSuccessCallback: event.onSuccessCallback);
     if (result != null) {
       emit(state.copyWith(projectThesholdFormfields: result));
     } else {
       emit(state.copyWith(projectThesholdFormfields: []));
     }
+    emit(state.copyWith(projectThresholdFormFieldsLoading: false));
   }
 
   _onUpdateProThrValsEvent(UpdateProThrValsEvent event, Emitter<ProjectArchitectState> emit) async {

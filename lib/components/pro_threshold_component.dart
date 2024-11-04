@@ -107,49 +107,59 @@ class _ProjectThresholdComponentState extends State<ProjectThresholdComponent> {
               ],
             ),
             Expanded(
-              child: ListView.builder(
-                itemCount: state.projectThesholdFormfields.length,
-                itemBuilder: (context, index) {
-                  return TheresholdComponent(
-                    thresholdFormVal: state.projectThesholdFormfields[index],
-                    minValue: (minValue) {
-                      addMinValue(state.projectThesholdFormfields[index].id, minValue);
-                    },
-                    maxValue: (maxValue) {
-                      addMaxValue(state.projectThesholdFormfields[index].id, maxValue);
-                    },
-                  );
-                },
-              ),
+              child: state.projectThresholdFormFieldsLoading
+                  ? const Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        CircularProgressIndicator(),
+                      ],
+                    )
+                  : ListView.builder(
+                      itemCount: state.projectThesholdFormfields.length,
+                      itemBuilder: (context, index) {
+                        return TheresholdComponent(
+                          thresholdFormVal: state.projectThesholdFormfields[index],
+                          minValue: (minValue) {
+                            addMinValue(state.projectThesholdFormfields[index].id, minValue);
+                          },
+                          maxValue: (maxValue) {
+                            addMaxValue(state.projectThesholdFormfields[index].id, maxValue);
+                          },
+                        );
+                      },
+                    ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 ElevatedButton(
-                  onPressed: () {
-                    if (minValues.contains(null) || maxValues.contains(null)) {
-                      ApiRepository().handleWarningMessage("All fileds are mandatary to fill ", context);
-                    } else {
-                      List<UpdateThresholdValModel> data = [];
-                      for (int i = 0; i < ids.length; i++) {
-                        // print( "$i)${ids[i]}: min:${minValues[i]} max:${maxValues[i]}");
-                        data.add(UpdateThresholdValModel(columnId: ids[i], columnType: columnTypes[i], minValue: minValues[i]!, maxValue: maxValues[i]!));
-                      }
-                      print(data);
-                      context.read<ProjectArchitectBloc>().add(UpdateProThrValsEvent(
-                            projectId: state.createdProject!.id,
-                            data: data,
-                            onErrorCallback: (errorMessage, errorCode) {
-                              ApiRepository().handleWarningMessage(errorMessage, context);
-                            },
-                            onSuccessCallback: (message) {
-                              // print(message?.body);
-                              ApiRepository().handleSuccessMessage("successfully updated threshold values!.....", context);
-                              widget.onNextTap();
-                            },
-                          ));
-                    }
-                  },
+                  onPressed: state.projectThresholdFormFieldsLoading
+                      ? null
+                      : () {
+                          if (minValues.contains(null) || maxValues.contains(null)) {
+                            ApiRepository().handleWarningMessage("All fileds are mandatary to fill ", context);
+                          } else {
+                            List<UpdateThresholdValModel> data = [];
+                            for (int i = 0; i < ids.length; i++) {
+                              // print( "$i)${ids[i]}: min:${minValues[i]} max:${maxValues[i]}");
+                              data.add(UpdateThresholdValModel(columnId: ids[i], columnType: columnTypes[i], minValue: minValues[i]!, maxValue: maxValues[i]!));
+                            }
+                            print(data);
+                            context.read<ProjectArchitectBloc>().add(UpdateProThrValsEvent(
+                                  projectId: state.createdProject!.id,
+                                  data: data,
+                                  onErrorCallback: (errorMessage, errorCode) {
+                                    ApiRepository().handleWarningMessage(errorMessage, context);
+                                  },
+                                  onSuccessCallback: (message) {
+                                    // print(message?.body);
+                                    ApiRepository().handleSuccessMessage("successfully updated threshold values!.....", context);
+                                    widget.onNextTap();
+                                  },
+                                ));
+                          }
+                        },
                   child: const Text("Next"),
                 )
               ],
