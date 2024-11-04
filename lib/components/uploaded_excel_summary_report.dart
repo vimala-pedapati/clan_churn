@@ -781,11 +781,11 @@ class _UploadedExcelSummaryReportState extends State<UploadedExcelSummaryReport>
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
-                  builder: (context, state) {
-                    return Text("${state.createdProject?.latestInputModel?.inputStatus}");
-                  },
-                ),
+                // BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
+                //   builder: (context, state) {
+                //     return Text("${state.createdProject?.latestInputModel?.inputStatus}");
+                //   },
+                // ),
                 // Header section
                 buildHeader(),
 
