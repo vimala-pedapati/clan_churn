@@ -66,7 +66,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> with SingleTi
 
         final Map<String, dynamic> data = json.decode(response.body);
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Failed to reset password.')));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('${json.decode(response.body)['detail']}')));
 
         log('Status Code: ${response.statusCode}');
         if (response.statusCode == 401) {
@@ -79,6 +79,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> with SingleTi
       }
       // return AuthenticationStatus.unauthenticated;
     } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Failed to reset password.')));
       log('Network Error: $e');
     }
     setState(() {

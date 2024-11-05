@@ -1,7 +1,10 @@
 class BaseUrl {
   // test url // lense.clanonline.in
   // static String baseUrl = "https://churnapi.clanonline.in";
-  static String baseUrl = "https://churntesting.clanonline.in";
+  // static String baseUrl = "https://churntesting.clanonline.in";
+
+  // staging url // lense.clanonline.in
+  static String baseUrl = "https://churn-staging-120996668109.asia-south1.run.app";
 
   // Shashank Paisa // production gcp // lense.quantapeoplwe.com
   // static String baseUrl = "https://churn-120996668109.asia-south1.run.app";
