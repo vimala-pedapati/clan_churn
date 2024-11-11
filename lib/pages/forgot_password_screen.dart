@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:clan_churn/components/input_sheet_columns.dart';
-import 'package:clan_churn/pages/new_project_components.dart';
 import 'package:clan_churn/utils/api_endpoins.dart';
 import 'package:clan_churn/utils/routes.dart';
 import 'package:clan_churn/utils/typography.dart';
@@ -20,12 +19,15 @@ class ForgotPasswordScreen extends StatefulWidget {
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final TextEditingController _emailController = TextEditingController();
   bool isMailSent = false;
+  bool isMailSending = false;
+
   final String forgotPass = BaseUrl.baseUrl + ApiEndpoints.forgotPasword;
 
-  Future forgotPassword({required email}) async {
+  Future forgotPassword({required email, required Function(bool) sendingMailHasStarted, required Function(bool) isMailSentSuccessfully}) async {
     final Map<String, dynamic> requestBody = {
       "email": email,
     };
+    sendingMailHasStarted(true);
     try {
       final http.Response response = await http.post(
         Uri.parse(forgotPass),
@@ -34,15 +36,12 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       );
       log("forgot password response: $response");
       if (response.statusCode == 200) {
-        final Map<String, dynamic> data = json.decode(response.body);
-        setState(() {
-          isMailSent = true;
-        });
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Mail sent to your mail id to rest your password')));
+        // final Map<String, dynamic> data = json.decode(response.body);
+        isMailSentSuccessfully(true);
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Mail sent to your mail id to rest your password')));
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Failed to send mail.')));
+        isMailSentSuccessfully(false);
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Failed to send mail.')));
         log('Status Code: ${response.statusCode}');
         if (response.statusCode == 401) {
           log('Unauthorized - Please check your credentials');
@@ -55,6 +54,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     } catch (e) {
       log('Network Error: $e');
     }
+    sendingMailHasStarted(false);
   }
 
   @override
@@ -69,8 +69,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
   bool isValidEmail(String email) {
     // Regular expression for validating an email address
-    final RegExp emailRegex = RegExp(
-        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9]+(?:\.[a-zA-Z0-9-]+)*$");
+    final RegExp emailRegex = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9]+(?:\.[a-zA-Z0-9-]+)*$");
     return emailRegex.hasMatch(email);
   }
 
@@ -88,9 +87,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         child: Container(
           width: MediaQuery.of(context).size.width * 0.3,
           padding: const EdgeInsets.all(30.0),
-          decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.background,
-              borderRadius: BorderRadius.circular(20)),
+          decoration: BoxDecoration(color: Theme.of(context).colorScheme.background, borderRadius: BorderRadius.circular(20)),
           child: isMailSent
               ? SentMailSuccessfully(
                   email: _emailController.text,
@@ -142,8 +139,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       },
                       decoration: InputDecoration(
                         contentPadding: const EdgeInsets.only(top: 30),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30)),
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(30)),
                         hintText: 'example@gmail.com',
                         prefixIcon: Container(
                           // width: 36,
@@ -178,26 +174,35 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       },
                     ),
                     const SizedBox(height: 40),
-
+                    // Text("$isMailSent"),
                     SizedBox(
                       width: MediaQuery.of(context).size.width,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Theme.of(context)
-                                .colorScheme
-                                .primary
-                                .withOpacity(1.0)),
-                        onPressed: _emailController.text.trim().isEmpty
-                            ? null
-                            : isValidEmail(_emailController.text.trim()) ==
-                                    false
-                                ? null
-                                : () {
-                                    forgotPassword(
-                                        email: _emailController.text.trim());
-                                  },
-                        child: const Text("Continue"),
-                      ),
+                      child: isMailSending
+                          ? const Center(child: CircularProgressIndicator())
+                          : ElevatedButton(
+                              style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(1.0)),
+                              onPressed: (_emailController.text.trim().isEmpty || isMailSent)
+                                  ? null
+                                  : isValidEmail(_emailController.text.trim()) == false
+                                      ? null
+                                      : () {
+                                          forgotPassword(
+                                            email: _emailController.text.trim(),
+                                            sendingMailHasStarted: (value) {
+                                              setState(() {
+                                                isMailSending = value;
+                                              });
+                                            },
+                                            isMailSentSuccessfully: (value) {
+                                              print("mail sent successfully $value");
+                                              setState(() {
+                                                isMailSent = value;
+                                              });
+                                            },
+                                          );
+                                        },
+                              child: Text(isMailSent ? "Mail sent" : "Continue"),
+                            ),
                     ),
                   ],
                 ),
@@ -250,9 +255,7 @@ class SentMailSuccessfully extends StatelessWidget {
         SizedBox(
           width: MediaQuery.of(context).size.width,
           child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                backgroundColor:
-                    Theme.of(context).colorScheme.primary.withOpacity(1.0)),
+            style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(1.0)),
             child: const Text("Open email app"),
             onPressed: () {
               launchURL("https://mail.google.com/mail/u/0/#inbox");
@@ -271,8 +274,7 @@ class SentMailSuccessfully extends StatelessWidget {
               ),
               TextSpan(
                 text: ' Click to resend',
-                style: ClanChurnTypography.font14400
-                    .copyWith(color: Theme.of(context).colorScheme.primary),
+                style: ClanChurnTypography.font14400.copyWith(color: Theme.of(context).colorScheme.primary),
               ),
             ],
           ),

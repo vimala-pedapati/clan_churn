@@ -5,7 +5,7 @@ class AppRoutes {
   static const intial = "/";
   static const home = "/home";
   static const signIn = "/signIn";
-  static const savedProjects = "/savedProjects";
+  static const savedReports = "/savedReports";
   static const clientProjects = "/clientProjects";
   static const forgotPassword = "/forgotPassword";
   static const resetPassword = "/resetPassword";

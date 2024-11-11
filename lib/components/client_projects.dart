@@ -26,7 +26,7 @@ class ClientProjects extends StatelessWidget {
                   width: 30,
                 ),
                 Text(
-                  "Clinet Projects",
+                  "Client Projects",
                   style: ClanChurnTypography.font20600,
                 )
               ],

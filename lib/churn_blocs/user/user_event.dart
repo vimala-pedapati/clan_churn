@@ -21,16 +21,7 @@ class AddUserEvent extends UserEvent {
   final String? image;
   final OnErrorCallback onErrorCallback;
   final OnSuccessCallback onSuccessCallback;
-  const AddUserEvent(
-      {required this.clientId,
-      required this.firstName,
-      required this.lastName,
-      required this.email,
-      required this.password,
-      required this.userType,
-      required this.image,
-      required this.onErrorCallback,
-      required this.onSuccessCallback});
+  const AddUserEvent({required this.clientId, required this.firstName, required this.lastName, required this.email, required this.password, required this.userType, required this.image, required this.onErrorCallback, required this.onSuccessCallback});
 }
 
 class UpdateUserEvent extends UserEvent {
@@ -43,34 +34,21 @@ class UpdateUserEvent extends UserEvent {
   final String? image;
   final OnErrorCallback onErrorCallback;
   final OnSuccessCallback onSuccessCallback;
-  const UpdateUserEvent(
-      {required this.clientId,
-      required this.firstName,
-      required this.lastName,
-      required this.userId,
-      required this.password,
-      required this.userType,
-      required this.image,
-      required this.onErrorCallback,
-      required this.onSuccessCallback});
+  const UpdateUserEvent({required this.clientId, required this.firstName, required this.lastName, required this.userId, required this.password, required this.userType, required this.image, required this.onErrorCallback, required this.onSuccessCallback});
 }
 
 class UploadUserProfileEvent extends UserEvent {
   final FilePickerResult filePickerResult;
   final OnErrorCallback onErrorCallback;
   final OnSuccessCallback onSuccessCallback;
-  const UploadUserProfileEvent(
-      {required this.filePickerResult,
-      required this.onErrorCallback,
-      required this.onSuccessCallback});
+  const UploadUserProfileEvent({required this.filePickerResult, required this.onErrorCallback, required this.onSuccessCallback});
 }
 
 class GetUserTypesEvent extends UserEvent {
   final OnErrorCallback onErrorCallback;
   final OnSuccessCallback onSuccessCallback;
 
-  const GetUserTypesEvent(
-      {required this.onErrorCallback, required this.onSuccessCallback});
+  const GetUserTypesEvent({required this.onErrorCallback, required this.onSuccessCallback});
 }
 
 class DeleteUserEvent extends UserEvent {
@@ -78,20 +56,25 @@ class DeleteUserEvent extends UserEvent {
   final OnErrorCallback onErrorCallback;
   final OnSuccessCallback onSuccessCallback;
 
-  const DeleteUserEvent(
-      {required this.userId,
-      required this.onErrorCallback,
-      required this.onSuccessCallback});
+  const DeleteUserEvent({required this.userId, required this.onErrorCallback, required this.onSuccessCallback});
 }
 
 class GetAllUsersEvent extends UserEvent {
   final OnErrorCallback onErrorCallback;
   final OnSuccessCallback onSuccessCallback;
-  const GetAllUsersEvent({ 
+  const GetAllUsersEvent({
     required this.onErrorCallback,
     required this.onSuccessCallback,
   });
 }
 
-
- 
+class UpdateUserProfilePictureEvent extends UserEvent {
+  final int index;
+  final String image;
+  final Function() onDone;
+  const UpdateUserProfilePictureEvent({
+    required this.index,
+    required this.image,
+    required this.onDone
+  });
+}

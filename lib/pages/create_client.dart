@@ -54,7 +54,7 @@ class _CreateClientState extends State<CreateClient> {
                 selectedRoute: SelectedRoute.createClient,
               ),
               clientsFetching
-                  ? Center(child: Image.asset("assets/loading.gif", width: 30))
+                  ? Center(child: Image.asset("assets/upload.gif", width: 100))
                   : clientsFetchingError
                       ? const Center(
                           child: Text("Unable to fetch data clients data"),

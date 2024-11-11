@@ -17,72 +17,50 @@ class ClientsCard extends StatelessWidget {
         return Container(
           height: 230,
           width: 180,
-          padding:
-              const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 20),
-          decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
-              border: Border.all(color: Theme.of(context).colorScheme.primary),
-              borderRadius: BorderRadius.circular(10)),
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-             
-              children: [
-                CircleAvatar(
-                  radius: state.isNotExpanded ? 40 : 35,
-                  backgroundColor: Theme.of(context).colorScheme.background,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 20),
+          decoration: BoxDecoration(color: Theme.of(context).colorScheme.primary.withOpacity(0.1), border: Border.all(color: Theme.of(context).colorScheme.primary), borderRadius: BorderRadius.circular(10)),
+          child: Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            CircleAvatar(
+              radius: state.isNotExpanded ? 40 : 35,
+              backgroundColor: Theme.of(context).colorScheme.background,
+              onForegroundImageError: (context, error) {
+                ClipOval(
                     child: Image.network(
-                      "${client.image}",
-                      // loadingBuilder: ((context, child, loadingProgress) {
-                      //   return const CircularProgressIndicator();
-                      // }),
-                      errorBuilder: (context, error, stackTrace) {
-                        return ClipOval(
-                            child: Image.network(
-                          image,
-                          scale: 2,
-                        ));
-                      },
-                    ),
-                  ),
+                  image,
+                  scale: 2,
+                ));
+              },
+              foregroundImage: NetworkImage(
+                "${client.image}",
+              ),
+            ),
+            Container(
+              child: Center(
+                child: Text(
+                  client.name,
+                  maxLines: 3,
+                  textAlign: TextAlign.center,
+                  overflow: TextOverflow.ellipsis,
+                  style: ClanChurnTypography.font15600,
                 ),
-                Container(
-              
-                  child: Center(
-                    child: Text(
-                      client.name,
-                      maxLines: 3,
-                      textAlign: TextAlign.center,
-                       overflow: TextOverflow.ellipsis,
-                      style: ClanChurnTypography.font15600,
-                    ),
-                  ),
+              ),
+            ),
+            SizedBox(
+              width: 180,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(padding: const EdgeInsets.only(left: 20, right: 20), shape: const StadiumBorder()),
+                child: Text(
+                  "View",
+                  style: ClanChurnTypography.font15600,
                 ),
-                SizedBox(
-                width: 180,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.only(left: 20, right: 20),
-                        shape: const StadiumBorder()),
-                    child: Text(
-                      "View",
-                      style: ClanChurnTypography.font15600,
-                    ),
-                    onPressed: () {
-                      context
-                          .read<ProjectArchitectBloc>()
-                          .add(SetSelectedClientEvent(selectedClient: client));
-                      // GoRouter.of(context).go(AppRoutes.clientProjects);
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  const ClientProjectsView()));
-                    },
-                  ),
-                )
-              ]),
+                onPressed: () {
+                  context.read<ProjectArchitectBloc>().add(SetSelectedClientEvent(selectedClient: client));
+                  // GoRouter.of(context).go(AppRoutes.clientProjects);
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const ClientProjectsView()));
+                },
+              ),
+            )
+          ]),
         );
       },
     );

@@ -5,7 +5,6 @@ import 'package:clan_churn/components/cus_text.dart';
 import 'package:clan_churn/components/cus_text_editing_controller.dart';
 import 'package:clan_churn/components/dialogs.dart';
 import 'package:clan_churn/pages/create_client.dart';
-import 'package:clan_churn/utils/api_endpoins.dart';
 import 'package:clan_churn/utils/routes.dart';
 import 'package:clan_churn/utils/typography.dart';
 import 'package:clan_churn/utils/validations.dart';
@@ -56,8 +55,7 @@ class _NewUserFormState extends State<NewUserForm> {
       return 'Password is too weak';
     }
 
-    if (context.read<ClientBloc>().state.clientUploadLogoResponse == null &&
-        selectedType == null) {
+    if (context.read<ClientBloc>().state.clientUploadLogoResponse == null && selectedType == null) {
       return 'Profile pic is required';
     }
     return null;
@@ -104,7 +102,7 @@ class _NewUserFormState extends State<NewUserForm> {
             BlocBuilder<UserBloc, UserState>(
               builder: (context, state) {
                 return Text(
-                  "Create New User ${state.uploadLogoResponse}",
+                  "Create New User",
                   style: ClanChurnTypography.font20600,
                 );
               },
@@ -216,17 +214,11 @@ class _NewUserFormState extends State<NewUserForm> {
                                       )
                                     ]),
                                     items: state.userTypes
-                                        .map((String item) =>
-                                            DropdownMenuItem<String>(
+                                        .map((String item) => DropdownMenuItem<String>(
                                               value: item,
                                               child: Text(
                                                 item,
-                                                style: ClanChurnTypography
-                                                    .font18500
-                                                    .copyWith(
-                                                        color: Theme.of(context)
-                                                            .colorScheme
-                                                            .background),
+                                                style: ClanChurnTypography.font18500.copyWith(color: Theme.of(context).colorScheme.background),
                                                 overflow: TextOverflow.ellipsis,
                                               ),
                                             ))
@@ -237,22 +229,15 @@ class _NewUserFormState extends State<NewUserForm> {
                                         selectedType = value;
                                       });
                                     },
-                                    selectedItemBuilder:
-                                        (BuildContext context) {
+                                    selectedItemBuilder: (BuildContext context) {
                                       return state.userTypes.map((String item) {
                                         return Center(
                                           child: Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                               Text(
                                                 item,
-                                                style: ClanChurnTypography
-                                                    .font18500
-                                                    .copyWith(
-                                                        color: Theme.of(context)
-                                                            .colorScheme
-                                                            .secondary),
+                                                style: ClanChurnTypography.font18500.copyWith(color: Theme.of(context).colorScheme.secondary),
                                               ),
                                             ],
                                           ),
@@ -262,52 +247,33 @@ class _NewUserFormState extends State<NewUserForm> {
                                     buttonStyleData: ButtonStyleData(
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(8),
-                                        border: Border.all(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .primary
-                                                .withOpacity(0.6)),
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .primary
-                                            .withOpacity(0.2),
+                                        border: Border.all(color: Theme.of(context).colorScheme.primary.withOpacity(0.6)),
+                                        color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
                                       ),
                                       elevation: 0,
                                     ),
                                     iconStyleData: IconStyleData(
-                                      icon:
-                                          const Icon(Icons.keyboard_arrow_down),
+                                      icon: const Icon(Icons.keyboard_arrow_down),
                                       iconSize: 25,
-                                      iconEnabledColor: Theme.of(context)
-                                          .colorScheme
-                                          .secondary,
+                                      iconEnabledColor: Theme.of(context).colorScheme.secondary,
                                       iconDisabledColor: Colors.grey,
                                     ),
                                     dropdownStyleData: DropdownStyleData(
                                       elevation: 0,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(8),
-                                        border: Border.all(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .primary
-                                                .withOpacity(0.6)),
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .primary
-                                            .withOpacity(1.0),
+                                        border: Border.all(color: Theme.of(context).colorScheme.primary.withOpacity(0.6)),
+                                        color: Theme.of(context).colorScheme.primary.withOpacity(1.0),
                                       ),
                                       scrollbarTheme: ScrollbarThemeData(
                                         radius: const Radius.circular(40),
                                         thickness: MaterialStateProperty.all(6),
-                                        thumbVisibility:
-                                            MaterialStateProperty.all(true),
+                                        thumbVisibility: MaterialStateProperty.all(true),
                                       ),
                                     ),
                                     menuItemStyleData: const MenuItemStyleData(
                                       height: 40,
-                                      padding:
-                                          EdgeInsets.only(left: 14, right: 14),
+                                      padding: EdgeInsets.only(left: 14, right: 14),
                                     ),
                                   ),
                                 );
@@ -396,57 +362,48 @@ class _NewUserFormState extends State<NewUserForm> {
         ),
         Expanded(
           flex: 1,
-          child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                BlocBuilder<UserBloc, UserState>(
-                  builder: (context, state) {
-                    return ElevatedButton(
-                      onPressed: checkValidation()
-                          ? () {
-                              context.read<UserBloc>().add(AddUserEvent(
-                                    clientId: '',
-                                    firstName: fullName.text,
-                                    lastName: '',
-                                    email: mailId.text,
-                                    password: password.text,
-                                    userType: selectedType ?? '',
-                                    image: state.uploadLogoResponse?.filename,
-                                    onErrorCallback: (errorMessage, errorCode) {
-                                      ApiRepository().handleWarningMessage(
-                                          errorMessage, context);
-                                    },
-                                    onSuccessCallback: (message) {
-                                      Navigator.pushReplacement(
-                                          context,
-                                          customPageRouteForNavigation(
-                                              const CreateClient()));
-                                      ApiRepository().handleSuccessMessage(
-                                          "successfully created user!....",
-                                          context);
-                                    },
-                                  ));
-                            }
-                          : null,
-                      child: Row(
-                        children: [
-                          const Icon(Icons.arrow_circle_right_outlined),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          FittedBox(
-                            child: Text(
-                              "Create User",
-                              style: ClanChurnTypography.font15600,
-                            ),
-                          ),
-                        ],
+          child: Row(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, children: [
+            BlocBuilder<UserBloc, UserState>(
+              builder: (context, state) {
+                return ElevatedButton(
+                  onPressed: checkValidation()
+                      ? () {
+                          context.read<UserBloc>().add(AddUserEvent(
+                                clientId: '',
+                                firstName: fullName.text,
+                                lastName: '',
+                                email: mailId.text,
+                                password: password.text,
+                                userType: selectedType ?? '',
+                                image: state.uploadLogoResponse?.filename,
+                                onErrorCallback: (errorMessage, errorCode) {
+                                  ApiRepository().handleWarningMessage(errorMessage, context);
+                                },
+                                onSuccessCallback: (message) {
+                                  Navigator.pushReplacement(context, customPageRouteForNavigation(const CreateClient()));
+                                  ApiRepository().handleSuccessMessage("successfully created user!....", context);
+                                },
+                              ));
+                        }
+                      : null,
+                  child: Row(
+                    children: [
+                      const Icon(Icons.arrow_circle_right_outlined),
+                      const SizedBox(
+                        width: 10,
                       ),
-                    );
-                  },
-                )
-              ]),
+                      FittedBox(
+                        child: Text(
+                          "Create User",
+                          style: ClanChurnTypography.font15600,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            )
+          ]),
         )
       ],
     );

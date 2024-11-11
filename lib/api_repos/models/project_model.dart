@@ -4,8 +4,7 @@ import 'package:clan_churn/api_repos/models/threshold_val_model.dart';
 import 'package:clan_churn/api_repos/models/user_model.dart';
 import 'package:equatable/equatable.dart';
 
-List<Project> projectFromJson(String str) =>
-    List<Project>.from(json.decode(str).map((x) => Project.fromJson(x)));
+List<Project> projectFromJson(String str) => List<Project>.from(json.decode(str).map((x) => Project.fromJson(x)));
 
 String projectToJson(Project data) => json.encode(data.toJson());
 
@@ -20,16 +19,7 @@ class Project extends Equatable {
   final String? latestInput;
   final LatestInputModel? latestInputModel;
 
-  const Project(
-      {required this.id,
-      required this.name,
-      required this.inputColumns,
-      required this.projectStatus,
-      required this.inputSheet,
-      required this.projectDetails,
-      required this.allInputs,
-      required this.latestInput,
-      required this.latestInputModel});
+  const Project({required this.id, required this.name, required this.inputColumns, required this.projectStatus, required this.inputSheet, required this.projectDetails, required this.allInputs, required this.latestInput, required this.latestInputModel});
 
   Project copyWith({
     String? id,
@@ -58,49 +48,28 @@ class Project extends Equatable {
   factory Project.fromJson(Map<String, dynamic> json) => Project(
       id: json["id"],
       name: json["name"],
-      inputColumns: json["input_columns"] == null
-          ? null
-          : List<InputColumn>.from(
-              json["input_columns"].map((x) => InputColumn.fromJson(x))),
+      inputColumns: json["input_columns"] == null ? null : List<InputColumn>.from(json["input_columns"].map((x) => InputColumn.fromJson(x))),
       projectStatus: json["project_status"],
       inputSheet: json["input_sheet"],
-      projectDetails: json["project_details"] == null
-          ? null
-          : ProjectDetails.fromJson(json["project_details"]),
-      allInputs: json["all_inputs"] == null
-          ? null
-          : List<String>.from(json["all_inputs"].map((x) => x)),
+      projectDetails: json["project_details"] == null ? null : ProjectDetails.fromJson(json["project_details"]),
+      allInputs: json["all_inputs"] == null ? null : List<String>.from(json["all_inputs"].map((x) => x)),
       latestInput: json["latest_input"],
-      latestInputModel: json["latest_input_model"] == null
-          ? null
-          : LatestInputModel.fromJson(json["latest_input_model"]));
+      latestInputModel: json["latest_input_model"] == null ? null : LatestInputModel.fromJson(json["latest_input_model"]));
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
-        "input_columns":
-            List<dynamic>.from((inputColumns ?? []).map((x) => x.toJson())),
+        "input_columns": List<dynamic>.from((inputColumns ?? []).map((x) => x.toJson())),
         "project_status": projectStatus,
         "input_sheet": inputSheet,
-        "project_details":
-            projectDetails == null ? null : projectDetails!.toJson(),
+        "project_details": projectDetails == null ? null : projectDetails!.toJson(),
         "all_inputs": List<dynamic>.from((allInputs ?? []).map((x) => x)),
         "latest_input": latestInput,
         "latest_input_model": latestInputModel!.toJson()
       };
 
   @override
-  List<Object?> get props => [
-        id,
-        name,
-        inputColumns,
-        projectStatus,
-        inputSheet,
-        projectDetails,
-        allInputs,
-        latestInput,
-        latestInputModel
-      ];
+  List<Object?> get props => [id, name, inputColumns, projectStatus, inputSheet, projectDetails, allInputs, latestInput, latestInputModel];
 }
 
 //  final String id;
@@ -144,8 +113,7 @@ class InputColumn extends Equatable {
       };
 
   @override
-  List<Object?> get props =>
-      [id, sheetName, columnName, isMandatory, clientColumnName];
+  List<Object?> get props => [id, sheetName, columnName, isMandatory, clientColumnName];
 }
 
 class ProjectDetails extends Equatable {
@@ -153,6 +121,7 @@ class ProjectDetails extends Equatable {
   final String? studyPeriodBeginingDate;
   final String? studyPeriodEndDate;
   final String? projectOwner;
+  final String? projectSpocName;
   final String? earDateForDOJRel;
   final String? endDateForDOJ;
   final List<String>? designations;
@@ -161,34 +130,35 @@ class ProjectDetails extends Equatable {
   final String? unitForQuaPerfor;
   final List<ProThreModel>? thresholdVals;
 
-  const ProjectDetails(
-      {required this.projectStartDate,
-      required this.studyPeriodBeginingDate,
-      required this.studyPeriodEndDate,
-      required this.projectOwner,
-      required this.earDateForDOJRel,
-      required this.endDateForDOJ,
-      required this.designations,
-      required this.departments,
-      required this.unitForValPer,
-      required this.unitForQuaPerfor,
-      required this.thresholdVals});
+  const ProjectDetails({
+    required this.projectStartDate,
+    required this.studyPeriodBeginingDate,
+    required this.studyPeriodEndDate,
+    required this.projectOwner,
+    required this.projectSpocName,
+    required this.earDateForDOJRel,
+    required this.endDateForDOJ,
+    required this.designations,
+    required this.departments,
+    required this.unitForValPer,
+    required this.unitForQuaPerfor,
+    required this.thresholdVals,
+  });
 
   factory ProjectDetails.fromJson(Map<String, dynamic> json) => ProjectDetails(
       projectStartDate: json["project_start_date"],
       studyPeriodBeginingDate: json["study_period_begining_date"],
       studyPeriodEndDate: json["study_period_end_date"],
       projectOwner: json["project_owner"],
-      earDateForDOJRel:
-          json["earliest_date_for_date_of_joining_relevent_for_the_study"],
-      endDateForDOJ:
-          json["end_date_for_date_of_joining_relevent_for_the_study"],
+      projectSpocName: json["project_owner"],
+      // projectSpocName: json["client_spoc_name"],
+      earDateForDOJRel: json["earliest_date_for_date_of_joining_relevent_for_the_study"],
+      endDateForDOJ: json["end_date_for_date_of_joining_relevent_for_the_study"],
       designations: List<String>.from(json["designations"].map((x) => x)),
       departments: List<String>.from(json["departments"].map((x) => x)),
       unitForValPer: json["unit_for_value_performance"],
       unitForQuaPerfor: json["unit_for_quantity_performance"],
-      thresholdVals:
-          List<ProThreModel>.from((json["threshold_details"] ?? []).map(
+      thresholdVals: List<ProThreModel>.from((json["threshold_details"] ?? []).map(
         (e) => ProThreModel.fromJson(e),
       )));
 
@@ -204,29 +174,27 @@ class ProjectDetails extends Equatable {
                 ? null
                 : studyPeriodBeginingDate,
         "project_owner": projectOwner,
+        "client_spoc_name": projectSpocName,
         "study_period_end_date": studyPeriodEndDate == null
             ? studyPeriodEndDate
             : studyPeriodEndDate!.isEmpty
                 ? null
                 : studyPeriodEndDate,
-        "earliest_date_for_date_of_joining_relevent_for_the_study":
-            earDateForDOJRel == null
-                ? earDateForDOJRel
-                : earDateForDOJRel!.isEmpty
-                    ? null
-                    : earDateForDOJRel,
-        "end_date_for_date_of_joining_relevent_for_the_study":
-            endDateForDOJ == null
-                ? endDateForDOJ
-                : endDateForDOJ!.isEmpty
-                    ? null
-                    : endDateForDOJ,
+        "earliest_date_for_date_of_joining_relevent_for_the_study": earDateForDOJRel == null
+            ? earDateForDOJRel
+            : earDateForDOJRel!.isEmpty
+                ? null
+                : earDateForDOJRel,
+        "end_date_for_date_of_joining_relevent_for_the_study": endDateForDOJ == null
+            ? endDateForDOJ
+            : endDateForDOJ!.isEmpty
+                ? null
+                : endDateForDOJ,
         "designations": List<dynamic>.from((designations ?? []).map((x) => x)),
         "departments": List<dynamic>.from((departments ?? []).map((x) => x)),
         "unit_for_value_performance": unitForValPer,
         "unit_for_quantity_performance": unitForQuaPerfor,
-        "threshold_details":
-            List<dynamic>.from((thresholdVals ?? []).map((e) => e.toJson()))
+        "threshold_details": List<dynamic>.from((thresholdVals ?? []).map((e) => e.toJson()))
       };
 
   @override
@@ -235,21 +203,20 @@ class ProjectDetails extends Equatable {
         studyPeriodBeginingDate,
         studyPeriodEndDate,
         projectOwner,
+        projectSpocName,
         earDateForDOJRel,
         endDateForDOJ,
         designations,
         departments,
         unitForValPer,
         unitForQuaPerfor,
-        thresholdVals
+        thresholdVals,
       ];
 }
 
-LatestInputModel latestInputModelFromJson(String str) =>
-    LatestInputModel.fromJson(json.decode(str));
+LatestInputModel latestInputModelFromJson(String str) => LatestInputModel.fromJson(json.decode(str));
 
-String latestInputModelToJson(LatestInputModel data) =>
-    json.encode(data.toJson());
+String latestInputModelToJson(LatestInputModel data) => json.encode(data.toJson());
 
 class LatestInputModel extends Equatable {
   final String id;
@@ -259,24 +226,15 @@ class LatestInputModel extends Equatable {
   final String? martsSheetUrl;
   final User? createdBy;
 
-  const LatestInputModel(
-      {required this.id,
-      required this.inputSheetUplodedTime,
-      required this.inputStatus,
-      required this.createdBy,
-      required this.errorSheetUrl,
-      required this.martsSheetUrl});
+  const LatestInputModel({required this.id, required this.inputSheetUplodedTime, required this.inputStatus, required this.createdBy, required this.errorSheetUrl, required this.martsSheetUrl});
 
-  factory LatestInputModel.fromJson(Map<String, dynamic> json) =>
-      LatestInputModel(
+  factory LatestInputModel.fromJson(Map<String, dynamic> json) => LatestInputModel(
         id: json["id"],
         inputSheetUplodedTime: json["input_sheet_uploded_time"],
         inputStatus: InputStatusExtension.fromString(json["input_status"]),
         errorSheetUrl: json["error_sheet_url"],
         martsSheetUrl: json["marts_sheet_url"],
-        createdBy: json["created_by"] == null
-            ? null
-            : User.fromJson(json["created_by"]),
+        createdBy: json["created_by"] == null ? null : User.fromJson(json["created_by"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -287,14 +245,7 @@ class LatestInputModel extends Equatable {
       };
 
   @override
-  List<Object?> get props => [
-        id,
-        inputSheetUplodedTime,
-        inputStatus,
-        errorSheetUrl,
-        martsSheetUrl,
-        createdBy
-      ];
+  List<Object?> get props => [id, inputSheetUplodedTime, inputStatus, errorSheetUrl, martsSheetUrl, createdBy];
 }
 
 enum InputStatus {
@@ -330,9 +281,9 @@ extension InputStatusExtension on InputStatus {
   String get properValue {
     switch (this) {
       case InputStatus.uploadedDataSuccessful:
-        return "uploded data successfull";
+        return "uploded data successful";
       case InputStatus.uploadedDataUnsuccessful:
-        return "uploded data unsucessfull";
+        return "uploded data unsucessful";
       case InputStatus.uploadedDataHasErrors:
         return "uploded data has errors";
       case InputStatus.uploadedDataHasNoErrors:

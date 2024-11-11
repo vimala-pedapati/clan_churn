@@ -22,9 +22,7 @@ class _HomePageState extends State<HomePage> {
           onErrorCallback: ((errorMessage, errorCode) {}),
           onSuccessCallback: (message) {},
         ));
-    context
-        .read<ProjectArchitectBloc>()
-        .add(const SideBarExpandedEvent(isNotExpanded: false));
+    context.read<ProjectArchitectBloc>().add(const SideBarExpandedEvent(isNotExpanded: false));
     super.initState();
   }
 

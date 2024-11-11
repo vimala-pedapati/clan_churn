@@ -20,18 +20,7 @@ class CreateClientEvent extends ClientEvent {
   final OnErrorCallback onErrorCallback;
   final OnSuccessCallback onSuccessCallback;
 
-  const CreateClientEvent(
-      {required this.clinetName,
-      required this.roleName,
-      required this.address1,
-      required this.address2,
-      required this.pocName,
-      required this.pocContactNumber,
-      required this.pocMailId,
-      required this.image,
-      required this.onErrorCallback,
-      required this.onSuccessCallback,
-      required this.assignedProjectArc});
+  const CreateClientEvent({required this.clinetName, required this.roleName, required this.address1, required this.address2, required this.pocName, required this.pocContactNumber, required this.pocMailId, required this.image, required this.onErrorCallback, required this.onSuccessCallback, required this.assignedProjectArc});
 }
 
 class UpdateClientEvent extends ClientEvent {
@@ -68,20 +57,14 @@ class DeleteClientEvent extends ClientEvent {
   final String clientId;
   final OnErrorCallback onErrorCallback;
   final OnSuccessCallback onSuccessCallback;
-  const DeleteClientEvent(
-      {required this.clientId,
-      required this.onErrorCallback,
-      required this.onSuccessCallback});
+  const DeleteClientEvent({required this.clientId, required this.onErrorCallback, required this.onSuccessCallback});
 }
 
 class UploadClientLogo extends ClientEvent {
   final FilePickerResult filePickerResult;
   final OnErrorCallback onErrorCallback;
   final OnSuccessCallback onSuccessCallback;
-  const UploadClientLogo(
-      {required this.filePickerResult,
-      required this.onErrorCallback,
-      required this.onSuccessCallback});
+  const UploadClientLogo({required this.filePickerResult, required this.onErrorCallback, required this.onSuccessCallback});
 }
 
 class ArchiveProjectEvent extends ClientEvent {
@@ -89,8 +72,5 @@ class ArchiveProjectEvent extends ClientEvent {
   final OnErrorCallback onErrorCallback;
   final OnSuccessCallback onSuccessCallback;
 
-  const ArchiveProjectEvent(
-      {required this.projectId,
-      required this.onErrorCallback,
-      required this.onSuccessCallback});
+  const ArchiveProjectEvent({required this.projectId, required this.onErrorCallback, required this.onSuccessCallback});
 }

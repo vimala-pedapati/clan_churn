@@ -13,14 +13,13 @@ import 'package:clan_churn/components/input_sheet_columns.dart';
 import 'package:equatable/equatable.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+
 part 'project_architect_event.dart';
 part 'project_architect_state.dart';
 
-class ProjectArchitectBloc
-    extends Bloc<ProjectArchitectEvent, ProjectArchitectState> {
+class ProjectArchitectBloc extends Bloc<ProjectArchitectEvent, ProjectArchitectState> {
   ApiRepository apiRepository;
-  ProjectArchitectBloc({required this.apiRepository})
-      : super(const ProjectArchitectState.initial()) {
+  ProjectArchitectBloc({required this.apiRepository}) : super(const ProjectArchitectState.initial()) {
     on<GetClientsEvent>(_onClientsEvent);
     on<SideBarExpandedEvent>(_onSideBarExpandedEvent);
     on<SetSelectedClientEvent>(_onSetSelectedClientEvent);
@@ -46,30 +45,27 @@ class ProjectArchitectBloc
     on<GetAllReportsEvent>(_onGetAllReports);
   }
 
-  _onClientsEvent(
-      GetClientsEvent event, Emitter<ProjectArchitectState> emit) async {
-    final result = await apiRepository.getClientsList(
-        onErrorCallback: event.onErrorCallback,
-        onSuccessCallback: event.onSuccessCallback);
+  _onClientsEvent(GetClientsEvent event, Emitter<ProjectArchitectState> emit) async {
+    emit(state.copyWith(clientListLoading: true));
+    final result = await apiRepository.getClientsList(onErrorCallback: event.onErrorCallback, onSuccessCallback: event.onSuccessCallback);
     if (result != null) {
       emit(state.copyWith(clientList: result));
     } else {
       emit(state.copyWith(clientList: []));
     }
+    emit(state.copyWith(clientListLoading: false));
   }
 
-  _onSideBarExpandedEvent(
-      SideBarExpandedEvent event, Emitter<ProjectArchitectState> emit) {
+  _onSideBarExpandedEvent(SideBarExpandedEvent event, Emitter<ProjectArchitectState> emit) {
     emit(state.copyWith(isNotExpanded: event.isNotExpanded));
   }
 
-  _onSetSelectedClientEvent(
-      SetSelectedClientEvent event, Emitter<ProjectArchitectState> emit) {
+  _onSetSelectedClientEvent(SetSelectedClientEvent event, Emitter<ProjectArchitectState> emit) {
     emit(state.copyWith(selectedClient: event.selectedClient));
   }
 
-  _onGetProjectsListEvent(
-      GetProjectsListEvent event, Emitter<ProjectArchitectState> emit) async {
+  _onGetProjectsListEvent(GetProjectsListEvent event, Emitter<ProjectArchitectState> emit) async {
+    emit(state.copyWith(projectsListLoading: true));
     final result = await apiRepository.getAllProjectDetails(
         clientId: event.clientId,
         onErrorCallback: (String message, int errorCode) {
@@ -80,11 +76,11 @@ class ProjectArchitectBloc
     } else {
       emit(state.copyWith(projectsList: []));
     }
+    emit(state.copyWith(projectsListLoading: false));
   }
 
-  _onGetColumnsEvent(
-      GetColumnsEvent event, Emitter<ProjectArchitectState> emit) async {
-    print("...2");
+  _onGetColumnsEvent(GetColumnsEvent event, Emitter<ProjectArchitectState> emit) async {
+    emit(state.copyWith(columnsFetching: true));
     final result = await apiRepository.getAllColumns(
         projectId: event.projectId,
         onErrorCallback: (String message, int errorCode) {
@@ -100,15 +96,11 @@ class ProjectArchitectBloc
     } else {
       emit(state.copyWith(columnsList: []));
     }
+    emit(state.copyWith(columnsFetching: false));
   }
 
-  _onCreateProjectEvent(
-      CreateProjectEvent event, Emitter<ProjectArchitectState> emit) async {
-    final result = await apiRepository.createProject(
-        clientId: event.clientId,
-        projectName: event.projectName,
-        onErrorCallback: event.onErrorCallback,
-        onSuccessCallback: event.onSuccessCallback);
+  _onCreateProjectEvent(CreateProjectEvent event, Emitter<ProjectArchitectState> emit) async {
+    final result = await apiRepository.createProject(clientId: event.clientId, projectName: event.projectName, onErrorCallback: event.onErrorCallback, onSuccessCallback: event.onSuccessCallback);
     if (result != null) {
       emit(state.copyWith(createdProject: result));
 
@@ -123,60 +115,29 @@ class ProjectArchitectBloc
       //   emit(state.copyWith(columnsList: []));
       // }
     } else {
-      emit(state.copyWith(
-          createdProject: const Project(
-              id: "",
-              name: null,
-              inputColumns: null,
-              projectStatus: null,
-              inputSheet: null,
-              projectDetails: null,
-              allInputs: null,
-              latestInput: null,
-              latestInputModel: null)));
+      emit(state.copyWith(createdProject: const Project(id: "", name: null, inputColumns: null, projectStatus: null, inputSheet: null, projectDetails: null, allInputs: null, latestInput: null, latestInputModel: null)));
     }
   }
 
-  _onClearCreateProjectEvent(
-      ClearCreateProjectEvent event, Emitter<ProjectArchitectState> emit) {
-    emit(state.copyWith(
-        createdProject: const Project(
-            id: "",
-            name: null,
-            inputColumns: null,
-            projectStatus: null,
-            inputSheet: null,
-            projectDetails: null,
-            allInputs: null,
-            latestInput: null,
-            latestInputModel: null)));
+  _onClearCreateProjectEvent(ClearCreateProjectEvent event, Emitter<ProjectArchitectState> emit) {
+    emit(state.copyWith(createdProject: const Project(id: "", name: null, inputColumns: null, projectStatus: null, inputSheet: null, projectDetails: null, allInputs: null, latestInput: null, latestInputModel: null)));
   }
 
-  _onReplaceColumnsEvent(
-      ReplaceColumnsEvent event, Emitter<ProjectArchitectState> emit) {
+  _onReplaceColumnsEvent(ReplaceColumnsEvent event, Emitter<ProjectArchitectState> emit) {
     emit(state.copyWith(columnsList: event.columns));
   }
 
-  _onAddColumnsToProjectEvent(AddColumnsToProjectEvent event,
-      Emitter<ProjectArchitectState> emit) async {
+  _onAddColumnsToProjectEvent(AddColumnsToProjectEvent event, Emitter<ProjectArchitectState> emit) async {
     emit(state.copyWith(projectCreating: true));
     List a = [];
     if (state.createdProject != null) {
       for (int i = 0; i < state.columnsList.length; i++) {
         // if (i.isUserCheckedIn) {
-        a.add({
-          "column_id": state.columnsList[i].id,
-          "project_id": state.createdProject!.id,
-          "add": state.columnsList[i].isUserCheckedIn,
-          "client_column_name": state.customerColumnNames[i].text
-        });
+        a.add({"column_id": state.columnsList[i].id, "project_id": state.createdProject!.id, "add": state.columnsList[i].isUserCheckedIn, "client_column_name": state.customerColumnNames[i].text});
         // }
       }
       // print(a);
-      final result = await apiRepository.addColumnsToProject(
-          columnsToAdd: a,
-          onErrorCallback: event.onErrorCallback,
-          onSuccessCallback: event.onSuccessCallback);
+      final result = await apiRepository.addColumnsToProject(columnsToAdd: a, onErrorCallback: event.onErrorCallback, onSuccessCallback: event.onSuccessCallback);
       if (result != null) {
         emit(state.copyWith(createdProject: result, projectCreating: false));
       }
@@ -184,38 +145,22 @@ class ProjectArchitectBloc
     log("${a.length}");
   }
 
-  _onSetCreatedProjectEvent(
-      SetCreatedProjectEvent event, Emitter<ProjectArchitectState> emit) {
+  _onSetCreatedProjectEvent(SetCreatedProjectEvent event, Emitter<ProjectArchitectState> emit) {
     add(GetProjectDetailsEvent(projectId: event.createdProject.id));
     emit(state.copyWith(createdProject: event.createdProject));
   }
 
-  _onUpdateProjectDetailsEvent(UpdateProjectDetailsEvent event,
-      Emitter<ProjectArchitectState> emit) async {
-    final result = await apiRepository.updateProjectDetails(
-        projectId: event.projectId,
-        projectDetails: event.projectDetails,
-        onErrorCallback: event.onErrorCallback,
-        onSuccessCallback: event.onSuccessCallback);
+  _onUpdateProjectDetailsEvent(UpdateProjectDetailsEvent event, Emitter<ProjectArchitectState> emit) async {
+    final result = await apiRepository.updateProjectDetails(projectId: event.projectId, projectDetails: event.projectDetails, onErrorCallback: event.onErrorCallback, onSuccessCallback: event.onSuccessCallback);
     if (result != null) {
       emit(state.copyWith(createdProject: result));
     } else {
-      emit(state.copyWith(
-          createdProject: const Project(
-              id: "",
-              name: null,
-              inputColumns: null,
-              projectStatus: null,
-              inputSheet: null,
-              projectDetails: null,
-              allInputs: null,
-              latestInput: null,
-              latestInputModel: null)));
+      emit(state.copyWith(createdProject: const Project(id: "", name: null, inputColumns: null, projectStatus: null, inputSheet: null, projectDetails: null, allInputs: null, latestInput: null, latestInputModel: null)));
     }
   }
 
-  _onGetProjectDetailsEvent(
-      GetProjectDetailsEvent event, Emitter<ProjectArchitectState> emit) async {
+  _onGetProjectDetailsEvent(GetProjectDetailsEvent event, Emitter<ProjectArchitectState> emit) async {
+    emit(state.copyWith(projectDetailsLoading: true));
     final result = await apiRepository.getProjectDetails(
         projectId: event.projectId,
         onErrorCallback: (String message, int errorCode) {
@@ -227,35 +172,18 @@ class ProjectArchitectBloc
       emit(state.copyWith(createdProject: result));
     } else {
       log("get project details result else case");
-      emit(state.copyWith(
-          createdProject: const Project(
-              id: "",
-              name: null,
-              inputColumns: null,
-              projectStatus: null,
-              inputSheet: null,
-              projectDetails: null,
-              allInputs: null,
-              latestInput: null,
-              latestInputModel: null)));
+      emit(state.copyWith(createdProject: const Project(id: "", name: null, inputColumns: null, projectStatus: null, inputSheet: null, projectDetails: null, allInputs: null, latestInput: null, latestInputModel: null)));
     }
+    emit(state.copyWith(projectDetailsLoading: false));
   }
 
-  _onUploadFileEvent(
-      UploadFileEvent event, Emitter<ProjectArchitectState> emit) async {
+  _onUploadFileEvent(UploadFileEvent event, Emitter<ProjectArchitectState> emit) async {
     emit(state.copyWith(uploadingFile: true));
     GetDialog.uploadFile(event.context);
-    final result = await apiRepository.uploadFile(
-        projectId: event.projectId,
-        filePickerResult: event.filePickerResult,
-        onSuccessCallback: event.onSuccessCallBack,
-        onErrorCallback: event.onErrorCallback);
+    final result = await apiRepository.uploadFile(projectId: event.projectId, filePickerResult: event.filePickerResult, onSuccessCallback: event.onSuccessCallBack, onErrorCallback: event.onErrorCallback);
     log("upload file result: $result");
     if (result != null) {
-      emit(state.copyWith(
-          uploadingFile: false,
-          createdProject: result,
-          uploadNewSheetRequested: false));
+      emit(state.copyWith(uploadingFile: false, createdProject: result, uploadNewSheetRequested: false));
       // ignore: use_build_context_synchronously
       Navigator.pop(event.context);
     } else {
@@ -263,15 +191,11 @@ class ProjectArchitectBloc
       // ignore: use_build_context_synchronously
       Navigator.pop(event.context);
 
-      emit(state.copyWith(
-          uploadingFile: false,
-          errorReport: null,
-          uploadNewSheetRequested: false));
+      emit(state.copyWith(uploadingFile: false, errorReport: null, uploadNewSheetRequested: false));
     }
   }
 
-  _onDownloadErrorReportEvent(DownloadErrorReportEvent event,
-      Emitter<ProjectArchitectState> emit) async {
+  _onDownloadErrorReportEvent(DownloadErrorReportEvent event, Emitter<ProjectArchitectState> emit) async {
     final res = await apiRepository.getErrorReportForInput(
       inputId: event.inputId,
       onErrorCallback: event.onErrorCallback,
@@ -292,10 +216,7 @@ class ProjectArchitectBloc
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(08),
               ),
-              title: Text(pro.latestInputModel?.inputStatus ==
-                      InputStatus.uploadedDataHasNoErrors
-                  ? "No errors in the uploaded data ready to publish"
-                  : "something went wrong to download"),
+              title: Text(pro.latestInputModel?.inputStatus == InputStatus.uploadedDataHasNoErrors ? "No errors in the uploaded data ready to publish" : "something went wrong to download"),
             );
           },
         );
@@ -305,39 +226,24 @@ class ProjectArchitectBloc
     }
   }
 
-  _onUpdateProjectNameEvent(
-      UpdateProjectNameEvent event, Emitter<ProjectArchitectState> emit) async {
-    var result = await ApiRepository().updateProjectName(
-        projectId: event.projectId,
-        updatedProjectName: event.updatedProjectName,
-        onErrorCallback: event.warningMessageCallback,
-        onSuccessCallback: event.onSuccessCallback);
+  _onUpdateProjectNameEvent(UpdateProjectNameEvent event, Emitter<ProjectArchitectState> emit) async {
+    var result = await ApiRepository().updateProjectName(projectId: event.projectId, updatedProjectName: event.updatedProjectName, onErrorCallback: event.warningMessageCallback, onSuccessCallback: event.onSuccessCallback);
 
     if (result != null) {
       emit(state.copyWith(createdProject: result));
     }
   }
 
-  _onGetInputExcelSummaryEvent(
-      GetInputExcelSummaryEvent event, Emitter<ProjectArchitectState> emit) {
-    apiRepository.getInputExcelSummaryReport(
-        inputId: event.inputId,
-        onErrorCallback: event.onErrorCallback,
-        onSuccessCallback: event.onSuccessCallback);
+  _onGetInputExcelSummaryEvent(GetInputExcelSummaryEvent event, Emitter<ProjectArchitectState> emit) {
+    apiRepository.getInputExcelSummaryReport(inputId: event.inputId, onErrorCallback: event.onErrorCallback, onSuccessCallback: event.onSuccessCallback);
   }
 
-  _onUploadNewSheetRequestedEvent(
-      UploadNewSheetRequestedEvent event, Emitter<ProjectArchitectState> emit) {
-    emit(
-        state.copyWith(uploadNewSheetRequested: event.uploadNewSheetRequested));
+  _onUploadNewSheetRequestedEvent(UploadNewSheetRequestedEvent event, Emitter<ProjectArchitectState> emit) {
+    emit(state.copyWith(uploadNewSheetRequested: event.uploadNewSheetRequested));
   }
 
-  _onProjectInputHistoryEvent(ProjectInputHistoryEvent event,
-      Emitter<ProjectArchitectState> emit) async {
-    final result = await apiRepository.getProjectHistoryDetails(
-        projectId: event.projectId,
-        onSuccessCallback: event.onSuccessCallback,
-        onErrorCallback: event.onErrorCallback);
+  _onProjectInputHistoryEvent(ProjectInputHistoryEvent event, Emitter<ProjectArchitectState> emit) async {
+    final result = await apiRepository.getProjectHistoryDetails(projectId: event.projectId, onSuccessCallback: event.onSuccessCallback, onErrorCallback: event.onErrorCallback);
     if (result != null) {
       emit(state.copyWith(projectHistory: result));
     } else {
@@ -345,8 +251,7 @@ class ProjectArchitectBloc
     }
   }
 
-  _onGenerateMartsEvent(
-      GenerateMartsEvent event, Emitter<ProjectArchitectState> emit) async {
+  _onGenerateMartsEvent(GenerateMartsEvent event, Emitter<ProjectArchitectState> emit) async {
     final res = await apiRepository.generateMarts(
       inputId: event.inputId,
       onErrorCallback: event.onErrorCallback,
@@ -363,45 +268,30 @@ class ProjectArchitectBloc
     }
   }
 
-  _onGetReportDataEvent(
-      GetReportDataEvent event, Emitter<ProjectArchitectState> emit) async {
-    await apiRepository.getReportData(
-        inputId: event.inputId,
-        reportname: event.reportName,
-        onErrorCallback: event.onErrorCallback,
-        onSuccessCallback: event.onSuccessCallback);
+  _onGetReportDataEvent(GetReportDataEvent event, Emitter<ProjectArchitectState> emit) async {
+    await apiRepository.getReportData(inputId: event.inputId, reportname: event.reportName, onErrorCallback: event.onErrorCallback, onSuccessCallback: event.onSuccessCallback);
   }
 
-  _onGetProThresholdValEvent(GetProThresholdValEvent event,
-      Emitter<ProjectArchitectState> emit) async {
-    final result = await apiRepository.getProThresholdValues(
-        projectId: event.projectId,
-        onErrorCallback: event.onErrorCallback,
-        onSuccessCallback: event.onSuccessCallback);
+  _onGetProThresholdValEvent(GetProThresholdValEvent event, Emitter<ProjectArchitectState> emit) async {
+    emit(state.copyWith(projectThresholdFormFieldsLoading: true));
+    final result = await apiRepository.getProThresholdValues(projectId: event.projectId, onErrorCallback: event.onErrorCallback, onSuccessCallback: event.onSuccessCallback);
     if (result != null) {
       emit(state.copyWith(projectThesholdFormfields: result));
     } else {
       emit(state.copyWith(projectThesholdFormfields: []));
     }
+    emit(state.copyWith(projectThresholdFormFieldsLoading: false));
   }
 
-  _onUpdateProThrValsEvent(
-      UpdateProThrValsEvent event, Emitter<ProjectArchitectState> emit) async {
-    final result = await apiRepository.updateThresholdValue(
-        projectId: event.projectId,
-        data: event.data,
-        onErrorCallback: event.onErrorCallback,
-        onSuccessCallback: event.onSuccessCallback);
+  _onUpdateProThrValsEvent(UpdateProThrValsEvent event, Emitter<ProjectArchitectState> emit) async {
+    final result = await apiRepository.updateThresholdValue(projectId: event.projectId, data: event.data, onErrorCallback: event.onErrorCallback, onSuccessCallback: event.onSuccessCallback);
     if (result != null) {
       emit(state.copyWith(createdProject: result));
     }
   }
 
-  _onGetAllReports(
-      GetAllReportsEvent event, Emitter<ProjectArchitectState> emit) async {
-    final result = await apiRepository.getAllReports(
-        onErrorCallback: event.onErrorCallback,
-        onSuccessCallback: event.onSuccessCallback);
+  _onGetAllReports(GetAllReportsEvent event, Emitter<ProjectArchitectState> emit) async {
+    final result = await apiRepository.getAllReports(onErrorCallback: event.onErrorCallback, onSuccessCallback: event.onSuccessCallback);
     if (result != null) {
       emit(state.copyWith(allReports: result));
     }

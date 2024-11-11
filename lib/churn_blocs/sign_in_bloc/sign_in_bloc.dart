@@ -1,39 +1,38 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:clan_churn/api_repos/auth_repo.dart';
 import 'package:clan_churn/utils/routes.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
 part 'sign_in_event.dart';
 part 'sign_in_state.dart';
 
 class SignInBloc extends Bloc<SignInBlocEvent, SignInBlocState> {
   AuthRepo authRepository;
-  SignInBloc({required this.authRepository})
-      : super(const SignInBlocState.initial()) {
+  SignInBloc({required this.authRepository}) : super(const SignInBlocState.initial()) {
     on<SignInEvent>(_onSignInEvent);
     on<SignOutEvent>(_onSignOutEvent);
   }
   _onSignInEvent(SignInEvent event, Emitter<SignInBlocState> emit) async {
-    final result = await authRepository.signInApiCall(
-        email: event.email, password: event.password);
+    emit(state.copyWith(isLoggingIn: true));
+    final result = await authRepository.signInApiCall(email: event.email, password: event.password);
     log("........sign in output $result ${result == AuthStatus.authenticated}");
     if (result == AuthStatus.authenticated) {
       emit(state.copyWith(status: AuthStatus.authenticated));
       GoRouter.of(event.context).go(AppRoutes.home);
     } else if (result == AuthStatus.unauthenticated) {
       emit(state.copyWith(status: AuthStatus.unauthenticated));
-      signInFail(
-          context: event.context,
-          message1: "Authentication Failed",
-          message2: "Please check your credentials");
+      signInFail(context: event.context, message1: "Authentication Failed", message2: "Please check your credentials");
     } else {
       emit(state.copyWith(status: AuthStatus.unauthenticated));
       signInFail(context: event.context);
     }
+    emit(state.copyWith(isLoggingIn: false));
   }
 
   _onSignOutEvent(SignOutEvent event, Emitter<SignInBlocState> emit) {
@@ -50,11 +49,7 @@ class SignInBloc extends Bloc<SignInBlocEvent, SignInBlocState> {
   }
 }
 
-Future<void> signInFail(
-    {required BuildContext context,
-    String message1 = "unable to login",
-    String message2 =
-        "Something went wrong or Email or password not correct"}) async {
+Future<void> signInFail({required BuildContext context, String message1 = "unable to login", String message2 = "Something went wrong or Email or password not correct"}) async {
   return showDialog<void>(
     context: context,
     barrierDismissible: false, // user must tap button!

@@ -1,4 +1,3 @@
-
 import 'package:clan_churn/api_repos/models/client_details.dart';
 import 'package:clan_churn/api_repos/models/project_model.dart';
 import 'package:clan_churn/churn_blocs/client/client_bloc.dart';
@@ -9,8 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ClinetProjectViewCard extends StatelessWidget {
-  const ClinetProjectViewCard(
-      {super.key, required this.project, required this.client});
+  const ClinetProjectViewCard({super.key, required this.project, required this.client});
   final Project project;
   final ClientDetails client;
   @override
@@ -23,21 +21,16 @@ class ClinetProjectViewCard extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: 25,
-            child: Padding(
-              padding: const EdgeInsets.all(0),
-              child: Image.network(
-                "${client.image}",
-                // loadingBuilder: ((context, child, loadingProgress) {
-                //   return const CircularProgressIndicator();
-                // }),
-                errorBuilder: (context, error, stackTrace) {
-                  return ClipOval(
-                      child: Image.network(
-                    image,
-                    scale: 2,
-                  ));
-                },
-              ),
+            backgroundColor: Theme.of(context).colorScheme.background,
+            onForegroundImageError: (context, error) {
+              ClipOval(
+                  child: Image.network(
+                image,
+                scale: 2,
+              ));
+            },
+            foregroundImage: NetworkImage(
+              "${client.image}",
             ),
           ),
           const SizedBox(
@@ -61,23 +54,16 @@ class ClinetProjectViewCard extends StatelessWidget {
                   ],
                 ),
                 ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.only(
-                          top: 5, bottom: 5, left: 8, right: 8),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20))),
+                  style: ElevatedButton.styleFrom(padding: const EdgeInsets.only(top: 5, bottom: 5, left: 8, right: 8), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
                   onPressed: () {
                     context.read<ClientBloc>().add(ArchiveProjectEvent(
                           projectId: project.id,
                           onErrorCallback: (errorMessage, errorCode) {
-                            print(
-                                "archieve project error: $errorCode, $errorMessage");
+                            print("archieve project error: $errorCode, $errorMessage");
                           },
                           onSuccessCallback: (message) {
                             print("project archieve success ${message?.body}");
-                            context
-                                .read<ProjectArchitectBloc>()
-                                .add(GetProjectsListEvent(clientId: client.id));
+                            context.read<ProjectArchitectBloc>().add(GetProjectsListEvent(clientId: client.id));
                           },
                         ));
                   },

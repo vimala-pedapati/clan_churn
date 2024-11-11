@@ -608,11 +608,8 @@
 // };
 
 import 'dart:convert';
-import 'package:clan_churn/components/reports.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter/foundation.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
+
+import 'package:clan_churn/api_repos/models/project_model.dart';
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/components/dialogs.dart';
 import 'package:clan_churn/components/outlined_button_template.dart';
@@ -622,6 +619,10 @@ import 'package:clan_churn/components/summary_card.dart';
 import 'package:clan_churn/components/view_error_report.dart';
 import 'package:clan_churn/utils/spacing.dart';
 import 'package:clan_churn/utils/typography.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 // Define the UploadedExcelSummaryReport widget
 class UploadedExcelSummaryReport extends StatefulWidget {
@@ -635,15 +636,14 @@ class UploadedExcelSummaryReport extends StatefulWidget {
   final VoidCallback uploadNewSheetRequested;
 
   @override
-  State<UploadedExcelSummaryReport> createState() =>
-      _UploadedExcelSummaryReportState();
+  State<UploadedExcelSummaryReport> createState() => _UploadedExcelSummaryReportState();
 }
 
 // State class for UploadedExcelSummaryReport widget
-class _UploadedExcelSummaryReportState
-    extends State<UploadedExcelSummaryReport> {
+class _UploadedExcelSummaryReportState extends State<UploadedExcelSummaryReport> {
   // Properties
   Map<String, dynamic>? jsonObject;
+  bool isDataLoading = true;
   String? selectedSheet;
   String? selectedColumn;
   List<String> sheets = [];
@@ -657,6 +657,10 @@ class _UploadedExcelSummaryReportState
   void initState() {
     super.initState();
     initializeData();
+    context.read<ProjectArchitectBloc>().add(GetAllReportsEvent(
+          onErrorCallback: (errorMessage, errorCode) {},
+          onSuccessCallback: (message) {},
+        ));
   }
 
   // void goToNextPage() {
@@ -683,33 +687,29 @@ class _UploadedExcelSummaryReportState
 
   // Method to initialize data
   void initializeData() {
+    setState(() {
+      isDataLoading = true;
+    });
     if (context.read<ProjectArchitectBloc>().state.createdProject != null) {
-      if (context
-              .read<ProjectArchitectBloc>()
-              .state
-              .createdProject!
-              .latestInput !=
-          null) {
+      if (context.read<ProjectArchitectBloc>().state.createdProject!.latestInput != null) {
         context.read<ProjectArchitectBloc>().add(GetInputExcelSummaryEvent(
-              inputId: context
-                  .read<ProjectArchitectBloc>()
-                  .state
-                  .createdProject!
-                  .latestInput!,
+              inputId: context.read<ProjectArchitectBloc>().state.createdProject!.latestInput!,
               onErrorCallback: (errorMessage, errorCode) {
+                setState(() {
+                  isDataLoading = false;
+                });
                 if (kDebugMode) {
-                  print(
-                      "Get Input Excel Summary Report error call back: $errorMessage $errorCode");
+                  print("Get Input Excel Summary Report error call back: $errorMessage $errorCode");
                 }
               },
               onSuccessCallback: (message) {
                 if (message != null) {
                   if (kDebugMode) {
-                    print(
-                        "Get Input Excel Summary Report: ${json.decode(message.body)}");
+                    print("Get Input Excel Summary Report: ${json.decode(message.body)}");
                   }
                   setState(() {
                     jsonObject = json.decode(message.body);
+                    isDataLoading = false;
                   });
                   updateSelectedSheet(data: jsonObject!);
                 }
@@ -720,15 +720,13 @@ class _UploadedExcelSummaryReportState
   }
 
   // Method to update selected sheet
-  void updateSelectedSheet(
-      {required Map<String, dynamic> data, String? selectedSheet}) {
+  void updateSelectedSheet({required Map<String, dynamic> data, String? selectedSheet}) {
     if (selectedSheet == null) {
       setState(() {
         sheets = data.keys.toList();
         if (sheets.isNotEmpty) {
           selectedSheet = sheets[0];
-          updatedSelectedSheetColumns(
-              data: data, selectedSheetKey: selectedSheet!);
+          updatedSelectedSheetColumns(data: data, selectedSheetKey: selectedSheet!);
         }
       });
     } else {
@@ -737,28 +735,23 @@ class _UploadedExcelSummaryReportState
   }
 
   // Method to update selected sheet columns
-  void updatedSelectedSheetColumns(
-      {required Map<String, dynamic> data, required String selectedSheetKey}) {
+  void updatedSelectedSheetColumns({required Map<String, dynamic> data, required String selectedSheetKey}) {
     setState(() {
       selectedSheet = selectedSheetKey;
-      columns = json.decode(data[selectedSheetKey]).keys.toList();
+      columns = data[selectedSheetKey].keys.toList();
       if (columns.isNotEmpty) {
         selectedColumn = columns[0];
       }
-      updatedSelectedSheetColumnWidgets(
-          selectedShe: selectedSheetKey, selectedCol: selectedColumn!);
+      updatedSelectedSheetColumnWidgets(selectedShe: selectedSheetKey, selectedCol: selectedColumn!);
     });
   }
 
   // Method to update selected sheet column widgets
-  void updatedSelectedSheetColumnWidgets(
-      {required String selectedShe, required String selectedCol}) {
+  void updatedSelectedSheetColumnWidgets({required String selectedShe, required String selectedCol}) {
     setState(() {
       selectedColumn = selectedCol;
       widgets = [];
-      ((json.decode(jsonObject![selectedSheet]))[selectedColumn]
-              as Map<String, dynamic>)
-          .forEach((key, value) {
+      ((jsonObject![selectedSheet])[selectedColumn] as Map<String, dynamic>).forEach((key, value) {
         setState(() {
           widgets.add(Row(
             children: [
@@ -783,16 +776,229 @@ class _UploadedExcelSummaryReportState
       //         });
       //       },
       children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Header section
-            buildHeader(),
-            // Display either loading indicator or data view
-            jsonObject == null ? buildLoadingIndicator() : buildDataView(),
-          ],
+        BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
+          builder: (context, state) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
+                //   builder: (context, state) {
+                //     return Text("${state.createdProject?.latestInputModel?.inputStatus}");
+                //   },
+                // ),
+                // Header section
+                buildHeader(),
+
+                if (isDataLoading)
+                  buildLoadingIndicator()
+                else if (state.createdProject?.latestInputModel?.inputStatus != null)
+                  if (state.createdProject?.latestInputModel?.inputStatus == InputStatus.uploadedDataUnsuccessful)
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      height: MediaQuery.of(context).size.height * 0.5,
+                      child: Expanded(
+                        flex: 3,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          // mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Text(
+                              "⚠️ Oops! We couldn’t fetch your project summary.\n\n"
+                              "📄 It looks like there might be an issue with the uploaded data.\n\n"
+                              "🔍 Please double-check your sheet to ensure everything was uploaded correctly.\n\n"
+                              "✅ Once confirmed, try accessing the summary again!",
+                              textAlign: TextAlign.center,
+                            ),
+                            buildActionButtons(
+                              disableCategorization: true,
+                              disableExcelSummary: true,
+                              disableViewErrorReport: true,
+                            ),
+                            const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                IgnorePointer(
+                                    child: Opacity(
+                                  opacity: 0.5,
+                                  child: GetPublishButton(),
+                                )),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    )
+                  else if (state.createdProject?.latestInputModel?.inputStatus == InputStatus.uploadedDataSuccessful && jsonObject != null)
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            buildSheetsAndColumnsDropdowns(),
+                            buildSummaryDetails(),
+                            buildActionButtons(
+                              disableUploadNewSheet: true,
+                              disableCategorization: true,
+                            ),
+                            ClanChurnSpacing.h20,
+                            const Text(
+                              "✅ Note: Your data upload was successful.\n"
+                              "📥 To proceed, click 'View Error Report' to generate any error reports.\n"
+                              "✏️ If an error sheet is downloaded, review and correct the issues. After uploading the corrected sheet, the 'Publish' button will be enabled, allowing you to generate marts.",
+                              textAlign: TextAlign.center,
+                            ),
+                            ClanChurnSpacing.h20,
+                            const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                IgnorePointer(
+                                    child: Opacity(
+                                  opacity: 0.5,
+                                  child: GetPublishButton(),
+                                )),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    )
+                  else if (state.createdProject?.latestInputModel?.inputStatus == InputStatus.uploadedDataHasErrors && jsonObject != null)
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            buildSheetsAndColumnsDropdowns(),
+                            buildSummaryDetails(),
+                            buildActionButtons(
+                              disableCategorization: true,
+                            ),
+                            ClanChurnSpacing.h20,
+                            const Text(
+                              "⚠️ Note: The uploaded data has errors.\n📥 Please download the error sheet.\n✏️ Correct the errors and re-upload the data.",
+                              textAlign: TextAlign.center,
+                            ),
+                            ClanChurnSpacing.h20,
+                            const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                IgnorePointer(
+                                    child: Opacity(
+                                  opacity: 0.5,
+                                  child: GetPublishButton(),
+                                )),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    )
+                  else if (state.createdProject?.latestInputModel?.inputStatus == InputStatus.uploadedDataHasNoErrors && jsonObject != null)
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            buildSheetsAndColumnsDropdowns(),
+                            buildSummaryDetails(),
+                            buildActionButtons(
+                              disableCategorization: true,
+                              disableUploadNewSheet: true,
+                              disableViewErrorReport: true,
+                            ),
+                            ClanChurnSpacing.h20,
+                            const Text(
+                              "✅ Note: The uploaded data has no errors.\n"
+                              "📊 You can now proceed to generate the data marts by clicking 'Publish'.",
+                              textAlign: TextAlign.center,
+                            ),
+                            ClanChurnSpacing.h20,
+                            const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                GetPublishButton(),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    )
+                  else if (state.createdProject?.latestInputModel?.inputStatus == InputStatus.uploadedDataDataMartsGenerated && jsonObject != null)
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            buildSheetsAndColumnsDropdowns(),
+                            buildSummaryDetails(),
+                            buildActionButtons(
+                              disableCategorization: true,
+                              disableUploadNewSheet: true,
+                              disableViewErrorReport: true,
+                            ),
+                            ClanChurnSpacing.h20,
+                            const Text(
+                              "✅ Note: Data marts have been successfully generated for the uploaded data.\n"
+                              "📊 You can now view the reports by clicking on 'Reports'.",
+                              textAlign: TextAlign.center,
+                            ),
+                            ClanChurnSpacing.h20,
+                            const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                GetPublishButton(),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    )
+                  else if (state.createdProject?.latestInputModel?.inputStatus == InputStatus.uploadedDataDataMartsCannotBeGenerated && jsonObject != null)
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            buildSheetsAndColumnsDropdowns(),
+                            buildSummaryDetails(),
+                            buildActionButtons(
+                              disableCategorization: true,
+                              disableViewErrorReport: true,
+                            ),
+                            ClanChurnSpacing.h20,
+                            const Text(
+                              "⚠️ Note: Data marts cannot be generated with the current data.\n\n"
+                              "📥 Please try uploading data that can be used to generate marts.",
+                              textAlign: TextAlign.center,
+                            ),
+                            ClanChurnSpacing.h20,
+                            const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                IgnorePointer(
+                                  child: Opacity(
+                                    opacity: 0.5,
+                                    child: GetPublishButton(),
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    )
+                  else
+                    const Center(
+                      child: Text(
+                        "⚠️ Unable to retrieve the status of your input sheet or summary of your input sheet. Please contact the admin for assistance.",
+                        textAlign: TextAlign.center,
+                      ),
+                    )
+              ],
+            );
+          },
         ),
-          // PerformanceReport()
       ],
     );
   }
@@ -831,8 +1037,7 @@ class _UploadedExcelSummaryReportState
       child: OutlinedButton(
         style: OutlinedButton.styleFrom(
           padding: const EdgeInsets.all(0),
-          side: BorderSide(
-              color: Theme.of(context).colorScheme.primary, width: 1.5),
+          side: BorderSide(color: Theme.of(context).colorScheme.primary, width: 1.5),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           ),
@@ -840,11 +1045,13 @@ class _UploadedExcelSummaryReportState
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            const Icon(Icons.history, size: 20,),
+            const Icon(
+              Icons.history,
+              size: 20,
+            ),
             Text(
               "History",
-              style: ClanChurnTypography.font14900
-                  .copyWith(color: Theme.of(context).colorScheme.primary),
+              style: ClanChurnTypography.font14900.copyWith(color: Theme.of(context).colorScheme.primary),
             ),
           ],
         ),
@@ -859,7 +1066,7 @@ class _UploadedExcelSummaryReportState
   Widget buildLoadingIndicator() {
     return Expanded(
       child: Center(
-        child: Image.asset("assets/loading.gif", width: 30),
+        child: Image.asset("assets/upload.gif", width: 100),
       ),
     );
   }
@@ -911,7 +1118,7 @@ class _UploadedExcelSummaryReportState
       children: [
         Text(
           "Select Sheet",
-          style:  ClanChurnTypography.font14900,
+          style: ClanChurnTypography.font14900,
         ),
         ClanChurnSpacing.w10,
         SizedBox(
@@ -923,7 +1130,7 @@ class _UploadedExcelSummaryReportState
               hint: Row(children: [
                 Text(
                   'Select Sheet',
-                  style:  ClanChurnTypography.font14900,
+                  style: ClanChurnTypography.font14900,
                   overflow: TextOverflow.ellipsis,
                 )
               ]),
@@ -932,8 +1139,7 @@ class _UploadedExcelSummaryReportState
                         value: item,
                         child: Text(
                           item,
-                          style:  ClanChurnTypography.font14900.copyWith(
-                              color: Theme.of(context).colorScheme.background),
+                          style: ClanChurnTypography.font14900.copyWith(color: Theme.of(context).colorScheme.background),
                           overflow: TextOverflow.ellipsis,
                         ),
                       ))
@@ -950,8 +1156,7 @@ class _UploadedExcelSummaryReportState
                       children: [
                         Text(
                           item,
-                          style: ClanChurnTypography.font14900.copyWith(
-                              color: Theme.of(context).colorScheme.secondary),
+                          style: ClanChurnTypography.font14900.copyWith(color: Theme.of(context).colorScheme.secondary),
                         ),
                       ],
                     ),
@@ -961,11 +1166,7 @@ class _UploadedExcelSummaryReportState
               buttonStyleData: ButtonStyleData(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .primary
-                          .withOpacity(0.6)),
+                  border: Border.all(color: Theme.of(context).colorScheme.primary.withOpacity(0.6)),
                   color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
                 ),
                 elevation: 0,
@@ -980,11 +1181,7 @@ class _UploadedExcelSummaryReportState
                 elevation: 0,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .primary
-                          .withOpacity(0.6)),
+                  border: Border.all(color: Theme.of(context).colorScheme.primary.withOpacity(0.6)),
                   color: Theme.of(context).colorScheme.primary.withOpacity(1.0),
                 ),
                 scrollbarTheme: ScrollbarThemeData(
@@ -1012,7 +1209,7 @@ class _UploadedExcelSummaryReportState
       children: [
         Text(
           "Select Column",
-          style:  ClanChurnTypography.font14900,
+          style: ClanChurnTypography.font14900,
         ),
         ClanChurnSpacing.w10,
         SizedBox(
@@ -1025,19 +1222,34 @@ class _UploadedExcelSummaryReportState
                 children: [
                   Text(
                     'Select Column',
-                    style:  ClanChurnTypography.font14900,
+                    style: ClanChurnTypography.font14900,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ],
               ),
+              // items: columns
+              //     .map((String item) => DropdownMenuItem<String>(
+              //           value: item,
+              //           child: Text(
+              //             item,
+              //             style: ClanChurnTypography.font14900.copyWith(color: Theme.of(context).colorScheme.background),
+              //             overflow: TextOverflow.ellipsis,
+              //           ),
+              //         ))
+              //     .toList(),
               items: columns
                   .map((String item) => DropdownMenuItem<String>(
                         value: item,
-                        child: Text(
-                          item,
-                          style:  ClanChurnTypography.font14900.copyWith(
-                              color: Theme.of(context).colorScheme.background),
-                          overflow: TextOverflow.ellipsis,
+                        child: SizedBox(
+                          width: 260, // Set a fixed width to constrain the text
+                          child: Text(
+                            item,
+                            style: ClanChurnTypography.font14900.copyWith(
+                              color: Theme.of(context).colorScheme.background,
+                            ),
+                            overflow: TextOverflow.ellipsis, // Ellipsis to handle overflow
+                            maxLines: 1,
+                          ),
                         ),
                       ))
                   .toList(),
@@ -1047,10 +1259,14 @@ class _UploadedExcelSummaryReportState
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          item,
-                          style:  ClanChurnTypography.font14900.copyWith(
-                              color: Theme.of(context).colorScheme.secondary),
+                        SizedBox(
+                          width: 240,
+                          child: Text(
+                            item,
+                            style: ClanChurnTypography.font14900.copyWith(color: Theme.of(context).colorScheme.secondary),
+                            overflow: TextOverflow.ellipsis, // Ellipsis to handle overflow
+                            maxLines: 1,
+                          ),
                         ),
                       ],
                     ),
@@ -1059,17 +1275,12 @@ class _UploadedExcelSummaryReportState
               },
               value: selectedColumn,
               onChanged: (value) {
-                updatedSelectedSheetColumnWidgets(
-                    selectedShe: selectedSheet!, selectedCol: value!);
+                updatedSelectedSheetColumnWidgets(selectedShe: selectedSheet!, selectedCol: value!);
               },
               buttonStyleData: ButtonStyleData(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .primary
-                          .withOpacity(0.6)),
+                  border: Border.all(color: Theme.of(context).colorScheme.primary.withOpacity(0.6)),
                   color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
                 ),
                 elevation: 0,
@@ -1084,11 +1295,7 @@ class _UploadedExcelSummaryReportState
                 elevation: 0,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .primary
-                          .withOpacity(0.6)),
+                  border: Border.all(color: Theme.of(context).colorScheme.primary.withOpacity(0.6)),
                   color: Theme.of(context).colorScheme.primary.withOpacity(1.0),
                 ),
                 scrollbarTheme: ScrollbarThemeData(
@@ -1114,22 +1321,14 @@ class _UploadedExcelSummaryReportState
       padding: const EdgeInsets.only(left: 0, right: 0, bottom: 20),
       child: Wrap(
         runSpacing: 10,
-       
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               buildSummaryCard(
-                value: (json.decode(jsonObject![selectedSheet]))[selectedColumn]
-                        ["count"]
-                    .toString(),
+                value: (jsonObject![selectedSheet])[selectedColumn]["count"].toString(),
                 header: "Total Rows",
-                isDisabled:
-                    (json.decode(jsonObject![selectedSheet]))[selectedColumn]
-                                ["count"] ==
-                            null
-                        ? true
-                        : false,
+                isDisabled: (jsonObject![selectedSheet])[selectedColumn]["count"] == null ? true : false,
               ),
               const SummaryCard(
                 value: "--",
@@ -1153,28 +1352,14 @@ class _UploadedExcelSummaryReportState
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               buildSummaryCard(
-                value: (json.decode(jsonObject![selectedSheet]))[selectedColumn]
-                        ["max"]
-                    .toString(),
+                value: (jsonObject![selectedSheet])[selectedColumn]["max"].toString(),
                 header: "Maximum Value",
-                isDisabled:
-                    (json.decode(jsonObject![selectedSheet]))[selectedColumn]
-                                ["max"] ==
-                            null
-                        ? true
-                        : false,
+                isDisabled: (jsonObject![selectedSheet])[selectedColumn]["max"] == null ? true : false,
               ),
               buildSummaryCard(
-                value: (json.decode(jsonObject![selectedSheet]))[selectedColumn]
-                        ["min"]
-                    .toString(),
+                value: jsonObject![selectedSheet][selectedColumn]["min"].toString(),
                 header: "Minimum Value",
-                isDisabled:
-                    (json.decode(jsonObject![selectedSheet]))[selectedColumn]
-                                ["min"] ==
-                            null
-                        ? true
-                        : false,
+                isDisabled: (jsonObject![selectedSheet])[selectedColumn]["min"] == null ? true : false,
               ),
               const SummaryCard(
                 value: "--",
@@ -1182,31 +1367,17 @@ class _UploadedExcelSummaryReportState
                 isDisabled: true,
               ),
               buildSummaryCard(
-                value: (json.decode(jsonObject![selectedSheet]))[selectedColumn]
-                        ["50%"]
-                    .toString(),
+                value: (jsonObject![selectedSheet])[selectedColumn]["50%"].toString(),
                 header: "Median Value",
-                isDisabled:
-                    (json.decode(jsonObject![selectedSheet]))[selectedColumn]
-                                ["50%"] ==
-                            null
-                        ? true
-                        : false,
+                isDisabled: (jsonObject![selectedSheet])[selectedColumn]["50%"] == null ? true : false,
               ),
             ],
           ),
           ClanChurnSpacing.h30,
           buildSummaryCard(
-            value: (json.decode(jsonObject![selectedSheet]))[selectedColumn]
-                    ["mean"]
-                .toString(),
+            value: (jsonObject![selectedSheet])[selectedColumn]["mean"].toString(),
             header: "Average Value",
-            isDisabled:
-                (json.decode(jsonObject![selectedSheet]))[selectedColumn]
-                            ["mean"] ==
-                        null
-                    ? true
-                    : false,
+            isDisabled: (jsonObject![selectedSheet])[selectedColumn]["mean"] == null ? true : false,
           ),
           ClanChurnSpacing.h50,
         ],
@@ -1228,7 +1399,12 @@ class _UploadedExcelSummaryReportState
   }
 
   // Widget for action buttons
-  Widget buildActionButtons() {
+  Widget buildActionButtons({
+    bool disableCategorization = false,
+    bool disableExcelSummary = false,
+    bool disableViewErrorReport = false,
+    bool disableUploadNewSheet = false,
+  }) {
     return Builder(builder: (ctx) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1236,28 +1412,32 @@ class _UploadedExcelSummaryReportState
           OutlinedButtonTemplate(
             icon: Icons.remove_red_eye_outlined,
             title: "Excel Summary",
-            onPressed: () {
-              viewErrorReport(context, jsonObject!, selectedSheet!);
-            },
+            onPressed: disableExcelSummary
+                ? null
+                : () {
+                    viewErrorReport(context, jsonObject!, selectedSheet!);
+                  },
           ),
           OutlinedButtonTemplate(
             icon: Icons.list_alt_outlined,
             title: "Group Categorization",
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    backgroundColor: Theme.of(context).colorScheme.background,
-                    surfaceTintColor: Colors.transparent,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(08),
-                    ),
-                    title: const Text("Coming Soon!..."),
-                  );
-                },
-              );
-            },
+            onPressed: disableCategorization
+                ? null
+                : () {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          backgroundColor: Theme.of(context).colorScheme.background,
+                          surfaceTintColor: Colors.transparent,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(08),
+                          ),
+                          title: const Text("Coming Soon!..."),
+                        );
+                      },
+                    );
+                  },
           ),
           BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
             builder: (context, state) {
@@ -1265,32 +1445,30 @@ class _UploadedExcelSummaryReportState
                 icon: Icons.sim_card_download_outlined,
                 title: "View Error Report",
                 onHoverTextChange: "Download Error Report",
-                onPressed: () {
-                  context
-                      .read<ProjectArchitectBloc>()
-                      .add(DownloadErrorReportEvent(
-                        context: context,
-                        inputId: context
-                                .read<ProjectArchitectBloc>()
-                                .state
-                                .createdProject!
-                                .latestInput ??
-                            "",
-                        onSuccessCallback: (message) {},
-                        onErrorCallback: (errorMessage, errorCode) {
-                          print(
-                              "Download Error Report...${state.createdProject!.latestInput}..$errorMessage $errorCode");
-                          GetDialog.failedErrorReport(context, errorMessage);
-                        },
-                      ));
-                },
+                onPressed: disableViewErrorReport
+                    ? null
+                    : () {
+                        GetDialog.uploadFile(context);
+                        context.read<ProjectArchitectBloc>().add(DownloadErrorReportEvent(
+                              context: context,
+                              inputId: context.read<ProjectArchitectBloc>().state.createdProject!.latestInput ?? "",
+                              onSuccessCallback: (message) {
+                                Navigator.pop(context);
+                              },
+                              onErrorCallback: (errorMessage, errorCode) {
+                                Navigator.pop(context);
+                                print("Download Error Report...${state.createdProject!.latestInput}..$errorMessage $errorCode");
+                                GetDialog.failedErrorReport(context, errorMessage);
+                              },
+                            ));
+                      },
               );
             },
           ),
           OutlinedButtonTemplate(
             icon: Icons.upload_file_outlined,
             title: "Upload New Sheet",
-            onPressed: widget.uploadNewSheetRequested,
+            onPressed: disableUploadNewSheet ? null : widget.uploadNewSheetRequested,
           ),
         ],
       );

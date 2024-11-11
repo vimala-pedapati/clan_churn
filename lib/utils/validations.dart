@@ -1,7 +1,7 @@
 class Validation {
   static String? validateCustomerName(String value) {
-    if (value.isEmpty) {
-      return 'Clinet name cannot be empty';
+    if (value.trim().isEmpty) {
+      return 'Client name cannot be empty';
     }
     if (value.length < 10) {
       return 'Minimum Character Limit not met, please contact Admin';
@@ -13,7 +13,7 @@ class Validation {
   }
 
   static String? validateRoleName(String value) {
-    if (value.isEmpty) {
+    if (value.trim().isEmpty) {
       return 'This field cannot be empty';
     }
     if (value.length < 2) {
@@ -26,7 +26,7 @@ class Validation {
   }
 
   static String? validateAssignProjectArchitect(String value) {
-    if (value.isEmpty) {
+    if (value.trim().isEmpty) {
       return 'Please select a project architect';
     }
     return null;
@@ -40,7 +40,7 @@ class Validation {
   }
 
   static String? validateUserName(String value) {
-    if (value.isEmpty) {
+    if (value.trim().isEmpty) {
       return 'This field cannot be empty';
     }
     if (value.length < 2) {
@@ -53,14 +53,14 @@ class Validation {
   }
 
   static String? validateTypeOfUser(String value) {
-    if (value.isEmpty) {
+    if (value.trim().isEmpty) {
       return 'This field cannot be empty';
     }
     return null;
   }
 
   static String? validateUserPhoneNumber(String value) {
-    if (value.isEmpty) {
+    if (value.trim().isEmpty) {
       return 'This field cannot be empty';
     }
     if (value.length != 10) {
@@ -70,7 +70,7 @@ class Validation {
   }
 
   static String? validateUserEmailID(String value) {
-    if (value.isEmpty) {
+    if (value.trim().isEmpty) {
       return 'This field cannot be empty';
     }
     if (value.length < 8) {
@@ -86,7 +86,7 @@ class Validation {
   }
 
   static String? validateUserProfilePhoto(String value) {
-    if (value.isEmpty) {
+    if (value.trim().isEmpty) {
       return 'Please upload jpeg only';
     }
     return null;
