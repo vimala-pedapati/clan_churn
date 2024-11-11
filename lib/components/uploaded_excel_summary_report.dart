@@ -738,7 +738,7 @@ class _UploadedExcelSummaryReportState extends State<UploadedExcelSummaryReport>
   void updatedSelectedSheetColumns({required Map<String, dynamic> data, required String selectedSheetKey}) {
     setState(() {
       selectedSheet = selectedSheetKey;
-      columns = json.decode(data[selectedSheetKey]).keys.toList();
+      columns = data[selectedSheetKey].keys.toList();
       if (columns.isNotEmpty) {
         selectedColumn = columns[0];
       }
@@ -751,7 +751,7 @@ class _UploadedExcelSummaryReportState extends State<UploadedExcelSummaryReport>
     setState(() {
       selectedColumn = selectedCol;
       widgets = [];
-      ((json.decode(jsonObject![selectedSheet]))[selectedColumn] as Map<String, dynamic>).forEach((key, value) {
+      ((jsonObject![selectedSheet])[selectedColumn] as Map<String, dynamic>).forEach((key, value) {
         setState(() {
           widgets.add(Row(
             children: [
@@ -1326,9 +1326,9 @@ class _UploadedExcelSummaryReportState extends State<UploadedExcelSummaryReport>
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               buildSummaryCard(
-                value: (json.decode(jsonObject![selectedSheet]))[selectedColumn]["count"].toString(),
+                value: (jsonObject![selectedSheet])[selectedColumn]["count"].toString(),
                 header: "Total Rows",
-                isDisabled: (json.decode(jsonObject![selectedSheet]))[selectedColumn]["count"] == null ? true : false,
+                isDisabled: (jsonObject![selectedSheet])[selectedColumn]["count"] == null ? true : false,
               ),
               const SummaryCard(
                 value: "--",
@@ -1352,14 +1352,14 @@ class _UploadedExcelSummaryReportState extends State<UploadedExcelSummaryReport>
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               buildSummaryCard(
-                value: (json.decode(jsonObject![selectedSheet]))[selectedColumn]["max"].toString(),
+                value: (jsonObject![selectedSheet])[selectedColumn]["max"].toString(),
                 header: "Maximum Value",
-                isDisabled: (json.decode(jsonObject![selectedSheet]))[selectedColumn]["max"] == null ? true : false,
+                isDisabled: (jsonObject![selectedSheet])[selectedColumn]["max"] == null ? true : false,
               ),
               buildSummaryCard(
-                value: (json.decode(jsonObject![selectedSheet]))[selectedColumn]["min"].toString(),
+                value: jsonObject![selectedSheet][selectedColumn]["min"].toString(),
                 header: "Minimum Value",
-                isDisabled: (json.decode(jsonObject![selectedSheet]))[selectedColumn]["min"] == null ? true : false,
+                isDisabled: (jsonObject![selectedSheet])[selectedColumn]["min"] == null ? true : false,
               ),
               const SummaryCard(
                 value: "--",
@@ -1367,17 +1367,17 @@ class _UploadedExcelSummaryReportState extends State<UploadedExcelSummaryReport>
                 isDisabled: true,
               ),
               buildSummaryCard(
-                value: (json.decode(jsonObject![selectedSheet]))[selectedColumn]["50%"].toString(),
+                value: (jsonObject![selectedSheet])[selectedColumn]["50%"].toString(),
                 header: "Median Value",
-                isDisabled: (json.decode(jsonObject![selectedSheet]))[selectedColumn]["50%"] == null ? true : false,
+                isDisabled: (jsonObject![selectedSheet])[selectedColumn]["50%"] == null ? true : false,
               ),
             ],
           ),
           ClanChurnSpacing.h30,
           buildSummaryCard(
-            value: (json.decode(jsonObject![selectedSheet]))[selectedColumn]["mean"].toString(),
+            value: (jsonObject![selectedSheet])[selectedColumn]["mean"].toString(),
             header: "Average Value",
-            isDisabled: (json.decode(jsonObject![selectedSheet]))[selectedColumn]["mean"] == null ? true : false,
+            isDisabled: (jsonObject![selectedSheet])[selectedColumn]["mean"] == null ? true : false,
           ),
           ClanChurnSpacing.h50,
         ],
