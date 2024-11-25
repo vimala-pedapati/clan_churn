@@ -14,6 +14,8 @@ import 'package:equatable/equatable.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
+import '../../api_repos/models/threshold_val_model.dart';
+
 part 'project_architect_event.dart';
 part 'project_architect_state.dart';
 
@@ -278,7 +280,17 @@ class ProjectArchitectBloc extends Bloc<ProjectArchitectEvent, ProjectArchitectS
     emit(state.copyWith(projectThresholdFormFieldsLoading: true));
     final result = await apiRepository.getProThresholdValues(projectId: event.projectId, onErrorCallback: event.onErrorCallback, onSuccessCallback: event.onSuccessCallback);
     if (result != null) {
-      emit(state.copyWith(projectThesholdFormfields: result));
+      List<GetProThresholdFormValModel> data = [];
+      for (GetProThresholdFormValModel i in result) {
+        for (ProThreModel j in state.createdProject?.projectDetails?.thresholdVals ?? []) {
+          if (i.id == j.columnId) {
+            data.add(i.copyWith(minValue: j.minValue, maxValue: j.maxValue));
+          }
+        }
+      }
+      // print("..................>DATA: $data");
+      emit(state.copyWith(projectThesholdFormfields: data));
+      // emit(state.copyWith(projectThesholdFormfields: result));
     } else {
       emit(state.copyWith(projectThesholdFormfields: []));
     }

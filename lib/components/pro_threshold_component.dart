@@ -9,6 +9,7 @@ import 'package:clan_churn/utils/typography.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
 import '../api_repos/models/update_threshold_val_model.dart';
 import '../utils/lense_calendar.dart';
@@ -128,7 +129,7 @@ class _ProjectThresholdComponentState extends State<ProjectThresholdComponent> {
                       },
                     ),
             ),
-            // Text("${state.projectThesholdFormfields}"),
+            Text("${state.projectThesholdFormfields}"),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -386,7 +387,8 @@ class _CusThresholdDateFieldState extends State<CusThresholdDateField> {
   @override
   void initState() {
     super.initState();
-    controller.text = (widget.value ?? '').toString();
+    // controller.text = (widget.value ?? '').toString();
+    controller.text = widget.value == null ? "" : DateFormat('dd-MM-yy').format(DateTime.parse(widget.value));
     if (widget.value != null) {
       if (widget.isMaxValue) {
         context.read<ProjectArchitectBloc>().add(
@@ -423,9 +425,11 @@ class _CusThresholdDateFieldState extends State<CusThresholdDateField> {
         enabled: widget.isEnabled != false
             ? widget.isMaxValue == false
                 ? true
-                : (widget.isMaxValue == true && widget.thresholdFormVal.minValue != null)
+                : (widget.value != null)
                     ? true
-                    : false
+                    : (widget.isMaxValue == true && widget.thresholdFormVal.minValue != null)
+                        ? true
+                        : false
             : false,
         onTap: null,
         decoration: InputDecoration(
