@@ -2,15 +2,13 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 
-List<ProThreModel> proThresholdModelFromJson(String str) =>
-    List<ProThreModel>.from(
-        json.decode(str).map((x) => ProThreModel.fromJson(x))).toList();
+List<ProThreModel> proThresholdModelFromJson(String str) => List<ProThreModel>.from(json.decode(str).map((x) => ProThreModel.fromJson(x))).toList();
 
 class ProThreModel extends Equatable {
   final String columnId;
   final String? columnType;
-  final int? minValue;
-  final int? maxValue;
+  final dynamic minValue;
+  final dynamic maxValue;
   final int? outlierTopRank;
   final int? outlierBottomRank;
   final int status;

@@ -541,58 +541,62 @@ class _GetInputFieldsState extends State<GetInputFields> {
                               ),
                             ),
                             ClanChurnSpacing.h10,
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                ElevatedButton(
-                                  onPressed: () {
-                                    if (!checkValidations()) {
-                                      ApiRepository().handleWarningMessage(errorText ?? "Please fill in all the required fields before proceeding.", context);
-                                      return;
-                                    }
-                                    List<String> depart = [];
-                                    List<String> design = [];
-                                    for (var i in departments) {
-                                      depart.add(i.text);
-                                    }
-                                    for (var i in designations) {
-                                      design.add(i.text);
-                                    }
-                                    ProjectDetails a = ProjectDetails(
-                                        departments: depart,
-                                        designations: design,
-                                        projectStartDate: projectStartDateController.text,
-                                        projectOwner: projectOwnerController.text,
-                                        projectSpocName: projectOwnerController.text,
-                                        studyPeriodBeginingDate: stuPerBegDateController.text,
-                                        studyPeriodEndDate: stuPerEndDateController.text,
-                                        earDateForDOJRel: earDateForDOJController.text,
-                                        endDateForDOJ: endDateForDOJController.text,
-                                        unitForValPer: unitForValPerController.text,
-                                        unitForQuaPerfor: unitForQuaPerforController.text,
-                                        thresholdVals: null);
-                                    // updating project details api
-                                    context.read<ProjectArchitectBloc>().add(UpdateProjectDetailsEvent(
-                                          projectId: context.read<ProjectArchitectBloc>().state.createdProject!.id,
-                                          projectDetails: a,
-                                          onErrorCallback: (errorMessage, errorCode) {},
-                                          onSuccessCallback: (message) {
-                                            context.read<ProjectArchitectBloc>().add(GetProjectsListEvent(clientId: context.read<ProjectArchitectBloc>().state.selectedClient!.id));
-                                            context.read<ProjectArchitectBloc>().add(GetColumnsEvent(context.read<ProjectArchitectBloc>().state.createdProject?.id));
-                                          },
-                                        ));
-                                    if (widget.isCreatingNewProject) {
-                                      widget.onTap!();
-                                    } else {
-                                      goToNextPage();
-                                    }
+                            BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
+                              builder: (context, state) {
+                                return Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        if (!checkValidations()) {
+                                          ApiRepository().handleWarningMessage(errorText ?? "Please fill in all the required fields before proceeding.", context);
+                                          return;
+                                        }
+                                        List<String> depart = [];
+                                        List<String> design = [];
+                                        for (var i in departments) {
+                                          depart.add(i.text);
+                                        }
+                                        for (var i in designations) {
+                                          design.add(i.text);
+                                        }
+                                        ProjectDetails a = ProjectDetails(
+                                            departments: depart,
+                                            designations: design,
+                                            projectStartDate: projectStartDateController.text,
+                                            projectOwner: projectOwnerController.text,
+                                            projectSpocName: projectOwnerController.text,
+                                            studyPeriodBeginingDate: stuPerBegDateController.text,
+                                            studyPeriodEndDate: stuPerEndDateController.text,
+                                            earDateForDOJRel: earDateForDOJController.text,
+                                            endDateForDOJ: endDateForDOJController.text,
+                                            unitForValPer: unitForValPerController.text,
+                                            unitForQuaPerfor: unitForQuaPerforController.text,
+                                            thresholdVals: null);
+                                        // updating project details api
+                                        context.read<ProjectArchitectBloc>().add(UpdateProjectDetailsEvent(
+                                              projectId: state.createdProject!.id,
+                                              projectDetails: a,
+                                              onErrorCallback: (errorMessage, errorCode) {},
+                                              onSuccessCallback: (message) {
+                                                context.read<ProjectArchitectBloc>().add(GetProjectsListEvent(clientId: context.read<ProjectArchitectBloc>().state.selectedClient!.id));
+                                                context.read<ProjectArchitectBloc>().add(GetColumnsEvent(context.read<ProjectArchitectBloc>().state.createdProject?.id));
+                                              },
+                                            ));
+                                        if (widget.isCreatingNewProject) {
+                                          widget.onTap!();
+                                        } else {
+                                          goToNextPage();
+                                        }
 
-                                    // }
-                                  },
-                                  child: const Text("Next"),
-                                )
-                              ],
+                                        // }
+                                      },
+                                      child: const Text("Next"),
+                                    )
+                                  ],
+                                );
+                              },
                             ),
                           ],
                         ),

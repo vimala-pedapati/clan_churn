@@ -16,8 +16,8 @@ String updateThresholdValModelToJson(List<UpdateThresholdValModel> data) =>
 class UpdateThresholdValModel extends Equatable {
   final String columnId;
   final String columnType;
-  final int minValue;
-  final int maxValue;
+  final dynamic minValue;
+  final dynamic maxValue;
   final int? outlierTopRank;
   final int? outlierBottomRank;
 

@@ -43,6 +43,8 @@ class ProjectArchitectBloc extends Bloc<ProjectArchitectEvent, ProjectArchitectS
     on<GetProThresholdValEvent>(_onGetProThresholdValEvent);
     on<UpdateProThrValsEvent>(_onUpdateProThrValsEvent);
     on<GetAllReportsEvent>(_onGetAllReports);
+    on<UpdateProjectThresholdMinValue>(_onUpdateProjectThresholdMinValue);
+    on<UpdateProjectThresholdMaxValue>(_onUpdateProjectThresholdMaxValue);
   }
 
   _onClientsEvent(GetClientsEvent event, Emitter<ProjectArchitectState> emit) async {
@@ -295,5 +297,30 @@ class ProjectArchitectBloc extends Bloc<ProjectArchitectEvent, ProjectArchitectS
     if (result != null) {
       emit(state.copyWith(allReports: result));
     }
+  }
+
+  _onUpdateProjectThresholdMinValue(UpdateProjectThresholdMinValue event, Emitter emit) async {
+    List<GetProThresholdFormValModel> thresholds = [];
+    for (var i in state.projectThesholdFormfields) {
+      if (i.id == event.thresholdId) {
+        thresholds.add(i.copyWith(minValue: event.minValue));
+      } else {
+        thresholds.add(i);
+      }
+    }
+
+    emit(state.copyWith(projectThesholdFormfields: thresholds));
+  }
+
+  _onUpdateProjectThresholdMaxValue(UpdateProjectThresholdMaxValue event, Emitter emit) async {
+    List<GetProThresholdFormValModel> thresholds = [];
+    for (var i in state.projectThesholdFormfields) {
+      if (i.id == event.thresholdId) {
+        thresholds.add(i.copyWith(maxValue: event.maxValue));
+      } else {
+        thresholds.add(i);
+      }
+    }
+    emit(state.copyWith(projectThesholdFormfields: thresholds));
   }
 }

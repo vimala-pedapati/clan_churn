@@ -217,6 +217,7 @@ class ApiRepository {
     required OnSuccessCallback onSuccessCallback,
     required OnErrorCallback onErrorCallback,
   }) async {
+    print("project id: $projectId");
     try {
       final AuthCred authCred = await AuthRepo().getTokens();
 
