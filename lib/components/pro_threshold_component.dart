@@ -129,7 +129,7 @@ class _ProjectThresholdComponentState extends State<ProjectThresholdComponent> {
                       },
                     ),
             ),
-            Text("${state.projectThesholdFormfields}"),
+            // Text("${state.projectThesholdFormfields}"),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
