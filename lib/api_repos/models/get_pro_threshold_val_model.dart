@@ -88,13 +88,13 @@ class GetProThresholdFormValModel extends Equatable {
 
 enum ColumnDataType {
   date,
-  numeric,
+  numericCurrnecy,
   numericWithPercentage,
 }
 
 final columnDataTypeValues = EnumValues({
   "date": ColumnDataType.date,
-  "numeric_currency": ColumnDataType.numeric,
+  "numeric_currency": ColumnDataType.numericCurrnecy,
   "numeric_with_percentage": ColumnDataType.numericWithPercentage,
 });
 
