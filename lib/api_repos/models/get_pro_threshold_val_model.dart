@@ -94,7 +94,7 @@ enum ColumnDataType {
 
 final columnDataTypeValues = EnumValues({
   "date": ColumnDataType.date,
-  "numeric": ColumnDataType.numeric,
+  "numeric_currency": ColumnDataType.numeric,
   "numeric_with_percentage": ColumnDataType.numericWithPercentage,
 });
 

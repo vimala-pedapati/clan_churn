@@ -289,11 +289,23 @@ class CusThresholdFomField extends StatefulWidget {
 
 class _CusThresholdFomFieldState extends State<CusThresholdFomField> {
   final TextEditingController controller = TextEditingController();
+  String value = "";
+  String formatToCurrency({required String currency}) {
+    if (currency.isNotEmpty) {
+      int a = int.parse(currency.replaceAll(",", ""));
+      String c = NumberFormat.decimalPattern("hi-IN").format(a);
+      return c;
+    }
+
+    return "";
+  }
+
+ 
 
   @override
   void initState() {
-    controller.text = (widget.value ?? '').toString();
-    if (widget.value != null) {
+    controller.text = formatToCurrency(currency: (widget.value ?? '').toString());
+   if (widget.value != null) {
       if (widget.isMaxValue) {
         context.read<ProjectArchitectBloc>().add(
               UpdateProjectThresholdMaxValue(
@@ -343,7 +355,7 @@ class _CusThresholdFomFieldState extends State<CusThresholdFomField> {
           },
           enabled: widget.isEnabled,
           inputFormatters: [
-            FilteringTextInputFormatter.allow(RegExp(r'^-?\d*')),
+            FilteringTextInputFormatter.allow(RegExp(r'^-?[\d,]*')),
             LengthLimitingTextInputFormatter(9),
           ],
           decoration: InputDecoration(
