@@ -120,11 +120,13 @@ class _CusThresholdCurrencyFieldState extends State<CusThresholdCurrencyField> {
             enabledBorder: border(context),
             focusedBorder: border(context),
             border: border(context),
-            prefixIcon: Icon(
-              Icons.currency_rupee_outlined,
-              size: 20,
-              color: Theme.of(context).colorScheme.primary,
-            ),
+            prefixIcon: widget.thresholdFormVal.columnDataType == ColumnDataType.numericCurrnecy
+                ? Icon(
+                    Icons.currency_rupee_outlined,
+                    size: 20,
+                    color: Theme.of(context).colorScheme.primary,
+                  )
+                : null,
           ),
         ));
   }

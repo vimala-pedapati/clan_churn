@@ -279,18 +279,25 @@ class ProjectArchitectBloc extends Bloc<ProjectArchitectEvent, ProjectArchitectS
   _onGetProThresholdValEvent(GetProThresholdValEvent event, Emitter<ProjectArchitectState> emit) async {
     emit(state.copyWith(projectThresholdFormFieldsLoading: true));
     final result = await apiRepository.getProThresholdValues(projectId: event.projectId, onErrorCallback: event.onErrorCallback, onSuccessCallback: event.onSuccessCallback);
+    print("..getProThresholdValues.....$result ");
     if (result != null) {
       List<GetProThresholdFormValModel> data = [];
       for (GetProThresholdFormValModel i in result) {
-        for (ProThreModel j in state.createdProject?.projectDetails?.thresholdVals ?? []) {
-          if (i.id == j.columnId) {
-            data.add(i.copyWith(minValue: j.minValue, maxValue: j.maxValue));
+        print("........getProThresholdValues..........>DATA: ${(state.createdProject?.projectDetails?.thresholdVals ?? []).isEmpty}");
+        if ((state.createdProject?.projectDetails?.thresholdVals ?? []).isEmpty) {
+          emit(state.copyWith(projectThesholdFormfields: result));
+          return;
+        } else {
+          for (ProThreModel j in state.createdProject?.projectDetails?.thresholdVals ?? []) {
+            if (i.id == j.columnId) {
+              print("........getProThresholdValues ..........>DATA: ${i.id == j.columnId}");
+              data.add(i.copyWith(minValue: j.minValue, maxValue: j.maxValue));
+            }
           }
         }
       }
-      // print("..................>DATA: $data");
+      print("........getProThresholdValues..........>DATA: $data");
       emit(state.copyWith(projectThesholdFormfields: data));
-      // emit(state.copyWith(projectThesholdFormfields: result));
     } else {
       emit(state.copyWith(projectThesholdFormfields: []));
     }

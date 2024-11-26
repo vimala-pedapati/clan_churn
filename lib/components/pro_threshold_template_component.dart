@@ -7,6 +7,7 @@ import 'package:clan_churn/components/pro_threshold_date_field.dart';
 import 'package:clan_churn/utils/typography.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'project_threshold_percent_field.dart';
 
@@ -34,11 +35,31 @@ class TheresholdComponent extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            // Expanded(
+            //   child: Text(
+            //     thresholdFormVal.clientColumnName,
+            //     style: ClanChurnTypography.font16700,
+            //     maxLines: 3,
+            //   ),
+            // ),
             Expanded(
-              child: Text(
-                thresholdFormVal.clientColumnName,
-                style: ClanChurnTypography.font16700,
+              child: RichText(
                 maxLines: 3,
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: thresholdFormVal.clientColumnName,
+                      style: GoogleFonts.montserrat(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 16.0,
+                      ),
+                    ),
+                    TextSpan(
+                      text: " *",
+                      style: GoogleFonts.montserrat(fontWeight: FontWeight.w500, fontSize: 16.0, color: Colors.red),
+                    ),
+                  ],
+                ),
               ),
             ),
             Row(

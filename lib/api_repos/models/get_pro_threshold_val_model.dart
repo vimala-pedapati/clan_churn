@@ -90,12 +90,14 @@ enum ColumnDataType {
   date,
   numericCurrnecy,
   numericWithPercentage,
+  numeric
 }
 
 final columnDataTypeValues = EnumValues({
   "date": ColumnDataType.date,
   "numeric_currency": ColumnDataType.numericCurrnecy,
   "numeric_with_percentage": ColumnDataType.numericWithPercentage,
+  "numeric": ColumnDataType.numeric,
 });
 
 enum SheetName {
