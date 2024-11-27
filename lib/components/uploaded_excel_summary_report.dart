@@ -1315,6 +1315,18 @@ class _UploadedExcelSummaryReportState extends State<UploadedExcelSummaryReport>
     );
   }
 
+//  "Employee ID": {
+//             "Total Rows": 5057,
+//             "Total Zeros": null,
+//             "Total blanks": 0,
+//             "Total NA values": 0,
+//             "Max": null,
+//             "Min": null,
+//             "Total -ve values": null,
+//             "Median": null,
+//             "Avg": null
+//         },
+
   // Widget for summary details
   Widget buildSummaryDetails() {
     return Padding(
@@ -1326,24 +1338,24 @@ class _UploadedExcelSummaryReportState extends State<UploadedExcelSummaryReport>
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               buildSummaryCard(
-                value: (jsonObject![selectedSheet])[selectedColumn]["count"].toString(),
+                value: (jsonObject![selectedSheet])[selectedColumn]["Total Rows"].toString(),
                 header: "Total Rows",
-                isDisabled: (jsonObject![selectedSheet])[selectedColumn]["count"] == null ? true : false,
+                isDisabled: (jsonObject![selectedSheet])[selectedColumn]["Total Rows"] == null ? true : false,
               ),
-              const SummaryCard(
-                value: "--",
+              SummaryCard(
+                value: (jsonObject![selectedSheet])[selectedColumn]["Total Zeros"].toString(),
                 header: "Total Zeros",
-                isDisabled: true,
+                isDisabled: (jsonObject![selectedSheet])[selectedColumn]["Total Zeros"] == null ? true : false,
               ),
-              const SummaryCard(
-                value: "--",
+              SummaryCard(
+                value: (jsonObject![selectedSheet])[selectedColumn]["Total blanks"].toString(),
                 header: "Total Blanks",
-                isDisabled: true,
+                isDisabled: (jsonObject![selectedSheet])[selectedColumn]["Total blanks"] == null ? true : false,
               ),
-              const SummaryCard(
-                value: '--',
+              SummaryCard(
+                value: (jsonObject![selectedSheet])[selectedColumn]["Total NA values"].toString(),
                 header: 'Total "NA" values',
-                isDisabled: true,
+                isDisabled: (jsonObject![selectedSheet])[selectedColumn]["TTotal NA values"] == null ? true : false,
               ),
             ],
           ),
@@ -1352,32 +1364,32 @@ class _UploadedExcelSummaryReportState extends State<UploadedExcelSummaryReport>
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               buildSummaryCard(
-                value: (jsonObject![selectedSheet])[selectedColumn]["max"].toString(),
+                value: (jsonObject![selectedSheet])[selectedColumn]["Max"].toString(),
                 header: "Maximum Value",
-                isDisabled: (jsonObject![selectedSheet])[selectedColumn]["max"] == null ? true : false,
+                isDisabled: (jsonObject![selectedSheet])[selectedColumn]["Max"] == null ? true : false,
               ),
               buildSummaryCard(
-                value: jsonObject![selectedSheet][selectedColumn]["min"].toString(),
+                value: jsonObject![selectedSheet][selectedColumn]["Min"].toString(),
                 header: "Minimum Value",
-                isDisabled: (jsonObject![selectedSheet])[selectedColumn]["min"] == null ? true : false,
+                isDisabled: (jsonObject![selectedSheet])[selectedColumn]["Min"] == null ? true : false,
               ),
-              const SummaryCard(
-                value: "--",
+              SummaryCard(
+                value: jsonObject![selectedSheet][selectedColumn]["Total -ve values"].toString(),
                 header: "Total Negative Values",
-                isDisabled: true,
+                isDisabled: (jsonObject![selectedSheet])[selectedColumn]["Total -ve values"] == null ? true : false,
               ),
               buildSummaryCard(
-                value: (jsonObject![selectedSheet])[selectedColumn]["50%"].toString(),
+                value: (jsonObject![selectedSheet])[selectedColumn]["Median"].toString(),
                 header: "Median Value",
-                isDisabled: (jsonObject![selectedSheet])[selectedColumn]["50%"] == null ? true : false,
+                isDisabled: (jsonObject![selectedSheet])[selectedColumn]["Median"] == null ? true : false,
               ),
             ],
           ),
           ClanChurnSpacing.h30,
           buildSummaryCard(
-            value: (jsonObject![selectedSheet])[selectedColumn]["mean"].toString(),
+            value: (jsonObject![selectedSheet])[selectedColumn]["Avg"].toString(),
             header: "Average Value",
-            isDisabled: (jsonObject![selectedSheet])[selectedColumn]["mean"] == null ? true : false,
+            isDisabled: (jsonObject![selectedSheet])[selectedColumn]["Avg"] == null ? true : false,
           ),
           ClanChurnSpacing.h50,
         ],
