@@ -264,7 +264,10 @@ class _GetInputFieldsState extends State<GetInputFields> {
               )
             : Column(
                 children: [
-                  if (!(widget.isCreatingNewProject) && _currentPage == 0) const ProInitialHeader(),
+                  if (!(widget.isCreatingNewProject) && _currentPage == 0)
+                    ProInitialHeader(
+                      editLabels: projectOwnerController.text.isNotEmpty,
+                    ),
                   Expanded(
                     child: PageView(
                       physics: const NeverScrollableScrollPhysics(),
@@ -633,7 +636,8 @@ class _GetInputFieldsState extends State<GetInputFields> {
 }
 
 class ProInitialHeader extends StatelessWidget {
-  const ProInitialHeader({super.key});
+  const ProInitialHeader({super.key, required this.editLabels});
+  final bool editLabels;
 
   @override
   Widget build(BuildContext context) {
@@ -654,7 +658,7 @@ class ProInitialHeader extends StatelessWidget {
             ClanChurnSpacing.w10,
             SizedBox(
               child: Text(
-                "Project Initialization",
+                editLabels ? "Edit Labels" : "Project Initialization",
                 style: ClanChurnTypography.font18600,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
