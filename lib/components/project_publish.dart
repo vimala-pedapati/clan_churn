@@ -253,14 +253,16 @@ class _GetPublishButtonState extends State<GetPublishButton> {
                       // } else if (state.createdProject?.latestInputModel?.inputStatus == InputStatus.uploadedDataHasNoErrors || state.createdProject?.latestInputModel?.inputStatus == InputStatus.uploadedDataDataMartsGenerated) {
                     } else if (state.createdProject?.latestInputModel?.inputStatus == InputStatus.uploadedDataDataMartsGenerated) {
                       if (state.allReports.isNotEmpty) {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => PerformanceReport(
-                                inputId: state.createdProject!.id,
-                                reportName: state.allReports.first,
-                              ),
-                            ));
+                        if (state.createdProject!.latestInput != null) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => PerformanceReport(
+                                  inputId: state.createdProject!.latestInput!,
+                                  reportName: state.allReports.first,
+                                ),
+                              ));
+                        }
                       }
                     }
                   }
