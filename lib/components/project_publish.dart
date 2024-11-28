@@ -156,7 +156,7 @@ class _GetPublishButtonState extends State<GetPublishButton> {
     return IgnorePointer(
       ignoring: state.createdProject?.latestInputModel?.inputStatus == InputStatus.uploadedDataDataMartsGenerated ? true : false,
       child: Opacity(
-        opacity: state.createdProject?.latestInputModel?.inputStatus == InputStatus.uploadedDataDataMartsGenerated ? 0.5 : 0,
+        opacity: state.createdProject?.latestInputModel?.inputStatus == InputStatus.uploadedDataDataMartsGenerated ? 0.5 : 1,
         child: Row(
           children: [
             Checkbox(
