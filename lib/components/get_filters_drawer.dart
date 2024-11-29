@@ -2,11 +2,7 @@ import 'package:clan_churn/utils/typography.dart';
 import 'package:flutter/material.dart';
 
 class GetFiltersDrawer extends StatefulWidget {
-  GetFiltersDrawer(
-      {super.key,
-      required this.months,
-      required this.updateMonthsData,
-      required this.monthsStore});
+  GetFiltersDrawer({super.key, required this.months, required this.updateMonthsData, required this.monthsStore});
   List<String> months;
   final List<String> monthsStore;
   final Function(List<String> updatedData) updateMonthsData;
@@ -25,7 +21,7 @@ class _GetFiltersDrawerState extends State<GetFiltersDrawer> {
           contentPadding: EdgeInsets.zero,
           leading: Text(
             'Choose columns to filter',
-            style: ClanChurnTypography.font18600,
+            style: ClanChurnTypography.font13600,
           ),
           trailing: TextButton(
             onPressed: () {
@@ -33,8 +29,9 @@ class _GetFiltersDrawerState extends State<GetFiltersDrawer> {
                 widget.months = widget.monthsStore;
               });
             },
-            child: const Text(
+            child: Text(
               "Reset",
+              style: ClanChurnTypography.font13600,
             ),
           ),
         ),
@@ -48,14 +45,10 @@ class _GetFiltersDrawerState extends State<GetFiltersDrawer> {
                     child: Chip(
                         labelPadding: EdgeInsets.zero,
                         elevation: 00,
-                        backgroundColor: Theme.of(context)
-                            .colorScheme
-                            .primary
-                            .withOpacity(0.2),
+                        backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.2),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(100.0),
-                          side: const BorderSide(
-                              width: 0, color: Colors.transparent),
+                          side: const BorderSide(width: 0, color: Colors.transparent),
                         ),
                         deleteIcon: Icon(
                           Icons.close,
@@ -66,10 +59,7 @@ class _GetFiltersDrawerState extends State<GetFiltersDrawer> {
                           widget.months.removeAt(widget.months.indexOf(item));
                           widget.updateMonthsData(widget.months);
                         },
-                        label: Text(item,
-                            style: ClanChurnTypography.font14400.copyWith(
-                                height: 1,
-                                color: Theme.of(context).colorScheme.primary))),
+                        label: Text(item, style: ClanChurnTypography.font14400.copyWith(height: 1, color: Theme.of(context).colorScheme.primary))),
                   ))
               .toList(),
         )

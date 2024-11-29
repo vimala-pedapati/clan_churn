@@ -27,17 +27,13 @@ class ReportsDataTable extends StatelessWidget {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Theme(
-        data: Theme.of(context).copyWith(
-            dividerTheme: DividerThemeData(
-                color: Theme.of(context).colorScheme.primary.withOpacity(0.5)),
-            iconTheme:
-                IconThemeData(color: Theme.of(context).colorScheme.background)),
+        data: Theme.of(context).copyWith(dividerTheme: DividerThemeData(color: Theme.of(context).colorScheme.primary.withOpacity(0.5)), iconTheme: IconThemeData(color: Theme.of(context).colorScheme.background)),
         child: DataTable(
           dividerThickness: 1.0,
           horizontalMargin: 15,
           columnSpacing: 25,
-          dataRowMaxHeight: 40,
-          dataRowMinHeight: 40,
+          dataRowMaxHeight: 30,
+          dataRowMinHeight: 30,
           sortColumnIndex: sortColumnIndex,
           sortAscending: sortAscending,
           showBottomBorder: true,
@@ -45,14 +41,10 @@ class ReportsDataTable extends StatelessWidget {
             return Theme.of(context).colorScheme.primary.withOpacity(0.8);
           }),
           border: TableBorder(
-            verticalInside: BorderSide(
-                color: Theme.of(context).colorScheme.primary.withOpacity(0.5)),
-            right: BorderSide(
-                color: Theme.of(context).colorScheme.primary.withOpacity(0.5)),
+            verticalInside: BorderSide(color: Theme.of(context).colorScheme.primary.withOpacity(0.5)),
+            right: BorderSide(color: Theme.of(context).colorScheme.primary.withOpacity(0.5)),
           ),
-          headingTextStyle: ClanChurnTypography.font13600.copyWith(
-              color: Theme.of(context).colorScheme.background,
-              fontWeight: FontWeight.w900),
+          headingTextStyle: ClanChurnTypography.font13600.copyWith(color: Theme.of(context).colorScheme.background, fontWeight: FontWeight.w900),
           columns: [
             // ------ DON"T REMOVE THE BELOW CODE -------- //
             // DataColumn(
@@ -69,23 +61,20 @@ class ReportsDataTable extends StatelessWidget {
               DataColumn(
                 label: Center(
                   child: Text(
-                    "$month",
+                    month,
                     // style: ClanChurnTypography.font13600.copyWith(
                     //   color: Theme.of(context).colorScheme.secondary,
                     // ),
                   ),
                 ),
-                onSort: (columnIndex, ascending) =>
-                    onColumnsSort(columnIndex, ascending),
+                onSort: (columnIndex, ascending) => onColumnsSort(columnIndex, ascending),
               ),
           ],
           rows: metrics.map((metric) {
             return DataRow(
               color: MaterialStateProperty.resolveWith<Color>((states) {
                 int index = metrics.indexOf(metric);
-                return index % 2 == 0
-                    ? Theme.of(context).colorScheme.primary.withOpacity(0.1)
-                    : Colors.transparent;
+                return index % 2 == 0 ? Theme.of(context).colorScheme.primary.withOpacity(0.1) : Colors.transparent;
               }),
               cells: [
                 // ------ DON"T REMOVE THE BELOW CODE -------- //

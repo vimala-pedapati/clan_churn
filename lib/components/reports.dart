@@ -194,8 +194,8 @@ class _PerformanceReportState extends State<PerformanceReport> {
           dividerThickness: 1.0,
           horizontalMargin: 15,
           columnSpacing: 25,
-          dataRowMaxHeight: 40,
-          dataRowMinHeight: 40,
+          dataRowMaxHeight: 30,
+          dataRowMinHeight: 30,
           sortColumnIndex: 0,
           sortAscending: sortAscending,
           showBottomBorder: true,
@@ -262,188 +262,190 @@ class _PerformanceReportState extends State<PerformanceReport> {
                             Expanded(
                               child: ChurnContainer(
                                   child: Container(
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            IconButton(
-                                              icon: Icon(
-                                                Icons.keyboard_backspace,
-                                                color: Theme.of(context).colorScheme.secondary,
-                                              ),
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                                // GoRouter.of(context).go(AppRoutes.home);
-                                              },
-                                            ),
-                                            Container()
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: 35,
-                                          width: 300,
-                                          child: DropdownButtonHideUnderline(
-                                            child: DropdownButton2<String>(
-                                              isExpanded: true,
-                                              hint: Row(
-                                                children: [
-                                                  Text(
-                                                    'Select Column',
-                                                    style: ClanChurnTypography.font14900,
-                                                    overflow: TextOverflow.ellipsis,
-                                                  ),
-                                                ],
-                                              ),
-                                              items: state.allReports
-                                                  .map((String item) => DropdownMenuItem<String>(
-                                                        value: item,
-                                                        child: Text(
-                                                          item,
-                                                          style: ClanChurnTypography.font14900.copyWith(color: Theme.of(context).colorScheme.background),
-                                                          overflow: TextOverflow.ellipsis,
-                                                        ),
-                                                      ))
-                                                  .toList(),
-                                              selectedItemBuilder: (BuildContext context) {
-                                                return state.allReports.map((String item) {
-                                                  return Center(
-                                                    child: Row(
-                                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                                      children: [
-                                                        Text(
-                                                          item,
-                                                          style: ClanChurnTypography.font14900.copyWith(color: Theme.of(context).colorScheme.secondary),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  );
-                                                }).toList();
-                                              },
-                                              value: selectedItem,
-                                              onChanged: (value) {
-                                                setState(() {
-                                                  selectedItem = value!;
-                                                });
-                                                context.read<ProjectArchitectBloc>().add(GetReportDataEvent(
-                                                    inputId: widget.inputId,
-                                                    reportName: value!,
-                                                    onErrorCallback: (errorMessage, errorCode) {
-                                                      print(" on error $errorCode, $errorMessage");
-                                                      setState(() {
-                                                        apiError = true;
-                                                      });
-                                                    },
-                                                    onSuccessCallback: (message) {
-                                                      setState(() {
-                                                        fetching = false;
-                                                      });
-                                                      if (message != null) {
-                                                        // print("get report data: ${json.decode(message!.body)}");
-                                                        // print("get report data: ${json.decode(message.body).runtimeType}");
-                                                        // var a = json.decode(message.body);
-                                                        Map<String, dynamic> jsonObject = json.decode(message.body);
-                                                        // print(jsonObject.runtimeType);
-                                                        setState(() {
-                                                          data = jsonObject;
-                                                          selectedMonths = data.keys.toList();
-                                                          selectedMonthsTemp = data.keys.toList();
-                                                          metrics = (data[selectedMonths[0]] as Map<String, dynamic>).keys.toList();
-                                                        });
-                                                        // print(".......metrics.....$metrics");
-                                                      }
-                                                    }));
-                                              },
-                                              buttonStyleData: ButtonStyleData(
-                                                decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.circular(8),
-                                                  border: Border.all(color: Theme.of(context).colorScheme.primary.withOpacity(0.6)),
-                                                  color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              IconButton(
+                                                icon: Icon(
+                                                  Icons.keyboard_backspace,
+                                                  color: Theme.of(context).colorScheme.secondary,
                                                 ),
-                                                elevation: 0,
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                  // GoRouter.of(context).go(AppRoutes.home);
+                                                },
                                               ),
-                                              iconStyleData: IconStyleData(
-                                                icon: const Icon(Icons.keyboard_arrow_down),
-                                                iconSize: 25,
-                                                iconEnabledColor: Theme.of(context).colorScheme.secondary,
-                                                iconDisabledColor: Colors.grey,
-                                              ),
-                                              dropdownStyleData: DropdownStyleData(
-                                                elevation: 0,
-                                                decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.circular(8),
-                                                  border: Border.all(color: Theme.of(context).colorScheme.primary.withOpacity(0.6)),
-                                                  color: Theme.of(context).colorScheme.primary.withOpacity(1.0),
-                                                ),
-                                                scrollbarTheme: ScrollbarThemeData(
-                                                  radius: const Radius.circular(40),
-                                                  thickness: MaterialStateProperty.all(6),
-                                                  thumbVisibility: MaterialStateProperty.all(true),
-                                                ),
-                                              ),
-                                              menuItemStyleData: const MenuItemStyleData(
-                                                height: 40,
-                                                padding: EdgeInsets.only(left: 14, right: 14),
-                                              ),
-                                            ),
+                                              Container()
+                                            ],
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    fetching
-                                        ? Center(
-                                            child: Image.asset("assets/upload.gif", width: 100),
-                                          )
-                                        : apiError
-                                            ? Column(
-                                                children: [
-                                                  // Row(
-                                                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                  //   children: [
-                                                  //     IconButton(
-                                                  //       icon: Icon(
-                                                  //         Icons.keyboard_backspace,
-                                                  //         color: Theme.of(context).colorScheme.secondary,
-                                                  //       ),
-                                                  //       onPressed: () {
-                                                  //         Navigator.pop(context);
-                                                  //         // GoRouter.of(context).go(AppRoutes.home);
-                                                  //       },
-                                                  //     ),
-                                                  //     Container()
-                                                  //   ],
-                                                  // ),
-                                                  Center(child: Text("Unable to fetch report data $apiError  ")),
-                                                ],
-                                              )
-                                            : FittedBox(
-                                                child: Row(
+                                          SizedBox(
+                                            height: 35,
+                                            width: 300,
+                                            child: DropdownButtonHideUnderline(
+                                              child: DropdownButton2<String>(
+                                                isExpanded: true,
+                                                hint: Row(
                                                   children: [
-                                                    buildFrezeedColumn(
-                                                      onHeaderSort: onHeaderSort,
-                                                    ),
-                                                    SizedBox(
-                                                      width: MediaQuery.of(context).size.width * 0.65,
-                                                      child: ReportsDataTable(
-                                                        metrics: metrics,
-                                                        months: selectedMonths,
-                                                        data: data,
-                                                        sortColumnIndex: sortColumnIndex,
-                                                        sortAscending: sortAscending,
-                                                        // onHeaderSort: onHeaderSort,
-                                                        onColumnsSort: onColumnsSort,
-                                                      ),
+                                                    Text(
+                                                      'Select Column',
+                                                      style: ClanChurnTypography.font14900,
+                                                      overflow: TextOverflow.ellipsis,
                                                     ),
                                                   ],
                                                 ),
+                                                items: state.allReports
+                                                    .map((String item) => DropdownMenuItem<String>(
+                                                          value: item,
+                                                          child: Text(
+                                                            item,
+                                                            style: ClanChurnTypography.font14900.copyWith(color: Theme.of(context).colorScheme.background),
+                                                            overflow: TextOverflow.ellipsis,
+                                                          ),
+                                                        ))
+                                                    .toList(),
+                                                selectedItemBuilder: (BuildContext context) {
+                                                  return state.allReports.map((String item) {
+                                                    return Center(
+                                                      child: Row(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        children: [
+                                                          Text(
+                                                            item,
+                                                            style: ClanChurnTypography.font14900.copyWith(color: Theme.of(context).colorScheme.secondary),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    );
+                                                  }).toList();
+                                                },
+                                                value: selectedItem,
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    selectedItem = value!;
+                                                  });
+                                                  context.read<ProjectArchitectBloc>().add(GetReportDataEvent(
+                                                      inputId: widget.inputId,
+                                                      reportName: value!,
+                                                      onErrorCallback: (errorMessage, errorCode) {
+                                                        print(" on error $errorCode, $errorMessage");
+                                                        setState(() {
+                                                          apiError = true;
+                                                        });
+                                                      },
+                                                      onSuccessCallback: (message) {
+                                                        setState(() {
+                                                          fetching = false;
+                                                        });
+                                                        if (message != null) {
+                                                          // print("get report data: ${json.decode(message!.body)}");
+                                                          // print("get report data: ${json.decode(message.body).runtimeType}");
+                                                          // var a = json.decode(message.body);
+                                                          Map<String, dynamic> jsonObject = json.decode(message.body);
+                                                          // print(jsonObject.runtimeType);
+                                                          setState(() {
+                                                            data = jsonObject;
+                                                            selectedMonths = data.keys.toList();
+                                                            selectedMonthsTemp = data.keys.toList();
+                                                            metrics = (data[selectedMonths[0]] as Map<String, dynamic>).keys.toList();
+                                                          });
+                                                          // print(".......metrics.....$metrics");
+                                                        }
+                                                      }));
+                                                },
+                                                buttonStyleData: ButtonStyleData(
+                                                  decoration: BoxDecoration(
+                                                    borderRadius: BorderRadius.circular(8),
+                                                    border: Border.all(color: Theme.of(context).colorScheme.primary.withOpacity(0.6)),
+                                                    color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
+                                                  ),
+                                                  elevation: 0,
+                                                ),
+                                                iconStyleData: IconStyleData(
+                                                  icon: const Icon(Icons.keyboard_arrow_down),
+                                                  iconSize: 25,
+                                                  iconEnabledColor: Theme.of(context).colorScheme.secondary,
+                                                  iconDisabledColor: Colors.grey,
+                                                ),
+                                                dropdownStyleData: DropdownStyleData(
+                                                  elevation: 0,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius: BorderRadius.circular(8),
+                                                    border: Border.all(color: Theme.of(context).colorScheme.primary.withOpacity(0.6)),
+                                                    color: Theme.of(context).colorScheme.primary.withOpacity(1.0),
+                                                  ),
+                                                  scrollbarTheme: ScrollbarThemeData(
+                                                    radius: const Radius.circular(40),
+                                                    thickness: MaterialStateProperty.all(6),
+                                                    thumbVisibility: MaterialStateProperty.all(true),
+                                                  ),
+                                                ),
+                                                menuItemStyleData: const MenuItemStyleData(
+                                                  height: 40,
+                                                  padding: EdgeInsets.only(left: 14, right: 14),
+                                                ),
                                               ),
-                                  ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      fetching
+                                          ? Center(
+                                              child: Image.asset("assets/upload.gif", width: 100),
+                                            )
+                                          : apiError
+                                              ? Column(
+                                                  children: [
+                                                    // Row(
+                                                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                    //   children: [
+                                                    //     IconButton(
+                                                    //       icon: Icon(
+                                                    //         Icons.keyboard_backspace,
+                                                    //         color: Theme.of(context).colorScheme.secondary,
+                                                    //       ),
+                                                    //       onPressed: () {
+                                                    //         Navigator.pop(context);
+                                                    //         // GoRouter.of(context).go(AppRoutes.home);
+                                                    //       },
+                                                    //     ),
+                                                    //     Container()
+                                                    //   ],
+                                                    // ),
+                                                    Center(child: Text("Unable to fetch report data $apiError  ")),
+                                                  ],
+                                                )
+                                              : FittedBox(
+                                                  child: Row(
+                                                    children: [
+                                                      buildFrezeedColumn(
+                                                        onHeaderSort: onHeaderSort,
+                                                      ),
+                                                      SizedBox(
+                                                        width: MediaQuery.of(context).size.width * 0.65,
+                                                        child: ReportsDataTable(
+                                                          metrics: metrics,
+                                                          months: selectedMonths,
+                                                          data: data,
+                                                          sortColumnIndex: sortColumnIndex,
+                                                          sortAscending: sortAscending,
+                                                          // onHeaderSort: onHeaderSort,
+                                                          onColumnsSort: onColumnsSort,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                    ],
+                                  ),
                                 ),
                               )),
                             ),
