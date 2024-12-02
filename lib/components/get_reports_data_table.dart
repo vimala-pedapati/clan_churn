@@ -57,7 +57,19 @@ class ReportsDataTable extends StatelessWidget {
             //   onSort: (columnIndex, ascending) =>
             //       onHeaderSort(columnIndex, ascending),
             // ),
-            for (var month in months)
+            // for (var month in months)
+            //   DataColumn(
+            //     label: Center(
+            //       child: Text(
+            //         month,
+            //         // style: ClanChurnTypography.font13600.copyWith(
+            //         //   color: Theme.of(context).colorScheme.secondary,
+            //         // ),
+            //       ),
+            //     ),
+            //     onSort: (columnIndex, ascending) => onColumnsSort(columnIndex, ascending),
+            //   ),
+            for (var month in metrics)
               DataColumn(
                 label: Center(
                   child: Text(
@@ -70,19 +82,37 @@ class ReportsDataTable extends StatelessWidget {
                 onSort: (columnIndex, ascending) => onColumnsSort(columnIndex, ascending),
               ),
           ],
-          rows: metrics.map((metric) {
+          // rows: metrics.map((metric) {
+          //   return DataRow(
+          //     color: MaterialStateProperty.resolveWith<Color>((states) {
+          //       int index = metrics.indexOf(metric);
+          //       return index % 2 == 0 ? Theme.of(context).colorScheme.primary.withOpacity(0.1) : Colors.transparent;
+          //     }),
+          //     cells: [
+          //       // ------ DON"T REMOVE THE BELOW CODE -------- //
+          //       // DataCell(Text(metric)),
+          //       for (var month in months)
+          //         DataCell(Center(
+          //           child: Text(
+          //             transformValue((data[month]![metric] as dynamic) ?? '-'),
+          //           ),
+          //         )),
+          //     ],
+          //   );
+          // }).toList(),
+          rows: months.map((metric) {
             return DataRow(
               color: MaterialStateProperty.resolveWith<Color>((states) {
-                int index = metrics.indexOf(metric);
+                int index = months.indexOf(metric);
                 return index % 2 == 0 ? Theme.of(context).colorScheme.primary.withOpacity(0.1) : Colors.transparent;
               }),
               cells: [
                 // ------ DON"T REMOVE THE BELOW CODE -------- //
                 // DataCell(Text(metric)),
-                for (var month in months)
+                for (var month in metrics)
                   DataCell(Center(
                     child: Text(
-                      transformValue((data[month]![metric] as dynamic) ?? '-'),
+                      transformValue((data[metric]?[month] as dynamic) ?? '-'),
                     ),
                   )),
               ],

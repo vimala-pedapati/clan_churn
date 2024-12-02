@@ -11,14 +11,12 @@ class Filter extends StatelessWidget {
         Scaffold.of(context).openEndDrawer();
       },
       child: Container(
-        // height: MediaQuery.of(context).size.height,
+        height: 150,
         width: 38,
         padding: const EdgeInsets.all(5),
         decoration: BoxDecoration(
             border: Border(
-          left: BorderSide(
-              color: Theme.of(context).colorScheme.primary.withOpacity(0.7),
-              width: 2),
+          left: BorderSide(color: Theme.of(context).colorScheme.primary.withOpacity(0.7), width: 2),
           top: BorderSide(color: Theme.of(context).colorScheme.primary),
           bottom: BorderSide(color: Theme.of(context).colorScheme.primary),
         )),
@@ -27,9 +25,7 @@ class Filter extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const ColoredBox(
-                color: Colors.transparent,
-                child: Icon(Icons.filter_alt_outlined)),
+            const ColoredBox(color: Colors.transparent, child: Icon(Icons.filter_alt_outlined)),
             ColoredBox(
               color: Colors.transparent,
               child: RotatedBox(

@@ -52,9 +52,9 @@ class PerformanceReport extends StatefulWidget {
 class _PerformanceReportState extends State<PerformanceReport> {
   Map<String, Map<String, dynamic>> sheetData = {};
   Map<String, dynamic> data = {};
-  List<String> selectedMonths = [];
-  List<String> selectedMonthsTemp = [];
-  List<String> metrics = [];
+  List<String> xAxisData = [];
+  List<String> xAxisTempData = [];
+  List<String> yAxisData = [];
   int sortColumnIndex = 0;
   bool sortAscending = true;
   final _subTableYController = ScrollController();
@@ -62,6 +62,36 @@ class _PerformanceReportState extends State<PerformanceReport> {
   bool fetching = false;
   bool apiError = false;
   String selectedItem = "";
+
+  int getJsonDimension(Map<String, dynamic> data) {
+    for (var value in data.values) {
+      if (value is Map) {
+        // If the inner value is also a map, check if its values are maps
+        for (var innerValue in value.values) {
+          if (innerValue is Map) {
+            // Found a nested map, so it's 3D
+            // return true;
+            return 3;
+          }
+        }
+      }
+    }
+    // If no nested map was found, it's 2D
+    return 2;
+  }
+
+  // int getJsonDimension(dynamic jsonData) {
+  //   if (jsonData is List) {
+  //     if (jsonData.isNotEmpty && jsonData.first is List) {
+  //       if (jsonData.first.isNotEmpty && jsonData.first.first is List) {
+  //         return 3; // 3D
+  //       }
+  //       return 2; // 2D
+  //     }
+  //     return 1; // 1D or single list
+  //   }
+  //   return 0; // Not a valid list structure
+  // }
 
   @override
   void initState() {
@@ -89,12 +119,14 @@ class _PerformanceReportState extends State<PerformanceReport> {
           });
           if (message != null) {
             Map<String, dynamic> jsonObject = json.decode(message.body);
-            setState(() {
-              data = jsonObject;
-              selectedMonths = data.keys.toList();
-              selectedMonthsTemp = data.keys.toList();
-              metrics = (data[selectedMonths[0]] as Map<String, dynamic>).keys.toList();
-            });
+            if (getJsonDimension(jsonObject) == 2) {
+              setState(() {
+                data = jsonObject;
+                xAxisData = data.keys.toList();
+                xAxisTempData = data.keys.toList();
+                yAxisData = (data[xAxisData[0]] as Map<String, dynamic>).keys.toList();
+              });
+            }
           }
         }));
 
@@ -139,16 +171,16 @@ class _PerformanceReportState extends State<PerformanceReport> {
 
   void onMonthSelected(String month) {
     setState(() {
-      selectedMonths = [month];
+      xAxisData = [month];
     });
   }
 
   void onToggleMonth(String month) {
     setState(() {
-      if (selectedMonths.contains(month)) {
-        selectedMonths.remove(month);
+      if (xAxisData.contains(month)) {
+        xAxisData.remove(month);
       } else {
-        selectedMonths.add(month);
+        xAxisData.add(month);
       }
     });
   }
@@ -160,11 +192,11 @@ class _PerformanceReportState extends State<PerformanceReport> {
     });
     if (ascending) {
       setState(() {
-        metrics.sort((a, b) => a.compareTo(b));
+        yAxisData.sort((a, b) => a.compareTo(b));
       });
     } else {
       setState(() {
-        metrics.sort((b, a) => a.compareTo(b));
+        yAxisData.sort((b, a) => a.compareTo(b));
       });
     }
   }
@@ -174,15 +206,15 @@ class _PerformanceReportState extends State<PerformanceReport> {
       sortColumnIndex = columnIndex;
       sortAscending = ascending;
     });
-    print("................$columnIndex.......${selectedMonths[columnIndex]}.......${selectedMonths.length}....$sortAscending....");
-    Map<String, dynamic> a = data[selectedMonths[columnIndex]];
+    print("................$columnIndex.......${xAxisData[columnIndex]}.......${xAxisData.length}....$sortAscending....");
+    Map<String, dynamic> a = data[xAxisData[columnIndex]];
     if (ascending) {
       setState(() {
-        metrics = Map.fromEntries(a.entries.toList()..sort((a, b) => compareValues(a.value, b.value))).keys.toList();
+        yAxisData = Map.fromEntries(a.entries.toList()..sort((a, b) => compareValues(a.value, b.value))).keys.toList();
       });
     } else {
       setState(() {
-        metrics = Map.fromEntries(a.entries.toList()..sort((b, a) => compareValues(a.value, b.value))).keys.toList();
+        yAxisData = Map.fromEntries(a.entries.toList()..sort((b, a) => compareValues(a.value, b.value))).keys.toList();
       });
     }
   }
@@ -219,10 +251,10 @@ class _PerformanceReportState extends State<PerformanceReport> {
               onSort: (columnIndex, ascending) => onHeaderSort(columnIndex, ascending),
             ),
           ],
-          rows: metrics.map((metric) {
+          rows: xAxisData.map((metric) {
             return DataRow(
               color: MaterialStateProperty.resolveWith<Color>((states) {
-                int index = metrics.indexOf(metric);
+                int index = xAxisData.indexOf(metric);
                 return index % 2 == 0 ? Theme.of(context).colorScheme.primary.withOpacity(0.1) : Colors.transparent;
               }),
               cells: [
@@ -261,7 +293,8 @@ class _PerformanceReportState extends State<PerformanceReport> {
                           children: [
                             Expanded(
                               child: ChurnContainer(
-                                  child: Container(
+                                  child: SizedBox(
+                                height: MediaQuery.of(context).size.height,
                                 child: SingleChildScrollView(
                                   child: Column(
                                     children: [
@@ -327,6 +360,9 @@ class _PerformanceReportState extends State<PerformanceReport> {
                                                 value: selectedItem,
                                                 onChanged: (value) {
                                                   setState(() {
+                                                    fetching = true;
+                                                  });
+                                                  setState(() {
                                                     selectedItem = value!;
                                                   });
                                                   context.read<ProjectArchitectBloc>().add(GetReportDataEvent(
@@ -350,9 +386,9 @@ class _PerformanceReportState extends State<PerformanceReport> {
                                                           // print(jsonObject.runtimeType);
                                                           setState(() {
                                                             data = jsonObject;
-                                                            selectedMonths = data.keys.toList();
-                                                            selectedMonthsTemp = data.keys.toList();
-                                                            metrics = (data[selectedMonths[0]] as Map<String, dynamic>).keys.toList();
+                                                            xAxisData = data.keys.toList();
+                                                            xAxisTempData = data.keys.toList();
+                                                            yAxisData = (data[xAxisData[0]] as Map<String, dynamic>).keys.toList();
                                                           });
                                                           // print(".......metrics.....$metrics");
                                                         }
@@ -398,58 +434,73 @@ class _PerformanceReportState extends State<PerformanceReport> {
                                         height: 10,
                                       ),
                                       fetching
-                                          ? Center(
-                                              child: Image.asset("assets/upload.gif", width: 100),
+                                          ? SizedBox(
+                                              height: MediaQuery.of(context).size.height * 0.6,
+                                              width: MediaQuery.of(context).size.width,
+                                              child: Center(
+                                                child: Image.asset("assets/upload.gif", width: 100),
+                                              ),
                                             )
                                           : apiError
-                                              ? Column(
+                                              ? const Column(
                                                   children: [
-                                                    // Row(
-                                                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                    //   children: [
-                                                    //     IconButton(
-                                                    //       icon: Icon(
-                                                    //         Icons.keyboard_backspace,
-                                                    //         color: Theme.of(context).colorScheme.secondary,
-                                                    //       ),
-                                                    //       onPressed: () {
-                                                    //         Navigator.pop(context);
-                                                    //         // GoRouter.of(context).go(AppRoutes.home);
-                                                    //       },
-                                                    //     ),
-                                                    //     Container()
-                                                    //   ],
-                                                    // ),
-                                                    Center(child: Text("Unable to fetch report data $apiError  ")),
+                                                    Center(child: Text("Unable to fetch report data   ")),
                                                   ],
                                                 )
                                               : FittedBox(
-                                                  child: Row(
-                                                    children: [
-                                                      buildFrezeedColumn(
-                                                        onHeaderSort: onHeaderSort,
-                                                      ),
-                                                      SizedBox(
-                                                        width: MediaQuery.of(context).size.width * 0.65,
-                                                        child: ReportsDataTable(
-                                                          metrics: metrics,
-                                                          months: selectedMonths,
-                                                          data: data,
-                                                          sortColumnIndex: sortColumnIndex,
-                                                          sortAscending: sortAscending,
-                                                          // onHeaderSort: onHeaderSort,
-                                                          onColumnsSort: onColumnsSort,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
+                                                  child: getJsonDimension(data) == 2
+                                                      ? Row(
+                                                          children: [
+                                                            buildFrezeedColumn(
+                                                              onHeaderSort: onHeaderSort,
+                                                            ),
+                                                            SizedBox(
+                                                              width: MediaQuery.of(context).size.width * 0.65,
+                                                              child: ReportsDataTable(
+                                                                metrics: yAxisData,
+                                                                months: xAxisData,
+                                                                data: data,
+                                                                sortColumnIndex: sortColumnIndex,
+                                                                sortAscending: sortAscending,
+                                                                // onHeaderSort: onHeaderSort,
+                                                                onColumnsSort: onColumnsSort,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        )
+                                                      : Row(
+                                                          mainAxisAlignment: MainAxisAlignment.center,
+                                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                                          children: [
+                                                            Image.asset(
+                                                              "assets/warning.png",
+                                                              height: 200,
+                                                            ),
+                                                            const Text(
+                                                              "The data provided is not in the expected format. \nPlease ensure the data is two-dimensional (2D) \nto display the report correctly.",
+                                                              style: TextStyle(
+                                                                color: Colors.red,
+                                                                fontSize: 12,
+                                                                fontWeight: FontWeight.bold,
+                                                              ),
+                                                              textAlign: TextAlign.center,
+                                                            ),
+                                                          ],
+                                                        )),
                                     ],
                                   ),
                                 ),
                               )),
                             ),
-                            const Filter()
+                            Column(
+                              children: [
+                                const SizedBox(height: 10),
+                                const Filter(),
+                                Expanded(
+                                  child: Container(),
+                                )
+                              ],
+                            )
                           ],
                         ),
                       ),
@@ -464,15 +515,15 @@ class _PerformanceReportState extends State<PerformanceReport> {
       endDrawer: Drawer(
           width: MediaQuery.of(context).size.width * 0.21,
           child: GetFiltersDrawer(
-            months: selectedMonths,
+            months: yAxisData,
             updateMonthsData: (updatedData) {
               setState(() {
                 if (updatedData.isNotEmpty) {
-                  selectedMonths = updatedData;
+                  yAxisData = updatedData;
                 }
               });
             },
-            monthsStore: selectedMonthsTemp,
+            monthsStore: xAxisTempData,
           )),
     );
   }

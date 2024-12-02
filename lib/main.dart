@@ -7,10 +7,10 @@ import 'package:clan_churn/churn_blocs/sign_in_bloc/sign_in_bloc.dart';
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
 import 'package:clan_churn/components/step_tracker.dart';
 import 'package:clan_churn/pages/admin_home_page.dart';
+import 'package:clan_churn/pages/client_projects_view.dart';
 import 'package:clan_churn/pages/create_client.dart';
 import 'package:clan_churn/pages/forgot_password_screen.dart';
 import 'package:clan_churn/pages/home_page.dart';
-import 'package:clan_churn/pages/client_projects_view.dart';
 import 'package:clan_churn/pages/reset_password_link.dart';
 import 'package:clan_churn/pages/saved_projects.dart';
 import 'package:clan_churn/pages/sign_page.dart';
@@ -20,7 +20,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_framework/responsive_framework.dart';
-import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,8 +33,7 @@ void main() async {
 }
 
 class ClanChurnApp extends StatelessWidget {
-  const ClanChurnApp(
-      {super.key, required this.authRepository, required this.apiRepository});
+  const ClanChurnApp({super.key, required this.authRepository, required this.apiRepository});
   final AuthRepo authRepository;
   final ApiRepository apiRepository;
 
@@ -77,10 +75,7 @@ class ClanChurnApp extends StatelessWidget {
 
         GoRoute(
           path: AppRoutes.intial,
-          pageBuilder: (context, state) => customPageRouteForGoRouter<void>(
-              context: context,
-              state: state,
-              child: const ClanChurnSignInPage()),
+          pageBuilder: (context, state) => customPageRouteForGoRouter<void>(context: context, state: state, child: const ClanChurnSignInPage()),
         ),
         GoRoute(
           path: AppRoutes.home,
@@ -89,9 +84,7 @@ class ClanChurnApp extends StatelessWidget {
               state: state,
               child: BlocBuilder<UserBloc, UserState>(
                 builder: (context, state) {
-                  return state.user?.userType == UserType.admin
-                      ? const AdminHomePage()
-                      : const HomePage();
+                  return state.user?.userType == UserType.admin ? const AdminHomePage() : const HomePage();
                 },
               )),
         ),
@@ -103,32 +96,23 @@ class ClanChurnApp extends StatelessWidget {
         // ),
         GoRoute(
           path: AppRoutes.savedReports,
-          pageBuilder: (context, state) => customPageRouteForGoRouter<void>(
-              context: context, state: state, child: const SavedReports()),
+          pageBuilder: (context, state) => customPageRouteForGoRouter<void>(context: context, state: state, child: const SavedReports()),
         ),
         GoRoute(
           path: AppRoutes.createClient,
-          pageBuilder: (context, state) => customPageRouteForGoRouter<void>(
-              context: context, state: state, child: const CreateClient()),
+          pageBuilder: (context, state) => customPageRouteForGoRouter<void>(context: context, state: state, child: const CreateClient()),
         ),
         GoRoute(
           path: AppRoutes.clientProjects,
-          pageBuilder: (context, state) => customPageRouteForGoRouter<void>(
-              context: context,
-              state: state,
-              child: const ClientProjectsView()),
+          pageBuilder: (context, state) => customPageRouteForGoRouter<void>(context: context, state: state, child: const ClientProjectsView()),
         ),
         GoRoute(
           path: '/myApp',
-          pageBuilder: (context, state) => customPageRouteForGoRouter<void>(
-              context: context, state: state, child: const MyApp()),
+          pageBuilder: (context, state) => customPageRouteForGoRouter<void>(context: context, state: state, child: const MyApp()),
         ),
         GoRoute(
           path: AppRoutes.forgotPassword,
-          pageBuilder: (context, state) => customPageRouteForGoRouter<void>(
-              context: context,
-              state: state,
-              child: const ForgotPasswordScreen()),
+          pageBuilder: (context, state) => customPageRouteForGoRouter<void>(context: context, state: state, child: const ForgotPasswordScreen()),
         ),
         GoRoute(
           path: AppRoutes.resetPassword,
@@ -138,10 +122,7 @@ class ClanChurnApp extends StatelessWidget {
           //    print('matched location Parameters: ${state.uri.queryParameters}');
           //   return MaterialPage(child: ResetPasswordScreen(token));
           // },
-          pageBuilder: (context, state) => customPageRouteForGoRouter<void>(
-              context: context,
-              state: state,
-              child: ResetPasswordScreen(state.uri.queryParameters['token'])),
+          pageBuilder: (context, state) => customPageRouteForGoRouter<void>(context: context, state: state, child: ResetPasswordScreen(state.uri.queryParameters['token'])),
         ),
       ],
     );
