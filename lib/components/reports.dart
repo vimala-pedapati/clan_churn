@@ -5,6 +5,7 @@ import 'package:clan_churn/components/churn_continer.dart';
 import 'package:clan_churn/components/filters.dart';
 import 'package:clan_churn/components/get_filters_drawer.dart';
 import 'package:clan_churn/components/get_reports_data_table.dart';
+import 'package:clan_churn/components/input_sheet_columns.dart';
 import 'package:clan_churn/components/nav_bar.dart';
 import 'package:clan_churn/components/side_bar.dart';
 import 'package:clan_churn/components/wrap_profile.dart';
@@ -12,6 +13,8 @@ import 'package:clan_churn/utils/typography.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../api_repos/api_repo.dart';
 
 // Utility functions for data parsing and sorting
 int compareValues(dynamic value1, dynamic value2) {
@@ -317,116 +320,149 @@ class _PerformanceReportState extends State<PerformanceReport> {
                                               Container()
                                             ],
                                           ),
-                                          SizedBox(
-                                            height: 35,
-                                            width: 300,
-                                            child: DropdownButtonHideUnderline(
-                                              child: DropdownButton2<String>(
-                                                isExpanded: true,
-                                                hint: Row(
-                                                  children: [
-                                                    Text(
-                                                      'Select Column',
-                                                      style: ClanChurnTypography.font14900,
-                                                      overflow: TextOverflow.ellipsis,
+                                          Row(
+                                            children: [
+                                              ElevatedButton(
+                                                child: const Text(
+                                                  "download report",
+                                                ),
+                                                onPressed: () {
+                                                  if (state.createdProject?.latestInput != null) {
+                                                    context.read<ProjectArchitectBloc>().add(
+                                                          DownloadReportEvent(
+                                                            inputId: state.createdProject!.latestInput!,
+                                                            reportName: selectedItem,
+                                                            onSuccessCallback: (response) {
+                                                              Map<String, dynamic> data = json.decode(response!.body);
+                                                              if (data["file_url"] != null) {
+                                                                launchURL(data["file_url"]);
+                                                              } else {
+                                                                ApiRepository().handleWarningMessage("unable to download report", context);
+                                                              }
+                                                            },
+                                                            onErrorCallback: (error, errorCode) {
+                                                              ApiRepository().handleWarningMessage(error, context);
+                                                            },
+                                                          ),
+                                                        );
+                                                  }
+                                                },
+                                              ),
+                                              const SizedBox(
+                                                width: 20,
+                                              ),
+                                              SizedBox(
+                                                height: 35,
+                                                width: 300,
+                                                child: DropdownButtonHideUnderline(
+                                                  child: DropdownButton2<String>(
+                                                    isExpanded: true,
+                                                    hint: Row(
+                                                      children: [
+                                                        Text(
+                                                          'Select Column',
+                                                          style: ClanChurnTypography.font14900,
+                                                          overflow: TextOverflow.ellipsis,
+                                                        ),
+                                                      ],
                                                     ),
-                                                  ],
-                                                ),
-                                                items: state.allReports
-                                                    .map((String item) => DropdownMenuItem<String>(
-                                                          value: item,
-                                                          child: Text(
-                                                            item,
-                                                            style: ClanChurnTypography.font14900.copyWith(color: Theme.of(context).colorScheme.background),
-                                                            overflow: TextOverflow.ellipsis,
+                                                    items: state.allReports
+                                                        .map((String item) => DropdownMenuItem<String>(
+                                                              value: item,
+                                                              child: Text(
+                                                                item,
+                                                                style: ClanChurnTypography.font14900.copyWith(color: Theme.of(context).colorScheme.background),
+                                                                overflow: TextOverflow.ellipsis,
+                                                              ),
+                                                            ))
+                                                        .toList(),
+                                                    selectedItemBuilder: (BuildContext context) {
+                                                      return state.allReports.map((String item) {
+                                                        return Center(
+                                                          child: Row(
+                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                            children: [
+                                                              Text(
+                                                                item,
+                                                                style: ClanChurnTypography.font14900.copyWith(color: Theme.of(context).colorScheme.secondary),
+                                                              ),
+                                                            ],
                                                           ),
-                                                        ))
-                                                    .toList(),
-                                                selectedItemBuilder: (BuildContext context) {
-                                                  return state.allReports.map((String item) {
-                                                    return Center(
-                                                      child: Row(
-                                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                                        children: [
-                                                          Text(
-                                                            item,
-                                                            style: ClanChurnTypography.font14900.copyWith(color: Theme.of(context).colorScheme.secondary),
-                                                          ),
-                                                        ],
+                                                        );
+                                                      }).toList();
+                                                    },
+                                                    value: selectedItem,
+                                                    onChanged: (value) {
+                                                      setState(() {
+                                                        fetching = true;
+                                                      });
+                                                      setState(() {
+                                                        selectedItem = value!;
+                                                      });
+                                                      context.read<ProjectArchitectBloc>().add(GetReportDataEvent(
+                                                          inputId: widget.inputId,
+                                                          reportName: value!,
+                                                          onErrorCallback: (errorMessage, errorCode) {
+                                                            print(" on error $errorCode, $errorMessage");
+                                                            setState(() {
+                                                              apiError = true;
+                                                            });
+                                                          },
+                                                          onSuccessCallback: (message) {
+                                                            setState(() {
+                                                              fetching = false;
+                                                            });
+                                                            if (message != null) {
+                                                              // print("get report data: ${json.decode(message!.body)}");
+                                                              // print("get report data: ${json.decode(message.body).runtimeType}");
+                                                              // var a = json.decode(message.body);
+                                                              Map<String, dynamic> jsonObject = json.decode(message.body);
+                                                              // print(jsonObject.runtimeType);
+                                                              setState(() {
+                                                                data = jsonObject;
+                                                                xAxisData = data.keys.toList();
+                                                                xAxisTempData = data.keys.toList();
+                                                                yAxisData = (data[xAxisData[0]] as Map<String, dynamic>).keys.toList();
+                                                              });
+                                                              // print(".......metrics.....$metrics");
+                                                            }
+                                                          }));
+                                                    },
+                                                    buttonStyleData: ButtonStyleData(
+                                                      decoration: BoxDecoration(
+                                                        borderRadius: BorderRadius.circular(8),
+                                                        border: Border.all(color: Theme.of(context).colorScheme.primary.withOpacity(0.6)),
+                                                        color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
                                                       ),
-                                                    );
-                                                  }).toList();
-                                                },
-                                                value: selectedItem,
-                                                onChanged: (value) {
-                                                  setState(() {
-                                                    fetching = true;
-                                                  });
-                                                  setState(() {
-                                                    selectedItem = value!;
-                                                  });
-                                                  context.read<ProjectArchitectBloc>().add(GetReportDataEvent(
-                                                      inputId: widget.inputId,
-                                                      reportName: value!,
-                                                      onErrorCallback: (errorMessage, errorCode) {
-                                                        print(" on error $errorCode, $errorMessage");
-                                                        setState(() {
-                                                          apiError = true;
-                                                        });
-                                                      },
-                                                      onSuccessCallback: (message) {
-                                                        setState(() {
-                                                          fetching = false;
-                                                        });
-                                                        if (message != null) {
-                                                          // print("get report data: ${json.decode(message!.body)}");
-                                                          // print("get report data: ${json.decode(message.body).runtimeType}");
-                                                          // var a = json.decode(message.body);
-                                                          Map<String, dynamic> jsonObject = json.decode(message.body);
-                                                          // print(jsonObject.runtimeType);
-                                                          setState(() {
-                                                            data = jsonObject;
-                                                            xAxisData = data.keys.toList();
-                                                            xAxisTempData = data.keys.toList();
-                                                            yAxisData = (data[xAxisData[0]] as Map<String, dynamic>).keys.toList();
-                                                          });
-                                                          // print(".......metrics.....$metrics");
-                                                        }
-                                                      }));
-                                                },
-                                                buttonStyleData: ButtonStyleData(
-                                                  decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.circular(8),
-                                                    border: Border.all(color: Theme.of(context).colorScheme.primary.withOpacity(0.6)),
-                                                    color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
+                                                      elevation: 0,
+                                                    ),
+                                                    iconStyleData: IconStyleData(
+                                                      icon: const Icon(Icons.keyboard_arrow_down),
+                                                      iconSize: 25,
+                                                      iconEnabledColor: Theme.of(context).colorScheme.secondary,
+                                                      iconDisabledColor: Colors.grey,
+                                                    ),
+                                                    dropdownStyleData: DropdownStyleData(
+                                                      elevation: 0,
+                                                      decoration: BoxDecoration(
+                                                        borderRadius: BorderRadius.circular(8),
+                                                        border: Border.all(color: Theme.of(context).colorScheme.primary.withOpacity(0.6)),
+                                                        color: Theme.of(context).colorScheme.primary.withOpacity(1.0),
+                                                      ),
+                                                      scrollbarTheme: ScrollbarThemeData(
+                                                        radius: const Radius.circular(40),
+                                                        thickness: MaterialStateProperty.all(6),
+                                                        thumbVisibility: MaterialStateProperty.all(true),
+                                                      ),
+                                                    ),
+                                                    menuItemStyleData: const MenuItemStyleData(
+                                                      height: 40,
+                                                      padding: EdgeInsets.only(left: 14, right: 14),
+                                                    ),
                                                   ),
-                                                  elevation: 0,
-                                                ),
-                                                iconStyleData: IconStyleData(
-                                                  icon: const Icon(Icons.keyboard_arrow_down),
-                                                  iconSize: 25,
-                                                  iconEnabledColor: Theme.of(context).colorScheme.secondary,
-                                                  iconDisabledColor: Colors.grey,
-                                                ),
-                                                dropdownStyleData: DropdownStyleData(
-                                                  elevation: 0,
-                                                  decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.circular(8),
-                                                    border: Border.all(color: Theme.of(context).colorScheme.primary.withOpacity(0.6)),
-                                                    color: Theme.of(context).colorScheme.primary.withOpacity(1.0),
-                                                  ),
-                                                  scrollbarTheme: ScrollbarThemeData(
-                                                    radius: const Radius.circular(40),
-                                                    thickness: MaterialStateProperty.all(6),
-                                                    thumbVisibility: MaterialStateProperty.all(true),
-                                                  ),
-                                                ),
-                                                menuItemStyleData: const MenuItemStyleData(
-                                                  height: 40,
-                                                  padding: EdgeInsets.only(left: 14, right: 14),
                                                 ),
                                               ),
-                                            ),
+                                            ],
                                           ),
                                         ],
                                       ),
@@ -476,14 +512,27 @@ class _PerformanceReportState extends State<PerformanceReport> {
                                                               "assets/warning.png",
                                                               height: 200,
                                                             ),
-                                                            const Text(
-                                                              "The data provided is not in the expected format. \nPlease ensure the data is two-dimensional (2D) \nto display the report correctly.",
-                                                              style: TextStyle(
-                                                                color: Colors.red,
-                                                                fontSize: 12,
-                                                                fontWeight: FontWeight.bold,
-                                                              ),
-                                                              textAlign: TextAlign.center,
+                                                            Column(
+                                                              children: [
+                                                                Text(
+                                                                  "Currently, only two-dimensional (2D) data is supported for viewing the report. \nPlease provide data in 2D format to view the report.",
+                                                                  style: TextStyle(
+                                                                    color: Theme.of(context).colorScheme.primary,
+                                                                    fontSize: 12,
+                                                                    fontWeight: FontWeight.bold,
+                                                                  ),
+                                                                  textAlign: TextAlign.center,
+                                                                ),
+                                                                Text(
+                                                                  "Tip: You can download the data as an Excel summary report for easier review.",
+                                                                  style: TextStyle(
+                                                                    color: Theme.of(context).colorScheme.primary,
+                                                                    fontSize: 12,
+                                                                    fontWeight: FontWeight.bold,
+                                                                  ),
+                                                                  textAlign: TextAlign.center,
+                                                                ),
+                                                              ],
                                                             ),
                                                           ],
                                                         )),

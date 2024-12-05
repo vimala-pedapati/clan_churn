@@ -186,3 +186,17 @@ class UpdateProjectThresholdMaxValue extends ProjectArchitectEvent {
   final dynamic maxValue;
   const UpdateProjectThresholdMaxValue({required this.maxValue, required this.thresholdId});
 }
+
+class DownloadReportEvent extends ProjectArchitectEvent {
+  final String inputId;
+  final String reportName;
+  final OnSuccessCallback onSuccessCallback;
+  final OnErrorCallback onErrorCallback;
+
+  const DownloadReportEvent({
+    required this.inputId,
+    required this.reportName,
+    required this.onSuccessCallback,
+    required this.onErrorCallback,
+  });
+}

@@ -1083,6 +1083,35 @@ class ApiRepository {
     return null;
   }
 
+  Future downLoadReportApi({required OnSuccessCallback onSuccessCallback, required OnErrorCallback onErrorCallback, required String inputId, required String reportName}) async {
+    try {
+      final AuthCred authCred = await AuthRepo().getTokens();
+      if (authCred.accessToken.isEmpty) {
+        onErrorCallback('Access token is empty', 0);
+        return null;
+      }
+
+      http.Response res = await http.post(
+        Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.downloadReport}?input_id=$inputId&report_name=$reportName"),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${authCred.accessToken}',
+        },
+        // body: json.encode({
+        //   "input_id": inputId,
+        //   "report_name": reportName,
+        // }),
+      );
+      if (res.statusCode == 200) {
+        onSuccessCallback(res);
+      } else {}
+    } catch (e) {
+      log("unable to update project threshold values");
+      onErrorCallback('Unable to update threshold values please contact admin', 0);
+    }
+    return null;
+  }
+
   void _handleStatusCode(int statusCode, Response response, OnErrorCallback onErrorCallback) {
     String reason = "${(json.decode(response.body) as Map<String, dynamic>)["detail"]}";
 

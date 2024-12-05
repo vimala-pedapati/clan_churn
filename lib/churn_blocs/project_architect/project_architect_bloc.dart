@@ -47,6 +47,7 @@ class ProjectArchitectBloc extends Bloc<ProjectArchitectEvent, ProjectArchitectS
     on<GetAllReportsEvent>(_onGetAllReports);
     on<UpdateProjectThresholdMinValue>(_onUpdateProjectThresholdMinValue);
     on<UpdateProjectThresholdMaxValue>(_onUpdateProjectThresholdMaxValue);
+    on<DownloadReportEvent>(_onDownloadReport);
   }
 
   _onClientsEvent(GetClientsEvent event, Emitter<ProjectArchitectState> emit) async {
@@ -341,5 +342,14 @@ class ProjectArchitectBloc extends Bloc<ProjectArchitectEvent, ProjectArchitectS
       }
     }
     emit(state.copyWith(projectThesholdFormfields: thresholds));
+  }
+
+  _onDownloadReport(DownloadReportEvent event, Emitter emit) {
+    apiRepository.downLoadReportApi(
+      onSuccessCallback: event.onSuccessCallback,
+      onErrorCallback: event.onErrorCallback,
+      inputId: event.inputId,
+      reportName: event.reportName,
+    );
   }
 }
