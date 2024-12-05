@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:clan_churn/api_repos/api_repo.dart';
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/components/churn_continer.dart';
 import 'package:clan_churn/components/filters.dart';
@@ -13,8 +14,6 @@ import 'package:clan_churn/utils/typography.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../api_repos/api_repo.dart';
 
 // Utility functions for data parsing and sorting
 int compareValues(dynamic value1, dynamic value2) {
@@ -322,35 +321,6 @@ class _PerformanceReportState extends State<PerformanceReport> {
                                           ),
                                           Row(
                                             children: [
-                                              ElevatedButton(
-                                                child: const Text(
-                                                  "download report",
-                                                ),
-                                                onPressed: () {
-                                                  if (state.createdProject?.latestInput != null) {
-                                                    context.read<ProjectArchitectBloc>().add(
-                                                          DownloadReportEvent(
-                                                            inputId: state.createdProject!.latestInput!,
-                                                            reportName: selectedItem,
-                                                            onSuccessCallback: (response) {
-                                                              Map<String, dynamic> data = json.decode(response!.body);
-                                                              if (data["file_url"] != null) {
-                                                                launchURL(data["file_url"]);
-                                                              } else {
-                                                                ApiRepository().handleWarningMessage("unable to download report", context);
-                                                              }
-                                                            },
-                                                            onErrorCallback: (error, errorCode) {
-                                                              ApiRepository().handleWarningMessage(error, context);
-                                                            },
-                                                          ),
-                                                        );
-                                                  }
-                                                },
-                                              ),
-                                              const SizedBox(
-                                                width: 20,
-                                              ),
                                               SizedBox(
                                                 height: 35,
                                                 width: 300,
@@ -545,9 +515,43 @@ class _PerformanceReportState extends State<PerformanceReport> {
                               children: [
                                 const SizedBox(height: 10),
                                 const Filter(),
+                                const SizedBox(height: 10),
+                                RotatedBox(
+                                  quarterTurns: 3,
+                                  child: Row(
+                                    children: [
+                                      ElevatedButton(
+                                        child: const Text(
+                                          "download report",
+                                        ),
+                                        onPressed: () {
+                                          if (state.createdProject?.latestInput != null) {
+                                            context.read<ProjectArchitectBloc>().add(
+                                                  DownloadReportEvent(
+                                                    inputId: state.createdProject!.latestInput!,
+                                                    reportName: selectedItem,
+                                                    onSuccessCallback: (response) {
+                                                      Map<String, dynamic> data = json.decode(response!.body);
+                                                      if (data["file_url"] != null) {
+                                                        launchURL(data["file_url"]);
+                                                      } else {
+                                                        ApiRepository().handleWarningMessage("unable to download report", context);
+                                                      }
+                                                    },
+                                                    onErrorCallback: (error, errorCode) {
+                                                      ApiRepository().handleWarningMessage(error, context);
+                                                    },
+                                                  ),
+                                                );
+                                          }
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
                                 Expanded(
                                   child: Container(),
-                                )
+                                ),
                               ],
                             )
                           ],
