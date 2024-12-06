@@ -1488,7 +1488,7 @@ class _UploadedExcelSummaryReportState extends State<UploadedExcelSummaryReport>
                     DownloadErrorGlossary(
                       onErrorCallback: (message, errorCode) {
                         ApiRepository().handleWarningMessage(
-                          "$message unable to upload file, something went wrong ",
+                          "$message ",
                           context,
                         );
                       },

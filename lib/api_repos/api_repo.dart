@@ -1091,7 +1091,6 @@ class ApiRepository {
         return project;
       } else {}
     } catch (e) {
-      log("unable to update project threshold values");
       onErrorCallback('Unable to update threshold values please contact admin', 0);
     }
     return null;
@@ -1122,8 +1121,7 @@ class ApiRepository {
         return allReports;
       } else {}
     } catch (e) {
-      log("unable to update project threshold values");
-      onErrorCallback('Unable to update threshold values please contact admin', 0);
+      onErrorCallback('Unable to get all reports', 0);
     }
     return null;
   }
@@ -1142,16 +1140,11 @@ class ApiRepository {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ${authCred.accessToken}',
         },
-        // body: json.encode({
-        //   "input_id": inputId,
-        //   "report_name": reportName,
-        // }),
       );
       if (res.statusCode == 200) {
         onSuccessCallback(res);
       } else {}
     } catch (e) {
-      log("unable to update project threshold values");
       onErrorCallback('Unable to update threshold values please contact admin', 0);
     }
     return null;
@@ -1176,7 +1169,7 @@ class ApiRepository {
         onSuccessCallback(res);
       } else {}
     } catch (e) {
-      onErrorCallback('Unable to update threshold values please contact admin', 0);
+      onErrorCallback('Unable to download error glossary', 0);
     }
     return null;
   }
