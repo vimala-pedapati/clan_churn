@@ -487,6 +487,51 @@ class ApiRepository {
     return null;
   }
 
+  // Upload error glosary sheet
+  Future uploadErrorGlossarys({
+    required FilePickerResult filePickerResult,
+    required OnErrorCallback onErrorCallback,
+    required OnSuccessCallback onSuccessCallback,
+  }) async {
+    try {
+      final AuthCred authCred = await AuthRepo().getTokens();
+      // Check if auth credentials are null
+      if (authCred.accessToken.isEmpty) {
+        return null;
+      }
+
+      if (filePickerResult.files.isNotEmpty) {
+        PlatformFile file = filePickerResult.files.first;
+        var headers = {'Authorization': 'Bearer ${authCred.accessToken}'};
+        var request = http.MultipartRequest(
+          'POST',
+          Uri.parse('${BaseUrl.baseUrl}${ApiEndpoints.updateErrorGlosary}'),
+        );
+        if (file.bytes != null) {
+          request.files.add(http.MultipartFile.fromBytes(
+            'file',
+            file.bytes!,
+            filename: file.name,
+          ));
+        }
+        request.headers.addAll(headers);
+        http.StreamedResponse response = await request.send();
+
+        if (response.statusCode == 200) {
+          http.Response fullResponse = await http.Response.fromStream(response);
+          onSuccessCallback(fullResponse);
+        } else {
+          _handleStatusCode(response.statusCode, await http.Response.fromStream(response), onErrorCallback);
+        }
+      } else {
+        log('File picking canceled');
+      }
+    } catch (e) {
+      log('Network Error: $e');
+      onErrorCallback('unable to update file please contact admin', 0);
+    }
+  }
+
   Future getInputExcelSummaryReport({required String inputId, required OnErrorCallback onErrorCallback, required OnSuccessCallback onSuccessCallback}) async {
     try {
       final AuthCred authCred = await AuthRepo().getTokens();

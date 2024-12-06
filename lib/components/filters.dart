@@ -11,7 +11,7 @@ class Filter extends StatelessWidget {
         Scaffold.of(context).openEndDrawer();
       },
       child: Container(
-        height: 150,
+        height: 100,
         width: 38,
         padding: const EdgeInsets.all(5),
         decoration: BoxDecoration(
@@ -26,13 +26,16 @@ class Filter extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const ColoredBox(color: Colors.transparent, child: Icon(Icons.filter_alt_outlined)),
+            const SizedBox(
+              height: 5,
+            ),
             ColoredBox(
               color: Colors.transparent,
               child: RotatedBox(
                   quarterTurns: 3,
                   child: Text(
-                    "Filters",
-                    style: ClanChurnTypography.font24600.copyWith(height: 1),
+                    "filters",
+                    style: ClanChurnTypography.font16600.copyWith(height: 1),
                   )),
             ),
           ],

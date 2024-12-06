@@ -27,6 +27,10 @@ class ApiEndpoints {
   static String resetPassword = '/reset_password';
   static String uploadLogo = '/upload_picture';
 
+  // master data
+  static String updateErrorGlosary = '/master_data/update_error_glossary';
+  static String downloadErrorGlosary = '/master_data/download_error_glossary';
+
   // User
   static String getUserDetails = '/user/get_user_details';
   static String addUser = '/user/add';

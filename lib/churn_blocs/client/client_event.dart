@@ -74,3 +74,10 @@ class ArchiveProjectEvent extends ClientEvent {
 
   const ArchiveProjectEvent({required this.projectId, required this.onErrorCallback, required this.onSuccessCallback});
 }
+
+class UploadErrorGlossary extends ClientEvent {
+  final FilePickerResult filePickerResult;
+  final OnErrorCallback onErrorCallback;
+  final OnSuccessCallback onSuccessCallBack;
+  const UploadErrorGlossary({required this.filePickerResult, required this.onErrorCallback, required this.onSuccessCallBack,});
+}
