@@ -200,3 +200,9 @@ class DownloadReportEvent extends ProjectArchitectEvent {
     required this.onErrorCallback,
   });
 }
+
+class DownloadErrorGlossary extends ProjectArchitectEvent {
+  final OnSuccessCallback onSuccessCallback;
+  final OnErrorCallback onErrorCallback;
+  const DownloadErrorGlossary({required this.onSuccessCallback, required this.onErrorCallback});
+}

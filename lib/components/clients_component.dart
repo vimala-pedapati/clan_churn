@@ -1,6 +1,10 @@
+import 'dart:convert';
+
+import 'package:clan_churn/api_repos/api_repo.dart';
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/components/churn_continer.dart';
 import 'package:clan_churn/components/clients_card.dart';
+import 'package:clan_churn/components/input_sheet_columns.dart';
 import 'package:clan_churn/utils/spacing.dart';
 import 'package:clan_churn/utils/typography.dart';
 import 'package:flutter/material.dart';
@@ -23,9 +27,14 @@ class _ClientsComponentState extends State<ClientsComponent> {
       builder: (context, state) {
         return ChurnContainer(
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            SelectableText(
-              "Clients",
-              style: ClanChurnTypography.font24600,
+            Row(
+              children: [
+                SelectableText(
+                  "Clients",
+                  style: ClanChurnTypography.font24600,
+                ),
+               
+              ],
             ),
             ClanChurnSpacing.hw30,
             Expanded(

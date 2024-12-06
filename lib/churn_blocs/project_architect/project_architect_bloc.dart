@@ -48,6 +48,7 @@ class ProjectArchitectBloc extends Bloc<ProjectArchitectEvent, ProjectArchitectS
     on<UpdateProjectThresholdMinValue>(_onUpdateProjectThresholdMinValue);
     on<UpdateProjectThresholdMaxValue>(_onUpdateProjectThresholdMaxValue);
     on<DownloadReportEvent>(_onDownloadReport);
+    on<DownloadErrorGlossary>(_onDownloadErrorGlossary);
   }
 
   _onClientsEvent(GetClientsEvent event, Emitter<ProjectArchitectState> emit) async {
@@ -351,5 +352,9 @@ class ProjectArchitectBloc extends Bloc<ProjectArchitectEvent, ProjectArchitectS
       inputId: event.inputId,
       reportName: event.reportName,
     );
+  }
+
+  _onDownloadErrorGlossary(DownloadErrorGlossary event, Emitter emit) {
+    apiRepository.downloadErrorGlossary(onSuccessCallback: event.onSuccessCallback, onErrorCallback: event.onErrorCallback);
   }
 }

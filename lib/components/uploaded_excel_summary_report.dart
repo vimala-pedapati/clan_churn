@@ -609,9 +609,11 @@
 
 import 'dart:convert';
 
+import 'package:clan_churn/api_repos/api_repo.dart';
 import 'package:clan_churn/api_repos/models/project_model.dart';
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/components/dialogs.dart';
+import 'package:clan_churn/components/input_sheet_columns.dart';
 import 'package:clan_churn/components/outlined_button_template.dart';
 import 'package:clan_churn/components/project_input_history.dart';
 import 'package:clan_churn/components/project_publish.dart';
@@ -1475,6 +1477,27 @@ class _UploadedExcelSummaryReportState extends State<UploadedExcelSummaryReport>
                             ));
                       },
               );
+            },
+          ),
+          OutlinedButtonTemplate(
+            icon: Icons.download_outlined,
+            title: "View Error Glosarry",
+            onHoverTextChange: "Download Error Glosarry",
+            onPressed: () {
+              context.read<ProjectArchitectBloc>().add(
+                    DownloadErrorGlossary(
+                      onErrorCallback: (message, errorCode) {
+                        ApiRepository().handleWarningMessage(
+                          "$message unable to upload file, something went wrong ",
+                          context,
+                        );
+                      },
+                      onSuccessCallback: (message) {
+                        launchURL(json.decode(message!.body)["s3_url"]);
+                        // ApiRepository().handleSuccessMessage("${json.decode(message!.body)["message"]}", context);
+                      },
+                    ),
+                  );
             },
           ),
           OutlinedButtonTemplate(

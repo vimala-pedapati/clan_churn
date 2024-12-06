@@ -505,7 +505,7 @@ class ApiRepository {
         var headers = {'Authorization': 'Bearer ${authCred.accessToken}'};
         var request = http.MultipartRequest(
           'POST',
-          Uri.parse('${BaseUrl.baseUrl}${ApiEndpoints.updateErrorGlosary}'),
+          Uri.parse('${BaseUrl.baseUrl}${ApiEndpoints.updateErrorGlossary}'),
         );
         if (file.bytes != null) {
           request.files.add(http.MultipartFile.fromBytes(
@@ -1152,6 +1152,30 @@ class ApiRepository {
       } else {}
     } catch (e) {
       log("unable to update project threshold values");
+      onErrorCallback('Unable to update threshold values please contact admin', 0);
+    }
+    return null;
+  }
+
+  Future downloadErrorGlossary({required OnSuccessCallback onSuccessCallback, required OnErrorCallback onErrorCallback}) async {
+    try {
+      final AuthCred authCred = await AuthRepo().getTokens();
+      if (authCred.accessToken.isEmpty) {
+        onErrorCallback('Access token is empty', 0);
+        return null;
+      }
+
+      http.Response res = await http.get(
+        Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.downloadErrorGlossary}"),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${authCred.accessToken}',
+        },
+      );
+      if (res.statusCode == 200) {
+        onSuccessCallback(res);
+      } else {}
+    } catch (e) {
       onErrorCallback('Unable to update threshold values please contact admin', 0);
     }
     return null;

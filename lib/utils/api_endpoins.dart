@@ -28,8 +28,8 @@ class ApiEndpoints {
   static String uploadLogo = '/upload_picture';
 
   // master data
-  static String updateErrorGlosary = '/master_data/update_error_glossary';
-  static String downloadErrorGlosary = '/master_data/download_error_glossary';
+  static String updateErrorGlossary = '/master_data/update_error_glossary';
+  static String downloadErrorGlossary = '/master_data/download_error_glossary';
 
   // User
   static String getUserDetails = '/user/get_user_details';
