@@ -10,6 +10,7 @@ import 'package:clan_churn/pages/admin_home_page.dart';
 import 'package:clan_churn/pages/client_projects_view.dart';
 import 'package:clan_churn/pages/create_client.dart';
 import 'package:clan_churn/pages/forgot_password_screen.dart';
+import 'package:clan_churn/pages/generate_marts.dart';
 import 'package:clan_churn/pages/home_page.dart';
 import 'package:clan_churn/pages/reset_password_link.dart';
 import 'package:clan_churn/pages/saved_projects.dart';
@@ -72,7 +73,6 @@ class ClanChurnApp extends StatelessWidget {
             );
           },
         ),
-
         GoRoute(
           path: AppRoutes.intial,
           pageBuilder: (context, state) => customPageRouteForGoRouter<void>(context: context, state: state, child: const ClanChurnSignInPage()),
@@ -80,20 +80,33 @@ class ClanChurnApp extends StatelessWidget {
         GoRoute(
           path: AppRoutes.home,
           pageBuilder: (context, state) => customPageRouteForGoRouter<void>(
-              context: context,
-              state: state,
-              child: BlocBuilder<UserBloc, UserState>(
-                builder: (context, state) {
-                  return state.user?.userType == UserType.admin ? const AdminHomePage() : const HomePage();
-                },
-              )),
+            context: context,
+            state: state,
+            child: BlocBuilder<UserBloc, UserState>(
+              builder: (context, state) {
+                return state.user?.userType == UserType.admin ? const AdminHomePage() : const HomePage();
+              },
+            ),
+          ),
+          routes: [
+            // GoRoute(
+            //   path: '${AppRoutes.generateMarts}/:projectId',
+            //   builder: (context, state) {
+            //     final String id = state.uri.queryParameters["projectId"] as String;
+            //     print(state.uri.queryParameters);
+            //     return GenerateMarts(projectId: id);
+            //   },
+            // ),
+            GoRoute(
+              // path: AppRoutes.generateMarts, // No path parameter here
+              path: '${AppRoutes.generateMarts}/:projectId',
+              builder: (context, state) {
+                final String id = state.pathParameters["projectId"] as String; // Access the query parameter
+                return GenerateMarts(projectId: id ?? '');
+              },
+            ),
+          ],
         ),
-
-        // GoRoute(
-        //   path: AppRoutes.savedProjects,
-        //   pageBuilder: (context, state) => customPageRouteForGoRouter<void>(
-        //       context: context, state: state, child: const PerformanceReport()),
-        // ),
         GoRoute(
           path: AppRoutes.savedReports,
           pageBuilder: (context, state) => customPageRouteForGoRouter<void>(context: context, state: state, child: const SavedReports()),
@@ -116,12 +129,6 @@ class ClanChurnApp extends StatelessWidget {
         ),
         GoRoute(
           path: AppRoutes.resetPassword,
-          // pageBuilder: (context, state) {
-          //   print("...............................");
-          //   final String? token = state.uri.queryParameters['token'];
-          //    print('matched location Parameters: ${state.uri.queryParameters}');
-          //   return MaterialPage(child: ResetPasswordScreen(token));
-          // },
           pageBuilder: (context, state) => customPageRouteForGoRouter<void>(context: context, state: state, child: ResetPasswordScreen(state.uri.queryParameters['token'])),
         ),
       ],

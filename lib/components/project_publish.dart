@@ -120,6 +120,9 @@ import 'package:clan_churn/utils/spacing.dart';
 import 'package:clan_churn/utils/typography.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+
+import '../utils/routes.dart';
 
 /// Widget representing a Publish Button with stateful behavior.
 class GetPublishButton extends StatefulWidget {
@@ -242,15 +245,43 @@ class _GetPublishButtonState extends State<GetPublishButton> {
           child: ElevatedButton(
             onPressed: state.createdProject?.latestInputModel?.inputStatus == InputStatus.uploadedDataDataMartsGenerated
                 ? () {
-                    // print("report ..........${state.createdProject?.latestInputModel?.inputStatus}");
-                    // Check input status and perform actions accordingly
                     if (state.createdProject?.latestInputModel?.inputStatus == InputStatus.uploadedDataHasErrors) {
-                      // Show dialog for error case
                       showDialog(
                         context: context,
                         builder: (context) => buildErrorDialog(context),
                       );
-                      // } else if (state.createdProject?.latestInputModel?.inputStatus == InputStatus.uploadedDataHasNoErrors || state.createdProject?.latestInputModel?.inputStatus == InputStatus.uploadedDataDataMartsGenerated) {
+                    } else if (state.createdProject?.latestInputModel?.inputStatus == InputStatus.uploadedDataDataMartsGenerated) {
+                      if (state.allReports.isNotEmpty) {
+                        if (state.createdProject!.latestInput != null) {
+                          context.go('${AppRoutes.home}/${AppRoutes.generateMarts}/${state.createdProject?.id}');
+                        }
+                      }
+                    }
+                  }
+                : null,
+            child: Row(
+              children: [
+                Text(
+                  "Generate Marts",
+                  style: ClanChurnTypography.font14900,
+                ),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(
+          width: 50,
+        ),
+        SizedBox(
+          height: 30,
+          child: ElevatedButton(
+            onPressed: state.createdProject?.latestInputModel?.inputStatus == InputStatus.uploadedDataDataMartsGenerated
+                ? () {
+                    if (state.createdProject?.latestInputModel?.inputStatus == InputStatus.uploadedDataHasErrors) {
+                      showDialog(
+                        context: context,
+                        builder: (context) => buildErrorDialog(context),
+                      );
                     } else if (state.createdProject?.latestInputModel?.inputStatus == InputStatus.uploadedDataDataMartsGenerated) {
                       if (state.allReports.isNotEmpty) {
                         if (state.createdProject!.latestInput != null) {

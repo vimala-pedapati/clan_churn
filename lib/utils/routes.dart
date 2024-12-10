@@ -10,6 +10,7 @@ class AppRoutes {
   static const forgotPassword = "/forgotPassword";
   static const resetPassword = "/resetPassword";
   static const createClient = "/createClient";
+  static const generateMarts = "generateMarts";
 }
 
 CustomTransitionPage customPageRouteForGoRouter<T>({
@@ -20,8 +21,7 @@ CustomTransitionPage customPageRouteForGoRouter<T>({
   return CustomTransitionPage<T>(
     key: state.pageKey,
     child: child,
-    transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-        FadeTransition(opacity: animation, child: child),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) => FadeTransition(opacity: animation, child: child),
   );
 }
 
