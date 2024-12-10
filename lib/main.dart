@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:clan_churn/api_repos/api_repo.dart';
 import 'package:clan_churn/api_repos/auth_repo.dart';
+import 'package:clan_churn/api_repos/models/client_details.dart';
 import 'package:clan_churn/api_repos/models/user_model.dart';
 import 'package:clan_churn/churn_blocs/client/client_bloc.dart';
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
@@ -18,13 +21,14 @@ import 'package:clan_churn/pages/sign_page.dart';
 import 'package:clan_churn/utils/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // setUrlStrategy(PathUrlStrategy());
+  setUrlStrategy(PathUrlStrategy());
   AuthRepo authRepository = AuthRepo();
   ApiRepository apiRepository = ApiRepository();
   runApp(ClanChurnApp(
@@ -60,7 +64,7 @@ class ClanChurnApp extends StatelessWidget {
                     if (authCred.accessToken.isNotEmpty) {
                       // Navigate to the home page if the access token is not empty
                       WidgetsBinding.instance.addPostFrameCallback((_) {
-                        context.go(AppRoutes.home);
+                        context.go(AppRoutes.clients);
                       });
                       return const SizedBox(); // Return an empty widget as we're navigating
                     }
@@ -78,7 +82,7 @@ class ClanChurnApp extends StatelessWidget {
           pageBuilder: (context, state) => customPageRouteForGoRouter<void>(context: context, state: state, child: const ClanChurnSignInPage()),
         ),
         GoRoute(
-          path: AppRoutes.home,
+          path: AppRoutes.clients,
           pageBuilder: (context, state) => customPageRouteForGoRouter<void>(
             context: context,
             state: state,
@@ -89,20 +93,27 @@ class ClanChurnApp extends StatelessWidget {
             ),
           ),
           routes: [
-            // GoRoute(
-            //   path: '${AppRoutes.generateMarts}/:projectId',
-            //   builder: (context, state) {
-            //     final String id = state.uri.queryParameters["projectId"] as String;
-            //     print(state.uri.queryParameters);
-            //     return GenerateMarts(projectId: id);
-            //   },
-            // ),
             GoRoute(
-              // path: AppRoutes.generateMarts, // No path parameter here
+              path: AppRoutes.clientProjects,
+              builder: (context, state) {
+                final extraData = state.extra as Map<String, dynamic>?;
+                if (extraData == null) {
+                  Future.microtask(() {
+                    context.replace(AppRoutes.clients);
+                  });
+                  return const SizedBox.shrink();
+                }
+                final clientDetails = extraData["clientDetails"];
+                final decodedData = Uri.decodeComponent(clientDetails);
+                final ClientDetails data = ClientDetails.fromJson(json.decode(decodedData));
+                return ClientProjectsView(client: data);
+              },
+            ),
+            GoRoute(
               path: '${AppRoutes.generateMarts}/:projectId',
               builder: (context, state) {
-                final String id = state.pathParameters["projectId"] as String; // Access the query parameter
-                return GenerateMarts(projectId: id ?? '');
+                final String? id = state.pathParameters["projectId"];
+                return GenerateMarts(projectId: id ?? "");
               },
             ),
           ],
@@ -115,10 +126,10 @@ class ClanChurnApp extends StatelessWidget {
           path: AppRoutes.createClient,
           pageBuilder: (context, state) => customPageRouteForGoRouter<void>(context: context, state: state, child: const CreateClient()),
         ),
-        GoRoute(
-          path: AppRoutes.clientProjects,
-          pageBuilder: (context, state) => customPageRouteForGoRouter<void>(context: context, state: state, child: const ClientProjectsView()),
-        ),
+        // GoRoute(
+        //   path: AppRoutes.clientProjects,
+        //   pageBuilder: (context, state) => customPageRouteForGoRouter<void>(context: context, state: state, child: const ClientProjectsView()),
+        // ),
         GoRoute(
           path: '/myApp',
           pageBuilder: (context, state) => customPageRouteForGoRouter<void>(context: context, state: state, child: const MyApp()),

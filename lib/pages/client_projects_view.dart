@@ -1,13 +1,16 @@
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
-import 'package:clan_churn/components/projects_view_component.dart';
 import 'package:clan_churn/components/nav_bar.dart';
+import 'package:clan_churn/components/projects_view_component.dart';
 import 'package:clan_churn/components/side_bar.dart';
 import 'package:clan_churn/components/wrap_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../api_repos/models/client_details.dart';
+
 class ClientProjectsView extends StatefulWidget {
-  const ClientProjectsView({super.key});
+  const ClientProjectsView({super.key, required this.client});
+  final ClientDetails? client;
 
   @override
   State<ClientProjectsView> createState() => _ClientProjectsViewState();
@@ -19,25 +22,28 @@ class _ClientProjectsViewState extends State<ClientProjectsView> {
     final h = MediaQuery.of(context).size.height;
     final w = MediaQuery.of(context).size.width;
     return Scaffold(
-        backgroundColor:
-            Theme.of(context).colorScheme.primary.withOpacity(0.05),
+        backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.05),
         body: BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
           builder: (context, state) {
-            return const WrapProfile(
+            return WrapProfile(
               child: Column(children: [
                 // Nav bar
-                NavBar(),
-                SizedBox(height: 10),
+                const NavBar(),
+                const SizedBox(height: 10),
                 // Text("${MediaQuery.of(context).size}"),
                 Expanded(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SideBar(
+                      const SideBar(
                         selectedRoute: SelectedRoute.home,
                       ),
-                      Expanded(child: ProjectsViewComponent())
+                      if (widget.client != null)
+                        Expanded(
+                            child: ProjectsViewComponent(
+                          clientDetails: widget.client!,
+                        ))
                     ],
                   ),
                 ),

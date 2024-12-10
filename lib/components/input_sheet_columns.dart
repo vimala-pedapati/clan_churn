@@ -41,7 +41,7 @@ void downloadFile(String url, BuildContext context) async {
     log("Error downloading file: $e");
   }
   // ignore: use_build_context_synchronously
-  GoRouter.of(context).go(AppRoutes.home);
+  GoRouter.of(context).go(AppRoutes.clients);
 }
 
 class ColumnsToChooseWidget extends StatelessWidget {

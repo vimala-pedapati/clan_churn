@@ -102,9 +102,7 @@ class _SideBarState extends State<SideBar> {
   Widget buildMenuButton(BuildContext context, ProjectArchitectState state) {
     return InkWell(
       onTap: () {
-        context
-            .read<ProjectArchitectBloc>()
-            .add(SideBarExpandedEvent(isNotExpanded: !state.isNotExpanded));
+        context.read<ProjectArchitectBloc>().add(SideBarExpandedEvent(isNotExpanded: !state.isNotExpanded));
         setState(() {
           isNotExpanded = !isNotExpanded;
           rotationAngle += isNotExpanded ? 180 : -180;
@@ -142,7 +140,7 @@ class _SideBarState extends State<SideBar> {
   Widget buildHomeButton(BuildContext context) {
     return InkWell(
       onTap: () {
-        GoRouter.of(context).go(AppRoutes.home);
+        GoRouter.of(context).go(AppRoutes.clients);
       },
       child: buildButtonContainer(
         icon: Icons.home,
@@ -167,10 +165,7 @@ class _SideBarState extends State<SideBar> {
     );
   }
 
-  Widget buildButtonContainer(
-      {required IconData icon,
-      required String text,
-      required bool isSelected}) {
+  Widget buildButtonContainer({required IconData icon, required String text, required bool isSelected}) {
     return Container(
       padding: const EdgeInsets.only(left: 20, top: 10, bottom: 10),
       margin: const EdgeInsets.all(10),
@@ -194,9 +189,7 @@ class _SideBarState extends State<SideBar> {
                   child: Text(
                     text,
                     style: ClanChurnTypography.font16700.copyWith(
-                      color: isSelected
-                          ? Theme.of(context).colorScheme.primary
-                          : null,
+                      color: isSelected ? Theme.of(context).colorScheme.primary : null,
                     ),
                   ),
                 ),

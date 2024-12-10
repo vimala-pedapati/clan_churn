@@ -44,9 +44,6 @@ class ClientDetails extends Equatable {
       pocContactNumber: json["poc_contact_number"],
       pocMailId: json["poc_mail_id"],
       image: json["image"],
-      // assignedProjectArc: (json['assigned_users'] ?? <User>[])
-      //     .map((user) => User.fromJson(user))
-      //     .toList());
       assignedProjectArc: (json['assigned_users'] as List<dynamic>?)
           ?.map((user) => User.fromJson(user))
           .toList());

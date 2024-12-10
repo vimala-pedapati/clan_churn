@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:clan_churn/api_repos/models/client_details.dart';
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/components/churn_continer.dart';
 import 'package:clan_churn/components/project_list_data.dart';
@@ -13,9 +14,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProjectsViewComponent extends StatefulWidget {
-  // final double width;
+  final ClientDetails clientDetails;
   const ProjectsViewComponent({
-    super.key,
+    super.key, required this.clientDetails,
   });
 
   @override

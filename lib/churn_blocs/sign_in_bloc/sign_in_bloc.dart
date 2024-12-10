@@ -24,7 +24,7 @@ class SignInBloc extends Bloc<SignInBlocEvent, SignInBlocState> {
     log("........sign in output $result ${result == AuthStatus.authenticated}");
     if (result == AuthStatus.authenticated) {
       emit(state.copyWith(status: AuthStatus.authenticated));
-      GoRouter.of(event.context).go(AppRoutes.home);
+      GoRouter.of(event.context).go(AppRoutes.clients);
     } else if (result == AuthStatus.unauthenticated) {
       emit(state.copyWith(status: AuthStatus.unauthenticated));
       signInFail(context: event.context, message1: "Authentication Failed", message2: "Please check your credentials");

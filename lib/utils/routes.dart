@@ -3,14 +3,15 @@ import 'package:go_router/go_router.dart';
 
 class AppRoutes {
   static const intial = "/";
-  static const home = "/home";
+  static const clients = "/home/client";
   static const signIn = "/signIn";
   static const savedReports = "/savedReports";
-  static const clientProjects = "/clientProjects";
   static const forgotPassword = "/forgotPassword";
   static const resetPassword = "/resetPassword";
   static const createClient = "/createClient";
+
   static const generateMarts = "generateMarts";
+  static const clientProjects = "clientProjects";
 }
 
 CustomTransitionPage customPageRouteForGoRouter<T>({
