@@ -46,6 +46,7 @@ class _CreateNewProjectState extends State<CreateNewProject> {
                 // Nav bar
                 const NavBar(),
                 const SizedBox(height: 10),
+
                 BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
                   builder: (context, state) {
                     return Expanded(
