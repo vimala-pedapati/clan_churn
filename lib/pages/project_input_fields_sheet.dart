@@ -9,8 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProjectInputFieldsPage extends StatefulWidget {
-  const ProjectInputFieldsPage({super.key, required this.projectId});
+  const ProjectInputFieldsPage({super.key, required this.projectId, required this.clientId});
   final String projectId;
+  final String clientId;
 
   @override
   State<ProjectInputFieldsPage> createState() => _ProjectInputFieldsPageState();
@@ -19,6 +20,11 @@ class ProjectInputFieldsPage extends StatefulWidget {
 class _ProjectInputFieldsPageState extends State<ProjectInputFieldsPage> {
   @override
   void initState() {
+     context.read<ProjectArchitectBloc>().add(GetClientDetailsEvent(
+          clientId: widget.clientId,
+          onErrorCallback: (a, b) {},
+          onSuccessCallback: (response) {},
+        ));
     context.read<ProjectArchitectBloc>().add(GetProjectDetailsEvent(projectId: widget.projectId));
     super.initState();
   }
@@ -73,5 +79,3 @@ class GetInputFieldsComponent extends StatelessWidget {
     );
   }
 }
-
- 

@@ -16,7 +16,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CreateNewProject extends StatefulWidget {
   final String? projectId;
-  const CreateNewProject({super.key, required this.projectId});
+  final String clientId;
+  const CreateNewProject({super.key, required this.projectId, required this.clientId});
 
   @override
   State<CreateNewProject> createState() => _CreateNewProjectState();
@@ -26,6 +27,11 @@ class _CreateNewProjectState extends State<CreateNewProject> {
   @override
   void initState() {
     if (widget.projectId != null) {
+       context.read<ProjectArchitectBloc>().add(GetClientDetailsEvent(
+            clientId: widget.clientId,
+            onErrorCallback: (a, b) {},
+            onSuccessCallback: (response) {},
+          ));
       context.read<ProjectArchitectBloc>().add(ClearCreateProjectEvent());
       context.read<ProjectArchitectBloc>().add(GetProjectDetailsEvent(projectId: widget.projectId!));
     }

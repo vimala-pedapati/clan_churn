@@ -97,8 +97,54 @@ class ClanChurnApp extends StatelessWidget {
               path: ":clientName/:clientId/${AppRoutes.projects}",
               pageBuilder: (context, state) {
                 final String clientId = state.pathParameters["clientId"] as String;
-
                 return customPageRouteForGoRouter(context: context, state: state, child: ClientProjectsView(clientId: clientId));
+              },
+            ),
+            // Project eidt labels
+            GoRoute(
+              path: ':clientName/:clientId/:projectName/:projectId/${AppRoutes.editLabels}',
+              pageBuilder: (context, state) {
+                final String projectId = state.pathParameters["projectId"] as String;
+                final String clientId = state.pathParameters["clientId"] as String;
+                return customPageRouteForGoRouter(
+                  context: context,
+                  state: state,
+                  child: ProjectInputFieldsPage(
+                    projectId: projectId,
+                    clientId: clientId,
+                  ),
+                );
+              },
+            ),
+            // Update project
+            GoRoute(
+              path: ':clientName/:clientId/:projectName/:projectId/${AppRoutes.updateProject}',
+              pageBuilder: (context, state) {
+                final String projectId = state.pathParameters["projectId"] as String;
+                final String clientId = state.pathParameters["clientId"] as String;
+                return customPageRouteForGoRouter(
+                  context: context,
+                  state: state,
+                  child: CreateNewProject(
+                    projectId: projectId,
+                    clientId: clientId,
+                  ),
+                );
+              },
+            ),
+            // Create project
+            GoRoute(
+              path: ':clientName/:clientId/${AppRoutes.createProject}',
+              pageBuilder: (context, state) {
+                final String clientId = state.pathParameters["clientId"] as String;
+                return customPageRouteForGoRouter(
+                  context: context,
+                  state: state,
+                  child: CreateNewProject(
+                    projectId: null,
+                    clientId: clientId,
+                  ),
+                );
               },
             ),
             // Generate Marts
@@ -116,43 +162,6 @@ class ClanChurnApp extends StatelessWidget {
                 return customPageRouteForGoRouter(context: context, state: state, child: GenerateMarts(projectId: id ?? ""));
               },
             ),
-            GoRoute(
-              path: ':clientName/:clientId/:projectName/:projectId/${AppRoutes.editLabels}',
-              pageBuilder: (context, state) {
-                final String projectId = state.pathParameters["projectId"] as String;
-                return customPageRouteForGoRouter(
-                  context: context,
-                  state: state,
-                  child: ProjectInputFieldsPage(projectId: projectId),
-                );
-              },
-            ),
-            GoRoute(
-              path: ':clientName/:clientId/:projectName/:projectId/${AppRoutes.updateProject}',
-              pageBuilder: (context, state) {
-                print(state.pathParameters);
-                final String projectId = state.pathParameters["projectId"] as String;
-                return customPageRouteForGoRouter(
-                  context: context,
-                  state: state,
-                  child: CreateNewProject(
-                    projectId: projectId,
-                  ),
-                );
-              },
-            ),
-            GoRoute(
-              path: ':clientName/:clientId/${AppRoutes.createProject}',
-              pageBuilder: (context, state) {
-                return customPageRouteForGoRouter(
-                  context: context,
-                  state: state,
-                  child: const CreateNewProject(
-                    projectId: null,
-                  ),
-                );
-              },
-            ),
           ],
         ),
         GoRoute(
@@ -163,10 +172,6 @@ class ClanChurnApp extends StatelessWidget {
           path: AppRoutes.createClient,
           pageBuilder: (context, state) => customPageRouteForGoRouter<void>(context: context, state: state, child: const CreateClient()),
         ),
-        // GoRoute(
-        //   path: AppRoutes.clientProjects,
-        //   pageBuilder: (context, state) => customPageRouteForGoRouter<void>(context: context, state: state, child: const ClientProjectsView()),
-        // ),
         GoRoute(
           path: '/myApp',
           pageBuilder: (context, state) => customPageRouteForGoRouter<void>(context: context, state: state, child: const MyApp()),
