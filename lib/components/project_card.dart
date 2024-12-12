@@ -1,6 +1,5 @@
 import 'package:clan_churn/api_repos/models/project_model.dart';
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
-import 'package:clan_churn/pages/new_project_components.dart';
 import 'package:clan_churn/utils/routes.dart';
 import 'package:clan_churn/utils/typography.dart';
 import 'package:flutter/material.dart';
@@ -66,7 +65,8 @@ class ProjectCard extends StatelessWidget {
                 ),
                 onPressed: () {
                   if (project.inputSheet == null) {
-                    Navigator.push(context, customPageRouteForNavigation(const CreateNewProject()));
+                    context.push('${AppRoutes.clients}/updateProject/${project.id}');
+                    // Navigator.push(context, customPageRouteForNavigation(const CreateNewProject()));
                   } else {
                     context.push('${AppRoutes.clients}/${project.name}/${project.id}/editLabels');
                   }

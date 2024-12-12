@@ -15,6 +15,7 @@ import 'package:clan_churn/pages/create_client.dart';
 import 'package:clan_churn/pages/forgot_password_screen.dart';
 import 'package:clan_churn/pages/generate_marts.dart';
 import 'package:clan_churn/pages/home_page.dart';
+import 'package:clan_churn/pages/new_project_components.dart';
 import 'package:clan_churn/pages/reset_password_link.dart';
 import 'package:clan_churn/pages/saved_projects.dart';
 import 'package:clan_churn/pages/sign_page.dart';
@@ -131,6 +132,20 @@ class ClanChurnApp extends StatelessWidget {
                   context: context,
                   state: state,
                   child: ProjectInputFieldsPage(projectId: projectId),
+                );
+              },
+            ),
+            GoRoute(
+              path: 'updateProject/:projectId',
+              pageBuilder: (context, state) {
+                print(state.pathParameters);
+                final String projectId = state.pathParameters["projectId"] as String;
+                return customPageRouteForGoRouter(
+                  context: context,
+                  state: state,
+                  child: CreateNewProject(
+                    projectId: projectId,
+                  ),
                 );
               },
             ),

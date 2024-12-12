@@ -5,8 +5,6 @@ import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.
 import 'package:clan_churn/components/churn_continer.dart';
 import 'package:clan_churn/components/project_list_data.dart';
 import 'package:clan_churn/components/search.dart';
-import 'package:clan_churn/pages/new_project_components.dart';
-import 'package:clan_churn/utils/routes.dart';
 import 'package:clan_churn/utils/spacing.dart';
 import 'package:clan_churn/utils/typography.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
@@ -83,7 +81,7 @@ class _ProjectsViewComponentState extends State<ProjectsViewComponent> {
                                       ),
                                       onPressed: () {
                                         context.pop();
-                            
+
                                         // Navigator.pop(context);
                                       },
                                     ),
@@ -101,7 +99,7 @@ class _ProjectsViewComponentState extends State<ProjectsViewComponent> {
                               ElevatedButton(
                                 onPressed: () {
                                   context.read<ProjectArchitectBloc>().add(ClearCreateProjectEvent());
-                                  Navigator.push(context, customPageRouteForNavigation(const CreateNewProject()));
+                                  // Navigator.push(context, customPageRouteForNavigation(const CreateNewProject()));
                                 },
                                 child: Row(children: [
                                   const Icon(

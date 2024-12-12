@@ -582,7 +582,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                               projectDetails: a,
                                               onErrorCallback: (errorMessage, errorCode) {},
                                               onSuccessCallback: (message) {
-                                                context.read<ProjectArchitectBloc>().add(GetProjectsListEvent(clientId: context.read<ProjectArchitectBloc>().state.selectedClient!.id));
+                                                // context.read<ProjectArchitectBloc>().add(GetProjectsListEvent(clientId: context.read<ProjectArchitectBloc>().state.selectedClient!.id));
                                                 context.read<ProjectArchitectBloc>().add(GetColumnsEvent(context.read<ProjectArchitectBloc>().state.createdProject?.id));
                                               },
                                             ));
