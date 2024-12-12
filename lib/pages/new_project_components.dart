@@ -15,7 +15,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CreateNewProject extends StatefulWidget {
-  final String projectId;
+  final String? projectId;
   const CreateNewProject({super.key, required this.projectId});
 
   @override
@@ -25,8 +25,11 @@ class CreateNewProject extends StatefulWidget {
 class _CreateNewProjectState extends State<CreateNewProject> {
   @override
   void initState() {
-    print("....init ${widget.projectId}");
-    context.read<ProjectArchitectBloc>().add(GetProjectDetailsEvent(projectId: widget.projectId));
+    if (widget.projectId != null) {
+      context.read<ProjectArchitectBloc>().add(ClearCreateProjectEvent());
+      context.read<ProjectArchitectBloc>().add(GetProjectDetailsEvent(projectId: widget.projectId!));
+    }
+
     super.initState();
   }
 

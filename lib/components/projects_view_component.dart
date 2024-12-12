@@ -12,6 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../utils/routes.dart';
+
 class ProjectsViewComponent extends StatefulWidget {
   final ClientDetails clientDetails;
   const ProjectsViewComponent({
@@ -99,7 +101,7 @@ class _ProjectsViewComponentState extends State<ProjectsViewComponent> {
                               ElevatedButton(
                                 onPressed: () {
                                   context.read<ProjectArchitectBloc>().add(ClearCreateProjectEvent());
-
+                                  context.push('${AppRoutes.home}/${state.selectedClient!.name}/${AppRoutes.createProject}');
                                   // Navigator.push(context, customPageRouteForNavigation(const CreateNewProject()));
                                 },
                                 child: Row(children: [

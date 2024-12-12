@@ -10,8 +10,12 @@ class AppRoutes {
   static const resetPassword = "/resetPassword";
   static const createClient = "/createClient";
 
+ // Sub Routes
   static const generateMarts = "generateMarts";
   static const projects = "projects";
+  static const editLabels = "editLabels";
+  static const updateProject = "updateProject";
+  static const createProject = "createProject";
 }
 
 CustomTransitionPage customPageRouteForGoRouter<T>({

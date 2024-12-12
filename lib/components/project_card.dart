@@ -65,10 +65,9 @@ class ProjectCard extends StatelessWidget {
                 ),
                 onPressed: () {
                   if (project.inputSheet == null) {
-                    context.push('${AppRoutes.home}/updateProject/${project.id}');
-                    // Navigator.push(context, customPageRouteForNavigation(const CreateNewProject()));
+                    context.push('${AppRoutes.home}/${state.selectedClient!.name}/${project.name}/${project.id}/${AppRoutes.updateProject}');
                   } else {
-                    context.push('${AppRoutes.home}/${project.name}/${project.id}/editLabels');
+                    context.push('${AppRoutes.home}/${state.selectedClient!.name}/${project.name}/${project.id}/${AppRoutes.editLabels}');
                   }
                 },
               ),
