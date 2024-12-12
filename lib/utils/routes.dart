@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 
 class AppRoutes {
   static const intial = "/";
-  static const home = "/home";
+  static const home = "/clients";
   static const signIn = "/signIn";
   static const savedReports = "/savedReports";
   static const forgotPassword = "/forgotPassword";
@@ -12,7 +12,7 @@ class AppRoutes {
 
  // Sub Routes
   static const generateMarts = "generateMarts";
-  static const projects = "projects";
+ 
   static const editLabels = "editLabels";
   static const updateProject = "updateProject";
   static const createProject = "createProject";

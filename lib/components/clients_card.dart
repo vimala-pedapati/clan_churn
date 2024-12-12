@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:clan_churn/api_repos/models/client_details.dart';
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/components/project_card.dart';
@@ -60,7 +58,7 @@ class ClientsCard extends StatelessWidget {
                 onPressed: () {
                   context.read<ProjectArchitectBloc>().add(SetSelectedClientEvent(selectedClient: client));
                   context.push(
-                    '${AppRoutes.home}/${client.name}/${client.id}/${AppRoutes.projects}',
+                    '${AppRoutes.home}/${client.name}/${client.id}',
                   );
                 },
               ),

@@ -47,6 +47,7 @@ class ClanChurnApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final GoRouter router = GoRouter(
       routes: <GoRoute>[
+        // Sign in
         GoRoute(
           path: AppRoutes.signIn,
           pageBuilder: (context, state) {
@@ -78,6 +79,8 @@ class ClanChurnApp extends StatelessWidget {
             );
           },
         ),
+
+        // Initial
         GoRoute(
           path: AppRoutes.intial,
           pageBuilder: (context, state) => customPageRouteForGoRouter<void>(context: context, state: state, child: const ClanChurnSignInPage()),
@@ -94,59 +97,60 @@ class ClanChurnApp extends StatelessWidget {
           routes: [
             // Client projects
             GoRoute(
-              path: ":clientName/:clientId/${AppRoutes.projects}",
-              pageBuilder: (context, state) {
-                final String clientId = state.pathParameters["clientId"] as String;
-                return customPageRouteForGoRouter(context: context, state: state, child: ClientProjectsView(clientId: clientId));
-              },
-            ),
-            // Project eidt labels
-            GoRoute(
-              path: ':clientName/:clientId/:projectName/:projectId/${AppRoutes.editLabels}',
-              pageBuilder: (context, state) {
-                final String projectId = state.pathParameters["projectId"] as String;
-                final String clientId = state.pathParameters["clientId"] as String;
-                return customPageRouteForGoRouter(
-                  context: context,
-                  state: state,
-                  child: ProjectInputFieldsPage(
-                    projectId: projectId,
-                    clientId: clientId,
+                path: ":clientName/:clientId",
+                pageBuilder: (context, state) {
+                  final String clientId = state.pathParameters["clientId"] as String;
+                  return customPageRouteForGoRouter(context: context, state: state, child: ClientProjectsView(clientId: clientId));
+                },
+                routes: [
+                  // Project edit labels
+                  GoRoute(
+                    path: ':projectName/:projectId/${AppRoutes.editLabels}',
+                    pageBuilder: (context, state) {
+                      final String projectId = state.pathParameters["projectId"] as String;
+                      final String clientId = state.pathParameters["clientId"] as String;
+                      return customPageRouteForGoRouter(
+                        context: context,
+                        state: state,
+                        child: ProjectInputFieldsPage(
+                          projectId: projectId,
+                          clientId: clientId,
+                        ),
+                      );
+                    },
                   ),
-                );
-              },
-            ),
-            // Update project
-            GoRoute(
-              path: ':clientName/:clientId/:projectName/:projectId/${AppRoutes.updateProject}',
-              pageBuilder: (context, state) {
-                final String projectId = state.pathParameters["projectId"] as String;
-                final String clientId = state.pathParameters["clientId"] as String;
-                return customPageRouteForGoRouter(
-                  context: context,
-                  state: state,
-                  child: CreateNewProject(
-                    projectId: projectId,
-                    clientId: clientId,
+                  // Update project
+                  GoRoute(
+                    path: ':projectName/:projectId/${AppRoutes.updateProject}',
+                    pageBuilder: (context, state) {
+                      final String projectId = state.pathParameters["projectId"] as String;
+                      final String clientId = state.pathParameters["clientId"] as String;
+                      return customPageRouteForGoRouter(
+                        context: context,
+                        state: state,
+                        child: CreateNewProject(
+                          projectId: projectId,
+                          clientId: clientId,
+                        ),
+                      );
+                    },
                   ),
-                );
-              },
-            ),
-            // Create project
-            GoRoute(
-              path: ':clientName/:clientId/${AppRoutes.createProject}',
-              pageBuilder: (context, state) {
-                final String clientId = state.pathParameters["clientId"] as String;
-                return customPageRouteForGoRouter(
-                  context: context,
-                  state: state,
-                  child: CreateNewProject(
-                    projectId: null,
-                    clientId: clientId,
+                  // Create project
+                  GoRoute(
+                    path: AppRoutes.createProject,
+                    pageBuilder: (context, state) {
+                      final String clientId = state.pathParameters["clientId"] as String;
+                      return customPageRouteForGoRouter(
+                        context: context,
+                        state: state,
+                        child: CreateNewProject(
+                          projectId: null,
+                          clientId: clientId,
+                        ),
+                      );
+                    },
                   ),
-                );
-              },
-            ),
+                ]),
             // Generate Marts
             GoRoute(
               path: '${AppRoutes.generateMarts}/:projectId',
