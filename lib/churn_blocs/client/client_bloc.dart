@@ -16,7 +16,9 @@ class ClientBloc extends Bloc<ClientEvent, ClientState> {
     on<UploadClientLogo>(onUploadClientLogo);
     on<ArchiveProjectEvent>(onArchiveProjectEvent);
     on<UploadErrorGlossary>(onUploadErrorGlossary);
+
   }
+
   onCreateClientEvent(CreateClientEvent event, Emitter<ClientState> emit) async {
     final result = await apiRepository.clientCreate(
         clientName: event.clinetName,
@@ -34,7 +36,7 @@ class ClientBloc extends Bloc<ClientEvent, ClientState> {
 
   onUpdateClientEvent(UpdateClientEvent event, Emitter<ClientState> emit) async {
     emit(state.copyWith(updatingClient: true));
-    final result = await apiRepository
+    await apiRepository
         .clientUpdate(
             clientId: event.clientId,
             clientName: event.clinetName,

@@ -276,19 +276,14 @@ class ApiRepository {
         }),
       );
 
-      print("get project:..... $response");
-
       if (response.statusCode == 200) {
         Project project = Project.fromJson(json.decode(response.body));
-        print("get project:..... ${response.body}");
-        print("get project:..... $project");
         return project;
       } else {
         _handleStatusCode(response.statusCode, response, onErrorCallback);
         return null;
       }
     } catch (e) {
-      log('Network Error: $e');
       onErrorCallback('unable to fectch the project details, please contact admin', 0);
       return null;
     }
@@ -793,6 +788,36 @@ class ApiRepository {
     } catch (e) {
       log('Network Error: $e');
       onErrorCallback('Unable to upload client logo please contact admin', 0);
+    }
+    return null;
+  }
+
+  Future<ClientDetails?> getClientDetails({required String clientId, required OnErrorCallback onErrorCallback, required OnSuccessCallback onSuccessCallback}) async {
+    try {
+      final AuthCred authCred = await AuthRepo().getTokens();
+
+      if (authCred.accessToken.isEmpty) {
+        onErrorCallback('Access token is empty', 0);
+        return null;
+      }
+
+      http.Response response = await http.get(
+        Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.getClient}?client_id=$clientId"),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${authCred.accessToken}',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        ClientDetails clientDetails = ClientDetails.fromJson(json.decode(response.body));
+        onSuccessCallback(response);
+        return clientDetails;
+      } else {
+        _handleStatusCode(response.statusCode, response, onErrorCallback);
+      }
+    } catch (e) {
+      onErrorCallback('Unable to delete client please contact admin', 0);
     }
     return null;
   }

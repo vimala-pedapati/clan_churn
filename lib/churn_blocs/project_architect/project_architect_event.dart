@@ -206,3 +206,10 @@ class DownloadErrorGlossary extends ProjectArchitectEvent {
   final OnErrorCallback onErrorCallback;
   const DownloadErrorGlossary({required this.onSuccessCallback, required this.onErrorCallback});
 }
+
+class GetClientDetailsEvent extends ProjectArchitectEvent {
+  final String clientId;
+  final OnErrorCallback onErrorCallback;
+  final OnSuccessCallback onSuccessCallback;
+  const GetClientDetailsEvent({required this.clientId, required this.onErrorCallback, required this.onSuccessCallback});
+}

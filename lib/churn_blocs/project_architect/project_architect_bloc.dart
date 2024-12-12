@@ -49,6 +49,7 @@ class ProjectArchitectBloc extends Bloc<ProjectArchitectEvent, ProjectArchitectS
     on<UpdateProjectThresholdMaxValue>(_onUpdateProjectThresholdMaxValue);
     on<DownloadReportEvent>(_onDownloadReport);
     on<DownloadErrorGlossary>(_onDownloadErrorGlossary);
+    on<GetClientDetailsEvent>(_onGetClientDetails);
   }
 
   _onClientsEvent(GetClientsEvent event, Emitter<ProjectArchitectState> emit) async {
@@ -68,6 +69,13 @@ class ProjectArchitectBloc extends Bloc<ProjectArchitectEvent, ProjectArchitectS
 
   _onSetSelectedClientEvent(SetSelectedClientEvent event, Emitter<ProjectArchitectState> emit) {
     emit(state.copyWith(selectedClient: event.selectedClient));
+  }
+
+  _onGetClientDetails(GetClientDetailsEvent event, Emitter<ProjectArchitectState> emit) async {
+    final result = await apiRepository.getClientDetails(clientId: event.clientId, onErrorCallback: event.onErrorCallback, onSuccessCallback: event.onSuccessCallback);
+    if (result != null) {
+      emit(state.copyWith(selectedClient: result));
+    }
   }
 
   _onGetProjectsListEvent(GetProjectsListEvent event, Emitter<ProjectArchitectState> emit) async {

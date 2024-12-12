@@ -1,8 +1,5 @@
-import 'dart:convert';
-
 import 'package:clan_churn/api_repos/api_repo.dart';
 import 'package:clan_churn/api_repos/auth_repo.dart';
-import 'package:clan_churn/api_repos/models/client_details.dart';
 import 'package:clan_churn/api_repos/models/user_model.dart';
 import 'package:clan_churn/churn_blocs/client/client_bloc.dart';
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
@@ -99,17 +96,9 @@ class ClanChurnApp extends StatelessWidget {
             GoRoute(
               path: ":clientName/:clientId/${AppRoutes.projects}",
               pageBuilder: (context, state) {
-                final extraData = state.extra as Map<String, dynamic>?;
-                if (extraData == null) {
-                  Future.microtask(() {
-                    context.replace(AppRoutes.home);
-                  });
-                  return customPageRouteForGoRouter(context: context, state: state, child: const SizedBox.shrink());
-                }
-                final clientDetails = extraData["clientDetails"];
-                final decodedData = Uri.decodeComponent(clientDetails);
-                final ClientDetails data = ClientDetails.fromJson(json.decode(decodedData));
-                return customPageRouteForGoRouter(context: context, state: state, child: ClientProjectsView(client: data));
+                final String clientId = state.pathParameters["clientId"] as String;
+
+                return customPageRouteForGoRouter(context: context, state: state, child: ClientProjectsView(clientId: clientId));
               },
             ),
             // Generate Marts

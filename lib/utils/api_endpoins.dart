@@ -2,12 +2,12 @@ class BaseUrl {
   // test url // lense.clanonline.in
   // static String baseUrl = "https://churnapi.clanonline.in";
   //....
-  // static String baseUrl = "https://churntesting.clanonline.in";
+  static String baseUrl = "https://churntesting.clanonline.in";
   //....
   // static String baseUrl = "http://192.168.137.1/";
 
   // staging url // lense.clanonline.in
-  static String baseUrl = "https://churn-staging-120996668109.asia-south1.run.app";
+  // static String baseUrl = "https://churn-staging-120996668109.asia-south1.run.app";
 
   // Shashank Paisa // production gcp // lense.quantapeoplwe.com
   // static String baseUrl = "https://churn-120996668109.asia-south1.run.app";
@@ -46,6 +46,7 @@ class ApiEndpoints {
   static String clientCreate = '/client/create';
   static String clientUpdate = '/client/update';
   static String deleteClient = '/client/delete_client';
+  static String getClient = '/client/get_client_details';
 
   // Project
   static String getAllProjects = '/project/get_all_projects';

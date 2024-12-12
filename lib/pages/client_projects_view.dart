@@ -6,17 +6,25 @@ import 'package:clan_churn/components/wrap_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../api_repos/models/client_details.dart';
-
 class ClientProjectsView extends StatefulWidget {
-  const ClientProjectsView({super.key, required this.client});
-  final ClientDetails? client;
+  const ClientProjectsView({super.key, required this.clientId});
+  final String clientId;
 
   @override
   State<ClientProjectsView> createState() => _ClientProjectsViewState();
 }
 
 class _ClientProjectsViewState extends State<ClientProjectsView> {
+  @override
+  void initState() {
+    context.read<ProjectArchitectBloc>().add(GetClientDetailsEvent(
+          clientId: widget.clientId,
+          onErrorCallback: (a, b) {},
+          onSuccessCallback: (response) {},
+        ));
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final h = MediaQuery.of(context).size.height;
@@ -39,11 +47,7 @@ class _ClientProjectsViewState extends State<ClientProjectsView> {
                       const SideBar(
                         selectedRoute: SelectedRoute.home,
                       ),
-                      if (widget.client != null)
-                        Expanded(
-                            child: ProjectsViewComponent(
-                          clientDetails: widget.client!,
-                        ))
+                      if (!state.loadingClientDetails && state.selectedClient != null) Expanded(child: ProjectsViewComponent(clientDetails: state.selectedClient!))
                     ],
                   ),
                 ),
