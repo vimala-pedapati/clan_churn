@@ -61,11 +61,10 @@ class ClientsCard extends StatelessWidget {
                   context.read<ProjectArchitectBloc>().add(SetSelectedClientEvent(selectedClient: client));
                   final clientDetailsJson = json.encode(client.toJson());
                   final encodedClientDetails = Uri.encodeComponent(clientDetailsJson);
-                  context.go(
+                  context.push(
                     '${AppRoutes.clients}/${AppRoutes.clientProjects}',
                     extra: {
                       "clientDetails": encodedClientDetails,
-                      // "clientDetails": "vimala",
                     },
                   );
                 },

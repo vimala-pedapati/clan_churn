@@ -26,8 +26,11 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
+import 'pages/project_input_fields_sheet.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  GoRouter.optionURLReflectsImperativeAPIs = true;
   setUrlStrategy(PathUrlStrategy());
   AuthRepo authRepository = AuthRepo();
   ApiRepository apiRepository = ApiRepository();
@@ -84,36 +87,51 @@ class ClanChurnApp extends StatelessWidget {
         GoRoute(
           path: AppRoutes.clients,
           pageBuilder: (context, state) => customPageRouteForGoRouter<void>(
-            context: context,
-            state: state,
-            child: BlocBuilder<UserBloc, UserState>(
-              builder: (context, state) {
+              context: context,
+              state: state,
+              child: BlocBuilder<UserBloc, UserState>(builder: (context, state) {
                 return state.user?.userType == UserType.admin ? const AdminHomePage() : const HomePage();
-              },
-            ),
-          ),
+              })),
           routes: [
             GoRoute(
               path: AppRoutes.clientProjects,
-              builder: (context, state) {
+              pageBuilder: (context, state) {
                 final extraData = state.extra as Map<String, dynamic>?;
                 if (extraData == null) {
                   Future.microtask(() {
                     context.replace(AppRoutes.clients);
                   });
-                  return const SizedBox.shrink();
+                  return customPageRouteForGoRouter(context: context, state: state, child: const SizedBox.shrink());
                 }
                 final clientDetails = extraData["clientDetails"];
                 final decodedData = Uri.decodeComponent(clientDetails);
                 final ClientDetails data = ClientDetails.fromJson(json.decode(decodedData));
-                return ClientProjectsView(client: data);
+                return customPageRouteForGoRouter(context: context, state: state, child: ClientProjectsView(client: data));
               },
             ),
             GoRoute(
               path: '${AppRoutes.generateMarts}/:projectId',
-              builder: (context, state) {
+              pageBuilder: (context, state) {
+                final extraData = state.extra as Map<String, dynamic>?;
+                if (extraData == null) {
+                  Future.microtask(() {
+                    context.replace(AppRoutes.clients);
+                  });
+                  return customPageRouteForGoRouter(context: context, state: state, child: const SizedBox.shrink());
+                }
                 final String? id = state.pathParameters["projectId"];
-                return GenerateMarts(projectId: id ?? "");
+                return customPageRouteForGoRouter(context: context, state: state, child: GenerateMarts(projectId: id ?? ""));
+              },
+            ),
+            GoRoute(
+              path: ':projectName/:projectId/editLabels',
+              pageBuilder: (context, state) {
+                final String projectId = state.pathParameters["projectId"] as String;
+                return customPageRouteForGoRouter(
+                  context: context,
+                  state: state,
+                  child: ProjectInputFieldsPage(projectId: projectId),
+                );
               },
             ),
           ],
@@ -160,6 +178,7 @@ class ClanChurnApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp.router(
+        // routerConfig: router,
         theme: ThemeData(
           canvasColor: Colors.grey,
           textTheme: GoogleFonts.montserratTextTheme().copyWith(),

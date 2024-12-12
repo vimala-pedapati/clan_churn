@@ -12,6 +12,7 @@ class AppRoutes {
 
   static const generateMarts = "generateMarts";
   static const clientProjects = "clientProjects";
+ 
 }
 
 CustomTransitionPage customPageRouteForGoRouter<T>({

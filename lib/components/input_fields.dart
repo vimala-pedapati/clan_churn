@@ -13,6 +13,7 @@ import 'package:clan_churn/utils/spacing.dart';
 import 'package:clan_churn/utils/typography.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class GetInputFields extends StatefulWidget {
   const GetInputFields({Key? key, this.isCreatingNewProject = false, this.onTap}) : super(key: key);
@@ -51,7 +52,6 @@ class _GetInputFieldsState extends State<GetInputFields> {
       );
     }
   }
-
   void goToPreviousPage() {
     if (_currentPage > 0) {
       _currentPage--;
@@ -182,7 +182,6 @@ class _GetInputFieldsState extends State<GetInputFields> {
         }
       });
     }
-
     super.initState();
   }
 
@@ -592,8 +591,6 @@ class _GetInputFieldsState extends State<GetInputFields> {
                                         } else {
                                           goToNextPage();
                                         }
-
-                                        // }
                                       },
                                       child: const Text("Next"),
                                     )
@@ -611,7 +608,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
                             goToNextPage();
                           },
                         ),
-                        (state.createdProject!.latestInput == null || state.uploadNewSheetRequested)
+                        (state.createdProject?.latestInput == null || state.uploadNewSheetRequested)
                             ? UploadNewData(
                                 onPressed: () {
                                   goToPreviousPage();
@@ -651,8 +648,7 @@ class ProInitialHeader extends StatelessWidget {
                 color: Theme.of(context).colorScheme.secondary,
               ),
               onPressed: () {
-                Navigator.pop(context);
-                // GoRouter.of(context).go(AppRoutes.home);
+                context.pop();
               },
             ),
             ClanChurnSpacing.w10,

@@ -12,11 +12,13 @@ import 'package:clan_churn/utils/typography.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class ProjectsViewComponent extends StatefulWidget {
   final ClientDetails clientDetails;
   const ProjectsViewComponent({
-    super.key, required this.clientDetails,
+    super.key,
+    required this.clientDetails,
   });
 
   @override
@@ -26,9 +28,11 @@ class ProjectsViewComponent extends StatefulWidget {
 class _ProjectsViewComponentState extends State<ProjectsViewComponent> {
   @override
   void initState() {
-    if (context.read<ProjectArchitectBloc>().state.selectedClient != null) {
-      context.read<ProjectArchitectBloc>().add(GetProjectsListEvent(clientId: context.read<ProjectArchitectBloc>().state.selectedClient!.id));
-    }
+    context.read<ProjectArchitectBloc>().add(GetProjectsListEvent(clientId: widget.clientDetails.id));
+    // if (context.read<ProjectArchitectBloc>().state.selectedClient != null) {
+    // context.read<ProjectArchitectBloc>().add(GetProjectsListEvent(clientId: context.read<ProjectArchitectBloc>().state.selectedClient!.id));
+    //   context.read<ProjectArchitectBloc>().add(GetProjectsListEvent(clientId: context.read<ProjectArchitectBloc>().state.selectedClient!.id));
+    // }
     super.initState();
   }
 
@@ -78,8 +82,9 @@ class _ProjectsViewComponentState extends State<ProjectsViewComponent> {
                                         color: Theme.of(context).colorScheme.secondary,
                                       ),
                                       onPressed: () {
-                                        Navigator.pop(context);
-                                        // GoRouter.of(context).go(AppRoutes.home);
+                                        context.pop();
+                            
+                                        // Navigator.pop(context);
                                       },
                                     ),
                                     ClanChurnSpacing.w10,
