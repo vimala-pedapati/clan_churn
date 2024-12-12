@@ -68,7 +68,7 @@ class ClanChurnApp extends StatelessWidget {
                     if (authCred.accessToken.isNotEmpty) {
                       // Navigate to the home page if the access token is not empty
                       WidgetsBinding.instance.addPostFrameCallback((_) {
-                        context.go(AppRoutes.clients);
+                        context.go(AppRoutes.home);
                       });
                       return const SizedBox(); // Return an empty widget as we're navigating
                     }
@@ -86,7 +86,7 @@ class ClanChurnApp extends StatelessWidget {
           pageBuilder: (context, state) => customPageRouteForGoRouter<void>(context: context, state: state, child: const ClanChurnSignInPage()),
         ),
         GoRoute(
-          path: AppRoutes.clients,
+          path: AppRoutes.home,
           pageBuilder: (context, state) => customPageRouteForGoRouter<void>(
               context: context,
               state: state,
@@ -94,13 +94,14 @@ class ClanChurnApp extends StatelessWidget {
                 return state.user?.userType == UserType.admin ? const AdminHomePage() : const HomePage();
               })),
           routes: [
+            // Home....
             GoRoute(
-              path: AppRoutes.clientProjects,
+              path: ":clientName/${AppRoutes.projects}",
               pageBuilder: (context, state) {
                 final extraData = state.extra as Map<String, dynamic>?;
                 if (extraData == null) {
                   Future.microtask(() {
-                    context.replace(AppRoutes.clients);
+                    context.replace(AppRoutes.home);
                   });
                   return customPageRouteForGoRouter(context: context, state: state, child: const SizedBox.shrink());
                 }
@@ -116,7 +117,7 @@ class ClanChurnApp extends StatelessWidget {
                 final extraData = state.extra as Map<String, dynamic>?;
                 if (extraData == null) {
                   Future.microtask(() {
-                    context.replace(AppRoutes.clients);
+                    context.replace(AppRoutes.home);
                   });
                   return customPageRouteForGoRouter(context: context, state: state, child: const SizedBox.shrink());
                 }

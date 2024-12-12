@@ -140,7 +140,7 @@ class _SideBarState extends State<SideBar> {
   Widget buildHomeButton(BuildContext context) {
     return InkWell(
       onTap: () {
-        GoRouter.of(context).go(AppRoutes.clients);
+        GoRouter.of(context).go(AppRoutes.home);
       },
       child: buildButtonContainer(
         icon: Icons.home,

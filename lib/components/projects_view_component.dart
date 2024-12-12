@@ -99,6 +99,7 @@ class _ProjectsViewComponentState extends State<ProjectsViewComponent> {
                               ElevatedButton(
                                 onPressed: () {
                                   context.read<ProjectArchitectBloc>().add(ClearCreateProjectEvent());
+
                                   // Navigator.push(context, customPageRouteForNavigation(const CreateNewProject()));
                                 },
                                 child: Row(children: [
