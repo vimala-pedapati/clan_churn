@@ -58,7 +58,7 @@ class ClientsCard extends StatelessWidget {
                 onPressed: () {
                   context.read<ProjectArchitectBloc>().add(SetSelectedClientEvent(selectedClient: client));
                   context.push(
-                    '${AppRoutes.home}/${client.name}/${client.id}',
+                    '${AppRoutes.client}/${client.name}/${client.id}',
                   );
                 },
               ),

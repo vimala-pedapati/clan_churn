@@ -253,7 +253,7 @@ class _GetPublishButtonState extends State<GetPublishButton> {
                     } else if (state.createdProject?.latestInputModel?.inputStatus == InputStatus.uploadedDataDataMartsGenerated) {
                       if (state.allReports.isNotEmpty) {
                         if (state.createdProject!.latestInput != null) {
-                          context.push('${AppRoutes.home}/${AppRoutes.generateMarts}/${state.createdProject?.id}');
+                          context.push('${AppRoutes.client}/${AppRoutes.generateMarts}/${state.createdProject?.id}');
                         }
                       }
                     }

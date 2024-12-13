@@ -3,19 +3,22 @@ import 'package:go_router/go_router.dart';
 
 class AppRoutes {
   static const intial = "/";
-  static const home = "/clients";
+  static const client = "/clients";
   static const signIn = "/signIn";
   static const savedReports = "/savedReports";
   static const forgotPassword = "/forgotPassword";
   static const resetPassword = "/resetPassword";
   static const createClient = "/createClient";
 
- // Sub Routes
+  // Sub Routes
   static const generateMarts = "generateMarts";
- 
+
   static const editLabels = "editLabels";
   static const updateProject = "updateProject";
   static const createProject = "createProject";
+  static const projectThresholds = "projectThresholds";
+  static const uploadNewSheet = "uploadNewSheet";
+  static const projectSummaryReport = "projectSummaryReport";
 }
 
 CustomTransitionPage customPageRouteForGoRouter<T>({

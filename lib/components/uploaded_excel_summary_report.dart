@@ -625,6 +625,7 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 // Define the UploadedExcelSummaryReport widget
 class UploadedExcelSummaryReport extends StatefulWidget {
@@ -1017,11 +1018,13 @@ class _UploadedExcelSummaryReportState extends State<UploadedExcelSummaryReport>
                 Icons.keyboard_backspace,
                 color: Theme.of(context).colorScheme.secondary,
               ),
-              onPressed: widget.onPressed,
+              onPressed: () {
+                context.pop();
+              },
             ),
             ClanChurnSpacing.w10,
             SelectableText(
-              "Upload Data",
+              "Uploaded Data Summary",
               style: ClanChurnTypography.font16600,
             ),
           ],

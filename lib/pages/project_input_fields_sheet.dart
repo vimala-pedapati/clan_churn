@@ -20,11 +20,7 @@ class ProjectInputFieldsPage extends StatefulWidget {
 class _ProjectInputFieldsPageState extends State<ProjectInputFieldsPage> {
   @override
   void initState() {
-     context.read<ProjectArchitectBloc>().add(GetClientDetailsEvent(
-          clientId: widget.clientId,
-          onErrorCallback: (a, b) {},
-          onSuccessCallback: (response) {},
-        ));
+    context.read<ProjectArchitectBloc>().add(GetClientDetailsEvent(clientId: widget.clientId, onErrorCallback: (a, b) {}, onSuccessCallback: (response) {}));
     context.read<ProjectArchitectBloc>().add(GetProjectDetailsEvent(projectId: widget.projectId));
     super.initState();
   }

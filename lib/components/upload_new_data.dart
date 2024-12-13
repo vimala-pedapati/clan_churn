@@ -1,7 +1,6 @@
 import 'package:clan_churn/api_repos/api_repo.dart';
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/components/input_sheet_columns.dart';
-import 'package:clan_churn/pages/new_project_components.dart';
 import 'package:clan_churn/utils/spacing.dart';
 import 'package:clan_churn/utils/typography.dart';
 import 'package:file_picker/_internal/file_picker_web.dart';
@@ -9,6 +8,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class UploadNewData extends StatefulWidget {
   const UploadNewData({super.key, required this.onPressed});
@@ -37,7 +37,9 @@ class _UploadNewDataState extends State<UploadNewData> {
                     Icons.keyboard_backspace,
                     color: Theme.of(context).colorScheme.secondary,
                   ),
-                  onPressed: widget.onPressed,
+                  onPressed: () {
+                    context.pop();
+                  },
                 ),
                 ClanChurnSpacing.w10,
                 SelectableText(
@@ -54,8 +56,7 @@ class _UploadNewDataState extends State<UploadNewData> {
                   InkWell(
                       onTap: () async {
                         if (kIsWeb) {
-                          FilePickerResult? picked =
-                              await FilePickerWeb.platform.pickFiles(
+                          FilePickerResult? picked = await FilePickerWeb.platform.pickFiles(
                             type: FileType.custom,
                             allowedExtensions: ['xls', 'xlsx'],
                           );
@@ -68,22 +69,16 @@ class _UploadNewDataState extends State<UploadNewData> {
                                     filePickerResult: picked,
                                     context: context,
                                     // ignore: use_build_context_synchronously
-                                    projectId: context
-                                        .read<ProjectArchitectBloc>()
-                                        .state
-                                        .createdProject!
-                                        .id,
+                                    projectId: context.read<ProjectArchitectBloc>().state.createdProject!.id,
                                     onErrorCallback: (message, errorCode) {
                                       print(" file upload error call back, error message: $message , error code: $errorCode ");
                                       ApiRepository().handleWarningMessage(
-                                          "$message unable to upload file, something went wrong ",
-                                          context,
-                                          );
+                                        "$message unable to upload file, something went wrong ",
+                                        context,
+                                      );
                                     },
                                     onSuccessCallBack: (message) {
-                                      ApiRepository().handleSuccessMessage(
-                                          "File uploaded successfully!....",
-                                          context);
+                                      ApiRepository().handleSuccessMessage("File uploaded successfully!....", context);
                                     },
                                   ),
                                 );
