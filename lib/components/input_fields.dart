@@ -52,6 +52,7 @@ class _GetInputFieldsState extends State<GetInputFields> {
       );
     }
   }
+
   void goToPreviousPage() {
     if (_currentPage > 0) {
       _currentPage--;
@@ -65,125 +66,229 @@ class _GetInputFieldsState extends State<GetInputFields> {
 
   @override
   void initState() {
-    context.read<ProjectArchitectBloc>().add(const UploadNewSheetRequestedEvent(uploadNewSheetRequested: false));
-    if (context.read<ProjectArchitectBloc>().state.selectedClient != null) {
-      setState(() {
-        customerNameController.text = context.read<ProjectArchitectBloc>().state.selectedClient!.name;
-      });
-    }
-    Project? p = context.read<ProjectArchitectBloc>().state.createdProject;
-    if (p != null) {
-      setState(() {
-        projectNameController.text = p.name ?? '';
-        ProjectDetails? pd = context.read<ProjectArchitectBloc>().state.createdProject!.projectDetails;
-        if (pd != null) {
-          projectStartDateController.text = pd.projectStartDate?.split("T").first ?? "";
-          stuPerBegDateController.text = pd.studyPeriodBeginingDate?.split("T").first ?? "";
-          projectOwnerController.text = pd.projectSpocName ?? "";
-          stuPerEndDateController.text = pd.studyPeriodEndDate?.split("T").first ?? "";
-
-          earDateForDOJController.text = pd.earDateForDOJRel?.split("T").first ?? "";
-
-          endDateForDOJController.text = pd.endDateForDOJ?.split("T").first ?? "";
-
-          unitForValPerController.text = pd.unitForValPer ?? "";
-
-          unitForQuaPerforController.text = pd.unitForQuaPerfor ?? "";
-
-          departments = [];
-          designations = [];
-          departmentFields = [];
-          designationFields = [];
-          if (pd.departments == null) {
-            departments.add(TextEditingController());
-            departmentFields.add(CustomTextFormField(
-              label: "Department Covered in the Study",
-              controller: departments[0],
-              textInputType: TextInputType.name,
-              isObscureText: false,
-              isEnabled: true,
-              textInputAction: TextInputAction.next,
-              textInputFormatterType: TextInputFormatterType.string,
-            ));
-          } else {
-            for (int i = 0; i < pd.departments!.length; i++) {
-              departments.add(TextEditingController(text: pd.departments![i]));
-            }
-            for (int i = 0; i < pd.departments!.length; i++) {
-              departmentFields.add(CustomTextFormField(
-                label: "Department Covered in the Study",
-                controller: departments[i],
-                textInputType: TextInputType.name,
-                isObscureText: false,
-                isEnabled: true,
-                textInputAction: TextInputAction.next,
-                textInputFormatterType: TextInputFormatterType.string,
-                isMandatory: i == 0 ? true : false,
-              ));
-            }
-          }
-
-          if (pd.designations == null) {
-            designations.add(TextEditingController());
-            designationFields.add(
-              CustomTextFormField(
-                label: "Designation Covered in the Study",
-                controller: designations[0],
-                textInputType: TextInputType.name,
-                isObscureText: false,
-                isEnabled: true,
-                textInputAction: TextInputAction.next,
-                textInputFormatterType: TextInputFormatterType.string,
-              ),
-            );
-          } else {
-            for (int i = 0; i < pd.designations!.length; i++) {
-              designations.add(TextEditingController(text: pd.designations![i]));
-            }
-            for (int i = 0; i < pd.designations!.length; i++) {
-              designationFields.add(
-                CustomTextFormField(
-                  label: "Designation Covered in the Study",
-                  controller: designations[i],
-                  textInputType: TextInputType.name,
-                  isObscureText: false,
-                  isEnabled: true,
-                  textInputAction: TextInputAction.next,
-                  textInputFormatterType: TextInputFormatterType.string,
-                  isMandatory: i == 0 ? true : false,
-                ),
-              );
-            }
-          }
-        } else {
-          setState(() {
-            projectStartDateController.text = DateTime.now().toString().split(" ").first;
-          });
-          departments.add(TextEditingController());
-          departmentFields.add(CustomTextFormField(
-            label: "Department Covered in the Study",
-            controller: departments[0],
-            textInputType: TextInputType.name,
-            isObscureText: false,
-            isEnabled: true,
-            textInputAction: TextInputAction.next,
-            textInputFormatterType: TextInputFormatterType.string,
-          ));
-          designations.add(TextEditingController());
-          designationFields.add(CustomTextFormField(
-            label: "Designation Covered in the Study",
-            controller: designations[0],
-            textInputType: TextInputType.name,
-            isObscureText: false,
-            isEnabled: true,
-            textInputAction: TextInputAction.next,
-            textInputFormatterType: TextInputFormatterType.string,
-          ));
-        }
-      });
-    }
     super.initState();
+
+    // Reset upload sheet state
+    context.read<ProjectArchitectBloc>().add(const UploadNewSheetRequestedEvent(uploadNewSheetRequested: false));
+
+    // Prepopulate customer name if selected client exists
+    final selectedClient = context.read<ProjectArchitectBloc>().state.selectedClient;
+    if (selectedClient != null) {
+      customerNameController.text = selectedClient.name;
+    }
+
+    // Populate project details if created project exists
+    final createdProject = context.read<ProjectArchitectBloc>().state.createdProject;
+    if (createdProject != null) {
+      _populateProjectDetails(createdProject);
+    } else {
+      _initializeDefaultValues();
+    }
   }
+
+  void _populateProjectDetails(Project project) {
+    setState(() {
+      projectNameController.text = project.name ?? '';
+
+      final projectDetails = project.projectDetails;
+      if (projectDetails != null) {
+        // Populate project-related controllers
+        projectStartDateController.text = _formatDate(projectDetails.projectStartDate);
+        stuPerBegDateController.text = _formatDate(projectDetails.studyPeriodBeginingDate);
+        projectOwnerController.text = projectDetails.projectSpocName ?? '';
+        stuPerEndDateController.text = _formatDate(projectDetails.studyPeriodEndDate);
+        earDateForDOJController.text = _formatDate(projectDetails.earDateForDOJRel);
+        endDateForDOJController.text = _formatDate(projectDetails.endDateForDOJ);
+        unitForValPerController.text = projectDetails.unitForValPer ?? '';
+        unitForQuaPerforController.text = projectDetails.unitForQuaPerfor ?? '';
+
+        // Populate department and designation fields
+        _populateFields(
+          projectDetails.departments,
+          departments,
+          departmentFields,
+          "Department Covered in the Study",
+        );
+        _populateFields(
+          projectDetails.designations,
+          designations,
+          designationFields,
+          "Designation Covered in the Study",
+        );
+      } else {
+        _initializeDefaultValues();
+      }
+    });
+  }
+
+  void _initializeDefaultValues() {
+    setState(() {
+      projectStartDateController.text = DateTime.now().toString().split(" ").first;
+
+      // Initialize default department and designation fields
+      _populateFields(null, departments, departmentFields, "Department Covered in the Study");
+      _populateFields(null, designations, designationFields, "Designation Covered in the Study");
+    });
+  }
+
+  void _populateFields(
+    List<String>? values,
+    List<TextEditingController> controllers,
+    List<Widget> fields,
+    String label,
+  ) {
+    controllers.clear();
+    fields.clear();
+
+    if (values == null || values.isEmpty) {
+      controllers.add(TextEditingController());
+      fields.add(_buildCustomTextFormField(label, controllers[0], isMandatory: true));
+    } else {
+      for (int i = 0; i < values.length; i++) {
+        controllers.add(TextEditingController(text: values[i]));
+        fields.add(_buildCustomTextFormField(label, controllers[i], isMandatory: i == 0));
+      }
+    }
+  }
+
+  String _formatDate(String? date) {
+    return date?.split("T").first ?? "";
+  }
+
+  Widget _buildCustomTextFormField(String label, TextEditingController controller, {bool isMandatory = false}) {
+    return CustomTextFormField(
+      label: label,
+      controller: controller,
+      textInputType: TextInputType.name,
+      isObscureText: false,
+      isEnabled: true,
+      textInputAction: TextInputAction.next,
+      textInputFormatterType: TextInputFormatterType.string,
+      isMandatory: isMandatory,
+    );
+  }
+
+  // @override
+  // void initState() {
+  //   context.read<ProjectArchitectBloc>().add(const UploadNewSheetRequestedEvent(uploadNewSheetRequested: false));
+  //   if (context.read<ProjectArchitectBloc>().state.selectedClient != null) {
+  //     setState(() {
+  //       customerNameController.text = context.read<ProjectArchitectBloc>().state.selectedClient!.name;
+  //     });
+  //   }
+  //   Project? p = context.read<ProjectArchitectBloc>().state.createdProject;
+  //   if (p != null) {
+  //     setState(() {
+  //       projectNameController.text = p.name ?? '';
+  //       ProjectDetails? pd = context.read<ProjectArchitectBloc>().state.createdProject!.projectDetails;
+  //       if (pd != null) {
+  //         projectStartDateController.text = pd.projectStartDate?.split("T").first ?? "";
+  //         stuPerBegDateController.text = pd.studyPeriodBeginingDate?.split("T").first ?? "";
+  //         projectOwnerController.text = pd.projectSpocName ?? "";
+  //         stuPerEndDateController.text = pd.studyPeriodEndDate?.split("T").first ?? "";
+
+  //         earDateForDOJController.text = pd.earDateForDOJRel?.split("T").first ?? "";
+
+  //         endDateForDOJController.text = pd.endDateForDOJ?.split("T").first ?? "";
+
+  //         unitForValPerController.text = pd.unitForValPer ?? "";
+
+  //         unitForQuaPerforController.text = pd.unitForQuaPerfor ?? "";
+
+  //         departments = [];
+  //         designations = [];
+  //         departmentFields = [];
+  //         designationFields = [];
+  //         if (pd.departments == null) {
+  //           departments.add(TextEditingController());
+  //           departmentFields.add(CustomTextFormField(
+  //             label: "Department Covered in the Study",
+  //             controller: departments[0],
+  //             textInputType: TextInputType.name,
+  //             isObscureText: false,
+  //             isEnabled: true,
+  //             textInputAction: TextInputAction.next,
+  //             textInputFormatterType: TextInputFormatterType.string,
+  //           ));
+  //         } else {
+  //           for (int i = 0; i < pd.departments!.length; i++) {
+  //             departments.add(TextEditingController(text: pd.departments![i]));
+  //           }
+  //           for (int i = 0; i < pd.departments!.length; i++) {
+  //             departmentFields.add(CustomTextFormField(
+  //               label: "Department Covered in the Study",
+  //               controller: departments[i],
+  //               textInputType: TextInputType.name,
+  //               isObscureText: false,
+  //               isEnabled: true,
+  //               textInputAction: TextInputAction.next,
+  //               textInputFormatterType: TextInputFormatterType.string,
+  //               isMandatory: i == 0 ? true : false,
+  //             ));
+  //           }
+  //         }
+
+  //         if (pd.designations == null) {
+  //           designations.add(TextEditingController());
+  //           designationFields.add(
+  //             CustomTextFormField(
+  //               label: "Designation Covered in the Study",
+  //               controller: designations[0],
+  //               textInputType: TextInputType.name,
+  //               isObscureText: false,
+  //               isEnabled: true,
+  //               textInputAction: TextInputAction.next,
+  //               textInputFormatterType: TextInputFormatterType.string,
+  //             ),
+  //           );
+  //         } else {
+  //           for (int i = 0; i < pd.designations!.length; i++) {
+  //             designations.add(TextEditingController(text: pd.designations![i]));
+  //           }
+  //           for (int i = 0; i < pd.designations!.length; i++) {
+  //             designationFields.add(
+  //               CustomTextFormField(
+  //                 label: "Designation Covered in the Study",
+  //                 controller: designations[i],
+  //                 textInputType: TextInputType.name,
+  //                 isObscureText: false,
+  //                 isEnabled: true,
+  //                 textInputAction: TextInputAction.next,
+  //                 textInputFormatterType: TextInputFormatterType.string,
+  //                 isMandatory: i == 0 ? true : false,
+  //               ),
+  //             );
+  //           }
+  //         }
+  //       } else {
+  //         setState(() {
+  //           projectStartDateController.text = DateTime.now().toString().split(" ").first;
+  //         });
+  //         departments.add(TextEditingController());
+  //         departmentFields.add(CustomTextFormField(
+  //           label: "Department Covered in the Study",
+  //           controller: departments[0],
+  //           textInputType: TextInputType.name,
+  //           isObscureText: false,
+  //           isEnabled: true,
+  //           textInputAction: TextInputAction.next,
+  //           textInputFormatterType: TextInputFormatterType.string,
+  //         ));
+  //         designations.add(TextEditingController());
+  //         designationFields.add(CustomTextFormField(
+  //           label: "Designation Covered in the Study",
+  //           controller: designations[0],
+  //           textInputType: TextInputType.name,
+  //           isObscureText: false,
+  //           isEnabled: true,
+  //           textInputAction: TextInputAction.next,
+  //           textInputFormatterType: TextInputFormatterType.string,
+  //         ));
+  //       }
+  //     });
+  //   }
+  //   super.initState();
+  // }
 
   @override
   void dispose() {
