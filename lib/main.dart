@@ -110,7 +110,16 @@ class ClanChurnApp extends StatelessWidget {
                   GoRoute(
                     path: ':projectName/:projectId',
                     pageBuilder: (context, state) {
-                      return customPageRouteForGoRouter(context: context, state: state, child: const SizedBox.shrink());
+                      final String projectId = state.pathParameters["projectId"] as String;
+                      final String clientId = state.pathParameters["clientId"] as String;
+                      // return customPageRouteForGoRouter(context: context, state: state, child: const SizedBox.shrink());
+                      return customPageRouteForGoRouter(
+                          context: context,
+                          state: state,
+                          child: ProjectInputFieldsPage(
+                            projectId: projectId,
+                            clientId: clientId,
+                          ));
                     },
                     routes: [
                       // Project edit labels
