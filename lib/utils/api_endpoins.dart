@@ -2,15 +2,15 @@ class BaseUrl {
   // test url // lense.clanonline.in
   // static String baseUrl = "https://churnapi.clanonline.in";
   //....
-  static String baseUrl = "https://churntesting.clanonline.in";
+  // static String baseUrl = "https://churntesting.clanonline.in";
   //....
   // static String baseUrl = "http://192.168.137.1/";
 
-  // staging url // lense.clanonline.in
+  // staging url // lense.clanonline.in // myapptest-c1cb6
   // static String baseUrl = "https://churn-staging-120996668109.asia-south1.run.app";
 
-  // Shashank Paisa // production gcp // lense.quantapeoplwe.com
-  // static String baseUrl = "https://churn-120996668109.asia-south1.run.app";
+  // Shashank Paisa // production gcp // lense.quantapeoplwe.com // clanchurn
+  static String baseUrl = "https://churn-120996668109.asia-south1.run.app";
 
   // Krishna Paisa //production lambda
   // static String baseUrl =

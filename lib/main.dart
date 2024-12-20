@@ -22,7 +22,6 @@ import 'package:clan_churn/pages/view_summary_report.dart';
 import 'package:clan_churn/utils/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -32,7 +31,7 @@ import 'pages/project_input_fields_sheet.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   GoRouter.optionURLReflectsImperativeAPIs = true;
-  setUrlStrategy(PathUrlStrategy());
+  // setUrlStrategy(PathUrlStrategy());
   AuthRepo authRepository = AuthRepo();
   ApiRepository apiRepository = ApiRepository();
   runApp(ClanChurnApp(

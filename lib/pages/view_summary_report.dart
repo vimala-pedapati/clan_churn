@@ -6,6 +6,9 @@ import 'package:clan_churn/components/uploaded_excel_summary_report.dart';
 import 'package:clan_churn/components/wrap_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+
+import '../utils/routes.dart';
 
 class ProjectSummaryReportPage extends StatefulWidget {
   const ProjectSummaryReportPage({super.key, required this.clientId, required this.projectId});
@@ -52,6 +55,7 @@ class _ProjectSummaryReportPageState extends State<ProjectSummaryReportPage> {
                               // goToPreviousPage();
                             },
                             uploadNewSheetRequested: () {
+                              context.push("${AppRoutes.client}/${state.selectedClient?.name}/${widget.clientId}/${state.createdProject?.name}/${widget.projectId}/${AppRoutes.projectSummaryReport}");
                               context.read<ProjectArchitectBloc>().add(const UploadNewSheetRequestedEvent(uploadNewSheetRequested: true));
                             },
                           ),

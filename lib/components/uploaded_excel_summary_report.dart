@@ -619,6 +619,7 @@ import 'package:clan_churn/components/project_input_history.dart';
 import 'package:clan_churn/components/project_publish.dart';
 import 'package:clan_churn/components/summary_card.dart';
 import 'package:clan_churn/components/view_error_report.dart';
+import 'package:clan_churn/utils/routes.dart';
 import 'package:clan_churn/utils/spacing.dart';
 import 'package:clan_churn/utils/typography.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
@@ -702,6 +703,7 @@ class _UploadedExcelSummaryReportState extends State<UploadedExcelSummaryReport>
                   isDataLoading = false;
                 });
                 if (kDebugMode) {
+                  ApiRepository().handleWarningMessage(errorMessage, context);
                   print("Get Input Excel Summary Report error call back: $errorMessage $errorCode");
                 }
               },
@@ -840,7 +842,7 @@ class _UploadedExcelSummaryReportState extends State<UploadedExcelSummaryReport>
                             buildSheetsAndColumnsDropdowns(),
                             buildSummaryDetails(),
                             buildActionButtons(
-                              disableUploadNewSheet: true,
+                              disableUploadNewSheet: false,
                               disableCategorization: true,
                             ),
                             ClanChurnSpacing.h20,
@@ -992,10 +994,23 @@ class _UploadedExcelSummaryReportState extends State<UploadedExcelSummaryReport>
                       ),
                     )
                   else
-                    const Center(
-                      child: Text(
-                        "⚠️ Unable to retrieve the status of your input sheet or summary of your input sheet. Please contact the admin for assistance.",
-                        textAlign: TextAlign.center,
+                    Expanded(
+                      child: Column(
+                        children: [
+                          const Expanded(
+                            child: Center(
+                              child: Text(
+                                "⚠️ Unable to retrieve the status of your input sheet or summary of your input sheet. Please contact the admin for assistance.",
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ),
+                          buildActionButtons(
+                            disableCategorization: true,
+                            disableExcelSummary: true,
+                            disableViewErrorReport: true,
+                          ),
+                        ],
                       ),
                     )
               ],
@@ -1503,10 +1518,19 @@ class _UploadedExcelSummaryReportState extends State<UploadedExcelSummaryReport>
                   );
             },
           ),
-          OutlinedButtonTemplate(
-            icon: Icons.upload_file_outlined,
-            title: "Upload New Sheet",
-            onPressed: disableUploadNewSheet ? null : widget.uploadNewSheetRequested,
+          BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
+            builder: (context, state) {
+              return OutlinedButtonTemplate(
+                icon: Icons.upload_file_outlined,
+                title: "Upload New Sheet",
+                // onPressed: disableUploadNewSheet ? null : widget.uploadNewSheetRequested,
+                onPressed: disableUploadNewSheet
+                    ? null
+                    : () {
+                        context.push("${AppRoutes.client}/${state.selectedClient?.name}/${state.selectedClient?.id}/${state.createdProject?.name}/${state.createdProject?.id}/${AppRoutes.uploadNewSheet}");
+                      },
+              );
+            },
           ),
         ],
       );

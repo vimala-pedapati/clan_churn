@@ -1,6 +1,7 @@
 import 'package:clan_churn/api_repos/api_repo.dart';
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/components/input_sheet_columns.dart';
+import 'package:clan_churn/utils/routes.dart';
 import 'package:clan_churn/utils/spacing.dart';
 import 'package:clan_churn/utils/typography.dart';
 import 'package:file_picker/_internal/file_picker_web.dart';
@@ -78,6 +79,7 @@ class _UploadNewDataState extends State<UploadNewData> {
                                       );
                                     },
                                     onSuccessCallBack: (message) {
+                                      context.push("${AppRoutes.client}/${state.selectedClient?.name}/${state.selectedClient?.id}/${state.createdProject?.name}/${state.createdProject?.id}/${AppRoutes.projectSummaryReport}");
                                       ApiRepository().handleSuccessMessage("File uploaded successfully!....", context);
                                     },
                                   ),
