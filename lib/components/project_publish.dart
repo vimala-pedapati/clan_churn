@@ -156,7 +156,7 @@ class _GetPublishButtonState extends State<GetPublishButton> {
     return IgnorePointer(
       ignoring: state.createdProject?.latestInputModel?.inputStatus == InputStatus.uploadedDataDataMartsGenerated ? true : false,
       child: Opacity(
-        opacity: state.createdProject?.latestInputModel?.inputStatus == InputStatus.uploadedDataDataMartsGenerated ? 0.5 : 0,
+        opacity: state.createdProject?.latestInputModel?.inputStatus == InputStatus.uploadedDataDataMartsGenerated ? 0.5 : 1,
         child: Row(
           children: [
             Checkbox(
@@ -234,33 +234,63 @@ class _GetPublishButtonState extends State<GetPublishButton> {
             ),
           ),
         ),
-        const SizedBox(
-          width: 50,
-        ),
+        // const SizedBox(
+        //   width: 50,
+        // ),
+        // SizedBox(
+        //   height: 30,
+        //   child: ElevatedButton(
+        //     onPressed: state.createdProject?.latestInputModel?.inputStatus == InputStatus.uploadedDataDataMartsGenerated
+        //         ? () {
+        //             if (state.createdProject?.latestInputModel?.inputStatus == InputStatus.uploadedDataHasErrors) {
+        //               showDialog(
+        //                 context: context,
+        //                 builder: (context) => buildErrorDialog(context),
+        //               );
+        //             } else if (state.createdProject?.latestInputModel?.inputStatus == InputStatus.uploadedDataDataMartsGenerated) {
+        //               if (state.allReports.isNotEmpty) {
+        //                 if (state.createdProject!.latestInput != null) {
+        //                   context.push('${AppRoutes.client}/${AppRoutes.generateMarts}/${state.createdProject?.id}');
+        //                 }
+        //               }
+        //             }
+        //           }
+        //         : null,
+        //     child: Row(
+        //       children: [
+        //         Text(
+        //           "Generate Marts",
+        //           style: ClanChurnTypography.font14900,
+        //         ),
+        //       ],
+        //     ),
+        //   ),
+        // ),
+        // const SizedBox(
+        //   width: 50,
+        // ),
         SizedBox(
           height: 30,
           child: ElevatedButton(
             onPressed: state.createdProject?.latestInputModel?.inputStatus == InputStatus.uploadedDataDataMartsGenerated
                 ? () {
-                    // print("report ..........${state.createdProject?.latestInputModel?.inputStatus}");
-                    // Check input status and perform actions accordingly
                     if (state.createdProject?.latestInputModel?.inputStatus == InputStatus.uploadedDataHasErrors) {
-                      // Show dialog for error case
                       showDialog(
                         context: context,
                         builder: (context) => buildErrorDialog(context),
                       );
-                      // } else if (state.createdProject?.latestInputModel?.inputStatus == InputStatus.uploadedDataHasNoErrors || state.createdProject?.latestInputModel?.inputStatus == InputStatus.uploadedDataDataMartsGenerated) {
                     } else if (state.createdProject?.latestInputModel?.inputStatus == InputStatus.uploadedDataDataMartsGenerated) {
                       if (state.allReports.isNotEmpty) {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => PerformanceReport(
-                                inputId: state.createdProject!.id,
-                                reportName: state.allReports.first,
-                              ),
-                            ));
+                        if (state.createdProject!.latestInput != null) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => PerformanceReport(
+                                  inputId: state.createdProject!.latestInput!,
+                                  reportName: state.allReports.first,
+                                ),
+                              ));
+                        }
                       }
                     }
                   }

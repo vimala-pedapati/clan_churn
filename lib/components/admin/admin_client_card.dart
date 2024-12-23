@@ -34,25 +34,6 @@ class AdminClientCard extends StatelessWidget {
                 "${client.image}",
               ),
             ),
-            // CircleAvatar(
-            //   radius: 40,
-            //   backgroundColor: Theme.of(context).colorScheme.background,
-            //   child: ClipOval(
-            //     child: Image.network(
-            //       "${client.image}",
-            //       // loadingBuilder: ((context, child, loadingProgress) {
-            //       //   return const CircularProgressIndicator();
-            //       // }),
-            //       errorBuilder: (context, error, stackTrace) {
-            //         return ClipOval(
-            //             child: Image.network(
-            //           image,
-            //           scale: 2,
-            //         ));
-            //       },
-            //     ),
-            //   ),
-            // ),
             Column(
               children: [
                 Text(

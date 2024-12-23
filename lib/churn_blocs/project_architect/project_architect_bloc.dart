@@ -14,6 +14,8 @@ import 'package:equatable/equatable.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
+import '../../api_repos/models/threshold_val_model.dart';
+
 part 'project_architect_event.dart';
 part 'project_architect_state.dart';
 
@@ -43,6 +45,11 @@ class ProjectArchitectBloc extends Bloc<ProjectArchitectEvent, ProjectArchitectS
     on<GetProThresholdValEvent>(_onGetProThresholdValEvent);
     on<UpdateProThrValsEvent>(_onUpdateProThrValsEvent);
     on<GetAllReportsEvent>(_onGetAllReports);
+    on<UpdateProjectThresholdMinValue>(_onUpdateProjectThresholdMinValue);
+    on<UpdateProjectThresholdMaxValue>(_onUpdateProjectThresholdMaxValue);
+    on<DownloadReportEvent>(_onDownloadReport);
+    on<DownloadErrorGlossary>(_onDownloadErrorGlossary);
+    on<GetClientDetailsEvent>(_onGetClientDetails);
   }
 
   _onClientsEvent(GetClientsEvent event, Emitter<ProjectArchitectState> emit) async {
@@ -62,6 +69,13 @@ class ProjectArchitectBloc extends Bloc<ProjectArchitectEvent, ProjectArchitectS
 
   _onSetSelectedClientEvent(SetSelectedClientEvent event, Emitter<ProjectArchitectState> emit) {
     emit(state.copyWith(selectedClient: event.selectedClient));
+  }
+
+  _onGetClientDetails(GetClientDetailsEvent event, Emitter<ProjectArchitectState> emit) async {
+    final result = await apiRepository.getClientDetails(clientId: event.clientId, onErrorCallback: event.onErrorCallback, onSuccessCallback: event.onSuccessCallback);
+    if (result != null) {
+      emit(state.copyWith(selectedClient: result));
+    }
   }
 
   _onGetProjectsListEvent(GetProjectsListEvent event, Emitter<ProjectArchitectState> emit) async {
@@ -275,8 +289,25 @@ class ProjectArchitectBloc extends Bloc<ProjectArchitectEvent, ProjectArchitectS
   _onGetProThresholdValEvent(GetProThresholdValEvent event, Emitter<ProjectArchitectState> emit) async {
     emit(state.copyWith(projectThresholdFormFieldsLoading: true));
     final result = await apiRepository.getProThresholdValues(projectId: event.projectId, onErrorCallback: event.onErrorCallback, onSuccessCallback: event.onSuccessCallback);
+    print("..getProThresholdValues.....$result ");
     if (result != null) {
-      emit(state.copyWith(projectThesholdFormfields: result));
+      List<GetProThresholdFormValModel> data = [];
+      for (GetProThresholdFormValModel i in result) {
+        print("........getProThresholdValues..........>DATA: ${(state.createdProject?.projectDetails?.thresholdVals ?? []).isEmpty}");
+        if ((state.createdProject?.projectDetails?.thresholdVals ?? []).isEmpty) {
+          emit(state.copyWith(projectThesholdFormfields: result));
+          return;
+        } else {
+          for (ProThreModel j in state.createdProject?.projectDetails?.thresholdVals ?? []) {
+            if (i.id == j.columnId) {
+              print("........getProThresholdValues ..........>DATA: ${i.id == j.columnId}");
+              data.add(i.copyWith(minValue: j.minValue, maxValue: j.maxValue));
+            }
+          }
+        }
+      }
+      print("........getProThresholdValues..........>DATA: $data");
+      emit(state.copyWith(projectThesholdFormfields: data));
     } else {
       emit(state.copyWith(projectThesholdFormfields: []));
     }
@@ -295,5 +326,43 @@ class ProjectArchitectBloc extends Bloc<ProjectArchitectEvent, ProjectArchitectS
     if (result != null) {
       emit(state.copyWith(allReports: result));
     }
+  }
+
+  _onUpdateProjectThresholdMinValue(UpdateProjectThresholdMinValue event, Emitter emit) async {
+    List<GetProThresholdFormValModel> thresholds = [];
+    for (var i in state.projectThesholdFormfields) {
+      if (i.id == event.thresholdId) {
+        thresholds.add(i.copyWith(minValue: event.minValue));
+      } else {
+        thresholds.add(i);
+      }
+    }
+
+    emit(state.copyWith(projectThesholdFormfields: thresholds));
+  }
+
+  _onUpdateProjectThresholdMaxValue(UpdateProjectThresholdMaxValue event, Emitter emit) async {
+    List<GetProThresholdFormValModel> thresholds = [];
+    for (var i in state.projectThesholdFormfields) {
+      if (i.id == event.thresholdId) {
+        thresholds.add(i.copyWith(maxValue: event.maxValue));
+      } else {
+        thresholds.add(i);
+      }
+    }
+    emit(state.copyWith(projectThesholdFormfields: thresholds));
+  }
+
+  _onDownloadReport(DownloadReportEvent event, Emitter emit) {
+    apiRepository.downLoadReportApi(
+      onSuccessCallback: event.onSuccessCallback,
+      onErrorCallback: event.onErrorCallback,
+      inputId: event.inputId,
+      reportName: event.reportName,
+    );
+  }
+
+  _onDownloadErrorGlossary(DownloadErrorGlossary event, Emitter emit) {
+    apiRepository.downloadErrorGlossary(onSuccessCallback: event.onSuccessCallback, onErrorCallback: event.onErrorCallback);
   }
 }

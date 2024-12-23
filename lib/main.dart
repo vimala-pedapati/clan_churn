@@ -7,24 +7,32 @@ import 'package:clan_churn/churn_blocs/sign_in_bloc/sign_in_bloc.dart';
 import 'package:clan_churn/churn_blocs/user/user_bloc.dart';
 import 'package:clan_churn/components/step_tracker.dart';
 import 'package:clan_churn/pages/admin_home_page.dart';
+import 'package:clan_churn/pages/client_projects_view.dart';
 import 'package:clan_churn/pages/create_client.dart';
 import 'package:clan_churn/pages/forgot_password_screen.dart';
+import 'package:clan_churn/pages/generate_marts.dart';
 import 'package:clan_churn/pages/home_page.dart';
-import 'package:clan_churn/pages/client_projects_view.dart';
+import 'package:clan_churn/pages/new_project_components.dart';
+import 'package:clan_churn/pages/project_thresholds.dart';
 import 'package:clan_churn/pages/reset_password_link.dart';
 import 'package:clan_churn/pages/saved_projects.dart';
 import 'package:clan_churn/pages/sign_page.dart';
+import 'package:clan_churn/pages/upload_input_sheet.dart';
+import 'package:clan_churn/pages/view_summary_report.dart';
 import 'package:clan_churn/utils/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_framework/responsive_framework.dart';
-import 'package:flutter_web_plugins/flutter_web_plugins.dart';
+
+import 'pages/project_input_fields_sheet.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // setUrlStrategy(PathUrlStrategy());
+  GoRouter.optionURLReflectsImperativeAPIs = true;
+  setUrlStrategy(PathUrlStrategy());
   AuthRepo authRepository = AuthRepo();
   ApiRepository apiRepository = ApiRepository();
   runApp(ClanChurnApp(
@@ -34,8 +42,7 @@ void main() async {
 }
 
 class ClanChurnApp extends StatelessWidget {
-  const ClanChurnApp(
-      {super.key, required this.authRepository, required this.apiRepository});
+  const ClanChurnApp({super.key, required this.authRepository, required this.apiRepository});
   final AuthRepo authRepository;
   final ApiRepository apiRepository;
 
@@ -43,6 +50,7 @@ class ClanChurnApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final GoRouter router = GoRouter(
       routes: <GoRoute>[
+        // Sign in
         GoRoute(
           path: AppRoutes.signIn,
           pageBuilder: (context, state) {
@@ -61,7 +69,7 @@ class ClanChurnApp extends StatelessWidget {
                     if (authCred.accessToken.isNotEmpty) {
                       // Navigate to the home page if the access token is not empty
                       WidgetsBinding.instance.addPostFrameCallback((_) {
-                        context.go(AppRoutes.home);
+                        context.go(AppRoutes.client);
                       });
                       return const SizedBox(); // Return an empty widget as we're navigating
                     }
@@ -75,73 +83,179 @@ class ClanChurnApp extends StatelessWidget {
           },
         ),
 
+        // Initial
         GoRoute(
           path: AppRoutes.intial,
-          pageBuilder: (context, state) => customPageRouteForGoRouter<void>(
-              context: context,
-              state: state,
-              child: const ClanChurnSignInPage()),
+          pageBuilder: (context, state) => customPageRouteForGoRouter<void>(context: context, state: state, child: const ClanChurnSignInPage()),
         ),
+        // Home....
         GoRoute(
-          path: AppRoutes.home,
+          path: AppRoutes.client,
           pageBuilder: (context, state) => customPageRouteForGoRouter<void>(
               context: context,
               state: state,
-              child: BlocBuilder<UserBloc, UserState>(
-                builder: (context, state) {
-                  return state.user?.userType == UserType.admin
-                      ? const AdminHomePage()
-                      : const HomePage();
+              child: BlocBuilder<UserBloc, UserState>(builder: (context, state) {
+                return state.user?.userType == UserType.admin ? const AdminHomePage() : const HomePage();
+              })),
+          routes: [
+            // Client projects
+            GoRoute(
+                path: ":clientName/:clientId",
+                pageBuilder: (context, state) {
+                  final String clientId = state.pathParameters["clientId"] as String;
+                  return customPageRouteForGoRouter(context: context, state: state, child: ClientProjectsView(clientId: clientId));
                 },
-              )),
+                routes: [
+                  // Project
+                  GoRoute(
+                    path: ':projectName/:projectId',
+                    pageBuilder: (context, state) {
+                      final String projectId = state.pathParameters["projectId"] as String;
+                      final String clientId = state.pathParameters["clientId"] as String;
+                      // return customPageRouteForGoRouter(context: context, state: state, child: const SizedBox.shrink());
+                      return customPageRouteForGoRouter(
+                          context: context,
+                          state: state,
+                          child: ProjectInputFieldsPage(
+                            projectId: projectId,
+                            clientId: clientId,
+                          ));
+                    },
+                    routes: [
+                      // Project edit labels
+                      GoRoute(
+                        path: AppRoutes.editLabels,
+                        pageBuilder: (context, state) {
+                          final String projectId = state.pathParameters["projectId"] as String;
+                          final String clientId = state.pathParameters["clientId"] as String;
+                          return customPageRouteForGoRouter(
+                            context: context,
+                            state: state,
+                            child: ProjectInputFieldsPage(
+                              projectId: projectId,
+                              clientId: clientId,
+                            ),
+                          );
+                        },
+                      ),
+                      // Update project
+                      GoRoute(
+                        path: AppRoutes.updateProject,
+                        pageBuilder: (context, state) {
+                          final String projectId = state.pathParameters["projectId"] as String;
+                          final String clientId = state.pathParameters["clientId"] as String;
+                          return customPageRouteForGoRouter(
+                            context: context,
+                            state: state,
+                            child: CreateNewProject(
+                              projectId: projectId,
+                              clientId: clientId,
+                            ),
+                          );
+                        },
+                      ),
+                      // Project thresholds
+                      GoRoute(
+                        path: AppRoutes.projectThresholds,
+                        pageBuilder: (context, state) {
+                          final String projectId = state.pathParameters["projectId"] as String;
+                          final String clientId = state.pathParameters["clientId"] as String;
+                          return customPageRouteForGoRouter(
+                            context: context,
+                            state: state,
+                            child: GetProjectThresholdsPage(
+                              projectId: projectId,
+                              clientId: clientId,
+                            ),
+                          );
+                        },
+                      ),
+                      // Upload Input Sheet
+                      GoRoute(
+                        path: AppRoutes.uploadNewSheet,
+                        pageBuilder: (context, state) {
+                          final String projectId = state.pathParameters["projectId"] as String;
+                          final String clientId = state.pathParameters["clientId"] as String;
+                          return customPageRouteForGoRouter(
+                            context: context,
+                            state: state,
+                            child: UploadInputSheetPage(
+                              projectId: projectId,
+                              clientId: clientId,
+                            ),
+                          );
+                        },
+                      ),
+                      // Project Summary Report
+                      GoRoute(
+                        path: AppRoutes.projectSummaryReport,
+                        pageBuilder: (context, state) {
+                          final String projectId = state.pathParameters["projectId"] as String;
+                          final String clientId = state.pathParameters["clientId"] as String;
+                          return customPageRouteForGoRouter(
+                            context: context,
+                            state: state,
+                            child: ProjectSummaryReportPage(
+                              projectId: projectId,
+                              clientId: clientId,
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  // Create project
+                  GoRoute(
+                    path: AppRoutes.createProject,
+                    pageBuilder: (context, state) {
+                      final String clientId = state.pathParameters["clientId"] as String;
+                      return customPageRouteForGoRouter(
+                        context: context,
+                        state: state,
+                        child: CreateNewProject(
+                          projectId: null,
+                          clientId: clientId,
+                        ),
+                      );
+                    },
+                  ),
+                ]),
+            // Generate Marts
+            GoRoute(
+              path: '${AppRoutes.generateMarts}/:projectId',
+              pageBuilder: (context, state) {
+                final extraData = state.extra as Map<String, dynamic>?;
+                if (extraData == null) {
+                  Future.microtask(() {
+                    context.replace(AppRoutes.client);
+                  });
+                  return customPageRouteForGoRouter(context: context, state: state, child: const SizedBox.shrink());
+                }
+                final String? id = state.pathParameters["projectId"];
+                return customPageRouteForGoRouter(context: context, state: state, child: GenerateMarts(projectId: id ?? ""));
+              },
+            ),
+          ],
         ),
-
-        // GoRoute(
-        //   path: AppRoutes.savedProjects,
-        //   pageBuilder: (context, state) => customPageRouteForGoRouter<void>(
-        //       context: context, state: state, child: const PerformanceReport()),
-        // ),
         GoRoute(
           path: AppRoutes.savedReports,
-          pageBuilder: (context, state) => customPageRouteForGoRouter<void>(
-              context: context, state: state, child: const SavedReports()),
+          pageBuilder: (context, state) => customPageRouteForGoRouter<void>(context: context, state: state, child: const SavedReports()),
         ),
         GoRoute(
           path: AppRoutes.createClient,
-          pageBuilder: (context, state) => customPageRouteForGoRouter<void>(
-              context: context, state: state, child: const CreateClient()),
-        ),
-        GoRoute(
-          path: AppRoutes.clientProjects,
-          pageBuilder: (context, state) => customPageRouteForGoRouter<void>(
-              context: context,
-              state: state,
-              child: const ClientProjectsView()),
+          pageBuilder: (context, state) => customPageRouteForGoRouter<void>(context: context, state: state, child: const CreateClient()),
         ),
         GoRoute(
           path: '/myApp',
-          pageBuilder: (context, state) => customPageRouteForGoRouter<void>(
-              context: context, state: state, child: const MyApp()),
+          pageBuilder: (context, state) => customPageRouteForGoRouter<void>(context: context, state: state, child: const MyApp()),
         ),
         GoRoute(
           path: AppRoutes.forgotPassword,
-          pageBuilder: (context, state) => customPageRouteForGoRouter<void>(
-              context: context,
-              state: state,
-              child: const ForgotPasswordScreen()),
+          pageBuilder: (context, state) => customPageRouteForGoRouter<void>(context: context, state: state, child: const ForgotPasswordScreen()),
         ),
         GoRoute(
           path: AppRoutes.resetPassword,
-          // pageBuilder: (context, state) {
-          //   print("...............................");
-          //   final String? token = state.uri.queryParameters['token'];
-          //    print('matched location Parameters: ${state.uri.queryParameters}');
-          //   return MaterialPage(child: ResetPasswordScreen(token));
-          // },
-          pageBuilder: (context, state) => customPageRouteForGoRouter<void>(
-              context: context,
-              state: state,
-              child: ResetPasswordScreen(state.uri.queryParameters['token'])),
+          pageBuilder: (context, state) => customPageRouteForGoRouter<void>(context: context, state: state, child: ResetPasswordScreen(state.uri.queryParameters['token'])),
         ),
       ],
     );
@@ -161,6 +275,7 @@ class ClanChurnApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp.router(
+        // routerConfig: router,
         theme: ThemeData(
           canvasColor: Colors.grey,
           textTheme: GoogleFonts.montserratTextTheme().copyWith(),

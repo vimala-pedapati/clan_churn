@@ -22,6 +22,7 @@ class ProjectArchitectState extends Equatable {
           allReports: const [],
           projectDetailsLoading: false,
           projectThresholdFormFieldsLoading: false,
+          loadingClientDetails : false,
         );
 
   final List<ClientDetails> clientList;
@@ -32,6 +33,7 @@ class ProjectArchitectState extends Equatable {
   final bool projectsListLoading;
   final List<ColumnDetails> columnsList;
   final bool columnsFetching;
+  final bool loadingClientDetails;
   final Project? createdProject;
   final bool projectCreating;
   final bool projectDetailsLoading;
@@ -63,6 +65,7 @@ class ProjectArchitectState extends Equatable {
     required this.allReports,
     required this.projectDetailsLoading,
     required this.projectThresholdFormFieldsLoading,
+    required this.loadingClientDetails,
   });
 
   ProjectArchitectState copyWith({
@@ -85,6 +88,7 @@ class ProjectArchitectState extends Equatable {
     bool? projectsListLoading,
     bool? projectDetailsLoading,
     bool? projectThresholdFormFieldsLoading,
+    bool? loadingClientDetails,
   }) {
     return ProjectArchitectState(
       clientList: clientList ?? this.clientList,
@@ -106,6 +110,7 @@ class ProjectArchitectState extends Equatable {
       allReports: allReports ?? this.allReports,
       projectDetailsLoading: projectDetailsLoading ?? this.projectDetailsLoading,
       projectThresholdFormFieldsLoading: projectThresholdFormFieldsLoading ?? this.projectThresholdFormFieldsLoading,
+      loadingClientDetails : loadingClientDetails ?? this.loadingClientDetails,
     );
   }
 
@@ -130,5 +135,6 @@ class ProjectArchitectState extends Equatable {
         allReports,
         projectDetailsLoading,
         projectThesholdFormfields,
+        loadingClientDetails,
       ];
 }

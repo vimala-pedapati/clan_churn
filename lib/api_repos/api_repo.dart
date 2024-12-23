@@ -217,6 +217,7 @@ class ApiRepository {
     required OnSuccessCallback onSuccessCallback,
     required OnErrorCallback onErrorCallback,
   }) async {
+    print("project id: $projectId");
     try {
       final AuthCred authCred = await AuthRepo().getTokens();
 
@@ -275,19 +276,14 @@ class ApiRepository {
         }),
       );
 
-      print("get project:..... $response");
-
       if (response.statusCode == 200) {
         Project project = Project.fromJson(json.decode(response.body));
-        print("get project:..... ${response.body}");
-        print("get project:..... $project");
         return project;
       } else {
         _handleStatusCode(response.statusCode, response, onErrorCallback);
         return null;
       }
     } catch (e) {
-      log('Network Error: $e');
       onErrorCallback('unable to fectch the project details, please contact admin', 0);
       return null;
     }
@@ -484,6 +480,51 @@ class ApiRepository {
       onErrorCallback('unable to update file please contact admin', 0);
     }
     return null;
+  }
+
+  // Upload error glosary sheet
+  Future uploadErrorGlossarys({
+    required FilePickerResult filePickerResult,
+    required OnErrorCallback onErrorCallback,
+    required OnSuccessCallback onSuccessCallback,
+  }) async {
+    try {
+      final AuthCred authCred = await AuthRepo().getTokens();
+      // Check if auth credentials are null
+      if (authCred.accessToken.isEmpty) {
+        return null;
+      }
+
+      if (filePickerResult.files.isNotEmpty) {
+        PlatformFile file = filePickerResult.files.first;
+        var headers = {'Authorization': 'Bearer ${authCred.accessToken}'};
+        var request = http.MultipartRequest(
+          'POST',
+          Uri.parse('${BaseUrl.baseUrl}${ApiEndpoints.updateErrorGlossary}'),
+        );
+        if (file.bytes != null) {
+          request.files.add(http.MultipartFile.fromBytes(
+            'file',
+            file.bytes!,
+            filename: file.name,
+          ));
+        }
+        request.headers.addAll(headers);
+        http.StreamedResponse response = await request.send();
+
+        if (response.statusCode == 200) {
+          http.Response fullResponse = await http.Response.fromStream(response);
+          onSuccessCallback(fullResponse);
+        } else {
+          _handleStatusCode(response.statusCode, await http.Response.fromStream(response), onErrorCallback);
+        }
+      } else {
+        log('File picking canceled');
+      }
+    } catch (e) {
+      log('Network Error: $e');
+      onErrorCallback('unable to update file please contact admin', 0);
+    }
   }
 
   Future getInputExcelSummaryReport({required String inputId, required OnErrorCallback onErrorCallback, required OnSuccessCallback onSuccessCallback}) async {
@@ -747,6 +788,36 @@ class ApiRepository {
     } catch (e) {
       log('Network Error: $e');
       onErrorCallback('Unable to upload client logo please contact admin', 0);
+    }
+    return null;
+  }
+
+  Future<ClientDetails?> getClientDetails({required String clientId, required OnErrorCallback onErrorCallback, required OnSuccessCallback onSuccessCallback}) async {
+    try {
+      final AuthCred authCred = await AuthRepo().getTokens();
+
+      if (authCred.accessToken.isEmpty) {
+        onErrorCallback('Access token is empty', 0);
+        return null;
+      }
+
+      http.Response response = await http.get(
+        Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.getClient}?client_id=$clientId"),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${authCred.accessToken}',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        ClientDetails clientDetails = ClientDetails.fromJson(json.decode(response.body));
+        onSuccessCallback(response);
+        return clientDetails;
+      } else {
+        _handleStatusCode(response.statusCode, response, onErrorCallback);
+      }
+    } catch (e) {
+      onErrorCallback('Unable to delete client please contact admin', 0);
     }
     return null;
   }
@@ -1045,7 +1116,6 @@ class ApiRepository {
         return project;
       } else {}
     } catch (e) {
-      log("unable to update project threshold values");
       onErrorCallback('Unable to update threshold values please contact admin', 0);
     }
     return null;
@@ -1076,8 +1146,55 @@ class ApiRepository {
         return allReports;
       } else {}
     } catch (e) {
-      log("unable to update project threshold values");
+      onErrorCallback('Unable to get all reports', 0);
+    }
+    return null;
+  }
+
+  Future downLoadReportApi({required OnSuccessCallback onSuccessCallback, required OnErrorCallback onErrorCallback, required String inputId, required String reportName}) async {
+    try {
+      final AuthCred authCred = await AuthRepo().getTokens();
+      if (authCred.accessToken.isEmpty) {
+        onErrorCallback('Access token is empty', 0);
+        return null;
+      }
+
+      http.Response res = await http.post(
+        Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.downloadReport}?input_id=$inputId&report_name=$reportName"),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${authCred.accessToken}',
+        },
+      );
+      if (res.statusCode == 200) {
+        onSuccessCallback(res);
+      } else {}
+    } catch (e) {
       onErrorCallback('Unable to update threshold values please contact admin', 0);
+    }
+    return null;
+  }
+
+  Future downloadErrorGlossary({required OnSuccessCallback onSuccessCallback, required OnErrorCallback onErrorCallback}) async {
+    try {
+      final AuthCred authCred = await AuthRepo().getTokens();
+      if (authCred.accessToken.isEmpty) {
+        onErrorCallback('Access token is empty', 0);
+        return null;
+      }
+
+      http.Response res = await http.get(
+        Uri.parse("${BaseUrl.baseUrl}${ApiEndpoints.downloadErrorGlossary}"),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${authCred.accessToken}',
+        },
+      );
+      if (res.statusCode == 200) {
+        onSuccessCallback(res);
+      } else {}
+    } catch (e) {
+      onErrorCallback('Unable to download error glossary', 0);
     }
     return null;
   }

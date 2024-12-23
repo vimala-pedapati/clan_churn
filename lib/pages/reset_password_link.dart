@@ -90,22 +90,11 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> with SingleTi
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-          // gradient: LinearGradient(
-          //       colors: [
-          //         Theme.of(context).colorScheme.background,
-          //         Theme.of(context).colorScheme.primary
-          //       ],
-          //       begin: const FractionalOffset(0.0, 0.0),
-          //       end: const FractionalOffset(1.0, 0.0),
-          //       stops: [0,1],
-          //       tileMode: TileMode.clamp),
-          ),
+      decoration: const BoxDecoration(),
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.4),
         body: Center(
           child: Container(
-            // height: MediaQuery.of(context).size.height * 0.45,
             width: MediaQuery.of(context).size.width * 0.3,
             padding: const EdgeInsets.all(30.0),
             decoration: BoxDecoration(color: Theme.of(context).colorScheme.background, borderRadius: BorderRadius.circular(20)),

@@ -14,34 +14,60 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class CreateNewProject extends StatelessWidget {
-  const CreateNewProject({super.key});
+class CreateNewProject extends StatefulWidget {
+  final String? projectId;
+  final String clientId;
+  const CreateNewProject({super.key, required this.projectId, required this.clientId});
+
+  @override
+  State<CreateNewProject> createState() => _CreateNewProjectState();
+}
+
+class _CreateNewProjectState extends State<CreateNewProject> {
+  @override
+  void initState() {
+    if (widget.projectId != null) {
+       context.read<ProjectArchitectBloc>().add(GetClientDetailsEvent(
+            clientId: widget.clientId,
+            onErrorCallback: (a, b) {},
+            onSuccessCallback: (response) {},
+          ));
+      context.read<ProjectArchitectBloc>().add(ClearCreateProjectEvent());
+      context.read<ProjectArchitectBloc>().add(GetProjectDetailsEvent(projectId: widget.projectId!));
+    }
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     final h = MediaQuery.of(context).size.height;
     // final w = MediaQuery.of(context).size.width;
     return Scaffold(
-        backgroundColor:
-            Theme.of(context).colorScheme.primary.withOpacity(0.05),
+        backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.05),
         body: BlocBuilder<UserBloc, UserState>(
           builder: (context, state) {
-            return const WrapProfile(
+            return WrapProfile(
               child: Column(children: [
                 // Nav bar
-                NavBar(),
-                SizedBox(height: 10),
-                Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SideBar(
-                        selectedRoute: SelectedRoute.home,
+                const NavBar(),
+                const SizedBox(height: 10),
+
+                BlocBuilder<ProjectArchitectBloc, ProjectArchitectState>(
+                  builder: (context, state) {
+                    return Expanded(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SideBar(
+                            selectedRoute: SelectedRoute.home,
+                          ),
+                          if (!state.projectDetailsLoading) const Expanded(child: AddNewProjectComponent())
+                        ],
                       ),
-                      Expanded(child: AddNewProjectComponent())
-                    ],
-                  ),
+                    );
+                  },
                 ),
               ]),
             );
@@ -94,33 +120,20 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
   @override
   void initState() {
     setState(() {
-      clientController.text =
-          context.read<ProjectArchitectBloc>().state.selectedClient!.name;
+      clientController.text = context.read<ProjectArchitectBloc>().state.selectedClient?.name ?? "";
     });
 
     if (context.read<ProjectArchitectBloc>().state.createdProject != null) {
-      if (context
-          .read<ProjectArchitectBloc>()
-          .state
-          .createdProject!
-          .id
-          .isNotEmpty) {
+      if (context.read<ProjectArchitectBloc>().state.createdProject!.id.isNotEmpty) {
         isProjectCreated = true;
       }
       setState(() {
-        projectController.text =
-            context.read<ProjectArchitectBloc>().state.createdProject!.name ??
-                '';
-        projectName =
-            context.read<ProjectArchitectBloc>().state.createdProject!.name ??
-                '';
-        previousName =
-            context.read<ProjectArchitectBloc>().state.createdProject!.name ??
-                '';
+        projectController.text = context.read<ProjectArchitectBloc>().state.createdProject!.name ?? '';
+        projectName = context.read<ProjectArchitectBloc>().state.createdProject!.name ?? '';
+        previousName = context.read<ProjectArchitectBloc>().state.createdProject!.name ?? '';
       });
     }
-    context.read<ProjectArchitectBloc>().add(GetColumnsEvent(
-        context.read<ProjectArchitectBloc>().state.createdProject?.id));
+    context.read<ProjectArchitectBloc>().add(GetColumnsEvent(context.read<ProjectArchitectBloc>().state.createdProject?.id));
     super.initState();
   }
 
@@ -149,9 +162,7 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                       ),
                       ClanChurnSpacing.w10,
                       Text(
-                        isProjectCreated
-                            ? "Update Project"
-                            : "Start New Project",
+                        isProjectCreated ? "Update Project" : "Start New Project",
                         style: ClanChurnTypography.font18600,
                       ),
                     ],
@@ -187,15 +198,8 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                                   Container(
                                     width: 300,
                                     height: 30,
-                                    decoration: BoxDecoration(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .primary
-                                            .withOpacity(0.1),
-                                        borderRadius:
-                                            BorderRadius.circular(8.0)),
-                                    margin: const EdgeInsets.only(
-                                        top: 5, bottom: 20),
+                                    decoration: BoxDecoration(color: Theme.of(context).colorScheme.primary.withOpacity(0.1), borderRadius: BorderRadius.circular(8.0)),
+                                    margin: const EdgeInsets.only(top: 5, bottom: 20),
                                     child: TextFormField(
                                       controller: clientController,
                                       keyboardType: TextInputType.emailAddress,
@@ -204,16 +208,9 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                                       readOnly: true,
                                       decoration: InputDecoration(
                                         hintText: 'Enter Client ID',
-                                        hintStyle: ClanChurnTypography.font12500
-                                            .copyWith(
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .tertiary),
-                                        contentPadding: const EdgeInsets.only(
-                                            top: 10, left: 10, right: 10),
-                                        border: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(8.0)),
+                                        hintStyle: ClanChurnTypography.font12500.copyWith(color: Theme.of(context).colorScheme.tertiary),
+                                        contentPadding: const EdgeInsets.only(top: 10, left: 10, right: 10),
+                                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.0)),
                                       ),
                                       onChanged: (value) {},
                                       validator: (String? val) {
@@ -235,15 +232,8 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                                   Container(
                                     width: 300,
                                     height: 30,
-                                    decoration: BoxDecoration(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .primary
-                                            .withOpacity(0.1),
-                                        borderRadius:
-                                            BorderRadius.circular(8.0)),
-                                    margin: const EdgeInsets.only(
-                                        top: 5, bottom: 20),
+                                    decoration: BoxDecoration(color: Theme.of(context).colorScheme.primary.withOpacity(0.1), borderRadius: BorderRadius.circular(8.0)),
+                                    margin: const EdgeInsets.only(top: 5, bottom: 20),
                                     child: TextFormField(
                                       controller: projectController,
                                       keyboardType: TextInputType.emailAddress,
@@ -251,21 +241,14 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                                       cursorHeight: 15,
                                       readOnly: false,
                                       inputFormatters: [
-                                        FilteringTextInputFormatter.allow(
-                                            RegExp(r'[a-zA-Z0-9 ]')),
+                                        FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9 ]')),
                                         LengthLimitingTextInputFormatter(100),
                                       ],
                                       decoration: InputDecoration(
                                         hintText: 'Enter Project Name',
-                                        hintStyle: ClanChurnTypography.font15400
-                                            .copyWith(
-                                                color: Colors.grey
-                                                    .withOpacity(0.7)),
-                                        contentPadding: const EdgeInsets.only(
-                                            top: 10, left: 10, right: 10),
-                                        border: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(8.0)),
+                                        hintStyle: ClanChurnTypography.font15400.copyWith(color: Colors.grey.withOpacity(0.7)),
+                                        contentPadding: const EdgeInsets.only(top: 10, left: 10, right: 10),
+                                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.0)),
                                       ),
                                       onChanged: (value) {
                                         setState(() {
@@ -283,37 +266,24 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                             ],
                           ),
                           ElevatedButton(
-                            onPressed: (projectName.trim().isEmpty ||
-                                    projectName.trim().length < 2 ||
-                                    projectName == previousName)
+                            onPressed: (projectName.trim().isEmpty || projectName.trim().length < 2 || projectName == previousName)
                                 ? null
                                 : () {
                                     if (isProjectCreated) {
-                                      context.read<ProjectArchitectBloc>().add(
-                                          UpdateProjectNameEvent(
-                                              projectId:
-                                                  state.createdProject!.id,
-                                              updatedProjectName:
-                                                  projectController.text,
-                                              onSuccessCallback: (message) {
-                                                ApiRepository()
-                                                    .handleSuccessMessage(
-                                                        "Project name updated successfully!......",
-                                                        context);
-                                              },
-                                              warningMessageCallback:
-                                                  (String message,
-                                                      int errorCode) {
-                                                ApiRepository()
-                                                    .handleWarningMessage(
-                                                  message,
-                                                  context,
-                                                );
-                                              }));
+                                      context.read<ProjectArchitectBloc>().add(UpdateProjectNameEvent(
+                                          projectId: state.createdProject!.id,
+                                          updatedProjectName: projectController.text,
+                                          onSuccessCallback: (message) {
+                                            ApiRepository().handleSuccessMessage("Project name updated successfully!......", context);
+                                          },
+                                          warningMessageCallback: (String message, int errorCode) {
+                                            ApiRepository().handleWarningMessage(
+                                              message,
+                                              context,
+                                            );
+                                          }));
                                     } else {
-                                      context
-                                          .read<ProjectArchitectBloc>()
-                                          .add(CreateProjectEvent(
+                                      context.read<ProjectArchitectBloc>().add(CreateProjectEvent(
                                             clientId: state.selectedClient!.id,
                                             projectName: projectController.text,
                                             projectId: state.createdProject?.id,
@@ -321,20 +291,12 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                                               setState(() {
                                                 isProjectCreated = true;
                                               });
-                                              ApiRepository().handleSuccessMessage(
-                                                  "Project created successfully!......",
-                                                  context);
+                                              ApiRepository().handleSuccessMessage("Project created successfully!......", context);
 
-                                              context
-                                                  .read<ProjectArchitectBloc>()
-                                                  .add(GetProjectsListEvent(
-                                                      clientId: state
-                                                          .selectedClient!.id));
+                                              context.read<ProjectArchitectBloc>().add(GetProjectsListEvent(clientId: state.selectedClient!.id));
                                             },
-                                            onErrorCallback:
-                                                (message, errorCode) {
-                                              ApiRepository()
-                                                  .handleWarningMessage(
+                                            onErrorCallback: (message, errorCode) {
+                                              ApiRepository().handleWarningMessage(
                                                 message,
                                                 context,
                                               );
@@ -342,8 +304,7 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                                           ));
                                     }
                                   },
-                            child: Text(
-                                " ${isProjectCreated ? "Update Project" : "Create Project"} "),
+                            child: Text(" ${isProjectCreated ? "Update Project" : "Create Project"} "),
                           )
                         ],
                       ),
@@ -351,12 +312,9 @@ class _AddNewProjectComponentState extends State<AddNewProjectComponent> {
                   ),
                   Expanded(
                     child: AbsorbPointer(
-                      absorbing: (projectName.isEmpty ||
-                          state.createdProject == null ||
-                          state.createdProject!.id.isEmpty),
+                      absorbing: (projectName.isEmpty || state.createdProject == null || state.createdProject!.id.isEmpty),
                       child: Opacity(
-                        opacity: (projectName.isEmpty ||
-                                state.createdProject == null)
+                        opacity: (projectName.isEmpty || state.createdProject == null)
                             ? 0.4
                             : (state.createdProject!.id.isEmpty)
                                 ? 0.4

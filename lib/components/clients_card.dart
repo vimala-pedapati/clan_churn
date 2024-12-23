@@ -1,10 +1,12 @@
 import 'package:clan_churn/api_repos/models/client_details.dart';
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/components/project_card.dart';
-import 'package:clan_churn/pages/client_projects_view.dart';
 import 'package:clan_churn/utils/typography.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+
+import '../utils/routes.dart';
 
 class ClientsCard extends StatelessWidget {
   const ClientsCard({super.key, required this.client});
@@ -55,8 +57,9 @@ class ClientsCard extends StatelessWidget {
                 ),
                 onPressed: () {
                   context.read<ProjectArchitectBloc>().add(SetSelectedClientEvent(selectedClient: client));
-                  // GoRouter.of(context).go(AppRoutes.clientProjects);
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const ClientProjectsView()));
+                  context.push(
+                    '${AppRoutes.client}/${client.name}/${client.id}',
+                  );
                 },
               ),
             )

@@ -1,21 +1,24 @@
 import 'dart:developer';
 
+import 'package:clan_churn/api_repos/models/client_details.dart';
 import 'package:clan_churn/churn_blocs/project_architect/project_architect_bloc.dart';
 import 'package:clan_churn/components/churn_continer.dart';
 import 'package:clan_churn/components/project_list_data.dart';
 import 'package:clan_churn/components/search.dart';
-import 'package:clan_churn/pages/new_project_components.dart';
-import 'package:clan_churn/utils/routes.dart';
 import 'package:clan_churn/utils/spacing.dart';
 import 'package:clan_churn/utils/typography.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+
+import '../utils/routes.dart';
 
 class ProjectsViewComponent extends StatefulWidget {
-  // final double width;
+  final ClientDetails clientDetails;
   const ProjectsViewComponent({
     super.key,
+    required this.clientDetails,
   });
 
   @override
@@ -25,9 +28,11 @@ class ProjectsViewComponent extends StatefulWidget {
 class _ProjectsViewComponentState extends State<ProjectsViewComponent> {
   @override
   void initState() {
-    if (context.read<ProjectArchitectBloc>().state.selectedClient != null) {
-      context.read<ProjectArchitectBloc>().add(GetProjectsListEvent(clientId: context.read<ProjectArchitectBloc>().state.selectedClient!.id));
-    }
+    context.read<ProjectArchitectBloc>().add(GetProjectsListEvent(clientId: widget.clientDetails.id));
+    // if (context.read<ProjectArchitectBloc>().state.selectedClient != null) {
+    // context.read<ProjectArchitectBloc>().add(GetProjectsListEvent(clientId: context.read<ProjectArchitectBloc>().state.selectedClient!.id));
+    //   context.read<ProjectArchitectBloc>().add(GetProjectsListEvent(clientId: context.read<ProjectArchitectBloc>().state.selectedClient!.id));
+    // }
     super.initState();
   }
 
@@ -77,8 +82,9 @@ class _ProjectsViewComponentState extends State<ProjectsViewComponent> {
                                         color: Theme.of(context).colorScheme.secondary,
                                       ),
                                       onPressed: () {
-                                        Navigator.pop(context);
-                                        // GoRouter.of(context).go(AppRoutes.home);
+                                        context.pop();
+
+                                        // Navigator.pop(context);
                                       },
                                     ),
                                     ClanChurnSpacing.w10,
@@ -95,7 +101,8 @@ class _ProjectsViewComponentState extends State<ProjectsViewComponent> {
                               ElevatedButton(
                                 onPressed: () {
                                   context.read<ProjectArchitectBloc>().add(ClearCreateProjectEvent());
-                                  Navigator.push(context, customPageRouteForNavigation(const CreateNewProject()));
+                                  context.push('${AppRoutes.client}/${state.selectedClient!.name}/${state.selectedClient!.id}/${AppRoutes.createProject}');
+                                  // Navigator.push(context, customPageRouteForNavigation(const CreateNewProject()));
                                 },
                                 child: Row(children: [
                                   const Icon(

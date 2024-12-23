@@ -92,10 +92,16 @@ class _ClanChurnSignInPageState extends State<ClanChurnSignInPage> {
                               thickness: 1,
                             ),
                           ),
-                          Image.asset(
-                            "assets/churn_logo.png",
-                            // scale: 1.5,
-                            width: SignInRespUi.respValSignImageLogo(context),
+                          Container(
+                            // color: Colors.cyan,
+                            child: Image.asset(
+                              // "assets/churn_logo.png",
+                              "assets/lense.png",
+                              // height: 100,
+                              // scale: 1.5,
+                              // color: Colors.amber,
+                              width: SignInRespUi.respValSignImageLogo(context),
+                            ),
                           )
                         ],
                       ),

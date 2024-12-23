@@ -11,8 +11,7 @@ class GetClientsEvent extends ProjectArchitectEvent {
   final OnErrorCallback onErrorCallback;
   final OnSuccessCallback onSuccessCallback;
 
-  const GetClientsEvent(
-      {required this.onErrorCallback, required this.onSuccessCallback});
+  const GetClientsEvent({required this.onErrorCallback, required this.onSuccessCallback});
 }
 
 class SideBarExpandedEvent extends ProjectArchitectEvent {
@@ -35,11 +34,7 @@ class UpdateProjectDetailsEvent extends ProjectArchitectEvent {
   final ProjectDetails projectDetails;
   final OnErrorCallback onErrorCallback;
   final OnSuccessCallback onSuccessCallback;
-  const UpdateProjectDetailsEvent(
-      {required this.projectId,
-      required this.projectDetails,
-      required this.onErrorCallback,
-      required this.onSuccessCallback});
+  const UpdateProjectDetailsEvent({required this.projectId, required this.projectDetails, required this.onErrorCallback, required this.onSuccessCallback});
 }
 
 class GetProjectDetailsEvent extends ProjectArchitectEvent {
@@ -63,12 +58,7 @@ class CreateProjectEvent extends ProjectArchitectEvent {
   final String? projectId;
   final OnErrorCallback onErrorCallback;
   final OnSuccessCallback onSuccessCallback;
-  const CreateProjectEvent(
-      {required this.clientId,
-      required this.projectName,
-      required this.onErrorCallback,
-      required this.onSuccessCallback,
-      required this.projectId});
+  const CreateProjectEvent({required this.clientId, required this.projectName, required this.onErrorCallback, required this.onSuccessCallback, required this.projectId});
 }
 
 class ClearCreateProjectEvent extends ProjectArchitectEvent {}
@@ -96,12 +86,7 @@ class UploadFileEvent extends ProjectArchitectEvent {
   final BuildContext context;
   final OnErrorCallback onErrorCallback;
   final OnSuccessCallback onSuccessCallBack;
-  const UploadFileEvent(
-      {required this.filePickerResult,
-      required this.projectId,
-      required this.context,
-      required this.onErrorCallback,
-      required this.onSuccessCallBack});
+  const UploadFileEvent({required this.filePickerResult, required this.projectId, required this.context, required this.onErrorCallback, required this.onSuccessCallBack});
 }
 
 class UpdateProjectNameEvent extends ProjectArchitectEvent {
@@ -121,10 +106,7 @@ class GetInputExcelSummaryEvent extends ProjectArchitectEvent {
   final String inputId;
   final OnErrorCallback onErrorCallback;
   final OnSuccessCallback onSuccessCallback;
-  const GetInputExcelSummaryEvent(
-      {required this.inputId,
-      required this.onErrorCallback,
-      required this.onSuccessCallback});
+  const GetInputExcelSummaryEvent({required this.inputId, required this.onErrorCallback, required this.onSuccessCallback});
 }
 
 class DownloadErrorReportEvent extends ProjectArchitectEvent {
@@ -133,11 +115,7 @@ class DownloadErrorReportEvent extends ProjectArchitectEvent {
 
   final OnErrorCallback onErrorCallback;
   final OnSuccessCallback onSuccessCallback;
-  const DownloadErrorReportEvent(
-      {required this.inputId,
-      required this.context,
-      required this.onErrorCallback,
-      required this.onSuccessCallback});
+  const DownloadErrorReportEvent({required this.inputId, required this.context, required this.onErrorCallback, required this.onSuccessCallback});
 }
 
 class UploadNewSheetRequestedEvent extends ProjectArchitectEvent {
@@ -150,10 +128,7 @@ class ProjectInputHistoryEvent extends ProjectArchitectEvent {
   final OnErrorCallback onErrorCallback;
   final OnSuccessCallback onSuccessCallback;
 
-  const ProjectInputHistoryEvent(
-      {required this.projectId,
-      required this.onErrorCallback,
-      required this.onSuccessCallback});
+  const ProjectInputHistoryEvent({required this.projectId, required this.onErrorCallback, required this.onSuccessCallback});
 }
 
 class GenerateMartsEvent extends ProjectArchitectEvent {
@@ -161,10 +136,7 @@ class GenerateMartsEvent extends ProjectArchitectEvent {
 
   final OnErrorCallback onErrorCallback;
   final OnSuccessCallback onSuccessCallback;
-  const GenerateMartsEvent(
-      {required this.inputId,
-      required this.onErrorCallback,
-      required this.onSuccessCallback});
+  const GenerateMartsEvent({required this.inputId, required this.onErrorCallback, required this.onSuccessCallback});
 }
 
 class GetReportDataEvent extends ProjectArchitectEvent {
@@ -185,10 +157,7 @@ class GetProThresholdValEvent extends ProjectArchitectEvent {
   final OnErrorCallback onErrorCallback;
   final OnSuccessCallback onSuccessCallback;
 
-  const GetProThresholdValEvent(
-      {required this.projectId,
-      required this.onErrorCallback,
-      required this.onSuccessCallback});
+  const GetProThresholdValEvent({required this.projectId, required this.onErrorCallback, required this.onSuccessCallback});
 }
 
 class UpdateProThrValsEvent extends ProjectArchitectEvent {
@@ -197,16 +166,50 @@ class UpdateProThrValsEvent extends ProjectArchitectEvent {
   final OnErrorCallback onErrorCallback;
   final OnSuccessCallback onSuccessCallback;
 
-  const UpdateProThrValsEvent(
-      {required this.projectId,
-      required this.data,
-      required this.onErrorCallback,
-      required this.onSuccessCallback});
+  const UpdateProThrValsEvent({required this.projectId, required this.data, required this.onErrorCallback, required this.onSuccessCallback});
 }
+
 class GetAllReportsEvent extends ProjectArchitectEvent {
   final OnErrorCallback onErrorCallback;
   final OnSuccessCallback onSuccessCallback;
-  const GetAllReportsEvent(
-      {required this.onErrorCallback, required this.onSuccessCallback});
-  
+  const GetAllReportsEvent({required this.onErrorCallback, required this.onSuccessCallback});
+}
+
+class UpdateProjectThresholdMinValue extends ProjectArchitectEvent {
+  final String thresholdId;
+  final dynamic minValue;
+  const UpdateProjectThresholdMinValue({required this.minValue, required this.thresholdId});
+}
+
+class UpdateProjectThresholdMaxValue extends ProjectArchitectEvent {
+  final String thresholdId;
+  final dynamic maxValue;
+  const UpdateProjectThresholdMaxValue({required this.maxValue, required this.thresholdId});
+}
+
+class DownloadReportEvent extends ProjectArchitectEvent {
+  final String inputId;
+  final String reportName;
+  final OnSuccessCallback onSuccessCallback;
+  final OnErrorCallback onErrorCallback;
+
+  const DownloadReportEvent({
+    required this.inputId,
+    required this.reportName,
+    required this.onSuccessCallback,
+    required this.onErrorCallback,
+  });
+}
+
+class DownloadErrorGlossary extends ProjectArchitectEvent {
+  final OnSuccessCallback onSuccessCallback;
+  final OnErrorCallback onErrorCallback;
+  const DownloadErrorGlossary({required this.onSuccessCallback, required this.onErrorCallback});
+}
+
+class GetClientDetailsEvent extends ProjectArchitectEvent {
+  final String clientId;
+  final OnErrorCallback onErrorCallback;
+  final OnSuccessCallback onSuccessCallback;
+  const GetClientDetailsEvent({required this.clientId, required this.onErrorCallback, required this.onSuccessCallback});
 }

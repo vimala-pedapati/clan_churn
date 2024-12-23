@@ -15,7 +15,10 @@ class ClientBloc extends Bloc<ClientEvent, ClientState> {
     on<DeleteClientEvent>(onDeleteClientEvent);
     on<UploadClientLogo>(onUploadClientLogo);
     on<ArchiveProjectEvent>(onArchiveProjectEvent);
+    on<UploadErrorGlossary>(onUploadErrorGlossary);
+
   }
+
   onCreateClientEvent(CreateClientEvent event, Emitter<ClientState> emit) async {
     final result = await apiRepository.clientCreate(
         clientName: event.clinetName,
@@ -33,7 +36,7 @@ class ClientBloc extends Bloc<ClientEvent, ClientState> {
 
   onUpdateClientEvent(UpdateClientEvent event, Emitter<ClientState> emit) async {
     emit(state.copyWith(updatingClient: true));
-    final result = await apiRepository
+    await apiRepository
         .clientUpdate(
             clientId: event.clientId,
             clientName: event.clinetName,
@@ -64,5 +67,13 @@ class ClientBloc extends Bloc<ClientEvent, ClientState> {
 
   onArchiveProjectEvent(ArchiveProjectEvent event, Emitter<ClientState> emit) async {
     final result = apiRepository.archiveProject(projectId: event.projectId, onErrorCallback: event.onErrorCallback, onSuccessCallback: event.onSuccessCallback);
+  }
+
+  onUploadErrorGlossary(UploadErrorGlossary event, Emitter emit) {
+    apiRepository.uploadErrorGlossarys(
+      filePickerResult: event.filePickerResult,
+      onErrorCallback: event.onErrorCallback,
+      onSuccessCallback: event.onSuccessCallBack,
+    );
   }
 }

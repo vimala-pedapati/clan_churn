@@ -1,13 +1,16 @@
 class BaseUrl {
   // test url // lense.clanonline.in
   // static String baseUrl = "https://churnapi.clanonline.in";
+  //....
   // static String baseUrl = "https://churntesting.clanonline.in";
+  //....
+  // static String baseUrl = "http://192.168.137.1/";
 
-  // staging url // lense.clanonline.in
-  static String baseUrl = "https://churn-staging-120996668109.asia-south1.run.app";
+  // staging url // lense.clanonline.in // myapptest-c1cb6
+  // static String baseUrl = "https://churn-staging-120996668109.asia-south1.run.app";
 
-  // Shashank Paisa // production gcp // lense.quantapeoplwe.com
-  // static String baseUrl = "https://churn-120996668109.asia-south1.run.app";
+  // Shashank Paisa // production gcp // lense.quantapeoplwe.com // clanchurn
+  static String baseUrl = "https://churn-120996668109.asia-south1.run.app";
 
   // Krishna Paisa //production lambda
   // static String baseUrl =
@@ -24,6 +27,10 @@ class ApiEndpoints {
   static String resetPassword = '/reset_password';
   static String uploadLogo = '/upload_picture';
 
+  // master data
+  static String updateErrorGlossary = '/master_data/update_error_glossary';
+  static String downloadErrorGlossary = '/master_data/download_error_glossary';
+
   // User
   static String getUserDetails = '/user/get_user_details';
   static String addUser = '/user/add';
@@ -39,6 +46,7 @@ class ApiEndpoints {
   static String clientCreate = '/client/create';
   static String clientUpdate = '/client/update';
   static String deleteClient = '/client/delete_client';
+  static String getClient = '/client/get_client_details';
 
   // Project
   static String getAllProjects = '/project/get_all_projects';
@@ -62,4 +70,5 @@ class ApiEndpoints {
   // reports
   static String getReportData = "/reports/get_report_data";
   static String getAllReports = "/reports/get_all_reports";
+  static String downloadReport = "/reports/generate_excel";
 }

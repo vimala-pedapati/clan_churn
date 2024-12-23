@@ -1,18 +1,17 @@
 import 'dart:convert';
 
-List<GetProThresholdFormValModel> projectThresholdFormValueModelFromJson(
-    String str) {
+import 'package:equatable/equatable.dart';
+
+List<GetProThresholdFormValModel> projectThresholdFormValueModelFromJson(String str) {
   List<dynamic> data = json.decode(str) as List<dynamic>;
   return List<GetProThresholdFormValModel>.from(data.map((x) {
     return GetProThresholdFormValModel.fromJson(x);
   }));
 }
 
-String projectThresholdFormValueModelToJson(
-        List<GetProThresholdFormValModel> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String projectThresholdFormValueModelToJson(List<GetProThresholdFormValModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class GetProThresholdFormValModel {
+class GetProThresholdFormValModel extends Equatable {
   String id;
   String sheetName;
   String columnName;
@@ -21,6 +20,8 @@ class GetProThresholdFormValModel {
   String? depends;
   String clientColumnName;
   ColumnDataType columnDataType;
+  dynamic maxValue;
+  dynamic minValue;
 
   GetProThresholdFormValModel({
     required this.id,
@@ -31,10 +32,11 @@ class GetProThresholdFormValModel {
     required this.depends,
     required this.clientColumnName,
     required this.columnDataType,
+    this.maxValue,
+    this.minValue,
   });
 
-  factory GetProThresholdFormValModel.fromJson(Map<String, dynamic> json) =>
-      GetProThresholdFormValModel(
+  factory GetProThresholdFormValModel.fromJson(Map<String, dynamic> json) => GetProThresholdFormValModel(
         id: json["id"],
         sheetName: json["sheet_name"]!,
         columnName: json["column_name"],
@@ -43,6 +45,8 @@ class GetProThresholdFormValModel {
         depends: json["depends"],
         clientColumnName: json["client_column_name"],
         columnDataType: columnDataTypeValues.map[json["column_data_type"]]!,
+        maxValue: json["max_value"],
+        minValue: json["min_value"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -54,18 +58,52 @@ class GetProThresholdFormValModel {
         "depends": depends,
         "client_column_name": clientColumnName,
         "column_data_type": columnDataTypeValues.reverse[columnDataType],
+        "max_value": maxValue,
+        "min_value": minValue,
       };
+
+  // CopyWith method
+  GetProThresholdFormValModel copyWith({
+    dynamic maxValue,
+    dynamic minValue,
+  }) {
+    return GetProThresholdFormValModel(
+      id: id,
+      sheetName: sheetName,
+      columnName: columnName,
+      isMandatory: isMandatory,
+      isEditable: isEditable,
+      depends: depends,
+      clientColumnName: clientColumnName,
+      columnDataType: columnDataType,
+      maxValue: maxValue ?? this.maxValue,
+      minValue: minValue ?? this.minValue,
+    );
+  }
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [id, minValue, maxValue];
 }
 
-enum ColumnDataType { date, numeric }
+enum ColumnDataType {
+  date,
+  numericCurrnecy,
+  numericWithPercentage,
+  numeric
+}
 
-final columnDataTypeValues = EnumValues(
-    {"date": ColumnDataType.date, "numeric": ColumnDataType.numeric});
+final columnDataTypeValues = EnumValues({
+  "date": ColumnDataType.date,
+  "numeric_currency": ColumnDataType.numericCurrnecy,
+  "numeric_with_percentage": ColumnDataType.numericWithPercentage,
+  "numeric": ColumnDataType.numeric,
+});
 
 enum SheetName {
   customerEmployeeBasicData,
   customerEmployeeWorkData,
-  customerPerformanceData
+  customerPerformanceData,
 }
 
 class EnumValues<T> {
